@@ -27,6 +27,6 @@ class DatabaseSeeder extends Seeder
             Barangays::class,
         ]);
 
-        \App\Models\User::factory(100)->create();
+        // \App\Models\User::factory(100)->create();
     }
 }
