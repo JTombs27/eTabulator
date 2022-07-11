@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\VehicleController;
+
 
 Auth::routes();
 
@@ -50,5 +52,10 @@ Route::middleware('auth')->group(function() {
 
     Route::post('get-all-permissions', [PermissionController::class, 'getAllPermissions']);
     Route::post('update-user-permissions', [PermissionController::class, 'updateUserPermissions']);
+
+    //Vehicles
+    Route::prefix('/vehicles')->group(function() {
+        Route::get('/', [VehicleController::class, 'index']);
+    });
     
 });
