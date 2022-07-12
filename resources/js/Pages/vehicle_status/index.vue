@@ -17,8 +17,8 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 
-                <label for="">Vehicle Id</label>
-                <input type="text" v-model="plate_number" class="form-control" autocomplete="chrome-off" disabled readonly>
+                <label for="">Plate number</label>
+                <input type="text" v-model="PLATENO" class="form-control" autocomplete="chrome-off" disabled readonly>
                 <label for="">Condition</label>
                 <input type="text" v-model="form.condition" class="form-control" autocomplete="chrome-off" :disabled="_disbled" :readonly="_disbled">
                 
@@ -57,7 +57,7 @@ export default {
     data() {
         return {
             _disbled:true,
-            plate_number:'',
+            PLATENO:'',
             button_label:'',
             form: useForm({
                id:'',
@@ -65,12 +65,12 @@ export default {
                condition:''
             }),
            
-            pageTitle: "",
+            pageTitle: "Vehicle Status",
             loading:false,
         };
     },
     mounted() {
-        this.plate_number = this.vehicle.plate_number
+        this.PLATENO = this.vehicle.PLATENO
         this.form.vehicle_id = this.vehicle.id 
             if(this.vehicle.vehicle_status)
             {

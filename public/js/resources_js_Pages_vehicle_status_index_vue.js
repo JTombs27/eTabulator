@@ -20,19 +20,19 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       _disbled: true,
-      plate_number: '',
+      PLATENO: '',
       button_label: '',
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         id: '',
         vehicle_id: '',
         condition: ''
       }),
-      pageTitle: "",
+      pageTitle: "Vehicle Status",
       loading: false
     };
   },
   mounted: function mounted() {
-    this.plate_number = this.vehicle.plate_number;
+    this.PLATENO = this.vehicle.PLATENO;
     this.form.vehicle_id = this.vehicle.id;
 
     if (this.vehicle.vehicle_status) {
@@ -118,7 +118,7 @@ var _hoisted_4 = {
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Vehicle Id", -1
+}, "Plate number", -1
 /* HOISTED */
 );
 
@@ -157,7 +157,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.plate_number = $event;
+      return $data.PLATENO = $event;
     }),
     "class": "form-control",
     autocomplete: "chrome-off",
@@ -165,7 +165,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     readonly: ""
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.plate_number]]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.PLATENO]]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.condition = $event;
