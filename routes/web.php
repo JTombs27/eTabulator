@@ -56,6 +56,9 @@ Route::middleware('auth')->group(function() {
     //Vehicles
     Route::prefix('/vehicles')->group(function() {
         Route::get('/', [VehicleController::class, 'index']);
+        Route::get('/create', [VehicleController::class, 'create']);
+        Route::post('/', [VehicleController::class, 'store']);
+        Route::get('/{id}/edit', [VehicleController::class, 'edit']);
     });
     
 });

@@ -17,7 +17,7 @@ class CreateVehiclesTable extends Migration
             $table->id();
             $table->string('plate_number', 10)->nullable();
             $table->string('vehicle_type', 20)->nullable();
-            $table->date('date_acquired');
+            $table->date('date_acquired')->nullable();
             $table->double('acquisition_cost', 8, 2)->nullable();
             $table->string('description', 45)->nullable();
             $table->timestamps();
