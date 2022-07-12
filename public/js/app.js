@@ -1401,6 +1401,14 @@ var map = {
 		"./resources/js/Pages/Posts/Index.vue",
 		"resources_js_Pages_Posts_Index_vue"
 	],
+	"./Project_Vehicles/Index": [
+		"./resources/js/Pages/Project_Vehicles/Index.vue",
+		"resources_js_Pages_Project_Vehicles_Index_vue"
+	],
+	"./Project_Vehicles/Index.vue": [
+		"./resources/js/Pages/Project_Vehicles/Index.vue",
+		"resources_js_Pages_Project_Vehicles_Index_vue"
+	],
 	"./Projects/Index": [
 		"./resources/js/Pages/Projects/Index.vue",
 		"resources_js_Pages_Projects_Index_vue"

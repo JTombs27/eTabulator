@@ -17,6 +17,9 @@ class ProjectController extends Controller
     public function index(Request $request){
         return inertia('Projects/Index',[
             'projects' => $this->model
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('description', 'like', '%' . $searchItem . '%');
+            })
             ->simplePaginate(10)
             ->withQueryString(),
             "filters" => $request->only(['search']),
@@ -43,6 +46,37 @@ class ProjectController extends Controller
             return "Description is required!";
         }
         
+    }
+
+    public function update(Request $request)
+    {
+        try {
+            //code...
+            $data = $this->model->findOrFail($request->id);
+            $data->update([
+                'description' => $request->description
+            ]);
+            return "success";
+        } catch (\Exception $th) 
+        {
+            //throw $th;
+            return  $th;
+        } 
+    }
+
+    public function destroy(Request $request)
+    {
+        try 
+        {
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+    
+            return "success";
+        } catch (\Exception $th) {
+            //throw $th;
+            return $th;
+        }
+       
     }
 
 }

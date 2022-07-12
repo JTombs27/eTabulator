@@ -1,6 +1,6 @@
 <template>
     <head >
-        <title >Projects</title>
+        <title >Project Vehicles</title>
         
     </head>
    <div class="peers fxw-nw jc-sb ai-c">
@@ -25,7 +25,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <tr v-for="(project,index) in projects.data" :key="index">
+                            <tr v-for="(project,index) in projectVehicles.data" :key="index">
                                 <td >{{project.description}}</td>
                                 <td >
                                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -54,7 +54,7 @@
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
                         <!-- <pagination :links="users.links" /> -->
-                        <pagination :next="projects.next_page_url" :prev="projects.prev_page_url" />
+                        <pagination :next="projectVehicles.next_page_url" :prev="projectVehicles.prev_page_url" />
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@ import Pagination from "@/Shared/Pagination";
 export default {
     components: { Pagination, Filtering },
     props: {
-        projects: Object,
+        projectVehicles: Object,
         filters: Object,
         can: Object,
     },
@@ -96,19 +96,19 @@ export default {
             saveMessage:""
         };
     }, 
-    watch: {
-        search: _.debounce(function (value) {
-            this.$inertia.get(
-                "/projects",
-                { search: value },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        }, 300),
-    },
+    //watch: {
+    //    search: _.debounce(function (value) {
+    //        this.$inertia.get(
+    //            "/projects",
+    //            { search: value },
+    //            {
+    //                preserveScroll: true,
+    //                preserveState: true,
+    //                replace: true,
+    //            }
+    //        );
+    //    }, 300),
+    //},
     methods:{
         createProject(){
             this.isEdit      = false;
@@ -116,85 +116,85 @@ export default {
             this.description = "";
             this.saveMessage = "";
         },
-        deleteProject(id) 
-        {
-            let text = "WARNING!\nAre you sure you want to delete the record?";
-              if (confirm(text) == true) 
-              {
-                axios.post("/projects/delete-project",{
-                    'id':id
-                }).then(response=>{
-                    if(response.data != null)
-                        {
-                            if(response.data == "success")
-                            {
-                                this.$inertia.reload({only:['projects']});
-                            }
-                            else{
-                                saveMessage = "*"+response.data;
-                            }
-                        }
-                });
-              }
-        },
-        insertProject()
-        {
-           if(this.isEdit == false)
-           {
-                axios.post('/projects/create-project', {
-                                'description' : this.description
-                            }).then(response=>{
-                                
-                                if(response.data != null)
-                                {
-                                    if(response.data == "success")
-                                    {
-                                        this.closeModal();
-                                        this.saveMessage = "";
-                                        this.$inertia.reload({only:['projects']});
-                                    }
-                                    else{
-                                       this.saveMessage = response.data;
-                                    }
-                                }
-                            })
-           }
-           else  if(this.isEdit == true)
-           {
-                axios.post('/projects/update-project', {
-                                'description' : this.description,
-                                'id':this.projectId
-                            }).then(response=>{
-                                
-                                if(response.data != null)
-                                {
-                                    if(response.data == "success")
-                                    {
-                                        this.closeModal();
-                                        this.saveMessage = "";
-                                        this.$inertia.reload({only:['projects']});
-                                    }
-                                    else{
-                                       this.saveMessage = response.data;
-                                    }
-                                }
-                            })
-           }
-          
-        },
-        editProjects(projectId)
-        {
-            var project         = _.find(this.projects.data,{id:projectId})
-            this.showModal      = true;
-            this.description    = project.description;
-            this.isEdit         = true;
-            this.projectId      = projectId;
-        },
-        gotToProjectVehicle(projectId)
-        {
-            this.$inertia.get("/projects-vehicle/" + projectId);
-        }
-        ,
+    //deleteProject(id) 
+    //{
+    //    let text = "WARNING!\nAre you sure you want to delete the record?";
+    //      if (confirm(text) == true) 
+    //      {
+    //        axios.post("/projects/delete-project",{
+    //            'id':id
+    //        }).then(response=>{
+    //            if(response.data != null)
+    //                {
+    //                    if(response.data == "success")
+    //                    {
+    //                        this.$inertia.reload({only:['projects']});
+    //                    }
+    //                    else{
+    //                        saveMessage = "*"+response.data;
+    //                    }
+    //                }
+    //        });
+    //      }
+    //},
+    //insertProject()
+    //{
+    //   if(this.isEdit == false)
+    //   {
+    //        axios.post('/projects/create-project', {
+    //                        'description' : this.description
+    //                    }).then(response=>{
+    //                        
+    //                        if(response.data != null)
+    //                        {
+    //                            if(response.data == "success")
+    //                            {
+    //                                this.closeModal();
+    //                                this.saveMessage = "";
+    //                                this.$inertia.reload({only:['projects']});
+    //                            }
+    //                            else{
+    //                               this.saveMessage = response.data;
+    //                            }
+    //                        }
+    //                    })
+    //   }
+    //   else  if(this.isEdit == true)
+    //   {
+    //        axios.post('/projects/update-project', {
+    //                        'description' : this.description,
+    //                        'id':this.projectId
+    //                    }).then(response=>{
+    //                        
+    //                        if(response.data != null)
+    //                        {
+    //                            if(response.data == "success")
+    //                            {
+    //                                this.closeModal();
+    //                                this.saveMessage = "";
+    //                                this.$inertia.reload({only:['projects']});
+    //                            }
+    //                            else{
+    //                               this.saveMessage = response.data;
+    //                            }
+    //                        }
+    //                    })
+    //   }
+    //  
+    //},
+    //editProjects(projectId)
+    //{
+    //    var project         = _.find(this.projects.data,{id:projectId})
+    //    this.showModal      = true;
+    //    this.description    = project.description;
+    //    this.isEdit         = true;
+    //    this.projectId      = projectId;
+    //},
+    //gotToProjectVehicle(projectId)
+    //{
+    //    this.$inertia.get("/projects-vehicle/" + id);
+    //}
+    //    ,
          closeModal() {
             $("#modal").hide();
             $('body').removeClass('modal-open');
