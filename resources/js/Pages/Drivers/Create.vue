@@ -13,10 +13,13 @@
 </template>
 
 <script>
-
+import { useForm} from "@inertiajs/inertia-vue3"
 export default {
     data() {
         return {
+            form: useForm({
+
+            }),
             pageTitle: ""
         }
     },

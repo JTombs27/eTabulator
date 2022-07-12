@@ -15,6 +15,7 @@ class Vehicle extends Model
     public function vehicle_status()
     {
         return $this->hasOne(Vehicle_status::class);
+    }
     public function driver()
     {
         return $this->hasMany(Driver::class, 'drivers_id', 'id');
