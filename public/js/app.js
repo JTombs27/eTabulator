@@ -1308,6 +1308,22 @@ var map = {
 	"./Users/Settings.vue": [
 		"./resources/js/Pages/Users/Settings.vue",
 		"resources_js_Pages_Users_Settings_vue"
+	],
+	"./vehicle_status": [
+		"./resources/js/Pages/vehicle_status/index.vue",
+		"resources_js_Pages_vehicle_status_index_vue"
+	],
+	"./vehicle_status/": [
+		"./resources/js/Pages/vehicle_status/index.vue",
+		"resources_js_Pages_vehicle_status_index_vue"
+	],
+	"./vehicle_status/index": [
+		"./resources/js/Pages/vehicle_status/index.vue",
+		"resources_js_Pages_vehicle_status_index_vue"
+	],
+	"./vehicle_status/index.vue": [
+		"./resources/js/Pages/vehicle_status/index.vue",
+		"resources_js_Pages_vehicle_status_index_vue"
 	]
 };
 function webpackAsyncContext(req) {

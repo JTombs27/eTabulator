@@ -7,6 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\Vehicle_statusController;
 
 Auth::routes();
 
@@ -30,6 +31,12 @@ Route::middleware('auth')->group(function() {
         Route::get('/settings', [UserController::class, 'settings']);
         Route::post('/change-name', [UserController::class, 'changeName']);
         Route::post('/change-photo', [UserController::class, 'changePhoto']);
+    });
+
+    Route::prefix('/vehicle_status')->group(function() {
+        Route::get('/', [Vehicle_statusController::class, 'index']);
+        Route::post('/', [Vehicle_statusController::class, 'store']);
+      
     });
     
     
