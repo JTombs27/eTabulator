@@ -12,6 +12,9 @@ class Vehicle extends Model
     protected $table = "vehicles";
     protected $guarded = [];
 
+    public function vehicle_status()
+    {
+        return $this->hasOne(Vehicle_status::class);
     public function driver()
     {
         return $this->hasMany(Driver::class, 'drivers_id', 'id');

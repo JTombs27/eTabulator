@@ -8,6 +8,7 @@ use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Vehicle_statusController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 
@@ -41,6 +42,11 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/projects')->group(function() {
         Route::get('/', [ProjectController::class, 'index']);
         Route::post('/create-project',[ProjectController::class, 'store']);
+    //marvin
+    Route::prefix('/vehicle_status')->group(function() {
+        Route::post('/', [Vehicle_statusController::class, 'store']);
+        Route::get('{id}', [Vehicle_statusController::class, 'index']);
+        Route::patch('/{id}', [Vehicle_statusController::class, 'update']);
     });
     
     
@@ -76,5 +82,6 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [DriverVehicleController::class, 'index']);
         Route::get('/create', [DriverVehicleController::class, 'create']);
     });
+    Route::get('raymart', 'Vehicle_statusController@raymart');
     
 });
