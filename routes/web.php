@@ -7,6 +7,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\Vehicle_statusController;
+use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\DriverVehicleController;
+
+
 
 Auth::routes();
 
@@ -31,6 +36,13 @@ Route::middleware('auth')->group(function() {
         Route::post('/change-name', [UserController::class, 'changeName']);
         Route::post('/change-photo', [UserController::class, 'changePhoto']);
     });
+
+    //marvin
+    Route::prefix('/vehicle_status')->group(function() {
+        Route::post('/', [Vehicle_statusController::class, 'store']);
+        Route::get('{id}', [Vehicle_statusController::class, 'index']);
+        Route::patch('/{id}', [Vehicle_statusController::class, 'update']);
+    });
     
     
     //Avatar file upload
@@ -50,5 +62,21 @@ Route::middleware('auth')->group(function() {
 
     Route::post('get-all-permissions', [PermissionController::class, 'getAllPermissions']);
     Route::post('update-user-permissions', [PermissionController::class, 'updateUserPermissions']);
+
+    //Vehicles
+    Route::prefix('/vehicles')->group(function() {
+        Route::get('/', [VehicleController::class, 'index']);
+        Route::get('/create', [VehicleController::class, 'create']);
+        Route::post('/', [VehicleController::class, 'store']);
+        Route::get('/{id}/edit', [VehicleController::class, 'edit']);
+        Route::patch('/{id}', [VehicleController::class, 'update']);
+        Route::delete('/{id}', [VehicleController::class, 'destroy']);
+    });
+
+    Route::prefix('/drivers')->group(function() {
+        Route::get('/', [DriverVehicleController::class, 'index']);
+        Route::get('/create', [DriverVehicleController::class, 'create']);
+    });
+    Route::get('raymart', 'Vehicle_statusController@raymart');
     
 });

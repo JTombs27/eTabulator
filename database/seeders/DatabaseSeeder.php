@@ -8,6 +8,7 @@ use Database\Seeders\FirstUserSeed;
 use Database\Seeders\Municipalities;
 use Database\Seeders\PermissionsSeeder;
 use Database\Seeders\PermissionUserSeeder;
+use Database\Seeders\VehicleSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -23,8 +24,10 @@ class DatabaseSeeder extends Seeder
             // FirstUserSeed::class,
             // PermissionUserSeeder::class,
             PermissionsSeeder::class,
-            // Municipalities::class,
-            // Barangays::class,
+            Municipalities::class,
+            Barangays::class,
+            VehicleSeeder::class,
+
         ]);
 
         // \App\Models\User::factory(100)->create();
