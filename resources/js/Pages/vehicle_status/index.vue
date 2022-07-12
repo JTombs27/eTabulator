@@ -16,6 +16,21 @@
         </div>
         <div class="col-md-8">
             <form @submit.prevent="submit()">
+                
+                <label for="">Vehicle Id</label>
+                <input type="text" v-model="plate_number" class="form-control" autocomplete="chrome-off" disabled readonly>
+                <label for="">Condition</label>
+                <input type="text" v-model="form.condition" class="form-control" autocomplete="chrome-off" :disabled="_disbled" :readonly="_disbled">
+                
+                <button type="button" class="btn btn-primary mt-3" @click="Edit()" :disabled="form.processing" v-if="_disbled">{{button_text}}</button>
+                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing" v-if="!_disbled">save</button>
+               
+            </form>
+
+
+        </div>
+        <!-- <div class="col-md-8">
+            <form @submit.prevent="submit()">
                 <label for="">Vehicle Id</label>
                 <input type="text" v-model="form.vehicle_id" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicle_id">{{ form.errors.vehicle_id }}</div>
@@ -28,59 +43,48 @@
             </form>
 
 
-        </div>
+        </div> -->
     </div>
-
+    <div></div>
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 
 export default {
     props: {
-        editData: Object,
+        vehicle: Object,
     },
     data() {
         return {
+            _disbled:true,
+            plate_number:'',
+            button_label:'',
             form: useForm({
-                permission: "",
-                name: "",
-                citymunCode:"",
-                brgyCode:"",
-                purok_id:"",
-                email: "",
-                password: "",
-                id: null
+               id:'',
+               vehicle_id:'',
+               condition:''
             }),
-            municipals:[],
-            barangays:[],
-            puroks:[],
-            testValue:"",
+           
             pageTitle: "",
             loading:false,
         };
     },
     mounted() {
-
-        if (this.editData !== undefined) {
-            this.loading = true
-            this.pageTitle = "Edit"
-            this.form.name = this.editData.name
-            this.form.email = this.editData.email
-            this.form.id = this.editData.id
-            this.form.citymunCode = this.editData.citymunCode
-            this.form.brgyCode = this.editData.brgyCode
-        } else {
-            this.pageTitle = "Vehicle Status"
-        }
-
-        this.loadMunicipals()
-        this.loadBarangays()
+        this.plate_number = this.vehicle.plate_number
+        this.form.vehicle_id = this.vehicle.id 
+            if(this.vehicle.vehicle_status)
+            {
+                this.form.id = this.vehicle.vehicle_status.id
+                this.form.condition = this.vehicle.vehicle_status.condition
+            }
+         
+            
     },
-
     methods: {
         submit() {
 
-            if (this.editData !== undefined) {
+
+            if (!!this.vehicle.vehicle_status) {
                 this.form.patch("/vehicle_status/" + this.form.id, this.form);
             } 
             else {
@@ -89,19 +93,34 @@ export default {
 
         },
 
-        loadMunicipals() { 
-            axios.post('/municipalities').then((response) => {
-                this.municipals = response.data
-                
-            })
+        Edit() {
+            this._disbled = false
         },
 
-        loadBarangays() {
-            axios.post('/barangays', {citymunCode:this.form.citymunCode}).then((response) => {
-                this.barangays = response.data
-                this.puroks = []
-            })
-        },
+        // loadMunicipals() { 
+        //     axios.post('/municipalities').then((response) => {
+        //         this.municipals = response.data
+                
+        //     })
+        // },
+
+        // loadBarangays() {
+        //     axios.post('/barangays', {citymunCode:this.form.citymunCode}).then((response) => {
+        //         this.barangays = response.data
+        //         this.puroks = []
+        //     })
+        // },
     },
+    computed:{
+        button_text(){
+            if(!!!this.vehicle.vehicle_status)
+            {
+                  return "Add"
+            }
+            else{
+                return "Edit"
+            }
+        }
+    }
 };
 </script>

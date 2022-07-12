@@ -15,68 +15,61 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    editData: Object
+    vehicle: Object
   },
   data: function data() {
     return {
+      _disbled: true,
+      plate_number: '',
+      button_label: '',
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
-        permission: "",
-        name: "",
-        citymunCode: "",
-        brgyCode: "",
-        purok_id: "",
-        email: "",
-        password: "",
-        id: null
+        id: '',
+        vehicle_id: '',
+        condition: ''
       }),
-      municipals: [],
-      barangays: [],
-      puroks: [],
-      testValue: "",
       pageTitle: "",
       loading: false
     };
   },
   mounted: function mounted() {
-    if (this.editData !== undefined) {
-      this.loading = true;
-      this.pageTitle = "Edit";
-      this.form.name = this.editData.name;
-      this.form.email = this.editData.email;
-      this.form.id = this.editData.id;
-      this.form.citymunCode = this.editData.citymunCode;
-      this.form.brgyCode = this.editData.brgyCode;
-    } else {
-      this.pageTitle = "Vehicle Status";
-    }
+    this.plate_number = this.vehicle.plate_number;
+    this.form.vehicle_id = this.vehicle.id;
 
-    this.loadMunicipals();
-    this.loadBarangays();
+    if (this.vehicle.vehicle_status) {
+      this.form.id = this.vehicle.vehicle_status.id;
+      this.form.condition = this.vehicle.vehicle_status.condition;
+    }
   },
   methods: {
     submit: function submit() {
-      if (this.editData !== undefined) {
+      if (!!this.vehicle.vehicle_status) {
         this.form.patch("/vehicle_status/" + this.form.id, this.form);
       } else {
         this.form.post("/vehicle_status", this.form);
       }
     },
-    loadMunicipals: function loadMunicipals() {
-      var _this = this;
+    Edit: function Edit() {
+      this._disbled = false;
+    } // loadMunicipals() { 
+    //     axios.post('/municipalities').then((response) => {
+    //         this.municipals = response.data
+    //     })
+    // },
+    // loadBarangays() {
+    //     axios.post('/barangays', {citymunCode:this.form.citymunCode}).then((response) => {
+    //         this.barangays = response.data
+    //         this.puroks = []
+    //     })
+    // },
 
-      axios.post('/municipalities').then(function (response) {
-        _this.municipals = response.data;
-      });
-    },
-    loadBarangays: function loadBarangays() {
-      var _this2 = this;
-
-      axios.post('/barangays', {
-        citymunCode: this.form.citymunCode
-      }).then(function (response) {
-        _this2.barangays = response.data;
-        _this2.puroks = [];
-      });
+  },
+  computed: {
+    button_text: function button_text() {
+      if (!!!this.vehicle.vehicle_status) {
+        return "Add";
+      } else {
+        return "Edit";
+      }
     }
   }
 });
@@ -129,26 +122,24 @@ var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_6 = {
-  key: 0,
-  "class": "fs-6 c-red-500"
-};
-
-var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
 }, "Condition", -1
 /* HOISTED */
 );
 
-var _hoisted_8 = {
-  key: 1,
-  "class": "fs-6 c-red-500"
-};
+var _hoisted_7 = ["disabled", "readonly"];
+var _hoisted_8 = ["disabled"];
 var _hoisted_9 = ["disabled"];
+
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/users"
@@ -160,43 +151,56 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.form.vehicle_id = $event;
+      return $data.plate_number = $event;
     }),
     "class": "form-control",
-    autocomplete: "chrome-off"
+    autocomplete: "chrome-off",
+    disabled: "",
+    readonly: ""
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.vehicle_id]]), $data.form.errors.vehicle_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.vehicle_id), 1
-  /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.plate_number]]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.condition = $event;
     }),
     "class": "form-control",
-    autocomplete: "chrome-off"
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.condition]]), $data.form.errors.condition ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.condition), 1
-  /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    autocomplete: "chrome-off",
+    disabled: $data._disbled,
+    readonly: $data._disbled
+  }, null, 8
+  /* PROPS */
+  , _hoisted_7), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.condition]]), $data._disbled ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
     type: "button",
     "class": "btn btn-primary mt-3",
     onClick: _cache[2] || (_cache[2] = function ($event) {
+      return $options.Edit();
+    }),
+    disabled: $data.form.processing
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.button_text), 9
+  /* TEXT, PROPS */
+  , _hoisted_8)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$data._disbled ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 1,
+    type: "button",
+    "class": "btn btn-primary mt-3",
+    onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
-  }, "Save changes", 8
+  }, "save", 8
   /* PROPS */
-  , _hoisted_9)], 32
+  , _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
   /* HYDRATE_EVENTS */
-  )])]);
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-8\">\r\n            <form @submit.prevent=\"submit()\">\r\n                <label for=\"\">Vehicle Id</label>\r\n                <input type=\"text\" v-model=\"form.vehicle_id\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.vehicle_id\">{{ form.errors.vehicle_id }}</div>\r\n\r\n                <label for=\"\">Condition</label>\r\n                <input type=\"text\" v-model=\"form.condition\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.condition\">{{ form.errors.condition }}</div>\r\n                <button type=\"button\" class=\"btn btn-primary mt-3\" @click=\"submit()\" :disabled=\"form.processing\">Save\r\n                    changes</button>\r\n            </form>\r\n\r\n\r\n        </div> ")]), _hoisted_10], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),

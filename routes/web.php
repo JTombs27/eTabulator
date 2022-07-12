@@ -8,6 +8,8 @@ use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Vehicle_statusController;
+use App\Http\Controllers\VehicleController;
+
 
 Auth::routes();
 
@@ -33,10 +35,11 @@ Route::middleware('auth')->group(function() {
         Route::post('/change-photo', [UserController::class, 'changePhoto']);
     });
 
+    //marvin
     Route::prefix('/vehicle_status')->group(function() {
-        Route::get('/', [Vehicle_statusController::class, 'index']);
         Route::post('/', [Vehicle_statusController::class, 'store']);
-      
+        Route::get('{id}', [Vehicle_statusController::class, 'index']);
+        Route::patch('/{id}', [Vehicle_statusController::class, 'update']);
     });
     
     
@@ -57,5 +60,14 @@ Route::middleware('auth')->group(function() {
 
     Route::post('get-all-permissions', [PermissionController::class, 'getAllPermissions']);
     Route::post('update-user-permissions', [PermissionController::class, 'updateUserPermissions']);
+
+    //Vehicles
+    Route::prefix('/vehicles')->group(function() {
+        Route::get('/', [VehicleController::class, 'index']);
+        Route::get('/create', [VehicleController::class, 'create']);
+        Route::post('/', [VehicleController::class, 'store']);
+        Route::get('/{id}/edit', [VehicleController::class, 'edit']);
+    });
+    Route::get('raymart', 'Vehicle_statusController@raymart');
     
 });
