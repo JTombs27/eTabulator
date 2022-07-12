@@ -31,6 +31,8 @@ __webpack_require__.r(__webpack_exports__);
       confirm: false,
       filter: false,
       showModal: false,
+      isEdit: false,
+      projectId: "",
       description: ""
     };
   },

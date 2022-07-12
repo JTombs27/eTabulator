@@ -90,6 +90,8 @@ export default {
             confirm: false,
             filter: false,
             showModal:false,
+            isEdit:false,
+            projectId:"",
             description:""
         };
     },
@@ -124,7 +126,7 @@ export default {
         }
         ,
          closeModal() {
-             $("#modal").hide();
+            $("#modal").hide();
             $('body').removeClass('modal-open');
             $('body').css("overflow","scroll");
             $('.modal-backdrop').remove();
