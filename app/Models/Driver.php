@@ -5,15 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Vehicle extends Model
+class Driver extends Model
 {
     use HasFactory;
 
-    protected $table = "vehicles";
+    protected $table = "driver_vehicles";
     protected $guarded = [];
 
-    public function driver()
+    public function vehicle()
     {
-        return $this->hasMany(Driver::class, 'drivers_id', 'id');
+        return $this->belongsTo(Vehicle::class, 'vehicles_id', 'id');
     }
 }

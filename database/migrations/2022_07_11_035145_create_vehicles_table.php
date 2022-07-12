@@ -19,7 +19,7 @@ class CreateVehiclesTable extends Migration
             $table->string('vehicle_type', 20)->nullable();
             $table->date('date_acquired')->nullable();
             $table->double('acquisition_cost', 8, 2)->nullable();
-            $table->string('description', 45)->nullable();
+            $table->longtext('description')->nullable();
             $table->timestamps();
         });
     }
