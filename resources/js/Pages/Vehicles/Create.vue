@@ -20,23 +20,23 @@
                                     <div class="col">
                                         <div class="col">
                                             <label>Plate Number</label>
-                                            <input type="text" v-model="form.plate_number" class="form-control" autocomplete="chrome-off" placeholder="platenumber">
+                                            <input type="text" v-model="form.PLATENO" class="form-control" autocomplete="chrome-off" placeholder="platenumber">
                                         </div>
                                         <div class="col">
                                             <label>Vehicle Type</label>
-                                            <input type="text" v-model="form.vehicle_type" class="form-control" autocomplete="chrome-off" placeholder="vehicle type">
+                                            <input type="text" v-model="form.TYPECODE" class="form-control" autocomplete="chrome-off" placeholder="vehicle type">
                                         </div>
                                         <div class="col">
                                             <label>Date Acquired</label>
-                                            <input type="date" v-model="form.date_acquired" class="form-control" autocomplete="chrome-off" placeholder="date acquired">
+                                            <input type="date" v-model="form.FDATEACQ" class="form-control" autocomplete="chrome-off" placeholder="date acquired">
                                         </div>
                                         <div class="col">
                                             <label>Acquisition Cost</label>
-                                            <input type="text" v-model="form.acquisition_cost" class="form-control" autocomplete="chrome-off" placeholder="acquisition">
+                                            <input type="text" v-model="form.FACQCOST" class="form-control" autocomplete="chrome-off" placeholder="acquisition">
                                         </div>
                                         <div class="col">
                                             <label>Description</label>
-                                            <input type="text" v-model="form.description" class="form-control" autocomplete="chrome-off" placeholder="description">
+                                            <input type="text" v-model="form.FDESC" class="form-control" autocomplete="chrome-off" placeholder="description">
                                         </div>
                                     </div>
                                 </div>
@@ -63,11 +63,11 @@ export default ({
     data() {
         return {
             form: useForm({
-                plate_number: "",
-                vehicle_type: "",
-                date_acquired: "",
-                acquisition_cost: "",
-                description: "",
+                PLATENO: "",
+                TYPECODE: "",
+                FDATEACQ: "",
+                FACQCOST: "",
+                FDESC: "",
             }),
         pageTitle: ""
         }
@@ -76,20 +76,21 @@ export default ({
     mounted() {
         if(!!this.editData){
             this.pageTitle = "Edit"
-            this.form.plate_number = this.editData.plate_number
-            this.form.vehicle_type = this.editData.vehicle_type
-            this.form.date_acquired = this.editData.date_acquired
-            this.form.acquisition_cost = this.editData.acquisition_cost
-            this.form.description = this.editData.description
-            this.form.id = this.editData.id
+            this.form.PLATENO = this.editData.PLATENO
+            this.form.TYPECODE = this.editData.TYPECODE
+            this.form.FDTAEACQ = this.editData.FDTAEACQ
+            this.form.FACQCOST = this.editData.FACQCOST
+            this.form.FDESC = this.editData.FDESC
+            this.form.id = this.editData.idFACQCOST
+        }else{
+            this.pageTitle = "Create"
         }
-        this.pageTitle = "Create"
     },
 
     methods: {
         submit() {
             if(!!this.editData){
-                this.form.patch("/vehicles" + this.form.id, this.form);
+                this.form.patch("/vehicles/" + this.form.id, this.form);
             }else{
                 this.form.post("/vehicles", this.form);
             }
