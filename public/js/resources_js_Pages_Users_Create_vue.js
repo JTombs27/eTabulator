@@ -69,15 +69,13 @@ __webpack_require__.r(__webpack_exports__);
           params.page = params.page || 1;
           return {
             results: $.map(data, function (obj) {
-              if (obj.gender == 'F') {
-                return {
-                  id: obj.employee_name,
-                  text: obj.employee_name,
-                  cats: obj.empl_id,
-                  data: obj.empl_photo_img.data,
-                  position: obj.position_long_title
-                };
-              }
+              return {
+                id: obj.employee_name,
+                text: obj.employee_name,
+                cats: obj.empl_id,
+                data: obj.empl_photo_img.data,
+                position: obj.position_long_title
+              };
             })
           };
         },
