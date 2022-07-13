@@ -60,4 +60,12 @@ class VehicleController extends Controller
 
         return redirect('/vehicles')->with('message', 'Deleted Susccessfuly');
     }
+
+    public function getVehicles()
+    {
+        return $this->model->get()->map(fn($item) => [
+            'id' => $item->id,
+            'text' => $item->PLATENO
+        ]);
+    }
 }

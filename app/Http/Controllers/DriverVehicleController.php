@@ -8,15 +8,21 @@ use App\Models\Vehicle;
 
 class DriverVehicleController extends Controller
 {
-    public function __construct(Driver $model, Vehicle $vehicles)
+    public function __construct(Driver $model)
     {
         $this->model = $model;
-        $this->vehicle = $vehicles;
     }
 
     public function index()
     {
-        return inertia('Drivers/Index');
+        return inertia('Drivers/Index', [
+            'driver_vehicles' => $this->model->with([
+                'vehicle'
+            ])
+
+            ->simplePaginate(10)
+            ->withQueryString()
+        ]);
     }
 
     public function create()
@@ -31,11 +37,4 @@ class DriverVehicleController extends Controller
         return redirect('/drivers')->with('message', 'Added Successfully');
     }
 
-    public function getVehicles()
-    {
-        return $this->vehicle->get()->map(fn($item) => [
-            'id' => $item->id,
-            'text' => $item->PLATENO
-        ]);
-    }
 }
