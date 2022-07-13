@@ -10,6 +10,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Vehicle_statusController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
+use App\Http\Controllers\TravelController;
 
 
 
@@ -77,6 +78,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [DriverVehicleController::class, 'index']);
         Route::get('/create', [DriverVehicleController::class, 'create']);
     });
-    Route::get('raymart', 'Vehicle_statusController@raymart');
+    
+    Route::prefix('travels')->group(function() {
+        Route::get('/', [TravelController::class, 'index']);
+    });
     
 });
