@@ -1400,6 +1400,14 @@ var map = {
 		"./resources/js/Pages/Posts/Index.vue",
 		"resources_js_Pages_Posts_Index_vue"
 	],
+	"./Travels/Create": [
+		"./resources/js/Pages/Travels/Create.vue",
+		"resources_js_Pages_Travels_Create_vue"
+	],
+	"./Travels/Create.vue": [
+		"./resources/js/Pages/Travels/Create.vue",
+		"resources_js_Pages_Travels_Create_vue"
+	],
 	"./Travels/Index": [
 		"./resources/js/Pages/Travels/Index.vue",
 		"resources_js_Pages_Travels_Index_vue"

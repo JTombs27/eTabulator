@@ -17,4 +17,9 @@ class TravelController extends Controller
     {
         return inertia('Travels/Index');
     }
+
+    public function create()
+    {
+        return inertia('Travels/Create');
+    }
 }

@@ -81,6 +81,7 @@ Route::middleware('auth')->group(function() {
     
     Route::prefix('travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
+        Route::get('create', [TravelController::class, 'create']);
     });
     
 });
