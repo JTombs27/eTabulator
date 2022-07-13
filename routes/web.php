@@ -74,9 +74,12 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [VehicleController::class, 'destroy']);
     });
 
+    // Driver Vehicles
     Route::prefix('/drivers')->group(function() {
         Route::get('/', [DriverVehicleController::class, 'index']);
         Route::get('/create', [DriverVehicleController::class, 'create']);
+        Route::post('/', [DriverVehicleController::class, 'store']);
+        Route::post('/getVehicles', [DriverVehicleController::class, 'getVehicles']);
     });
     
     Route::prefix('travels')->group(function() {
