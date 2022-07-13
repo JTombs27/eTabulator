@@ -60,7 +60,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:users',
+            'username' => 'required',
             'email' => ['required', 'email'],
             'password' => 'required',
         ]);
