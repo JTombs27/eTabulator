@@ -10,7 +10,7 @@
                 <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
             </div>
             <div class="peer" >
-                <a class="btn btn-primary btn-sm" href="#" @click="createProject()">Add Project</a>
+                <a class="btn btn-primary btn-sm" href="#" @click="createProject()"><i class="fa fa-add"></i>Add Project</a>
                 <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
             </div>
         </div>
@@ -192,7 +192,7 @@ export default {
         },
         gotToProjectVehicle(projectId)
         {
-            this.$inertia.get("/projects-vehicle/" + projectId);
+            this.$inertia.get("/projects-vehicle/" + projectId+"/vehicles");
         }
         ,
          closeModal() {

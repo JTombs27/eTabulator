@@ -4,23 +4,29 @@
         
     </head>
    <div class="peers fxw-nw jc-sb ai-c">
-        <h3>PROJECTS</h3>
+        <h1 style="font-size:18px !important;">PROJECT VEHICLES </h1>
         <div class="peers">
             <div class="peer mR-10">
                 <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
             </div>
             <div class="peer" >
-                <a class="btn btn-primary btn-sm" href="#" @click="createProject()">Add Project</a>
+                <a class="btn btn-primary btn-sm" href="#" @click="createProject()">Add Vehicle</a>
                 <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
             </div>
         </div>
+    </div>
+    <div class="col-12">
+        <div class="bgc-white p-20 bd">  <b >PROJECT DESCRIPTION: </b> {{ project.description }}</div>
     </div>
     <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th style="width:90%">Project Description</th>
+                            <th style="width:15%">PLATE NUMBER</th>
+                            <th style="width:55%">PURPOSE</th>
+                            <th style="width:10%">FROM</th>
+                            <th style="width:10%">TO</th>
                             <th style="text-align: center;width:10%">Action</th>
                         </tr>
                     </thead>
@@ -48,6 +54,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="projectVehicles.data != null"><td class="text-center" colspan="5">No Data Found</td></tr>
                     </tbody>
                 </table>
                 <div class="row justify-content-center">
@@ -60,18 +67,6 @@
             </div>
         </div>
 
-    <Modal 
-        v-if="showModal" 
-        :modalTitle="'Projects'" 
-        @closeModal="closeModal"
-        @saveModal="insertProject"
-    >
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Project Description</label>
-            <input type="text" class="form-control" id="description" v-model="description">
-            <div id="emailHelp" class="form-text text-danger">{{saveMessage}}</div>
-        </div>
-    </Modal>
 </template>
 <script>
 import Filtering from "@/Shared/Filter";
@@ -83,17 +78,13 @@ export default {
         projectVehicles: Object,
         filters: Object,
         can: Object,
+        project:Object
     },
     data() {
         return {
             search: this.$props.filters.search,
             confirm: false,
-            filter: false,
-            showModal:false,
-            isEdit:false,
-            projectId:"",
-            description:"",
-            saveMessage:""
+            filter: false
         };
     }, 
     //watch: {
@@ -111,10 +102,7 @@ export default {
     //},
     methods:{
         createProject(){
-            this.isEdit      = false;
-            this.showModal   = true;
-            this.description = "";
-            this.saveMessage = "";
+            this.$inertia.get("/projects-vehicle/" + this.project.id+"/create");
         },
     //deleteProject(id) 
     //{
