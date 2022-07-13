@@ -9,6 +9,50 @@
                 </svg>
             </Link>
         </div>
+
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <form @submit.prevent="">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="col">
+                                            <label for="">Vehicle Name</label>
+                                            <Select2 v-model="vehicles_id" :options="vehicles" />
+                                        </div>
+
+                                        <div class="col">
+                                            <label for="">Drivers Name</label>
+                                            <Select2 v-model="drivers_id" :options="drivers" />
+                                        </div>
+
+                                        <div class="col">
+                                            <label for="">Date From</label>
+                                            <input type="date" class="form-control" autocomplete="chrome-off" />
+                                        </div>
+
+                                        <div class="col">
+                                            <label for="">Date To</label>
+                                            <input type="date" class="form-control" autocomplete="chrome-off" />
+                                        </div>
+
+                                        <div class="col">
+                                            <label for="">Office Name</label>
+                                            <Select2 v-model="office_id" :options="office" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer p-1">
+                                <button type="button" class="btn btn-primary mt-3" @click="submit()">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -17,8 +61,16 @@ import { useForm} from "@inertiajs/inertia-vue3"
 export default {
     data() {
         return {
+            vehicles: [],
+            vehicles_id: "",
+            office: "",
+            office_id: "",
             form: useForm({
-
+                vehicles_id: "",
+                drivers_id: "",
+                date_from: "",
+                date_to: "",
+                office_id: ""
             }),
             pageTitle: ""
         }
