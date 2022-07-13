@@ -67,7 +67,7 @@ __webpack_require__.r(__webpack_exports__);
     getVehicles: function getVehicles() {
       var _this = this;
 
-      axios.post('/drivers/getVehicles').then(function (response) {
+      axios.post('/vehicles/getVehicles').then(function (response) {
         _this.vehicles = response.data;
       });
     },

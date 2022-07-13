@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::delete('/{id}', [VehicleController::class, 'destroy']);
+        Route::post('/getVehicles', [VehicleController::class, 'getVehicles']);
     });
 
     // Driver Vehicles
@@ -79,7 +80,6 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [DriverVehicleController::class, 'index']);
         Route::get('/create', [DriverVehicleController::class, 'create']);
         Route::post('/', [DriverVehicleController::class, 'store']);
-        Route::post('/getVehicles', [DriverVehicleController::class, 'getVehicles']);
     });
     
     Route::prefix('travels')->group(function() {

@@ -109,7 +109,7 @@ export default {
 
     methods: {
       getVehicles(){
-        axios.post('/drivers/getVehicles').then( response => {
+        axios.post('/vehicles/getVehicles').then( response => {
             this.vehicles = response.data
         })
       },
