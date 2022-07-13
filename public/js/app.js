@@ -1328,180 +1328,232 @@ __webpack_require__.r(__webpack_exports__);
 var map = {
 	"./Charts/LineChart": [
 		"./resources/js/Pages/Charts/LineChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_LineChart_vue"
 	],
 	"./Charts/LineChart.vue": [
 		"./resources/js/Pages/Charts/LineChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_LineChart_vue"
 	],
 	"./Charts/PieChart": [
 		"./resources/js/Pages/Charts/PieChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_PieChart_vue"
 	],
 	"./Charts/PieChart.vue": [
 		"./resources/js/Pages/Charts/PieChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_PieChart_vue"
 	],
 	"./Charts/SomeChart": [
 		"./resources/js/Pages/Charts/SomeChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_SomeChart_vue"
 	],
 	"./Charts/SomeChart.vue": [
 		"./resources/js/Pages/Charts/SomeChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_SomeChart_vue"
 	],
 	"./Charts/TotalUsers": [
 		"./resources/js/Pages/Charts/TotalUsers.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_TotalUsers_vue"
 	],
 	"./Charts/TotalUsers.vue": [
 		"./resources/js/Pages/Charts/TotalUsers.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_TotalUsers_vue"
 	],
 	"./Drivers/Create": [
 		"./resources/js/Pages/Drivers/Create.vue",
+		9,
 		"resources_js_Pages_Drivers_Create_vue"
 	],
 	"./Drivers/Create.vue": [
 		"./resources/js/Pages/Drivers/Create.vue",
+		9,
 		"resources_js_Pages_Drivers_Create_vue"
 	],
 	"./Drivers/Index": [
 		"./resources/js/Pages/Drivers/Index.vue",
+		9,
 		"resources_js_Pages_Drivers_Index_vue"
 	],
 	"./Drivers/Index.vue": [
 		"./resources/js/Pages/Drivers/Index.vue",
+		9,
 		"resources_js_Pages_Drivers_Index_vue"
 	],
 	"./Home": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
 	"./Home.vue": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
 	"./Posts/Index": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
 	],
 	"./Posts/Index.vue": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
+	],
+	"./Travels/AjaxScript": [
+		"./resources/js/Pages/Travels/AjaxScript.js",
+		7,
+		"resources_js_Pages_Travels_AjaxScript_js"
+	],
+	"./Travels/AjaxScript.js": [
+		"./resources/js/Pages/Travels/AjaxScript.js",
+		7,
+		"resources_js_Pages_Travels_AjaxScript_js"
 	],
 	"./Travels/Create": [
 		"./resources/js/Pages/Travels/Create.vue",
+		9,
 		"resources_js_Pages_Travels_Create_vue"
 	],
 	"./Travels/Create.vue": [
 		"./resources/js/Pages/Travels/Create.vue",
+		9,
 		"resources_js_Pages_Travels_Create_vue"
 	],
 	"./Travels/Index": [
 		"./resources/js/Pages/Travels/Index.vue",
+		9,
 		"resources_js_Pages_Travels_Index_vue"
 	],
 	"./Travels/Index.vue": [
 		"./resources/js/Pages/Travels/Index.vue",
+		9,
 		"resources_js_Pages_Travels_Index_vue"
 	],
 	"./Users/ChangePassword": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/ChangePassword.vue": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/Create": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Create.vue": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Index": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Index.vue": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Settings": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
 	"./Users/Settings.vue": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
 	"./Vehicles": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
 	],
 	"./Vehicles/": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
 	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
 	"./Vehicles/Create.vue": [
 		"./resources/js/Pages/Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
 	"./Vehicles/index": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
 	],
 	"./Vehicles/index.vue": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
 	],
 	"./vehicle_status": [
 		"./resources/js/Pages/vehicle_status/index.vue",
+		9,
 		"resources_js_Pages_vehicle_status_index_vue"
 	],
 	"./vehicle_status/": [
 		"./resources/js/Pages/vehicle_status/index.vue",
+		9,
 		"resources_js_Pages_vehicle_status_index_vue"
 	],
 	"./vehicle_status/index": [
 		"./resources/js/Pages/vehicle_status/index.vue",
+		9,
 		"resources_js_Pages_vehicle_status_index_vue"
 	],
 	"./vehicle_status/index.vue": [
 		"./resources/js/Pages/vehicle_status/index.vue",
+		9,
 		"resources_js_Pages_vehicle_status_index_vue"
 	],
 	"./vehicle_status/raymart": [
 		"./resources/js/Pages/vehicle_status/raymart.vue",
+		9,
 		"resources_js_Pages_vehicle_status_raymart_vue"
 	],
 	"./vehicle_status/raymart.vue": [
 		"./resources/js/Pages/vehicle_status/raymart.vue",
+		9,
 		"resources_js_Pages_vehicle_status_raymart_vue"
 	],
 	"./vehicle_status/status": [
 		"./resources/js/Pages/vehicle_status/status.vue",
+		9,
 		"resources_js_Pages_vehicle_status_status_vue"
 	],
 	"./vehicle_status/status.vue": [
 		"./resources/js/Pages/vehicle_status/status.vue",
+		9,
 		"resources_js_Pages_vehicle_status_status_vue"
 	]
 };
@@ -1515,8 +1567,8 @@ function webpackAsyncContext(req) {
 	}
 
 	var ids = map[req], id = ids[0];
-	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(() => {
-		return __webpack_require__(id);
+	return Promise.all(ids.slice(2).map(__webpack_require__.e)).then(() => {
+		return __webpack_require__.t(id, ids[1] | 16)
 	});
 }
 webpackAsyncContext.keys = () => (Object.keys(map));

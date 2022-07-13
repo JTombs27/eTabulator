@@ -1,7 +1,7 @@
 <template>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} users</h3>
+            <h3>{{ pageTitle }} Travel</h3>
             <Link href="/users">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -14,7 +14,8 @@
         </div>
         <div class="col-md-8">
             <form @submit.prevent="submit()">
-                <Select2/>
+                <label for="">Vehicle Name</label>
+                <Select2 v-model="vehicles_id" :options="vehicles" />
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
             </form>
@@ -26,12 +27,30 @@
 </template>
 
 <script>
+import { useForm } from '@inertiajs/inertia-vue3';
+
 export default {
 
+    data() {
+        return{
+            vehicles: [],
+            vehicles_id:null,
+            form: useForm({
+
+            }),
+            pageTitle:"Create",
+        }
+    },
+
+    mounted() {
+        this.getVehicles();
+    },
 
     methods:{
-        getVehicles() {
-            
+        getVehicles(){
+            axios.post('/drivers/getVehicles').then( response => {
+                this.vehicles = response.data
+            })
         },
 
         submit() {
