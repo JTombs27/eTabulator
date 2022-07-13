@@ -23,14 +23,15 @@ __webpack_require__.r(__webpack_exports__);
         vehicles_id: "",
         drivers_id: "",
         date_from: "",
-        date_to: ""
+        date_to: "",
+        department_code: ""
       }),
       pageTitle: ""
     };
   },
   mounted: function mounted() {
     this.pageTitle = "Create";
-    this.getVehicle();
+    this.getVehicles();
     $("#emp_name").select2({
       ajax: {
         url: "http://192.168.9.101:91//api/PGDDO_Drivers",
@@ -50,7 +51,8 @@ __webpack_require__.r(__webpack_exports__);
                 text: obj.employee_name,
                 cats: obj.empl_id,
                 data: obj.empl_photo_img.data,
-                position: obj.position_long_title
+                position: obj.position_long_title,
+                department: obj.department_code
               };
             })
           };
@@ -62,12 +64,18 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
-    getVehicle: function getVehicle() {
+    getVehicles: function getVehicles() {
       var _this = this;
 
-      axios.post('/drivers/getVehicle').then(function (response) {
+      axios.post('/drivers/getVehicles').then(function (response) {
         _this.vehicles = response.data;
       });
+    },
+    fetch: function fetch(e) {
+      this.form.department_code = e.department;
+    },
+    submit: function submit() {
+      this.form.post("/drivers", this.form);
     }
   }
 });
@@ -191,7 +199,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[5] || (_cache[5] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"]))
+    onSubmit: _cache[6] || (_cache[6] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [_hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
     modelValue: $data.form.vehicles_id,
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
@@ -207,12 +215,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.drivers_id = $event;
     }),
-    id: "emp_name"
+    id: "emp_name",
+    onSelect: _cache[2] || (_cache[2] = function ($event) {
+      return $options.fetch($event);
+    })
   }, null, 8
   /* PROPS */
   , ["modelValue"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [_hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
-    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
+    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
       return $data.form.date_from = $event;
     }),
     "class": "form-control",
@@ -221,7 +232,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.date_from]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
-    "onUpdate:modelValue": _cache[3] || (_cache[3] = function ($event) {
+    "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
       return $data.form.date_to = $event;
     }),
     "class": "form-control",
@@ -231,8 +242,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.date_to]])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
-    onClick: _cache[4] || (_cache[4] = function ($event) {
-      return _ctx.submit();
+    onClick: _cache[5] || (_cache[5] = function ($event) {
+      return $options.submit();
     })
   }, "Save")])], 32
   /* HYDRATE_EVENTS */

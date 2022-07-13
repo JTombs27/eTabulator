@@ -20,13 +20,13 @@
                                     <div class="col">
                                         <div class="col">
                                             <label for="">Vehicle Name</label>
-                                            <Select2 v-model="form.vehicles_id" :options="vehicles"/>
+                                            <Select2 v-model="form.vehicles_id" :options="vehicles" />
                                                 <h3>{{vehicles.PLATENO}}</h3>
                                         </div>
 
                                         <div class="col">
                                             <label for="">Drivers Name</label>
-                                            <Select2 v-model="form.drivers_id" id="emp_name" />
+                                            <Select2 v-model="form.drivers_id" id="emp_name" @select="fetch($event)" />
                                         </div>
 
                                         <div class="col">
@@ -66,6 +66,7 @@ export default {
                 drivers_id: "",
                 date_from: "",
                 date_to: "",
+                department_code:"",
             }),
             pageTitle: ""
         }
@@ -73,7 +74,7 @@ export default {
 
     mounted() {
         this.pageTitle = "Create"
-        this.getVehicle()
+        this.getVehicles()
 
         $("#emp_name").select2({
             ajax : {
@@ -94,9 +95,9 @@ export default {
                                 cats:obj.empl_id, 
                                 data:obj.empl_photo_img.data,
                                 position:obj.position_long_title,
-
+                                department:obj.department_code,
                             }
-                        })
+                        }),
                     };
                 },
                 cache: true
@@ -107,10 +108,18 @@ export default {
     },
 
     methods: {
-      getVehicle(){
-        axios.post('/drivers/getVehicle').then( response => {
+      getVehicles(){
+        axios.post('/drivers/getVehicles').then( response => {
             this.vehicles = response.data
         })
+      },
+
+      fetch(e){
+        this.form.department_code = e.department;
+      },
+
+      submit(){
+        this.form.post("/drivers", this.form);
       }
     }
 }

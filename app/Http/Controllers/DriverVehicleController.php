@@ -16,11 +16,7 @@ class DriverVehicleController extends Controller
 
     public function index()
     {
-        return inertia('Drivers/Index', [
-            'driver_vehicles' => $this->model
-            ->with(['vehicles'
-            ])
-        ]);
+        return inertia('Drivers/Index');
     }
 
     public function create()
@@ -28,8 +24,18 @@ class DriverVehicleController extends Controller
         return inertia("Drivers/Create");
     }
 
+    public function store(Request $request)
+    {
+        $this->model->create($request->all());
+
+        return redirect('/drivers')->with('message', 'Added Successfully');
+    }
+
     public function getVehicles()
     {
-        return $this->vehicle->get();
+        return $this->vehicle->get()->map(fn($item) => [
+            'id' => $item->id,
+            'text' => $item->PLATENO
+        ]);
     }
 }
