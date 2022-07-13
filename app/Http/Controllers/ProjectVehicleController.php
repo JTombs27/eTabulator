@@ -19,7 +19,7 @@ class ProjectVehicleController extends Controller
 
     public function index(Request $request,$id)
     {
-        return inertia('Project_Vehicles/Index'
+        return inertia('ProjectVehicles/Index'
                     ,[
                     'projectVehicles' => $this->model
                     ->with("Vehicles")
@@ -40,7 +40,7 @@ class ProjectVehicleController extends Controller
 
     public function create(Request $request,$id)
     {
-        return inertia('Project_Vehicles/Create'
+        return inertia('ProjectVehicles/Create'
                     ,[
                         "project"   => Project::where('id',$id)->select('id','description')->first(),
                         "can"       => [

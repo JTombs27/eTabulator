@@ -117,6 +117,10 @@ export default {
                 this.vehicles = response.data
             })
         },
+        backToMain()
+        {
+             this.$inertia.get("/projects-vehicle/" + this.project.id+"/vehicles");
+        }
     },
 };
 </script>

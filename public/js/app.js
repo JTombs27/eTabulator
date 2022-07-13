@@ -1366,21 +1366,21 @@ var map = {
 		"./resources/js/Pages/Posts/Index.vue",
 		"resources_js_Pages_Posts_Index_vue"
 	],
-	"./Project_Vehicles/Create": [
-		"./resources/js/Pages/Project_Vehicles/Create.vue",
-		"resources_js_Pages_Project_Vehicles_Create_vue"
+	"./ProjectVehicles/Create": [
+		"./resources/js/Pages/ProjectVehicles/Create.vue",
+		"resources_js_Pages_ProjectVehicles_Create_vue"
 	],
-	"./Project_Vehicles/Create.vue": [
-		"./resources/js/Pages/Project_Vehicles/Create.vue",
-		"resources_js_Pages_Project_Vehicles_Create_vue"
+	"./ProjectVehicles/Create.vue": [
+		"./resources/js/Pages/ProjectVehicles/Create.vue",
+		"resources_js_Pages_ProjectVehicles_Create_vue"
 	],
-	"./Project_Vehicles/Index": [
-		"./resources/js/Pages/Project_Vehicles/Index.vue",
-		"resources_js_Pages_Project_Vehicles_Index_vue"
+	"./ProjectVehicles/Index": [
+		"./resources/js/Pages/ProjectVehicles/Index.vue",
+		"resources_js_Pages_ProjectVehicles_Index_vue"
 	],
-	"./Project_Vehicles/Index.vue": [
-		"./resources/js/Pages/Project_Vehicles/Index.vue",
-		"resources_js_Pages_Project_Vehicles_Index_vue"
+	"./ProjectVehicles/Index.vue": [
+		"./resources/js/Pages/ProjectVehicles/Index.vue",
+		"resources_js_Pages_ProjectVehicles_Index_vue"
 	],
 	"./Projects/Index": [
 		"./resources/js/Pages/Projects/Index.vue",
