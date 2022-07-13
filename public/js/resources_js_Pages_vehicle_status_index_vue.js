@@ -142,7 +142,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: "/users"
+    href: "/vehicles"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3];
@@ -198,7 +198,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-8\">\r\n            <form @submit.prevent=\"submit()\">\r\n                <label for=\"\">Vehicle Id</label>\r\n                <input type=\"text\" v-model=\"form.vehicle_id\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.vehicle_id\">{{ form.errors.vehicle_id }}</div>\r\n\r\n                <label for=\"\">Condition</label>\r\n                <input type=\"text\" v-model=\"form.condition\" class=\"form-control\" autocomplete=\"chrome-off\">\r\n                <div class=\"fs-6 c-red-500\" v-if=\"form.errors.condition\">{{ form.errors.condition }}</div>\r\n                <button type=\"button\" class=\"btn btn-primary mt-3\" @click=\"submit()\" :disabled=\"form.processing\">Save\r\n                    changes</button>\r\n            </form>\r\n\r\n\r\n        </div> ")]), _hoisted_10], 64
+  )])]), _hoisted_10], 64
   /* STABLE_FRAGMENT */
   );
 }
