@@ -42,6 +42,9 @@ class Vehicle_statusController extends Controller
 
     public function update(Request $request)
     {
+        $attributes = $request->validate([
+            'condition' => 'required',
+        ]);
        $status = $this->model->findOrFail($request->id);
        $status->update([
         'condition' => $request->condition
