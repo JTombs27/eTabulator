@@ -44,8 +44,8 @@
                     </div>
                     <div class="row">
                         <div class="col-12 text-right">
-                            <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
-                                changes
+                            <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
+                                {{pageTitle=="Add" ? "Save/Create":"Save Changes"}}
                             </button>
                         </div>
                     </div>
@@ -72,6 +72,7 @@ export default {
                 date_from: "",
                 date_to:"",
                 purpose:"",
+                project_id:"",
                 id: null
             }),
             vehicles:[],
@@ -101,16 +102,18 @@ export default {
     methods: {
         submit() {
 
-            if (this.editData !== undefined) {
+            if (this.editData !== undefined) 
+            {
                 this.form.patch("/users/" + this.form.id, this.form);
             } else {
-                this.form.post("/users", this.form);
+                this.form.project_id = this.project.id;
+                this.form.post("/projects-vehicle/"+this.project.id+"/store", this.form);
             }
 
         },
 
         loadVehicles() { 
-            axios.post('/municipalities').then((response) => {
+            axios.get('/projects-vehicle/vehicles').then((response) => {
                 this.vehicles = response.data
             })
         },

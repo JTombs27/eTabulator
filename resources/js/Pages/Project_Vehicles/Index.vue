@@ -1,7 +1,6 @@
 <template>
     <head >
         <title >Project Vehicles</title>
-        
     </head>
    <div class="peers fxw-nw jc-sb ai-c">
         <h1 style="font-size:18px !important;">PROJECT VEHICLES </h1>
@@ -12,12 +11,23 @@
             <div class="peer" >
                 <a class="btn btn-primary btn-sm" href="#" @click="createProject()">Add Vehicle</a>
                 <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                
             </div>
         </div>
     </div>
-    <div class="col-12">
-        <div class="bgc-white p-20 bd">  <b >PROJECT DESCRIPTION: </b> {{ project.description }}</div>
+    <div class="col-12 bgc-white p-20 bd">
+        <div class="row">
+                <div class="col-10">  <b >PROJECT DESCRIPTION: </b> {{ project.description }}</div>
+                <div class="col-2 text-right">
+                    <button class="btn btn-danger btn-sm mL-2 text-white pull-right" @click="goToProjects()"> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                                </svg>
+                            Back To Projects</button>
+                </div>
+        </div> 
     </div>
+   
     <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <table class="table table-hover">
@@ -31,18 +41,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <tr v-for="(project,index) in projectVehicles.data" :key="index">
-                                <td >{{project.description}}</td>
-                                <td >
+                            <tr v-for="(projectVehicle,index) in projectVehicles.data" :key="index">
+                                <td >{{projectVehicle.vehicles.PLATENO}}</td>
+                                <td >{{projectVehicle.purpose}}</td>
+                                <td >{{projectVehicle.date_from}}</td>
+                                <td >{{projectVehicle.date_to}}</td>
+                                <td class="text-center">
+                                    
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" title="Edit Project Description!" @click="editProjects(project.id)" class="btn btn-primary btn-sm c-white">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                 <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
-                                            </svg>
-                                        </button>
-                                        <button type="button" title="View Vehicle Equepments" @click="gotToProjectVehicle(project.id)" class="btn btn-success btn-sm c-white">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
-                                                <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
                                             </svg>
                                         </button>
                                         <button type="button" title="Delete Project" @click="deleteProject(project.id)"  class="btn btn-danger btn-sm c-white">
@@ -54,7 +63,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr v-if="projectVehicles.data != null"><td class="text-center" colspan="5">No Data Found</td></tr>
+                            <tr v-if="projectVehicles.data == null"><td class="text-center" colspan="5">No Data Found</td></tr>
                     </tbody>
                 </table>
                 <div class="row justify-content-center">
@@ -103,6 +112,9 @@ export default {
     methods:{
         createProject(){
             this.$inertia.get("/projects-vehicle/" + this.project.id+"/create");
+        },
+        goToProjects(){
+             this.$inertia.get("/projects");
         },
     //deleteProject(id) 
     //{

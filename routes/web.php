@@ -11,6 +11,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectVehicleController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
+use App\Http\Controllers\TravelController;
 
 
 
@@ -45,9 +46,12 @@ Route::middleware('auth')->group(function() {
         Route::post('/delete-project', [ProjectController::class, 'destroy']);
         Route::post('/update-project', [ProjectController::class, 'update']);
     });
+    //Project Vehicles
     Route::prefix('/projects-vehicle')->group(function() {
         Route::get('/{id}/vehicles', [ProjectVehicleController::class, 'index']);
         Route::get('/{id}/create', [ProjectVehicleController::class, 'create']);
+        Route::get('/vehicles', [ProjectVehicleController::class, 'getVehicles']);
+        Route::post('/{id}/store', [ProjectVehicleController::class, 'store']);
     });
     
     
@@ -77,11 +81,18 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::delete('/{id}', [VehicleController::class, 'destroy']);
+        Route::post('/getVehicles', [VehicleController::class, 'getVehicles']);
     });
 
+    // Driver Vehicles
     Route::prefix('/drivers')->group(function() {
         Route::get('/', [DriverVehicleController::class, 'index']);
         Route::get('/create', [DriverVehicleController::class, 'create']);
+        Route::post('/', [DriverVehicleController::class, 'store']);
+    });
+    
+    Route::prefix('travels')->group(function() {
+        Route::get('/', [TravelController::class, 'index']);
     });
     
 });

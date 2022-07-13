@@ -25,6 +25,7 @@ __webpack_require__.r(__webpack_exports__);
         date_from: "",
         date_to: "",
         purpose: "",
+        project_id: "",
         id: null
       }),
       vehicles: [],
@@ -52,13 +53,14 @@ __webpack_require__.r(__webpack_exports__);
       if (this.editData !== undefined) {
         this.form.patch("/users/" + this.form.id, this.form);
       } else {
-        this.form.post("/users", this.form);
+        this.form.project_id = this.project.id;
+        this.form.post("/projects-vehicle/" + this.project.id + "/store", this.form);
       }
     },
     loadVehicles: function loadVehicles() {
       var _this = this;
 
-      axios.post('/municipalities').then(function (response) {
+      axios.get('/projects-vehicle/vehicles').then(function (response) {
         _this.vehicles = response.data;
       });
     }
@@ -259,8 +261,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.submit();
     }),
     disabled: $data.form.processing
-  }, "Save changes ", 8
-  /* PROPS */
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle == "Add" ? "Save/Create" : "Save Changes"), 9
+  /* TEXT, PROPS */
   , _hoisted_24)])])], 32
   /* HYDRATE_EVENTS */
   )])])]);

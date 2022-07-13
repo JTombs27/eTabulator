@@ -7,6 +7,7 @@ use App\Models\ProjectVehicle;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Project;
+use App\Models\Vehicle;
 
 class ProjectVehicleController extends Controller
 {
@@ -21,6 +22,7 @@ class ProjectVehicleController extends Controller
         return inertia('Project_Vehicles/Index'
                     ,[
                     'projectVehicles' => $this->model
+                    ->with("Vehicles")
                     //->when($request->search, function ($query, $searchItem) {
                     //    $query->where('description', 'like', '%' . $searchItem . '%');
                     //})
@@ -47,5 +49,19 @@ class ProjectVehicleController extends Controller
                                         ]
                     ]
                 );
+    }
+
+    public function store(Request $request,$id)
+    {
+        $this->model->create($request->all());
+        return redirect('/projects-vehicle/'.$id.'/vehicles')->with('message', 'Added Successfully');
+    }
+
+    public function getVehicles()
+    {
+        return Vehicle::get()->map(fn($item) => [
+            'id' => $item->id,
+            'text' => $item->PLATENO
+        ]);
     }
 }
