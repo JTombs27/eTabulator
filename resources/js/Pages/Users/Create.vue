@@ -36,10 +36,13 @@
 
                 <label for="">Email</label>
                 <input type="text" v-model="form.email" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.email">{{ form.errors.email }}</div>
                 <label for="">Username</label>
                 <input type="text" v-model="form.username" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.username">{{ form.errors.username }}</div>
                 <label for="">Password</label>
                 <input type="password" v-model="form.password" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.password">{{ form.errors.password }}</div>
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
