@@ -20,27 +20,23 @@
                                     <div class="col">
                                         <div class="col">
                                             <label for="">Vehicle Name</label>
-                                            <Select2 v-model="vehicles_id" :options="vehicles" />
+                                            <Select2 v-model="form.vehicles_id" :options="vehicles"/>
+                                                <h3>{{vehicles.PLATENO}}</h3>
                                         </div>
 
                                         <div class="col">
                                             <label for="">Drivers Name</label>
-                                            <Select2 v-model="drivers_id" :options="drivers" />
+                                            <Select2 v-model="form.drivers_id" id="emp_name" />
                                         </div>
 
                                         <div class="col">
                                             <label for="">Date From</label>
-                                            <input type="date" class="form-control" autocomplete="chrome-off" />
+                                            <input type="date" v-model="form.date_from" class="form-control" autocomplete="chrome-off" />
                                         </div>
 
                                         <div class="col">
                                             <label for="">Date To</label>
-                                            <input type="date" class="form-control" autocomplete="chrome-off" />
-                                        </div>
-
-                                        <div class="col">
-                                            <label for="">Office Name</label>
-                                            <Select2 v-model="office_id" :options="office" />
+                                            <input type="date" v-model="form.date_to" class="form-control" autocomplete="chrome-off" />
                                         </div>
                                     </div>
                                 </div>
@@ -58,19 +54,18 @@
 
 <script>
 import { useForm} from "@inertiajs/inertia-vue3"
+
 export default {
+    name:"driversComponent",
     data() {
         return {
             vehicles: [],
             vehicles_id: "",
-            office: "",
-            office_id: "",
             form: useForm({
                 vehicles_id: "",
                 drivers_id: "",
                 date_from: "",
                 date_to: "",
-                office_id: ""
             }),
             pageTitle: ""
         }
@@ -78,6 +73,45 @@ export default {
 
     mounted() {
         this.pageTitle = "Create"
+        this.getVehicle()
+
+        $("#emp_name").select2({
+            ajax : {
+                url: "http://192.168.9.101:91//api/PGDDO_Drivers",
+                dataType:'json',
+                delay:700,
+                data: function(params) {
+                    return {filter: params.term};
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, function (obj) {
+                            return { 
+                                id: obj.empl_id, 
+                                text: obj.employee_name, 
+                                cats:obj.empl_id, 
+                                data:obj.empl_photo_img.data,
+                                position:obj.position_long_title,
+
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Search for a repository',
+            minimumInputLength: 3,
+        })
+    },
+
+    methods: {
+      getVehicle(){
+        axios.post('/drivers/getVehicle').then( response => {
+            this.vehicles = response.data
+        })
+      }
     }
 }
 </script>
