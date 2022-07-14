@@ -79,7 +79,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.department_code = e.department;
     },
     submit: function submit() {
-      this.form.post("/drivers" + this.Vdriver.id + "/store", this.form);
+      this.form.post("/drivers/" + this.Vdriver.id + "/store", this.form);
     }
   }
 });

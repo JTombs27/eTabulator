@@ -115,7 +115,7 @@ export default {
       },
 
       submit(){
-        this.form.post("/drivers"+this.Vdriver.id+"/store", this.form);
+        this.form.post("/drivers/"+this.Vdriver.id+"/store", this.form);
       }
     }
 }

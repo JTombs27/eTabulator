@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Driver;
+use App\Models\DriverVehicle;
 use App\Models\Vehicle;
 
 class DriverVehicleController extends Controller
 {
-    public function __construct(Driver $model)
+    public function __construct(DriverVehicle $model)
     {
         $this->model = $model;
     }
@@ -17,7 +18,9 @@ class DriverVehicleController extends Controller
     {
         return inertia('Drivers/Index', [
             'driver_vehicles' => $this->model->with([
-                'vehicle'
+                'vehicle',
+                'driver',
+                'office'
             ])
 
             ->simplePaginate(10)
