@@ -72,8 +72,6 @@
                     >
                 </li>
 
-<<<<<<< HEAD
-=======
                 <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/drivers"
                         ><span class="icon-holder"
@@ -87,7 +85,6 @@
                 </li> -->
 
                 <!-- <li class="nav-item">
->>>>>>> 79df047d5284a6f03cd839ea17904a7a48819e8f
                 <li class="nav-item">
                     <Link class="sidebar-link" href="/travels"
                         ><span class="icon-holder"
