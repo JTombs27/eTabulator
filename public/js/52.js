@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[52],{7052:(e,t,n)=>{n.r(t),n.d(t,{default:()=>c});var r=n(821);const s={name:"My component",props:{test:String}};const c=(0,n(3744).Z)(s,[["render",function(e,t,n,s,c,o){return(0,r.openBlock)(),(0,r.createElementBlock)("h1",null,"This is raymart "+(0,r.toDisplayString)(n.test),1)}]])}}]);

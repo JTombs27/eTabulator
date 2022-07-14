@@ -32,11 +32,13 @@
                                         <div class="col">
                                             <label for="">Date From</label>
                                             <input type="date" v-model="form.date_from" class="form-control" autocomplete="chrome-off" />
+                                            <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
                                         </div>
 
                                         <div class="col">
                                             <label for="">Date To</label>
                                             <input type="date" v-model="form.date_to" class="form-control" autocomplete="chrome-off" />
+                                            <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
                                         </div>
                                     </div>
                                 </div>

@@ -44,7 +44,7 @@ class TravelController extends Controller
                             ->first();
 
         if ($driverVehicle) {
-            $response = Http::get('http://192.168.9.101:91//api/PGDDO_Employees');
+            $response = Http::get("http://192.168.9.101:91//api/PGDDO_Employees?filter=$driverVehicle=");
         }
         return $driverVehicle;
     }

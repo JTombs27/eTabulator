@@ -1,5 +1,5 @@
 <template>
-    <div class="modal" tabindex="-1" id="modal">
+    <div class="modal" tabindex="-1" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -13,7 +13,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="closeModal">Close</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal"  @click="saveModal">Save changes</button>
+            <button type="button" class="btn btn-primary"   @click="saveModal">Save changes</button>
           </div>
         </div>
       </div>
@@ -34,6 +34,7 @@ export default {
             this.$emit('closeModal')
         },
         saveModal() {
+            
             this.$emit('saveModal')
         }
     }
