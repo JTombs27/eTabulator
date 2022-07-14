@@ -23,6 +23,7 @@ class DriverVehicleController extends Controller
                 'office'
             ])
 
+            ->latest()
             ->simplePaginate(10)
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
