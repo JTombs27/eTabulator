@@ -43,9 +43,9 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     submit: function submit() {
       if (!!this.vehicle.vehicle_status) {
-        this.form.patch("/vehicleStatus/" + this.form.id, this.form);
+        this.form.patch("/VehicleStatus/" + this.form.id, this.form);
       } else {
-        this.form.post("/vehicleStatus", this.form);
+        this.form.post("/VehicleStatus", this.form);
       }
     },
     Edit: function Edit() {
