@@ -11,7 +11,7 @@
                     <input type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-success btn-sm" href="/drivers/create">Add Drivers</Link>
+                    <Link class="btn btn-success btn-sm" @click="createDriver()">Add Drivers</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white">Filter</button>
                 </div>
             </div>
@@ -73,6 +73,13 @@ export default ({
         driver_vehicles: Object,
         Vdriver: Object
     },
+
+    methods: {
+        createDriver()
+        {
+            this.$inertia.get("/drivers/" + this.Vdriver.id+"/create");
+        }
+    }
 
 })
 </script>

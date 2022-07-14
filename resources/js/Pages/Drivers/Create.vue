@@ -9,9 +9,8 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="col">
-                                            <label for="">Vehicle Name</label>
-                                            <Select2 v-model="form.vehicles_id" :options="vehicles" />
-                                                <h3>{{vehicles.PLATENO}}</h3>
+                                            <label for="">Vehicle Plate No</label>
+                                            <input type="text" v-model="form.vehicles_id" class="form-control" autocomplete="chrome-off" disabled readonly>
                                         </div>
 
                                         <div class="col">
@@ -49,6 +48,9 @@ import { useForm} from "@inertiajs/inertia-vue3"
 
 export default {
     name:"driversComponent",
+    props:{
+        Vdriver: Object
+    },
     data() {
         return {
             vehicles: [],
@@ -65,6 +67,8 @@ export default {
     },
 
     mounted() {
+        this.form.vehicles_id = this.Vdriver.PLATENO
+       
         this.pageTitle = "Create"
         this.getVehicles()
 
@@ -111,7 +115,7 @@ export default {
       },
 
       submit(){
-        this.form.post("/drivers", this.form);
+        this.form.post("/drivers"+this.Vdriver.id+"/store", this.form);
       }
     }
 }

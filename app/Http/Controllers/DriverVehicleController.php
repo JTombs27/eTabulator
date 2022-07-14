@@ -8,13 +8,12 @@ use App\Models\Vehicle;
 
 class DriverVehicleController extends Controller
 {
-    public function __construct(Driver $model, Vehicle $vehicles)
+    public function __construct(Driver $model)
     {
         $this->model = $model;
-        $this->vehicle = $vehicles;
     }
 
-    public function index()
+    public function index(Request $request,$id)
     {
         return inertia('Drivers/Index', [
             'driver_vehicles' => $this->model->with([
@@ -22,16 +21,20 @@ class DriverVehicleController extends Controller
             ])
 
             ->simplePaginate(10)
-            ->withQueryString()
+            ->withQueryString(),
+            "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
         ]);
     }
 
-    public function create()
+    public function create(Request $request,$id)
     {
-        return inertia("Drivers/Create");
+        return inertia("Drivers/Create", [
+            "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
+        ]);
+       
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $id)
     {
         $attributes = $request->validate([
             'date_from' => 'required',
@@ -40,7 +43,7 @@ class DriverVehicleController extends Controller
         ]); 
         $this->model->create($request->all());
 
-        return redirect('/drivers')->with('message', 'Added Successfully');
+        return redirect('/drivers/'.$id.'/vehicles')->with('message', 'Added Successfully');
     }
 
 }
