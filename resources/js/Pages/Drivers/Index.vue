@@ -60,14 +60,19 @@
                 </div>
             </div>
     </div>
+
 </template>
 
 <script>
 import Pagination from "@/Shared/Pagination";
+
+
 export default ({
     components: { Pagination},
     props: {
-        driver_vehicles: Object
-    }
+        driver_vehicles: Object,
+        Vdriver: Object
+    },
+
 })
 </script>

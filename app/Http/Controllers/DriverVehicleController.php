@@ -8,9 +8,10 @@ use App\Models\Vehicle;
 
 class DriverVehicleController extends Controller
 {
-    public function __construct(Driver $model)
+    public function __construct(Driver $model, Vehicle $vehicles)
     {
         $this->model = $model;
+        $this->vehicle = $vehicles;
     }
 
     public function index()

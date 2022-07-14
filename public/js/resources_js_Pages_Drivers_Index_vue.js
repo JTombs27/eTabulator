@@ -18,7 +18,8 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    driver_vehicles: Object
+    driver_vehicles: Object,
+    Vdriver: Object
   }
 });
 

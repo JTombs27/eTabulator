@@ -25,13 +25,13 @@
                                         </div>
                                         <div class="col-mb-3">
                                             <label>Vehicle Type</label>
-                                            <select class="form-select md">
+                                            <select class="form-select md" v-model="form.TYPECODE">
                                                 <option disabled value="">Select Type</option>
                                                 <option>Motorcycle</option>
                                                 <option>Light Vehicle</option>
                                                 <option>Heavy Equipment</option>
                                             </select>
-                                            <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div>
+                                            <!-- <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div> -->
                                         </div>
                                         <div class="col">
                                             <label>Date Acquired</label>
@@ -87,7 +87,7 @@ export default ({
             this.pageTitle = "Edit Vehicles"
             this.form.PLATENO = this.editData.PLATENO
             this.form.TYPECODE = this.editData.TYPECODE
-            this.form.FDTAEACQ = this.editData.FDTAEACQ
+            this.form.FDATEACQ = this.editData.FDATEACQ
             this.form.FACQCOST = this.editData.FACQCOST
             this.form.FDESC = this.editData.FDESC
             this.form.id = this.editData.id
