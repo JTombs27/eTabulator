@@ -18,7 +18,9 @@ __webpack_require__.r(__webpack_exports__);
     return {
       vehicles: [],
       vehicles_id: null,
-      form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({}),
+      form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+        travel_date: null
+      }),
       pageTitle: "Create"
     };
   },
@@ -29,9 +31,15 @@ __webpack_require__.r(__webpack_exports__);
     getVehicles: function getVehicles() {
       var _this = this;
 
-      axios.post('/drivers/getVehicles').then(function (response) {
+      axios.post('/vehicles/getVehicles').then(function (response) {
         _this.vehicles = response.data;
       });
+    },
+    getVehicleDetails: function getVehicleDetails() {
+      axios.post('/travels/vehicle-details', {
+        travel_date: this.form.travel_date,
+        vehicles_id: this.vehicles_id
+      }).then(function (response) {});
     },
     submit: function submit() {}
   }
@@ -81,11 +89,17 @@ var _hoisted_4 = {
 
 var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
+}, "Travel Date", -1
+/* HOISTED */
+);
+
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": ""
 }, "Vehicle Name", -1
 /* HOISTED */
 );
 
-var _hoisted_6 = ["disabled"];
+var _hoisted_7 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -103,27 +117,37 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[2] || (_cache[2] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
-  }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
-    modelValue: $data.vehicles_id,
+  }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
+      return $data.form.travel_date = $event;
+    }),
+    type: "date",
+    "class": "form-control",
+    autocomplete: "chrome-off"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.travel_date]]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
+    modelValue: $data.vehicles_id,
+    "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.vehicles_id = $event;
     }),
-    options: $data.vehicles
+    options: $data.vehicles,
+    onSelect: $options.getVehicleDetails
   }, null, 8
   /* PROPS */
-  , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  , ["modelValue", "options", "onSelect"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
+    onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
   }, "Save changes", 8
   /* PROPS */
-  , _hoisted_6)], 32
+  , _hoisted_7)], 32
   /* HYDRATE_EVENTS */
   )])]);
 }

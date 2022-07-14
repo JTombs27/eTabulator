@@ -14,8 +14,10 @@
         </div>
         <div class="col-md-8">
             <form @submit.prevent="submit()">
+                <label for="">Travel Date</label>
+                <input v-model="form.travel_date" type="date" class="form-control" autocomplete="chrome-off"/>
                 <label for="">Vehicle Name</label>
-                <Select2 v-model="vehicles_id" :options="vehicles" />
+                <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails"/>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
             </form>
@@ -36,7 +38,7 @@ export default {
             vehicles: [],
             vehicles_id:null,
             form: useForm({
-
+                travel_date:null,
             }),
             pageTitle:"Create",
         }
@@ -48,9 +50,16 @@ export default {
 
     methods:{
         getVehicles(){
-            axios.post('/drivers/getVehicles').then( response => {
+            axios.post('/vehicles/getVehicles').then( response => {
                 this.vehicles = response.data
             })
+        },
+
+        getVehicleDetails() {
+            axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.vehicles_id})
+                .then((response) => {
+
+                })
         },
 
         submit() {
