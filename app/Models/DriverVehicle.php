@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class DriverVehicle extends Model
 {
     use HasFactory;
+    protected $table = "driver_vehicles";
+    protected $guarded = [];
 
     public function driver()
     {
