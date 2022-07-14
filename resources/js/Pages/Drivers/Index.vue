@@ -18,7 +18,7 @@
         </div>
             <div class="col-12">
                 <div class="bcg-white p-20 bd">
-                    <table class="table table-hover table-striped">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">Vehicle Plate Number</th>
@@ -35,7 +35,7 @@
                                 <td> </td>
                                 <td>{{driver.date_from}}</td>
                                 <td>{{driver.date_to}}</td>
-                                <td>{{driver.department_code}}</td>
+                                <td> </td>
                                 <td style="text-align: right">
                                     <div class="dropdown downstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
