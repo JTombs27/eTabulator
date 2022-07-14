@@ -133,6 +133,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      syncingEmployees: false,
+      syncingOffices: false
+    };
+  },
   mounted: function mounted() {
     $(function () {
       $(".sidebar .sidebar-menu li a").on("click", function () {
@@ -166,6 +172,26 @@ __webpack_require__.r(__webpack_exports__);
         e.preventDefault();
       });
     });
+  },
+  methods: {
+    syncEmployees: function syncEmployees() {
+      var _this = this;
+
+      this.syncingEmployees = true;
+      axios.post('/sync/employees').then(function (response) {
+        _this.syncingEmployees = false;
+        alert('Employees synced successfully');
+      });
+    },
+    syncOffices: function syncOffices() {
+      var _this2 = this;
+
+      this.syncingOffices = true;
+      axios.post('/sync/offices').then(function (response) {
+        _this2.syncingOffices = false;
+        alert('Offices synced successfully');
+      });
+    }
   }
 });
 
@@ -678,31 +704,47 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_19 = {
-  "class": "nav-item"
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\"><path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path><path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path></svg></span><span class=\"title\"> Sync Employees</span>", 2);
+
+var _hoisted_21 = [_hoisted_19];
+var _hoisted_22 = {
+  key: 1,
+  "class": "sidebar-link text-secondary",
+  disabled: ""
 };
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "icon-holder"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: "16",
-  height: "16",
-  fill: "currentColor",
-  "class": "bi bi-boxes",
-  viewBox: "0 0 16 16"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
-  d: "M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"
-})])], -1
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "spinner-border spinner-border-sm icon-holder",
+  role: "status",
+  "aria-hidden": "true"
+}, null, -1
 /* HOISTED */
 );
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "Projects", -1
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Syncing Employees... ");
+
+var _hoisted_25 = [_hoisted_23, _hoisted_24];
+
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\"><path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path><path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path></svg></span><span class=\"title\"> Sync Office</span>", 2);
+
+var _hoisted_28 = [_hoisted_26];
+var _hoisted_29 = {
+  key: 1,
+  "class": "sidebar-link text-secondary",
+  disabled: ""
+};
+
+var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+  "class": "spinner-border spinner-border-sm icon-holder",
+  role: "status",
+  "aria-hidden": "true"
+}, null, -1
 /* HOISTED */
 );
 
+var _hoisted_31 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Syncing Offices... ");
+
+var _hoisted_32 = [_hoisted_30, _hoisted_31];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -746,17 +788,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [!$data.syncingEmployees ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+    key: 0,
     "class": "sidebar-link",
-    href: "/projects"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_20, _hoisted_21];
-    }),
-    _: 1
-    /* STABLE */
-
-  })])])])]);
+    href: "javascript:void(0)",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.syncEmployees();
+    })
+  }, _hoisted_21)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.syncingEmployees ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_22, _hoisted_25)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [!$data.syncingOffices ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
+    key: 0,
+    "class": "sidebar-link",
+    href: "javascript:void(0)",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.syncOffices();
+    })
+  }, _hoisted_28)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.syncingOffices ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_29, _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])])]);
 }
 
 /***/ }),
@@ -1294,197 +1340,263 @@ __webpack_require__.r(__webpack_exports__);
 var map = {
 	"./Charts/LineChart": [
 		"./resources/js/Pages/Charts/LineChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_LineChart_vue"
 	],
 	"./Charts/LineChart.vue": [
 		"./resources/js/Pages/Charts/LineChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_LineChart_vue"
 	],
 	"./Charts/PieChart": [
 		"./resources/js/Pages/Charts/PieChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_PieChart_vue"
 	],
 	"./Charts/PieChart.vue": [
 		"./resources/js/Pages/Charts/PieChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_PieChart_vue"
 	],
 	"./Charts/SomeChart": [
 		"./resources/js/Pages/Charts/SomeChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_SomeChart_vue"
 	],
 	"./Charts/SomeChart.vue": [
 		"./resources/js/Pages/Charts/SomeChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_SomeChart_vue"
 	],
 	"./Charts/TotalUsers": [
 		"./resources/js/Pages/Charts/TotalUsers.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_TotalUsers_vue"
 	],
 	"./Charts/TotalUsers.vue": [
 		"./resources/js/Pages/Charts/TotalUsers.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_TotalUsers_vue"
 	],
 	"./Drivers/Create": [
 		"./resources/js/Pages/Drivers/Create.vue",
+		9,
 		"resources_js_Pages_Drivers_Create_vue"
 	],
 	"./Drivers/Create.vue": [
 		"./resources/js/Pages/Drivers/Create.vue",
+		9,
 		"resources_js_Pages_Drivers_Create_vue"
 	],
 	"./Drivers/Index": [
 		"./resources/js/Pages/Drivers/Index.vue",
+		9,
 		"resources_js_Pages_Drivers_Index_vue"
 	],
 	"./Drivers/Index.vue": [
 		"./resources/js/Pages/Drivers/Index.vue",
+		9,
 		"resources_js_Pages_Drivers_Index_vue"
 	],
 	"./Home": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
 	"./Home.vue": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
 	"./Posts/Index": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
 	],
 	"./Posts/Index.vue": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
 	],
 	"./ProjectVehicles/Create": [
 		"./resources/js/Pages/ProjectVehicles/Create.vue",
+		9,
 		"resources_js_Pages_ProjectVehicles_Create_vue"
 	],
 	"./ProjectVehicles/Create.vue": [
 		"./resources/js/Pages/ProjectVehicles/Create.vue",
+		9,
 		"resources_js_Pages_ProjectVehicles_Create_vue"
 	],
 	"./ProjectVehicles/Index": [
 		"./resources/js/Pages/ProjectVehicles/Index.vue",
+		9,
 		"resources_js_Pages_ProjectVehicles_Index_vue"
 	],
 	"./ProjectVehicles/Index.vue": [
 		"./resources/js/Pages/ProjectVehicles/Index.vue",
+		9,
 		"resources_js_Pages_ProjectVehicles_Index_vue"
 	],
 	"./Projects/Index": [
 		"./resources/js/Pages/Projects/Index.vue",
+		9,
 		"resources_js_Pages_Projects_Index_vue"
 	],
 	"./Projects/Index.vue": [
 		"./resources/js/Pages/Projects/Index.vue",
+		9,
 		"resources_js_Pages_Projects_Index_vue"
+	],
+	"./Travels/AjaxScript": [
+		"./resources/js/Pages/Travels/AjaxScript.js",
+		7,
+		"resources_js_Pages_Travels_AjaxScript_js"
+	],
+	"./Travels/AjaxScript.js": [
+		"./resources/js/Pages/Travels/AjaxScript.js",
+		7,
+		"resources_js_Pages_Travels_AjaxScript_js"
+	],
+	"./Travels/Create": [
+		"./resources/js/Pages/Travels/Create.vue",
+		9,
+		"resources_js_Pages_Travels_Create_vue"
+	],
+	"./Travels/Create.vue": [
+		"./resources/js/Pages/Travels/Create.vue",
+		9,
+		"resources_js_Pages_Travels_Create_vue"
 	],
 	"./Travels/Index": [
 		"./resources/js/Pages/Travels/Index.vue",
+		9,
 		"resources_js_Pages_Travels_Index_vue"
 	],
 	"./Travels/Index.vue": [
 		"./resources/js/Pages/Travels/Index.vue",
+		9,
 		"resources_js_Pages_Travels_Index_vue"
 	],
 	"./Users/ChangePassword": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/ChangePassword.vue": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/Create": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Create.vue": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Index": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Index.vue": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Settings": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
 	"./Users/Settings.vue": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
+	],
+	"./VehicleStatus": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/index": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/index.vue": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/raymart": [
+		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_raymart_vue"
+	],
+	"./VehicleStatus/raymart.vue": [
+		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_raymart_vue"
+	],
+	"./VehicleStatus/status": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_status_vue"
+	],
+	"./VehicleStatus/status.vue": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_status_vue"
 	],
 	"./Vehicles": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
 	],
 	"./Vehicles/": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
 	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
 	"./Vehicles/Create.vue": [
 		"./resources/js/Pages/Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
 	"./Vehicles/index": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
 	],
 	"./Vehicles/index.vue": [
 		"./resources/js/Pages/Vehicles/index.vue",
+		9,
 		"resources_js_Pages_Vehicles_index_vue"
-	],
-	"./vehicle_status": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/index": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/index.vue": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/raymart": [
-		"./resources/js/Pages/vehicle_status/raymart.vue",
-		"resources_js_Pages_vehicle_status_raymart_vue"
-	],
-	"./vehicle_status/raymart.vue": [
-		"./resources/js/Pages/vehicle_status/raymart.vue",
-		"resources_js_Pages_vehicle_status_raymart_vue"
-	],
-	"./vehicle_status/status": [
-		"./resources/js/Pages/vehicle_status/status.vue",
-		"resources_js_Pages_vehicle_status_status_vue"
-	],
-	"./vehicle_status/status.vue": [
-		"./resources/js/Pages/vehicle_status/status.vue",
-		"resources_js_Pages_vehicle_status_status_vue"
 	]
 };
 function webpackAsyncContext(req) {
@@ -1497,8 +1609,8 @@ function webpackAsyncContext(req) {
 	}
 
 	var ids = map[req], id = ids[0];
-	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(() => {
-		return __webpack_require__(id);
+	return Promise.all(ids.slice(2).map(__webpack_require__.e)).then(() => {
+		return __webpack_require__.t(id, ids[1] | 16)
 	});
 }
 webpackAsyncContext.keys = () => (Object.keys(map));

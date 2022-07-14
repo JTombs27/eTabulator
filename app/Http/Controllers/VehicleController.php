@@ -15,22 +15,31 @@ class VehicleController extends Controller
 
     public function index()
     {
-        return inertia('Vehicles/index', [
+        return inertia('Vehicles/Index', [
             "vehicles" => $this->model
 
+            ->latest()
             ->simplePaginate(10)
-            ->withQueryString()
+            ->withQueryString(),
+            
         ]);
 
     }
 
-    public function create()
+    public function create(Request $request)
     {
         return inertia('Vehicles/Create');
     }
 
     public function store(Request $request)
     {
+        $attributes = $request->validate([
+            'PLATENO' => 'required',
+            // 'TYPECODE' => 'required',
+            'FDATEACQ' => 'required',
+            'FDESC' => 'required',
+            
+        ]);
         $this->model->create($request->all());
 
         return redirect('/vehicles')->with('message', 'Added Successfully');

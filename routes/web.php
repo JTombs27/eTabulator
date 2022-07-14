@@ -7,11 +7,14 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectVehicleController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\OfficeController;
 
 
 
@@ -39,6 +42,12 @@ Route::middleware('auth')->group(function() {
         Route::post('/change-photo', [UserController::class, 'changePhoto']);
     });
 
+    //marvin
+    Route::prefix('/VehicleStatus')->group(function() {
+        Route::post('/', [VehicleStatusController::class, 'store']);
+        Route::get('{id}', [VehicleStatusController::class, 'index']);
+        Route::patch('/{id}', [VehicleStatusController::class, 'update']);
+    });
 
     Route::prefix('/projects')->group(function() {
         Route::get('/', [ProjectController::class, 'index']);
@@ -89,13 +98,20 @@ Route::middleware('auth')->group(function() {
 
     // Driver Vehicles
     Route::prefix('/drivers')->group(function() {
-        Route::get('/', [DriverVehicleController::class, 'index']);
-        Route::get('/create', [DriverVehicleController::class, 'create']);
-        Route::post('/', [DriverVehicleController::class, 'store']);
+        Route::get('/{id}/vehicles', [DriverVehicleController::class, 'index']);
+        Route::get('/{id}/create', [DriverVehicleController::class, 'create']);
+        Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
     });
     
     Route::prefix('travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
+        Route::get('create', [TravelController::class, 'create']);
+        Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
+    });
+
+    Route::prefix('sync')->group(function() {
+        Route::post('employees', [EmployeeController::class, 'sync']);
+        Route::post('offices', [OfficeController::class, 'sync']);
     });
     
 });

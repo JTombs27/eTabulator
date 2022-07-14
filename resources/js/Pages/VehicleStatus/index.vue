@@ -16,18 +16,13 @@
         </div>
         <div class="col-md-8">
             <form @submit.prevent="submit()">
-                
                 <label for="">Plate number</label>
                 <input type="text" v-model="PLATENO" class="form-control" autocomplete="chrome-off" disabled readonly>
                 <label for="">Condition</label>
                 <input type="text" v-model="form.condition" class="form-control" autocomplete="chrome-off" :disabled="_disbled" :readonly="_disbled">
-                
                 <button type="button" class="btn btn-primary mt-3" @click="Edit()" :disabled="form.processing" v-if="_disbled">{{button_text}}</button>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing" v-if="!_disbled">save</button>
-               
             </form>
-
-
         </div>
       
     </div>
@@ -71,10 +66,10 @@ export default {
 
 
             if (!!this.vehicle.vehicle_status) {
-                this.form.patch("/vehicle_status/" + this.form.id, this.form);
+                this.form.patch("/VehicleStatus/" + this.form.id, this.form);
             } 
             else {
-                this.form.post("/vehicle_status", this.form);
+                this.form.post("/VehicleStatus", this.form);
             }
 
         },

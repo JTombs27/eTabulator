@@ -20,23 +20,32 @@
                                     <div class="col">
                                         <div class="col">
                                             <label>Plate Number</label>
-                                            <input type="text" v-model="form.PLATENO" class="form-control" autocomplete="chrome-off" placeholder="platenumber">
+                                            <input type="text" v-model="form.PLATENO" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.PLATENO">{{ form.errors.PLATENO }}</div>
                                         </div>
-                                        <div class="col">
+                                        <div class="col-mb-3">
                                             <label>Vehicle Type</label>
-                                            <input type="text" v-model="form.TYPECODE" class="form-control" autocomplete="chrome-off" placeholder="vehicle type">
+                                            <select class="form-select md" v-model="form.TYPECODE">
+                                                <option disabled value="">Select Type</option>
+                                                <option>Motorcycle</option>
+                                                <option>Light Vehicle</option>
+                                                <option>Heavy Equipment</option>
+                                            </select>
+                                            <!-- <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div> -->
                                         </div>
                                         <div class="col">
                                             <label>Date Acquired</label>
-                                            <input type="date" v-model="form.FDATEACQ" class="form-control" autocomplete="chrome-off" placeholder="date acquired">
+                                            <input type="date" v-model="form.FDATEACQ" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.FDATEACQ">{{ form.errors.FDATEACQ }}</div>
                                         </div>
                                         <div class="col">
                                             <label>Acquisition Cost</label>
-                                            <input type="text" v-model="form.FACQCOST" class="form-control" autocomplete="chrome-off" placeholder="acquisition">
+                                            <input type="text" v-model="form.FACQCOST" class="form-control" autocomplete="chrome-off">
                                         </div>
                                         <div class="col">
                                             <label>Description</label>
-                                            <input type="text" v-model="form.FDESC" class="form-control" autocomplete="chrome-off" placeholder="description">
+                                            <input type="text" v-model="form.FDESC" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.FDESC">{{ form.errors.FDESC }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -62,7 +71,7 @@ export default ({
 
     data() {
         return {
-            form: useForm({
+            form: useForm ({
                 PLATENO: "",
                 TYPECODE: "",
                 FDATEACQ: "",
@@ -74,24 +83,24 @@ export default ({
     },
 
     mounted() {
-        if(!!this.editData){
-            this.pageTitle = "Edit"
+        if( !!this.editData ) {
+            this.pageTitle = "Edit Vehicles"
             this.form.PLATENO = this.editData.PLATENO
             this.form.TYPECODE = this.editData.TYPECODE
-            this.form.FDTAEACQ = this.editData.FDTAEACQ
+            this.form.FDATEACQ = this.editData.FDATEACQ
             this.form.FACQCOST = this.editData.FACQCOST
             this.form.FDESC = this.editData.FDESC
-            this.form.id = this.editData.idFACQCOST
-        }else{
-            this.pageTitle = "Create"
+            this.form.id = this.editData.id
+        } else {
+            this.pageTitle = "Create Vehicles"
         }
     },
 
     methods: {
         submit() {
-            if(!!this.editData){
+            if( !!this.editData ) {
                 this.form.patch("/vehicles/" + this.form.id, this.form);
-            }else{
+            } else {
                 this.form.post("/vehicles", this.form);
             }
         }
