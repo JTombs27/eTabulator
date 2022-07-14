@@ -10,7 +10,7 @@
                                     <div class="col">
                                         <div class="col">
                                             <label for="">Vehicle Plate No</label>
-                                            <input type="text" v-model="form.vehicles_id" class="form-control" autocomplete="chrome-off" disabled readonly>
+                                            <input type="text" v-model="vehicles_plateno" class="form-control" autocomplete="chrome-off" disabled readonly>
                                         </div>
 
                                         <div class="col">
@@ -55,6 +55,7 @@ export default {
         return {
             vehicles: [],
             vehicles_id: "",
+            vehicles_plateno:"",
             form: useForm({
                 vehicles_id: "",
                 drivers_id: "",
@@ -67,8 +68,8 @@ export default {
     },
 
     mounted() {
-        this.form.vehicles_id = this.Vdriver.PLATENO
-       
+        this.form.vehicles_id   = this.Vdriver.id
+        this.vehicles_plateno   = this.Vdriver.PLATENO
         this.pageTitle = "Create"
         this.getVehicles()
 
@@ -111,7 +112,9 @@ export default {
       },
 
       fetch(e){
+        console.log(e);
         this.form.department_code = e.department;
+        //this.form.vehicles_id = e.
       },
 
       submit(){
