@@ -95,9 +95,9 @@ Route::middleware('auth')->group(function() {
 
     // Driver Vehicles
     Route::prefix('/drivers')->group(function() {
-        Route::get('/', [DriverVehicleController::class, 'index']);
-        Route::get('/create', [DriverVehicleController::class, 'create']);
-        Route::post('/', [DriverVehicleController::class, 'store']);
+        Route::get('/{id}/vehicles', [DriverVehicleController::class, 'index']);
+        Route::get('/{id}/create', [DriverVehicleController::class, 'create']);
+        Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
     });
     
     Route::prefix('travels')->group(function() {
