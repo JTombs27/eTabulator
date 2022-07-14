@@ -32,6 +32,11 @@ class DriverVehicleController extends Controller
 
     public function store(Request $request)
     {
+        $attributes = $request->validate([
+            'date_from' => 'required',
+            'date_to' => 'required',
+            
+        ]); 
         $this->model->create($request->all());
 
         return redirect('/drivers')->with('message', 'Added Successfully');
