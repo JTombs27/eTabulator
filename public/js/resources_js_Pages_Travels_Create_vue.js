@@ -43,7 +43,7 @@ __webpack_require__.r(__webpack_exports__);
         travel_date: this.form.travel_date,
         vehicles_id: this.vehicles_id
       }).then(function (response) {
-        _this2.driverName = response.employee_name;
+        _this2.driverName = response.data[0].employee_name;
       });
     },
     submit: function submit() {}
