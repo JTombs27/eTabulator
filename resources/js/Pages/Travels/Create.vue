@@ -18,6 +18,8 @@
                 <input v-model="form.travel_date" type="date" class="form-control" autocomplete="chrome-off"/>
                 <label for="">Vehicle Name</label>
                 <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails"/>
+                <label>Driver</label>
+                <input type="text" class="form-control" readonly v-model="driverName">
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
             </form>
@@ -37,10 +39,12 @@ export default {
         return{
             vehicles: [],
             vehicles_id:null,
+            driverName:"",
             form: useForm({
                 travel_date:null,
             }),
             pageTitle:"Create",
+
         }
     },
 
@@ -58,7 +62,7 @@ export default {
         getVehicleDetails() {
             axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.vehicles_id})
                 .then((response) => {
-
+                    this.driverName = response.employee_name;
                 })
         },
 

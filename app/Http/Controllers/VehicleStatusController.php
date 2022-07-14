@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Vehicle_status;
+use App\Models\VehicleStatus;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
-class Vehicle_statusController extends Controller
+class VehicleStatusController extends Controller
 {
-    public function __construct(Vehicle_status $model, Vehicle $vehicle)
+    public function __construct(VehicleStatus $model, Vehicle $vehicle)
     {
         $this->model = $model;
         $this->vehicle = $vehicle;
@@ -16,7 +16,7 @@ class Vehicle_statusController extends Controller
 
     public function index($id)
     {
-        return inertia('vehicle_status/index',[
+        return inertia('VehicleStatus/index',[
             'vehicle' =>  $this->vehicle->with('vehicle_status')
                                     ->where('id',$id)->latest()->first()
                                     
@@ -37,7 +37,7 @@ class Vehicle_statusController extends Controller
 
     public function create()
     {
-        return inertia('vehicle_status/index');
+        return inertia('VehicleStatus/index');
     }
 
     public function update(Request $request)
@@ -52,12 +52,7 @@ class Vehicle_statusController extends Controller
        return redirect('/vehicles')->with('message', 'Vehicle status updated!');
     }
 
-    public function raymart() 
-    {
-        return inertia('vehicle_status/raymart', [
-            'test' => 'Itanong'
-        ]);
-    }
+   
 
     
 }

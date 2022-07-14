@@ -166,6 +166,14 @@ __webpack_require__.r(__webpack_exports__);
         e.preventDefault();
       });
     });
+  },
+  methods: {
+    syncEmployees: function syncEmployees() {
+      axios.post('/sync/employees').then(function (response) {
+        alert('employees sync successfully');
+      });
+    },
+    syncOffices: function syncOffices() {}
   }
 });
 
@@ -678,31 +686,13 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_19 = {
-  "class": "nav-item"
-};
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\"><path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path><path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path></svg></span><span class=\"title\"> Sync Employees</span>", 2);
 
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "icon-holder"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: "16",
-  height: "16",
-  fill: "currentColor",
-  "class": "bi bi-boxes",
-  viewBox: "0 0 16 16"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
-  d: "M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"
-})])], -1
-/* HOISTED */
-);
+var _hoisted_21 = [_hoisted_19];
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, "Projects", -1
-/* HOISTED */
-);
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\"><path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path><path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path></svg></span><span class=\"title\"> Sync Office</span>", 2);
 
+var _hoisted_24 = [_hoisted_22];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -746,17 +736,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     "class": "sidebar-link",
-    href: "/projects"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_20, _hoisted_21];
-    }),
-    _: 1
-    /* STABLE */
-
-  })])])])]);
+    href: "javascript:void(0)",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.syncEmployees();
+    })
+  }, _hoisted_21)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    "class": "sidebar-link",
+    href: "javascript:void(0)",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.syncOffices();
+    })
+  }, _hoisted_24)])])])])])]);
 }
 
 /***/ }),
@@ -1482,15 +1474,45 @@ var map = {
 		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
-	"./Vehicles": [
-		"./resources/js/Pages/Vehicles/index.vue",
+	"./VehicleStatus": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
-		"resources_js_Pages_Vehicles_index_vue"
+		"resources_js_Pages_VehicleStatus_index_vue"
 	],
-	"./Vehicles/": [
-		"./resources/js/Pages/Vehicles/index.vue",
+	"./VehicleStatus/": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
-		"resources_js_Pages_Vehicles_index_vue"
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/index": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/index.vue": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/raymart": [
+		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_raymart_vue"
+	],
+	"./VehicleStatus/raymart.vue": [
+		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_raymart_vue"
+	],
+	"./VehicleStatus/status": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_status_vue"
+	],
+	"./VehicleStatus/status.vue": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_status_vue"
 	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
@@ -1502,55 +1524,15 @@ var map = {
 		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
-	"./Vehicles/index": [
-		"./resources/js/Pages/Vehicles/index.vue",
+	"./Vehicles/Index": [
+		"./resources/js/Pages/Vehicles/Index.vue",
 		9,
-		"resources_js_Pages_Vehicles_index_vue"
+		"resources_js_Pages_Vehicles_Index_vue"
 	],
-	"./Vehicles/index.vue": [
-		"./resources/js/Pages/Vehicles/index.vue",
+	"./Vehicles/Index.vue": [
+		"./resources/js/Pages/Vehicles/Index.vue",
 		9,
-		"resources_js_Pages_Vehicles_index_vue"
-	],
-	"./vehicle_status": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		9,
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		9,
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/index": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		9,
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/index.vue": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		9,
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/raymart": [
-		"./resources/js/Pages/vehicle_status/raymart.vue",
-		9,
-		"resources_js_Pages_vehicle_status_raymart_vue"
-	],
-	"./vehicle_status/raymart.vue": [
-		"./resources/js/Pages/vehicle_status/raymart.vue",
-		9,
-		"resources_js_Pages_vehicle_status_raymart_vue"
-	],
-	"./vehicle_status/status": [
-		"./resources/js/Pages/vehicle_status/status.vue",
-		9,
-		"resources_js_Pages_vehicle_status_status_vue"
-	],
-	"./vehicle_status/status.vue": [
-		"./resources/js/Pages/vehicle_status/status.vue",
-		9,
-		"resources_js_Pages_vehicle_status_status_vue"
+		"resources_js_Pages_Vehicles_Index_vue"
 	]
 };
 function webpackAsyncContext(req) {
