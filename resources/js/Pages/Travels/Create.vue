@@ -30,12 +30,20 @@
                 <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails"/>
                 <label>Driver</label>
                 <input type="text" class="form-control" readonly v-model="driverName">
+                <label>Actual Driver</label>
+                <input type="text" v-model="form.actual_driver" class="form-control" >
                 <label for="">Name of Authorized Passenger/s</label>
                 <input type="text" v-model="form.official_passenger" class="form-control">
                 <label for="">Place to visit</label>
                 <input type="text" v-model="form.place_to_visit" class="form-control">
                 <label for="">Purpose of Travel</label>
                 <input type="text" v-model="form.purpose" class="form-control">
+                <label for="">Gas Type</label>
+                <input type="text" v-model="form.gas_type" class="form-control">
+                <label for="">Liter/s</label>
+                <input type="text" v-model="form.total_liters" class="form-control">
+                <label for="">Official Passenger</label>
+                <input type="text" v-model="form.official_passenger" class="form-control">
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
             </form>
@@ -60,6 +68,11 @@ export default {
                 travel_date:null,
                 official_passenger:'',
                 place_to_visit:'',
+                gas_type:'',
+                time_arrival:'',
+                time_departure:'',
+                total_liters:null,
+                official_passenger:null,
             }),
             pageTitle:"Create",
 
