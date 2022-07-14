@@ -50,8 +50,11 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/projects-vehicle')->group(function() {
         Route::get('/{id}/vehicles', [ProjectVehicleController::class, 'index']);
         Route::get('/{id}/create', [ProjectVehicleController::class, 'create']);
+        Route::get('/{id}/edit/{vid}', [ProjectVehicleController::class, 'edit']);
         Route::get('/vehicles', [ProjectVehicleController::class, 'getVehicles']);
         Route::post('/{id}/store', [ProjectVehicleController::class, 'store']);
+        Route::post('/{id}/update/{vid}', [ProjectVehicleController::class, 'update']);
+        Route::post('/delete', [ProjectVehicleController::class, 'destroy']);
     });
     
     

@@ -33,19 +33,17 @@ __webpack_require__.r(__webpack_exports__);
       filter: false
     };
   },
-  //watch: {
-  //    search: _.debounce(function (value) {
-  //        this.$inertia.get(
-  //            "/projects",
-  //            { search: value },
-  //            {
-  //                preserveScroll: true,
-  //                preserveState: true,
-  //                replace: true,
-  //            }
-  //        );
-  //    }, 300),
-  //},
+  watch: {
+    search: _.debounce(function (value) {
+      this.$inertia.get("/projects-vehicle/" + this.project.id + "/vehicles", {
+        search: value
+      }, {
+        preserveScroll: true,
+        preserveState: true,
+        replace: true
+      });
+    }, 300)
+  },
   methods: {
     createProject: function createProject() {
       this.$inertia.get("/projects-vehicle/" + this.project.id + "/create");
@@ -53,85 +51,30 @@ __webpack_require__.r(__webpack_exports__);
     goToProjects: function goToProjects() {
       this.$inertia.get("/projects");
     },
-    //deleteProject(id) 
-    //{
-    //    let text = "WARNING!\nAre you sure you want to delete the record?";
-    //      if (confirm(text) == true) 
-    //      {
-    //        axios.post("/projects/delete-project",{
-    //            'id':id
-    //        }).then(response=>{
-    //            if(response.data != null)
-    //                {
-    //                    if(response.data == "success")
-    //                    {
-    //                        this.$inertia.reload({only:['projects']});
-    //                    }
-    //                    else{
-    //                        saveMessage = "*"+response.data;
-    //                    }
-    //                }
-    //        });
-    //      }
-    //},
-    //insertProject()
-    //{
-    //   if(this.isEdit == false)
-    //   {
-    //        axios.post('/projects/create-project', {
-    //                        'description' : this.description
-    //                    }).then(response=>{
-    //                        
-    //                        if(response.data != null)
-    //                        {
-    //                            if(response.data == "success")
-    //                            {
-    //                                this.closeModal();
-    //                                this.saveMessage = "";
-    //                                this.$inertia.reload({only:['projects']});
-    //                            }
-    //                            else{
-    //                               this.saveMessage = response.data;
-    //                            }
-    //                        }
-    //                    })
-    //   }
-    //   else  if(this.isEdit == true)
-    //   {
-    //        axios.post('/projects/update-project', {
-    //                        'description' : this.description,
-    //                        'id':this.projectId
-    //                    }).then(response=>{
-    //                        
-    //                        if(response.data != null)
-    //                        {
-    //                            if(response.data == "success")
-    //                            {
-    //                                this.closeModal();
-    //                                this.saveMessage = "";
-    //                                this.$inertia.reload({only:['projects']});
-    //                            }
-    //                            else{
-    //                               this.saveMessage = response.data;
-    //                            }
-    //                        }
-    //                    })
-    //   }
-    //  
-    //},
-    //editProjects(projectId)
-    //{
-    //    var project         = _.find(this.projects.data,{id:projectId})
-    //    this.showModal      = true;
-    //    this.description    = project.description;
-    //    this.isEdit         = true;
-    //    this.projectId      = projectId;
-    //},
-    //gotToProjectVehicle(projectId)
-    //{
-    //    this.$inertia.get("/projects-vehicle/" + id);
-    //}
-    //    ,
+    deleteProject: function deleteProject(id) {
+      var _this = this;
+
+      var text = "WARNING!\nAre you sure you want to delete the record?";
+
+      if (confirm(text) == true) {
+        axios.post("/projects-vehicle/delete", {
+          'id': id
+        }).then(function (response) {
+          if (response != null) {
+            if (response.data.message == "success") {
+              _this.$inertia.reload({
+                "this": ['projectVehicles', 'flash']
+              });
+            } else {
+              alert("*" + response.data.message);
+            }
+          }
+        });
+      }
+    },
+    editProjects: function editProjects(projectId) {
+      this.$inertia.get("/projects-vehicle/" + this.project.id + "/edit/" + projectId);
+    },
     closeModal: function closeModal() {
       $("#modal").hide();
       $('body').removeClass('modal-open');
@@ -293,8 +236,9 @@ var _hoisted_20 = {
   role: "group",
   "aria-label": "Basic example"
 };
+var _hoisted_21 = ["onClick"];
 
-var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "16",
   height: "16",
@@ -307,9 +251,10 @@ var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_22 = [_hoisted_21];
+var _hoisted_23 = [_hoisted_22];
+var _hoisted_24 = ["onClick"];
 
-var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "16",
   height: "16",
@@ -325,23 +270,23 @@ var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_24 = [_hoisted_23];
-var _hoisted_25 = {
+var _hoisted_26 = [_hoisted_25];
+var _hoisted_27 = {
   key: 0
 };
 
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   "class": "text-center",
   colspan: "5"
 }, "No Data Found", -1
 /* HOISTED */
 );
 
-var _hoisted_27 = [_hoisted_26];
-var _hoisted_28 = {
+var _hoisted_29 = [_hoisted_28];
+var _hoisted_30 = {
   "class": "row justify-content-center"
 };
-var _hoisted_29 = {
+var _hoisted_31 = {
   "class": "col-md-12"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -388,21 +333,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       title: "Edit Project Description!",
-      onClick: _cache[4] || (_cache[4] = function ($event) {
-        return _ctx.editProjects($props.project.id);
-      }),
+      onClick: function onClick($event) {
+        return $options.editProjects(projectVehicle.id);
+      },
       "class": "btn btn-primary btn-sm c-white"
-    }, _hoisted_22), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    }, _hoisted_23, 8
+    /* PROPS */
+    , _hoisted_21), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       type: "button",
       title: "Delete Project",
-      onClick: _cache[5] || (_cache[5] = function ($event) {
-        return _ctx.deleteProject($props.project.id);
-      }),
+      onClick: function onClick($event) {
+        return $options.deleteProject(projectVehicle.id);
+      },
       "class": "btn btn-danger btn-sm c-white"
-    }, _hoisted_24)])])]);
+    }, _hoisted_26, 8
+    /* PROPS */
+    , _hoisted_24)])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), $props.projectVehicles.data == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_25, _hoisted_27)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_28, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" read the explanation in the Paginate.vue component "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination :links=\"users.links\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
+  )), $props.projectVehicles.data == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_27, _hoisted_29)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" read the explanation in the Paginate.vue component "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination :links=\"users.links\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
     next: $props.projectVehicles.next_page_url,
     prev: $props.projectVehicles.prev_page_url
   }, null, 8

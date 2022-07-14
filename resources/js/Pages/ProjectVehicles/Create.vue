@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-6">
                             <label for="">Vehicle Selection</label>
-                            <Select2 v-model="form.vehicle_id" :options="vehicles" id="vehicles"  />
+                            <Select2 v-model="form.vehicle_id" :options="vehicles" :disabled="disableVehicle" id="vehicles"  />
                             <div class="fs-6 c-red-500" v-if="form.errors.vehicle_id">{{ form.errors.vehicle_id }}</div>
 
                         </div>
@@ -28,11 +28,13 @@
                             <label for="">Period From</label>
                             <input type="date" v-model="form.date_from" class="form-control" autocomplete="chrome-off">
                             <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.date_fromX">{{ form.errors.date_fromX }}</div>
                         </div>
                         <div class="col-3">
                             <label for="">Period To</label>
                             <input type="date" v-model="form.date_to" class="form-control" autocomplete="chrome-off">
                             <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.date_toX">{{ form.errors.date_toX }}</div>
                         </div>
                     </div>
                     <div class="row">
@@ -79,21 +81,26 @@ export default {
             testValue:"",
             pageTitle: "",
             loading:false,
+            disableVehicle: false
         };
     },
     mounted() {
 
         if (this.editData !== undefined) 
         {
-            this.loading = true
-            this.pageTitle = "Edit"
-            //this.form.name = this.editData.name
-            //this.form.email = this.editData.email
-            //this.form.id = this.editData.id
-            //this.form.citymunCode = this.editData.citymunCode
-            //this.form.brgyCode = this.editData.brgyCode
+            this.loading            = true;
+            this.pageTitle          = "Edit";
+            this.form.vehicle_id    = this.editData.vehicle_id;
+            this.form.date_from     = this.editData.date_from;
+            this.form.date_to       = this.editData.date_to;
+            this.form.purpose       = this.editData.purpose;
+            this.form.project_id    = this.editData.project_id;
+            this.form.id            = this.editData.id;
+            this.disableVehicle     = true;
+
         } else {
-            this.pageTitle = "Add"
+            this.pageTitle = "Add";
+            this.disableVehicle = false;
         }
 
         this.loadVehicles()
@@ -104,7 +111,9 @@ export default {
 
             if (this.editData !== undefined) 
             {
-                this.form.patch("/users/" + this.form.id, this.form);
+                 this.form.project_id = this.editData.project_id;
+                 
+                 this.form.post("/projects-vehicle/"+this.project.id+"/update/"+this.editData.id, this.form);
             } else {
                 this.form.project_id = this.project.id;
                 this.form.post("/projects-vehicle/"+this.project.id+"/store", this.form);
