@@ -7,7 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\Vehicle_statusController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectVehicleController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\TravelController;
@@ -38,11 +39,19 @@ Route::middleware('auth')->group(function() {
         Route::post('/change-photo', [UserController::class, 'changePhoto']);
     });
 
-    //marvin
-    Route::prefix('/vehicle_status')->group(function() {
-        Route::post('/', [Vehicle_statusController::class, 'store']);
-        Route::get('{id}', [Vehicle_statusController::class, 'index']);
-        Route::patch('/{id}', [Vehicle_statusController::class, 'update']);
+
+    Route::prefix('/projects')->group(function() {
+        Route::get('/', [ProjectController::class, 'index']);
+        Route::post('/create-project',[ProjectController::class, 'store']);
+        Route::post('/delete-project', [ProjectController::class, 'destroy']);
+        Route::post('/update-project', [ProjectController::class, 'update']);
+    });
+    //Project Vehicles
+    Route::prefix('/projects-vehicle')->group(function() {
+        Route::get('/{id}/vehicles', [ProjectVehicleController::class, 'index']);
+        Route::get('/{id}/create', [ProjectVehicleController::class, 'create']);
+        Route::get('/vehicles', [ProjectVehicleController::class, 'getVehicles']);
+        Route::post('/{id}/store', [ProjectVehicleController::class, 'store']);
     });
     
     
