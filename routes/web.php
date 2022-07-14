@@ -14,6 +14,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\OfficeController;
 
 
 
@@ -107,6 +108,7 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('sync')->group(function() {
         Route::post('employees', [EmployeeController::class, 'sync']);
+        Route::post('offices', [OfficeController::class, 'sync']);
     });
     
 });

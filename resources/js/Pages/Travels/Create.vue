@@ -62,7 +62,7 @@ export default {
         getVehicleDetails() {
             axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.vehicles_id})
                 .then((response) => {
-                    this.driverName = response.employee_name;
+                    this.driverName = response.data[0].employee_name;
                 })
         },
 
