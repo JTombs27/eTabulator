@@ -25,7 +25,12 @@
                                         </div>
                                         <div class="col-mb-3">
                                             <label>Vehicle Type</label>
-                                            <input type="text" v-model="form.TYPECODE" class="form-control" autocomplete="chrome-off">
+                                            <select class="form-select md">
+                                                <option disabled value="">Select Type</option>
+                                                <option>Motorcycle</option>
+                                                <option>Light Vehicle</option>
+                                                <option>Heavy Equipment</option>
+                                            </select>
                                             <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div>
                                         </div>
                                         <div class="col">
