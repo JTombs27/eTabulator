@@ -253,7 +253,9 @@ __webpack_require__.r(__webpack_exports__);
 var _hoisted_1 = {
   "class": "modal",
   tabindex: "-1",
-  id: "modal"
+  id: "modal",
+  "data-bs-backdrop": "static",
+  "data-bs-keyboard": "false"
 };
 var _hoisted_2 = {
   "class": "modal-dialog"
@@ -297,7 +299,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Close"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary",
-    "data-bs-dismiss": "modal",
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.saveModal && $options.saveModal.apply($options, arguments);
     })
@@ -1426,14 +1427,6 @@ var map = {
 		"./resources/js/Pages/VehicleStatus/status.vue",
 		"resources_js_Pages_VehicleStatus_status_vue"
 	],
-	"./Vehicles": [
-		"./resources/js/Pages/Vehicles/index.vue",
-		"resources_js_Pages_Vehicles_index_vue"
-	],
-	"./Vehicles/": [
-		"./resources/js/Pages/Vehicles/index.vue",
-		"resources_js_Pages_Vehicles_index_vue"
-	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
 		"resources_js_Pages_Vehicles_Create_vue"
@@ -1442,13 +1435,13 @@ var map = {
 		"./resources/js/Pages/Vehicles/Create.vue",
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
-	"./Vehicles/index": [
-		"./resources/js/Pages/Vehicles/index.vue",
-		"resources_js_Pages_Vehicles_index_vue"
+	"./Vehicles/Index": [
+		"./resources/js/Pages/Vehicles/Index.vue",
+		"resources_js_Pages_Vehicles_Index_vue"
 	],
-	"./Vehicles/index.vue": [
-		"./resources/js/Pages/Vehicles/index.vue",
-		"resources_js_Pages_Vehicles_index_vue"
+	"./Vehicles/Index.vue": [
+		"./resources/js/Pages/Vehicles/Index.vue",
+		"resources_js_Pages_Vehicles_Index_vue"
 	]
 };
 function webpackAsyncContext(req) {
