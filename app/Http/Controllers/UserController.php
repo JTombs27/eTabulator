@@ -62,8 +62,7 @@ class UserController extends Controller
         $attributes = $request->validate([
             'name' => 'required|unique:users',
             'username' => 'required|unique:users',
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => 'required',
+            'password' => ['required', 'confirmed'],
         ]);
 
         //transactions are functions that are used when you want to CRUD multiple table simultaneously

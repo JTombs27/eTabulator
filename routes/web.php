@@ -12,6 +12,7 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectVehicleController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
 
 
@@ -100,6 +101,12 @@ Route::middleware('auth')->group(function() {
     
     Route::prefix('travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
+        Route::get('create', [TravelController::class, 'create']);
+        Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
+    });
+
+    Route::prefix('sync')->group(function() {
+        Route::post('employees', [EmployeeController::class, 'sync']);
     });
     
 });

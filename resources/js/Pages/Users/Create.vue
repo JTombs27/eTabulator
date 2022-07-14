@@ -34,14 +34,20 @@
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.brgyCode">{{ form.errors.brgyCode }}</div>
 
-                <label for="">Email</label>
-                <input type="text" v-model="form.email" class="form-control" autocomplete="chrome-off">
-                <div class="fs-6 c-red-500" v-if="form.errors.email">{{ form.errors.email }}</div>
                 <label for="">Username</label>
                 <input type="text" v-model="form.username" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.username">{{ form.errors.username }}</div>
                 <label for="">Password</label>
-                <input type="password" v-model="form.password" class="form-control" autocomplete="chrome-off">
+                <input :type="passwordType" v-model="form.password" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.password">{{ form.errors.password }}</div>
+                <label for="">Confirm Password</label>
+                <input :type="passwordType" v-model="form.password_confirmation" class="form-control" autocomplete="chrome-off">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="showPassword">
+                  <label class="form-check-label" for="flexCheckDefault">
+                    Show Password
+                  </label>
+                </div>
                 <div class="fs-6 c-red-500" v-if="form.errors.password">{{ form.errors.password }}</div>
                 <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
@@ -70,6 +76,7 @@ export default {
                 purok_id:"",
                 email: "",
                 password: "",
+                password_confirmation:"",
                 username:"",
                 cats:null,
                 id: null
@@ -80,7 +87,9 @@ export default {
             employees:[],
             testValue:"",
             pageTitle: "",
+            showPassword:null,
             loading:false,
+            passwordType:"password",
 
         };
     },
@@ -201,5 +210,15 @@ export default {
             })
         },
     },
+
+    watch: {
+        showPassword: function(value) {
+            if (value) {
+                this.passwordType = 'text'
+            } else {
+                this.passwordType = 'password'
+            }
+        }
+    }
 };
 </script>

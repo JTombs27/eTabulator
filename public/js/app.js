@@ -166,6 +166,14 @@ __webpack_require__.r(__webpack_exports__);
         e.preventDefault();
       });
     });
+  },
+  methods: {
+    syncEmployees: function syncEmployees() {
+      axios.post('/sync/employees').then(function (response) {
+        alert('employees sync successfully');
+      });
+    },
+    syncOffices: function syncOffices() {}
   }
 });
 
@@ -678,6 +686,13 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\"><path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path><path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path></svg></span><span class=\"title\"> Sync Employees</span>", 2);
+
+var _hoisted_21 = [_hoisted_19];
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"icon-holder\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-arrow-repeat\" viewBox=\"0 0 16 16\"><path d=\"M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z\"></path><path fill-rule=\"evenodd\" d=\"M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z\"></path></svg></span><span class=\"title\"> Sync Office</span>", 2);
+
+var _hoisted_24 = [_hoisted_22];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -721,7 +736,19 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })])])])])])]);
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    "class": "sidebar-link",
+    href: "javascript:void(0)",
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.syncEmployees();
+    })
+  }, _hoisted_21)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+    "class": "sidebar-link",
+    href: "javascript:void(0)",
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.syncOffices();
+    })
+  }, _hoisted_24)])])])])])]);
 }
 
 /***/ }),
@@ -1259,188 +1286,252 @@ __webpack_require__.r(__webpack_exports__);
 var map = {
 	"./Charts/LineChart": [
 		"./resources/js/Pages/Charts/LineChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_LineChart_vue"
 	],
 	"./Charts/LineChart.vue": [
 		"./resources/js/Pages/Charts/LineChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_LineChart_vue"
 	],
 	"./Charts/PieChart": [
 		"./resources/js/Pages/Charts/PieChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_PieChart_vue"
 	],
 	"./Charts/PieChart.vue": [
 		"./resources/js/Pages/Charts/PieChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_PieChart_vue"
 	],
 	"./Charts/SomeChart": [
 		"./resources/js/Pages/Charts/SomeChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_SomeChart_vue"
 	],
 	"./Charts/SomeChart.vue": [
 		"./resources/js/Pages/Charts/SomeChart.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_SomeChart_vue"
 	],
 	"./Charts/TotalUsers": [
 		"./resources/js/Pages/Charts/TotalUsers.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_TotalUsers_vue"
 	],
 	"./Charts/TotalUsers.vue": [
 		"./resources/js/Pages/Charts/TotalUsers.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Charts_TotalUsers_vue"
 	],
 	"./Drivers/Create": [
 		"./resources/js/Pages/Drivers/Create.vue",
+		9,
 		"resources_js_Pages_Drivers_Create_vue"
 	],
 	"./Drivers/Create.vue": [
 		"./resources/js/Pages/Drivers/Create.vue",
+		9,
 		"resources_js_Pages_Drivers_Create_vue"
 	],
 	"./Drivers/Index": [
 		"./resources/js/Pages/Drivers/Index.vue",
+		9,
 		"resources_js_Pages_Drivers_Index_vue"
 	],
 	"./Drivers/Index.vue": [
 		"./resources/js/Pages/Drivers/Index.vue",
+		9,
 		"resources_js_Pages_Drivers_Index_vue"
 	],
 	"./Home": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
 	"./Home.vue": [
 		"./resources/js/Pages/Home.vue",
+		9,
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
 	"./Posts/Index": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
 	],
 	"./Posts/Index.vue": [
 		"./resources/js/Pages/Posts/Index.vue",
+		9,
 		"resources_js_Pages_Posts_Index_vue"
 	],
 	"./Project_Vehicles/Create": [
 		"./resources/js/Pages/Project_Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Project_Vehicles_Create_vue"
 	],
 	"./Project_Vehicles/Create.vue": [
 		"./resources/js/Pages/Project_Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Project_Vehicles_Create_vue"
 	],
 	"./Project_Vehicles/Index": [
 		"./resources/js/Pages/Project_Vehicles/Index.vue",
+		9,
 		"resources_js_Pages_Project_Vehicles_Index_vue"
 	],
 	"./Project_Vehicles/Index.vue": [
 		"./resources/js/Pages/Project_Vehicles/Index.vue",
+		9,
 		"resources_js_Pages_Project_Vehicles_Index_vue"
 	],
 	"./Projects/Index": [
 		"./resources/js/Pages/Projects/Index.vue",
+		9,
 		"resources_js_Pages_Projects_Index_vue"
 	],
 	"./Projects/Index.vue": [
 		"./resources/js/Pages/Projects/Index.vue",
+		9,
 		"resources_js_Pages_Projects_Index_vue"
+	],
+	"./Travels/AjaxScript": [
+		"./resources/js/Pages/Travels/AjaxScript.js",
+		7,
+		"resources_js_Pages_Travels_AjaxScript_js"
+	],
+	"./Travels/AjaxScript.js": [
+		"./resources/js/Pages/Travels/AjaxScript.js",
+		7,
+		"resources_js_Pages_Travels_AjaxScript_js"
+	],
+	"./Travels/Create": [
+		"./resources/js/Pages/Travels/Create.vue",
+		9,
+		"resources_js_Pages_Travels_Create_vue"
+	],
+	"./Travels/Create.vue": [
+		"./resources/js/Pages/Travels/Create.vue",
+		9,
+		"resources_js_Pages_Travels_Create_vue"
 	],
 	"./Travels/Index": [
 		"./resources/js/Pages/Travels/Index.vue",
+		9,
 		"resources_js_Pages_Travels_Index_vue"
 	],
 	"./Travels/Index.vue": [
 		"./resources/js/Pages/Travels/Index.vue",
+		9,
 		"resources_js_Pages_Travels_Index_vue"
 	],
 	"./Users/ChangePassword": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/ChangePassword.vue": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
+		9,
 		"resources_js_Pages_Users_ChangePassword_vue"
 	],
 	"./Users/Create": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Create.vue": [
 		"./resources/js/Pages/Users/Create.vue",
+		9,
 		"resources_js_Pages_Users_Create_vue"
 	],
 	"./Users/Index": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Index.vue": [
 		"./resources/js/Pages/Users/Index.vue",
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Settings": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
 	"./Users/Settings.vue": [
 		"./resources/js/Pages/Users/Settings.vue",
+		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
 	"./VehicleStatus": [
 		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
 	],
 	"./VehicleStatus/": [
 		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
 	],
 	"./VehicleStatus/index": [
 		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
 	],
 	"./VehicleStatus/index.vue": [
 		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
 	],
 	"./VehicleStatus/raymart": [
 		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_raymart_vue"
 	],
 	"./VehicleStatus/raymart.vue": [
 		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_raymart_vue"
 	],
 	"./VehicleStatus/status": [
 		"./resources/js/Pages/VehicleStatus/status.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_status_vue"
 	],
 	"./VehicleStatus/status.vue": [
 		"./resources/js/Pages/VehicleStatus/status.vue",
+		9,
 		"resources_js_Pages_VehicleStatus_status_vue"
 	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
 	"./Vehicles/Create.vue": [
 		"./resources/js/Pages/Vehicles/Create.vue",
+		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
 	"./Vehicles/Index": [
 		"./resources/js/Pages/Vehicles/Index.vue",
+		9,
 		"resources_js_Pages_Vehicles_Index_vue"
 	],
 	"./Vehicles/Index.vue": [
 		"./resources/js/Pages/Vehicles/Index.vue",
+		9,
 		"resources_js_Pages_Vehicles_Index_vue"
 	]
 };
@@ -1454,8 +1545,8 @@ function webpackAsyncContext(req) {
 	}
 
 	var ids = map[req], id = ids[0];
-	return Promise.all(ids.slice(1).map(__webpack_require__.e)).then(() => {
-		return __webpack_require__(id);
+	return Promise.all(ids.slice(2).map(__webpack_require__.e)).then(() => {
+		return __webpack_require__.t(id, ids[1] | 16)
 	});
 }
 webpackAsyncContext.keys = () => (Object.keys(map));
