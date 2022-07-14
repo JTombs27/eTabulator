@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MunicipalityController;
 use App\Http\Controllers\BarangayController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\Vehicle_statusController;
+use App\Http\Controllers\VehicleStatusController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\TravelController;
@@ -39,10 +39,10 @@ Route::middleware('auth')->group(function() {
     });
 
     //marvin
-    Route::prefix('/vehicle_status')->group(function() {
-        Route::post('/', [Vehicle_statusController::class, 'store']);
-        Route::get('{id}', [Vehicle_statusController::class, 'index']);
-        Route::patch('/{id}', [Vehicle_statusController::class, 'update']);
+    Route::prefix('/VehicleStatus')->group(function() {
+        Route::post('/', [VehicleStatusController::class, 'store']);
+        Route::get('{id}', [VehicleStatusController::class, 'index']);
+        Route::patch('/{id}', [VehicleStatusController::class, 'update']);
     });
     
     

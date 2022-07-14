@@ -1370,6 +1370,38 @@ var map = {
 		"./resources/js/Pages/Users/Settings.vue",
 		"resources_js_Pages_Users_Settings_vue"
 	],
+	"./VehicleStatus": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/index": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/index.vue": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/raymart": [
+		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		"resources_js_Pages_VehicleStatus_raymart_vue"
+	],
+	"./VehicleStatus/raymart.vue": [
+		"./resources/js/Pages/VehicleStatus/raymart.vue",
+		"resources_js_Pages_VehicleStatus_raymart_vue"
+	],
+	"./VehicleStatus/status": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
+		"resources_js_Pages_VehicleStatus_status_vue"
+	],
+	"./VehicleStatus/status.vue": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
+		"resources_js_Pages_VehicleStatus_status_vue"
+	],
 	"./Vehicles": [
 		"./resources/js/Pages/Vehicles/index.vue",
 		"resources_js_Pages_Vehicles_index_vue"
@@ -1393,38 +1425,6 @@ var map = {
 	"./Vehicles/index.vue": [
 		"./resources/js/Pages/Vehicles/index.vue",
 		"resources_js_Pages_Vehicles_index_vue"
-	],
-	"./vehicle_status": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/index": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/index.vue": [
-		"./resources/js/Pages/vehicle_status/index.vue",
-		"resources_js_Pages_vehicle_status_index_vue"
-	],
-	"./vehicle_status/raymart": [
-		"./resources/js/Pages/vehicle_status/raymart.vue",
-		"resources_js_Pages_vehicle_status_raymart_vue"
-	],
-	"./vehicle_status/raymart.vue": [
-		"./resources/js/Pages/vehicle_status/raymart.vue",
-		"resources_js_Pages_vehicle_status_raymart_vue"
-	],
-	"./vehicle_status/status": [
-		"./resources/js/Pages/vehicle_status/status.vue",
-		"resources_js_Pages_vehicle_status_status_vue"
-	],
-	"./vehicle_status/status.vue": [
-		"./resources/js/Pages/vehicle_status/status.vue",
-		"resources_js_Pages_vehicle_status_status_vue"
 	]
 };
 function webpackAsyncContext(req) {

@@ -71,10 +71,10 @@ export default {
 
 
             if (!!this.vehicle.vehicle_status) {
-                this.form.patch("/vehicle_status/" + this.form.id, this.form);
+                this.form.patch("/vehicleStatus/" + this.form.id, this.form);
             } 
             else {
-                this.form.post("/vehicle_status", this.form);
+                this.form.post("/vehicleStatus", this.form);
             }
 
         },

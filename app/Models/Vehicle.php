@@ -14,7 +14,7 @@ class Vehicle extends Model
 
     public function vehicle_status()
     {
-        return $this->hasOne(Vehicle_status::class);
+        return $this->hasOne(VehicleStatus::class);
     }
     public function driver()
     {
