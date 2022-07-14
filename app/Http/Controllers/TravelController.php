@@ -36,7 +36,7 @@ class TravelController extends Controller
     public function getVehicleDriver(Request $request)
     {
         $driverVehicle = $this->driverVehicle
-                            
+                            ->with('driver')
                             ->where('vehicles_id', $request->vehicles_id)
                             ->where(function($query) use ($request){
                                 $query->where('date_from', '<=', $request->travel_date)

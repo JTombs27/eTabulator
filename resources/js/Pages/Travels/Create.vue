@@ -16,10 +16,26 @@
             <form @submit.prevent="submit()">
                 <label for="">Travel Date</label>
                 <input v-model="form.travel_date" type="date" class="form-control" autocomplete="chrome-off"/>
+                <div class="row">
+                    <div class="col-md-6">
+                         <label for="">Travel Departure</label>
+                        <input v-model="form.time_departure" type="time" class="form-control" autocomplete="chrome-off"/>
+                    </div>
+                    <div class="col-md-6">
+                         <label for="">Travel Arrival</label>
+                        <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
+                    </div>
+                </div>
                 <label for="">Vehicle Name</label>
                 <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails"/>
                 <label>Driver</label>
                 <input type="text" class="form-control" readonly v-model="driverName">
+                <label for="">Name of Authorized Passenger/s</label>
+                <input type="text" v-model="form.official_passenger" class="form-control">
+                <label for="">Place to visit</label>
+                <input type="text" v-model="form.place_to_visit" class="form-control">
+                <label for="">Purpose of Travel</label>
+                <input type="text" v-model="form.purpose" class="form-control">
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
             </form>
@@ -42,6 +58,8 @@ export default {
             driverName:"",
             form: useForm({
                 travel_date:null,
+                official_passenger:'',
+                place_to_visit:'',
             }),
             pageTitle:"Create",
 
@@ -62,7 +80,12 @@ export default {
         getVehicleDetails() {
             axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.vehicles_id})
                 .then((response) => {
-                    this.driverName = response.data[0].employee_name;
+                    let mi = "";
+                   
+                    if(response.data.driver.middle_name) {
+                        mi = `${response.data.driver.middle_name.charAt(0)}.`;
+                    }
+                    this.driverName = `${response.data.driver.first_name} ${mi} ${response.data.driver.last_name}`;
                 })
         },
 
