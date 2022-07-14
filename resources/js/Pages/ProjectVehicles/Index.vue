@@ -3,7 +3,7 @@
         <title >Project Vehicles</title>
     </head>
    <div class="peers fxw-nw jc-sb ai-c">
-        <h1 style="font-size:18px !important;">PROJECT VEHICLES </h1>
+        <h1 style="font-size:20px !important;font-weight: bold;">PROJECT VEHICLES </h1>
         <div class="peers">
             <div class="peer mR-10">
                 <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">

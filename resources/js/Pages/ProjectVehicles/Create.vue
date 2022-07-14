@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-12">
                             <label for="">Purpose</label>
-                            <input type="text" v-model="form.purpose" class="form-control" autocomplete="chrome-off">
+                            <textarea type="text" v-model="form.purpose" class="form-control" autocomplete="chrome-off"></textarea>
                             <div class="fs-6 c-red-500" v-if="form.errors.purpose">{{ form.errors.purpose }}</div>
                         </div>
                     </div>
