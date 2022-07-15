@@ -25,21 +25,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD
-=======
-        // $UsrCats = auth()->user()->cats;
-        // dd($UsrCats);
-        // $UserPhoto =  Http::get("http://192.168.9.101:91//api/PGDDOEmployeePhoto?empl_id=8672")->collect();
-
-        // $cats = $UserPhoto[0]['empl_id'];
-        // $photo = $UserPhoto[0]['empl_photo_img'];
-        // dd($cats);
-        // $UsrPhotoExst = User::whereNotNull('user_photo')->exists();
-        // if (!$UsrPhotoExst) {
-        //     dd('mag update ug photo');
-        // }
-        // dd($UsrPhotoExst);
->>>>>>> 70cab56ad4c21d2ea7984ec4e7868825fcbbc5b0
         return inertia('Home');
     }
 }
