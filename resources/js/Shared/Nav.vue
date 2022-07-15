@@ -357,11 +357,17 @@
 <script>
 
 export default {
+    props:{
+      auth: Object
+    },
     methods: {
         logout() {
             this.$inertia.post('/logout')
             location.href = '/'
         }
+    },
+    mounted(){
+        this.$inertia.reload({ only: ['auth'] })
     }
 }
 </script>

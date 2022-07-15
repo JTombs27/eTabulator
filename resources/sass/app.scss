@@ -8,7 +8,17 @@
 @import '~filepond-plugin-image-edit/dist/filepond-plugin-image-edit.css';
 // Bootstrap
 //@import '~bootstrap/scss/bootstrap';
+.fade-enter-active{
+    transition: opacity 0.5s ease;
+}
+.fade-leave-active {
+//   transition: opacity 0.5s ease;
+}
 
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 .main-content {
     padding: 75px 20px 20px !important;
 }
@@ -50,3 +60,17 @@
     height: 33px !important;
 }
 
+.select2-container{
+    width: 100% !important;
+}
+.control-label {
+    width: 100%;
+}
+
+.disable-select {
+    user-select: none; /* supported by Chrome and Opera */
+   -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+   -moz-user-select: none; /* Firefox */
+   -ms-user-select: none; /* Internet Explorer/Edge */
+}
