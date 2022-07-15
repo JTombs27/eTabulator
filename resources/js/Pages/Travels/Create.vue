@@ -2,7 +2,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3>
-            <Link href="/users">
+            <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -15,7 +15,14 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <label for="">Travel Date</label>
+                
                 <input v-model="form.travel_date" type="date" class="form-control" autocomplete="chrome-off"/>
+                <div class="form-check float-right">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="showPassword">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Check ranged date
+                    </label>
+                </div>
                 <div class="row">
                     <div class="col-md-6">
                          <label for="">Travel Departure</label>
@@ -28,7 +35,7 @@
                 </div>
                 <label for="">Vehicle Name</label>
                 <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails"/>
-                <label>Driver</label>
+                <label>Authorized Driver</label>
                 <input type="text" class="form-control" readonly v-model="driverName">
                 <label>Actual Driver</label>
                 <input type="text" v-model="form.actual_driver" class="form-control" >

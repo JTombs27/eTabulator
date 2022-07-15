@@ -22,9 +22,7 @@ Auth::routes();
 
 
 Route::middleware('auth')->group(function() {
-    Route::get('/', function () {
-        return inertia('Home');
-    });
+    Route::get('/', [HomeController::class, 'index']);
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
