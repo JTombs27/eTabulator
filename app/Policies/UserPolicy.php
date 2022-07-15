@@ -21,6 +21,6 @@ class UserPolicy
 
     public function canCreateTravel(User $user)
     {
-        return $user->permissions()->where('id', 4)->exists();
+        return $user->permissions()->where('permission_name', 'can_create_travel')->exists();
     }
 }

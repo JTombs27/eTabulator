@@ -101,6 +101,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/vehicles', [DriverVehicleController::class, 'index']);
         Route::get('/{id}/create', [DriverVehicleController::class, 'create']);
         Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
+        Route::delete('/{id}/delete/{did}', [DriverVehicleController::class, 'destroy']);
     });
     
     Route::prefix('travels')->group(function() {

@@ -36,6 +36,7 @@ class TravelController extends Controller
     public function getVehicleDriver(Request $request)
     {
         $driverVehicle = $this->driverVehicle
+                            ->with('driver')
                             ->where('vehicles_id', $request->vehicles_id)
                             ->where(function($query) use ($request){
                                 $query->where('date_from', '<=', $request->travel_date)
@@ -43,10 +44,6 @@ class TravelController extends Controller
                             })
                             ->first();
 
-        if ($driverVehicle) {
-            $response = Http::get("http://192.168.9.101:91//api/PGDDO_Employees?filter=$driverVehicle->drivers_id");
-            return $response;
-        }
         return $driverVehicle;
     }
 }
