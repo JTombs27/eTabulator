@@ -12,6 +12,7 @@ use App\Http\Controllers\ProjectVehicleController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\SoaTravelController;
 
 
 
@@ -93,6 +94,12 @@ Route::middleware('auth')->group(function() {
     
     Route::prefix('travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
+    });
+
+    Route::prefix('soatravels')->group(function() {
+        Route::get('/', [SoaTravelController::class, 'index']);
+        Route::post('/', [SoaTravelController::class, 'store']);
+        Route::post('/remove', [SoaTravelController::class, 'remove']);
     });
     
 });

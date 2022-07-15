@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Travel extends Model
+class SoaTravel extends Model
 {
     use HasFactory;
 
-    protected $table = "travels";
+    protected $table = "soa_travels";
     protected $guarded = [];
 }
