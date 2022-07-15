@@ -101,10 +101,11 @@ Route::middleware('auth')->group(function() {
         Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
     });
     
-    Route::prefix('travels')->group(function() {
+    Route::prefix('/travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
         Route::get('create', [TravelController::class, 'create']);
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
+        Route::post('/', [TravelController::class, 'store']);
     });
 
     Route::prefix('sync')->group(function() {

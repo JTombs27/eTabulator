@@ -24,11 +24,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $userPhoto = User::whereNotNull('user_photo')->exists();
-        if (!$userPhoto) {
-            dd('mag update ug photo');
-        }
-        dd($userPhoto);
         return inertia('Home');
     }
 }

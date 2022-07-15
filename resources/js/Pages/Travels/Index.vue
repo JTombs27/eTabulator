@@ -26,13 +26,21 @@
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Actual Driver</th>
-                            <th scope="col">Travel Date</th>
+                            <th scope="col">Date From</th>
+                            <th scope="col">Date To</th>
                             <th scope="col" style="width: 30%"></th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+                        <tr v-for="(item, index) in travels" :key="index">
+                            <td>{{item.FDESC}} <strong>({{ item.PLATENO}})</strong></td>
+                            <td>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
+                            <td>{{item.actual_driver}}</td>
+                            <td>{{item.date_from}}</td>
+                            <td>{{item.date_to}}</td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -53,7 +61,14 @@
 export default {
     props: {
         can: Object,
+        travels:Object
     },
+
+    computed: {
+        mi() {
+            return value => value ? `${value.charAt(0)}.` : "";
+        }
+    }
 }
 </script>
 
