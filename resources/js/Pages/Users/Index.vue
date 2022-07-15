@@ -38,13 +38,13 @@
                         <tr v-for="(user, index) in users.data" :key="index">
                             <td>
                                 <div class="row g-3 align-items-center">
-                                    <div class="col-12 col-lg-auto text-center text-lg-start">						        
+                                    <!-- <div class="col-12 col-lg-auto text-center text-lg-start">						        
                                         <img
                                             class="w-2r bdrs-50p"
                                             :src="user.photo"
                                             alt=""
                                         />
-                                    </div>
+                                    </div> -->
                                     <div class="col-12 col-lg-auto text-center text-lg-start">
                                         <p class="notification-title mb-1">{{ user.name }}</p>
                                     </div>

@@ -85,11 +85,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    auth: Object
+  },
   methods: {
     logout: function logout() {
       this.$inertia.post('/logout');
       location.href = '/';
     }
+  },
+  mounted: function mounted() {
+    this.$inertia.reload({
+      only: ['auth']
+    });
   }
 });
 
