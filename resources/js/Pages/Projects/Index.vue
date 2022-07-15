@@ -4,7 +4,7 @@
         
     </head>
    <div class="peers fxw-nw jc-sb ai-c">
-        <h3>PROJECTS</h3>
+       <h1 style="font-size:20px !important;font-weight: bold;">Projects</h1>
         <div class="peers">
             <div class="peer mR-10">
                 <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -74,7 +74,7 @@
     >
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Project Description</label>
-            <input type="text" class="form-control" id="description" v-model="description">
+            <textarea type="text" class="form-control" id="description" v-model="description"></textarea>
             <div id="emailHelp" class="form-text text-danger">{{saveMessage}}</div>
         </div>
     </Modal>

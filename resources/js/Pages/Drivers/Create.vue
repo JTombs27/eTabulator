@@ -1,5 +1,9 @@
 <template>
     <div class="row gap-20 masonry pos-r">
+        <div class="peers fxw-nw jc-sb ai-c">
+            <h3>{{ pageTitle}}</h3>
+
+        </div>
         <div class="row justify-content-center">
             <div class="col-4">
                 <div class="card">
@@ -10,7 +14,7 @@
                                     <div class="col">
                                         <div class="col">
                                             <label for="">Vehicle Plate No</label>
-                                            <input type="text" v-model="form.vehicles_id" class="form-control" autocomplete="chrome-off" disabled readonly>
+                                            <input type="text" v-model="vehicles_plateno" class="form-control" autocomplete="chrome-off" disabled readonly>
                                         </div>
 
                                         <div class="col">
@@ -55,6 +59,7 @@ export default {
         return {
             vehicles: [],
             vehicles_id: "",
+            vehicles_plateno:"",
             form: useForm({
                 vehicles_id: "",
                 drivers_id: "",
@@ -67,9 +72,9 @@ export default {
     },
 
     mounted() {
-        this.form.vehicles_id = this.Vdriver.PLATENO
-       
-        this.pageTitle = "Create"
+        this.form.vehicles_id   = this.Vdriver.id
+        this.vehicles_plateno   = this.Vdriver.PLATENO
+        this.pageTitle = "Create Driver Vehicle"
         this.getVehicles()
 
         $("#emp_name").select2({
@@ -111,7 +116,9 @@ export default {
       },
 
       fetch(e){
+        console.log(e);
         this.form.department_code = e.department;
+        //this.form.vehicles_id = e.
       },
 
       submit(){
