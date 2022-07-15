@@ -17,6 +17,7 @@ class ProjectController extends Controller
     public function index(Request $request){
         return inertia('Projects/Index',[
             'projects' => $this->model
+            ->with("ProjectVehicles")
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('description', 'like', '%' . $searchItem . '%');
             })
@@ -60,7 +61,7 @@ class ProjectController extends Controller
         } catch (\Exception $th) 
         {
             //throw $th;
-            return  $th;
+            return  "Description is required!";
         } 
     }
 

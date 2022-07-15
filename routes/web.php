@@ -12,7 +12,9 @@ use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\ProjectVehicleController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\OfficeController;
 
 
 
@@ -57,8 +59,11 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/projects-vehicle')->group(function() {
         Route::get('/{id}/vehicles', [ProjectVehicleController::class, 'index']);
         Route::get('/{id}/create', [ProjectVehicleController::class, 'create']);
+        Route::get('/{id}/edit/{vid}', [ProjectVehicleController::class, 'edit']);
         Route::get('/vehicles', [ProjectVehicleController::class, 'getVehicles']);
         Route::post('/{id}/store', [ProjectVehicleController::class, 'store']);
+        Route::post('/{id}/update/{vid}', [ProjectVehicleController::class, 'update']);
+        Route::post('/delete', [ProjectVehicleController::class, 'destroy']);
     });
     
     
@@ -93,13 +98,20 @@ Route::middleware('auth')->group(function() {
 
     // Driver Vehicles
     Route::prefix('/drivers')->group(function() {
-        Route::get('/', [DriverVehicleController::class, 'index']);
-        Route::get('/create', [DriverVehicleController::class, 'create']);
-        Route::post('/', [DriverVehicleController::class, 'store']);
+        Route::get('/{id}/vehicles', [DriverVehicleController::class, 'index']);
+        Route::get('/{id}/create', [DriverVehicleController::class, 'create']);
+        Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
     });
     
     Route::prefix('travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
+        Route::get('create', [TravelController::class, 'create']);
+        Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
+    });
+
+    Route::prefix('sync')->group(function() {
+        Route::post('employees', [EmployeeController::class, 'sync']);
+        Route::post('offices', [OfficeController::class, 'sync']);
     });
     
 });

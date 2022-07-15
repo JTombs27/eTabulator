@@ -20,12 +20,13 @@ class VehicleController extends Controller
 
             ->latest()
             ->simplePaginate(10)
-            ->withQueryString()
+            ->withQueryString(),
+            
         ]);
 
     }
 
-    public function create()
+    public function create(Request $request)
     {
         return inertia('Vehicles/Create');
     }
@@ -34,7 +35,7 @@ class VehicleController extends Controller
     {
         $attributes = $request->validate([
             'PLATENO' => 'required',
-            'TYPECODE' => 'required',
+            // 'TYPECODE' => 'required',
             'FDATEACQ' => 'required',
             'FDESC' => 'required',
             

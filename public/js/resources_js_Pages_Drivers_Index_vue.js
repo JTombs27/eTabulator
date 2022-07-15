@@ -18,7 +18,13 @@ __webpack_require__.r(__webpack_exports__);
     Pagination: _Shared_Pagination__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
-    driver_vehicles: Object
+    driver_vehicles: Object,
+    Vdriver: Object
+  },
+  methods: {
+    createDriver: function createDriver() {
+      this.$inertia.get("/drivers/" + this.Vdriver.id + "/create");
+    }
   }
 });
 
@@ -181,7 +187,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [_hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [_hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": "btn btn-success btn-sm",
-    href: "/drivers/create"
+    onClick: _cache[0] || (_cache[0] = function ($event) {
+      return $options.createDriver();
+    })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_8];
