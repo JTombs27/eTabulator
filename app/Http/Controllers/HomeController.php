@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -24,11 +25,18 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $userPhoto = User::whereNotNull('user_photo')->exists();
-        if (!$userPhoto) {
-            dd('mag update ug photo');
-        }
-        dd($userPhoto);
+        // $UsrCats = auth()->user()->cats;
+        // dd($UsrCats);
+        // $UserPhoto =  Http::get("http://192.168.9.101:91//api/PGDDOEmployeePhoto?empl_id=8672")->collect();
+
+        // $cats = $UserPhoto[0]['empl_id'];
+        // $photo = $UserPhoto[0]['empl_photo_img'];
+        // dd($cats);
+        // $UsrPhotoExst = User::whereNotNull('user_photo')->exists();
+        // if (!$UsrPhotoExst) {
+        //     dd('mag update ug photo');
+        // }
+        // dd($UsrPhotoExst);
         return inertia('Home');
     }
 }

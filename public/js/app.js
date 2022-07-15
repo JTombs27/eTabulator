@@ -85,11 +85,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  props: {
+    auth: Object
+  },
   methods: {
     logout: function logout() {
       this.$inertia.post('/logout');
       location.href = '/';
     }
+  },
+  mounted: function mounted() {
+    this.$inertia.reload({
+      only: ['auth']
+    });
   }
 });
 
@@ -1613,16 +1621,6 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_status_vue"
 	],
-	"./Vehicles": [
-		"./resources/js/Pages/Vehicles/index.vue",
-		9,
-		"resources_js_Pages_Vehicles_index_vue"
-	],
-	"./Vehicles/": [
-		"./resources/js/Pages/Vehicles/index.vue",
-		9,
-		"resources_js_Pages_Vehicles_index_vue"
-	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
 		9,
@@ -1633,15 +1631,15 @@ var map = {
 		9,
 		"resources_js_Pages_Vehicles_Create_vue"
 	],
-	"./Vehicles/index": [
-		"./resources/js/Pages/Vehicles/index.vue",
+	"./Vehicles/Index": [
+		"./resources/js/Pages/Vehicles/Index.vue",
 		9,
-		"resources_js_Pages_Vehicles_index_vue"
+		"resources_js_Pages_Vehicles_Index_vue"
 	],
-	"./Vehicles/index.vue": [
-		"./resources/js/Pages/Vehicles/index.vue",
+	"./Vehicles/Index.vue": [
+		"./resources/js/Pages/Vehicles/Index.vue",
 		9,
-		"resources_js_Pages_Vehicles_index_vue"
+		"resources_js_Pages_Vehicles_Index_vue"
 	]
 };
 function webpackAsyncContext(req) {
