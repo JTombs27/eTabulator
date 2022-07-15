@@ -49,7 +49,8 @@
                     </div>
                 </div>
                 <label for="">Vehicle Name</label>
-                <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
+                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
+                <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <label>Authorized Driver</label>
                 <Select2 id="authorizedDriver"  :options="drivers" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
@@ -62,10 +63,20 @@
                 <label for="">Purpose of Travel</label>
                 <input type="text" v-model="form.purpose" class="form-control">
                 <label for="">Gas Type</label>
-                <input type="text" v-model="form.gas_type" class="form-control">
+                <select class="form-control" v-model="form.gas_type">
+                        <option value="GASOLINE">GASOLINE</option>
+                        <option value="DIESOLINE">DIESOLINE</option>
+                        <option value="ENGINE OIL">ENGINE OIL</option>
+                        <option value="BRAKE OIL">BRAKE OIL</option>
+                        <option value="GREASES">GREASES</option>
+                </select>
+                <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
                 <label for="">Liter/s</label>
                 <input type="text" v-model="form.total_liters" class="form-control">
                 <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
+                <label for="">Price</label>
+                <input type="text" v-model="form.price" class="form-control">
+                <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
             </form>
@@ -95,9 +106,11 @@ export default {
                 total_liters:null,
                 official_passenger:null,
                 driver_vehicles_id:null,
+                actual_driver:null,
                 date_from:'',
                 date_to:'',
                 rangedDate:null,
+                price:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
