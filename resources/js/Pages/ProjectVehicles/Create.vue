@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <form @submit.prevent="submit()" id="mainForm">
-                    <div class="row" v-for="(vehicle, index) in form" :key="index">
+                    <div class="row" v-for="(vehicle, index) in vehiclesGroup" >
                         <div class="col-12 bgc-white p-10 bd" style="margin-top:10px;">
                             <div class="row">
                                 <div class="col-6">
@@ -87,14 +87,14 @@ export default {
     },
     data() {
         return {
-            form: useForm([{
+            form: useForm({
                 vehicle_id: "",
                 date_from: "",
                 date_to:"",
                 purpose:"",
                 project_id:"",
                 id: null
-            }]),
+            }),
             vehiclesGroup:[{
                  vehicle_id: "",
                  date_from: "",
