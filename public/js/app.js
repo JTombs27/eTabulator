@@ -1552,6 +1552,16 @@ var map = {
 		9,
 		"resources_js_Pages_Projects_Index_vue"
 	],
+	"./SoaTravels/Details": [
+		"./resources/js/Pages/SoaTravels/Details.vue",
+		9,
+		"resources_js_Pages_SoaTravels_Details_vue"
+	],
+	"./SoaTravels/Details.vue": [
+		"./resources/js/Pages/SoaTravels/Details.vue",
+		9,
+		"resources_js_Pages_SoaTravels_Details_vue"
+	],
 	"./SoaTravels/Index": [
 		"./resources/js/Pages/SoaTravels/Index.vue",
 		9,
@@ -1561,6 +1571,16 @@ var map = {
 		"./resources/js/Pages/SoaTravels/Index.vue",
 		9,
 		"resources_js_Pages_SoaTravels_Index_vue"
+	],
+	"./SoaTravels/Show": [
+		"./resources/js/Pages/SoaTravels/Show.vue",
+		9,
+		"resources_js_Pages_SoaTravels_Show_vue"
+	],
+	"./SoaTravels/Show.vue": [
+		"./resources/js/Pages/SoaTravels/Show.vue",
+		9,
+		"resources_js_Pages_SoaTravels_Show_vue"
 	],
 	"./Travels/AjaxScript": [
 		"./resources/js/Pages/Travels/AjaxScript.js",
