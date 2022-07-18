@@ -11,4 +11,9 @@ class SoaTravel extends Model
 
     protected $table = "soa_travels";
     protected $guarded = [];
+
+    public function travels()
+    {
+        return $this->hasMany(Travel::class,"soa_travel","id");
+    }
 }

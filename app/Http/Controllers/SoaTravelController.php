@@ -20,6 +20,7 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
             "soaTravel" => $this->soatravel
+            	->withSum('travels', 'price')
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('cafoa_number', 'like', '%' . $searchItem . '%');
                 })

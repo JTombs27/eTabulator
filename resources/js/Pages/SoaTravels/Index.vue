@@ -31,6 +31,7 @@
                             <th scope="col">Cafoa Number</th>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
+                            <th scope="col">Total Price</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
@@ -39,6 +40,7 @@
                             <td>{{ soaTravels.cafoa_number }}</td>
                             <td>{{ soaTravels.date_from }}</td>
                             <td>{{ soaTravels.date_to }}</td>
+                            <td>{{ Number(soaTravels.travels_sum_price).toLocaleString("en") }}</td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
