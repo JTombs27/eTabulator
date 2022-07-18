@@ -26,10 +26,6 @@ class Travel extends Model
     ];
     use HasFactory;
 
-<<<<<<< HEAD
-    protected $table = "travels";
-    protected $guarded = [];
-=======
     public function updateTicket()
     {   
         $series = date('y').'-'.sprintf('%06d', $this->id);
@@ -37,5 +33,4 @@ class Travel extends Model
         $this->save();
     }
 
->>>>>>> 9857d57fccdf9cc09b376a7aaaee252c5f8fc440
 }

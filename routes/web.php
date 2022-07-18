@@ -14,11 +14,9 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
-<<<<<<< HEAD
 use App\Http\Controllers\SoaTravelController;
-=======
 use App\Http\Controllers\OfficeController;
->>>>>>> 9857d57fccdf9cc09b376a7aaaee252c5f8fc440
+
 
 
 
