@@ -49,12 +49,15 @@
                     </div>
                 </div>
                 <label for="">Vehicle Name</label>
-                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
+                <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <label>Authorized Driver</label>
                 <Select2 id="authorizedDriver"  :options="drivers" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <label>Actual Driver</label>
+                <Select2 v-model="form.actual_driver" class="form-control">
+
+                </Select2>
                 <input type="text" v-model="form.actual_driver" class="form-control" >
                 <label for="">Name of Authorized Passenger/s</label>
                 <input type="text" v-model="form.official_passenger" class="form-control">
@@ -106,7 +109,7 @@ export default {
                 total_liters:null,
                 official_passenger:null,
                 driver_vehicles_id:null,
-                actual_driver:null,
+                actual_driver:[],
                 date_from:'',
                 date_to:'',
                 rangedDate:null,

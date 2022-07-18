@@ -17,6 +17,9 @@ __webpack_require__.r(__webpack_exports__);
     travels: Object,
     user: Object
   },
+  methods: {
+    approved: function approved() {}
+  },
   computed: {
     mi: function mi() {
       return function (value) {
