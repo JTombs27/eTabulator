@@ -76,6 +76,12 @@ export default {
         user:Object
     },
 
+    methods:{
+        approved() {
+            
+        }
+    },
+
     computed: {
         mi() {
             return value => value ? `${value.charAt(0)}.` : "";

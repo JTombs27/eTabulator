@@ -24,6 +24,8 @@ class Travel extends Model
         'gas_type',
         'soa_travel',
         'user_id',
+        'price',
+        
 
     ];
     protected $appends = ['travelDate'];
