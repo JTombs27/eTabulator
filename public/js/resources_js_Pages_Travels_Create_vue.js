@@ -29,7 +29,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         time_arrival: '',
         time_departure: '',
         total_liters: null
-      }, _defineProperty(_useForm, "official_passenger", null), _defineProperty(_useForm, "driver_vehicles_id", null), _defineProperty(_useForm, "actual_driver", ""), _defineProperty(_useForm, "date_from", ''), _defineProperty(_useForm, "date_to", ''), _defineProperty(_useForm, "rangedDate", null), _defineProperty(_useForm, "price", null), _defineProperty(_useForm, "showActualDriver", false), _defineProperty(_useForm, "vehicles_id", null), _useForm)),
+      }, _defineProperty(_useForm, "official_passenger", ""), _defineProperty(_useForm, "driver_vehicles_id", null), _defineProperty(_useForm, "actual_driver", ""), _defineProperty(_useForm, "date_from", ''), _defineProperty(_useForm, "date_to", ''), _defineProperty(_useForm, "rangedDate", null), _defineProperty(_useForm, "price", null), _defineProperty(_useForm, "showActualDriver", false), _defineProperty(_useForm, "vehicles_id", null), _useForm)),
       pageTitle: "Create",
       columnFrom: "col-md-12",
       employees: [],
@@ -38,7 +38,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   mounted: function mounted() {
     this.getVehicles();
-    this.getEmployees(); // $("#actualDriver").select2({
+    $('#paseengers').select2({
+      ajax: {
+        type: "GET",
+        dataType: "json",
+        url: "/employees/getEmployees",
+        delay: 400,
+        data: function data(_data) {
+          return {
+            search: _data.term
+          };
+        },
+        processResults: function processResults(data, params) {
+          params.page = params.page || 1;
+          return {
+            results: $.map(data, function (obj) {
+              return {
+                id: obj.text,
+                text: obj.text
+              };
+            })
+          };
+        },
+        cache: true
+      },
+      placeholder: 'Search or Add  Passenger',
+      // multiple:true,
+      tags: true,
+      data: [{
+        "text": "",
+        "id": "",
+        "selected": true
+      }]
+    }); // $("#actualDriver").select2({
     //   tags: true
     // });
   },
@@ -78,6 +110,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           };
         });
       });
+    },
+    appendPassenger: function appendPassenger(e) {
+      // console.log("test")
+      var separator = "";
+
+      if (this.form.official_passenger != "") {
+        separator = ", ";
+        this.form.official_passenger += "".concat(separator).concat(e.text);
+        return false;
+      }
+
+      this.form.official_passenger += "".concat(separator).concat(e.text);
     },
     setDriverVehicle: function setDriverVehicle($event) {
       this.form.driver_vehicles_id = $event.dv_id;
@@ -335,7 +379,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[18] || (_cache[18] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[19] || (_cache[19] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -450,22 +494,22 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.actual_driver]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.errors.actual_driver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.actual_driver), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_30, _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
-    modelValue: $data.form.official_passenger,
-    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
-      return $data.form.official_passenger = $event;
-    }),
-    options: $data.employees,
-    settings: {
-      multiple: true,
-      tags: true
-    },
-    id: "actualDriver"
-  }, null, 8
-  /* PROPS */
-  , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" v-model=\"form.official_passenger\" class=\"form-control\"> "), _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "text",
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
+    id: "paseengers",
+    onSelect: _cache[11] || (_cache[11] = function ($event) {
+      return $options.appendPassenger($event);
+    })
+  }), _hoisted_31, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    "class": "form-control",
+    cols: "3",
     "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+      return $data.form.official_passenger = $event;
+    })
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.official_passenger]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" v-model=\"form.official_passenger\" class=\"form-control\"> "), _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
+    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
       return $data.form.place_to_visit = $event;
     }),
     "class": "form-control"
@@ -473,7 +517,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.place_to_visit]]), _hoisted_33, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
       return $data.form.purpose = $event;
     }),
     "class": "form-control"
@@ -481,7 +525,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.purpose]]), _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
-    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
       return $data.form.gas_type = $event;
     })
   }, _hoisted_40, 512
@@ -490,7 +534,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
       return $data.form.total_liters = $event;
     }),
     "class": "form-control"
@@ -500,7 +544,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
       return $data.form.price = $event;
     }),
     "class": "form-control"
@@ -511,7 +555,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
-    onClick: _cache[17] || (_cache[17] = function ($event) {
+    onClick: _cache[18] || (_cache[18] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
