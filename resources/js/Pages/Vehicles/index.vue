@@ -8,7 +8,7 @@
             <h3>Vehicles</h3>
             <div class="peers">
                 <div class="peer mR-10">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
                     <Link class="btn btn-success btn-sm" href="/vehicles/create">Add Vehicles</Link>
@@ -16,6 +16,12 @@
                 </div>
             </div>
         </div>
+
+        <filtering v-if="filter" @closeFilter="filter=false">
+            <label>Sample Inputs</label>
+            <input type="text" class="form-control">
+            <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
+        </filtering>
 
         <div class="col-12">
             <div class="bcg-white p-20 bd">
@@ -101,7 +107,8 @@ export default ({
     },
     data() {
         return {
-            driverid: ""
+            driverid: "",
+            filter:false
         }
     },
 
@@ -121,7 +128,7 @@ export default ({
         },
         showFilter()
         {
-
+            this.filter = !this.filter
         }
     },
 })

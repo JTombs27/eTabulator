@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class EmployeeController extends Controller
 {
-    public function sync()
+    public function __construct(Employee $employee)
+    {  
+        $this->model = $employee;
+    }
+    public function _sync()
     {
         try {
             //code...
@@ -43,4 +48,22 @@ class EmployeeController extends Controller
             //throw $th;
         }
     }
+
+    public function getEmployees(Request $request)
+    {
+        $data = $this->model;
+        if($request->empl_id) {
+            $data->whereEqual($data, 'empl_id', $request->empl_id);
+        }
+        return $data->get()->map(fn($item) => [
+            'id' => $item->full_name,
+            'text' => $item->full_name
+        ]);
+    }
+
+    protected function whereEqual($query, $fieldName, $_params)
+    {
+        return $query->where($fieldName, $_params);
+    }
+
 }

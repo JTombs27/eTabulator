@@ -22,6 +22,8 @@ class Travel extends Model
         'ticket_number',
         'gas_type',
         'user_id',
+        'price',
+        
 
     ];
     use HasFactory;

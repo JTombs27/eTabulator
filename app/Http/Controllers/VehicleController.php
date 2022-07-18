@@ -19,7 +19,7 @@ class VehicleController extends Controller
             "vehicles" => $this->model
             
             ->when($request->search, function ($query, $searchItem) {
-                $query->where('PLATENO', 'like', '%'.$searchItem . '%');
+                $query->where('PLATENO', 'like', '%'.$searchItem . '%') ;
             })
             
             ->latest()
@@ -39,7 +39,7 @@ class VehicleController extends Controller
     {
         $attributes = $request->validate([
             'PLATENO' => 'required',
-            // 'TYPECODE' => 'required',
+            'TYPECODE' => 'required',
             'FDATEACQ' => 'required',
             'FDESC' => 'required',
             

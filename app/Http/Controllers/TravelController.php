@@ -67,6 +67,7 @@ class TravelController extends Controller
         // $travel = User::latest()->first();
         // $secondDigit = $travel->id+1;
         // $series = date('y').sprintf('%08d', $secondDigit);
+        $request['official_passenger'] = join(', ', $request->official_passenger);
         $request['ticket_number'] = 0;
         $request['user_id'] = auth()->user()->id;
 

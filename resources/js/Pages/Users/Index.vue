@@ -98,9 +98,8 @@
         @saveModal="updatePermissions"
     >
         <div v-for="permission, index in permissions">
-            <h4> {{ index }} </h4>
             <div v-for="item in permission">
-                <input type="checkbox" v-model="selectedPermissions" :value="item.id" :id="item.id"> {{ item.permission_name }}
+                <input type="checkbox" v-model="selectedPermissions" :value="item.id" :id="item.id"> <label :for="item.id">{{ item.permission_name }}</label>
             </div>
         </div>
     </Modal>
@@ -165,7 +164,7 @@ export default {
             this.getAllPermissions()
         },
         updatePermissions() {
-            this.showModal = false
+           
 
             this.$inertia.post('update-user-permissions', {
                     'user_id' : this.selectedUser,
@@ -173,6 +172,7 @@ export default {
                 }, {
                 replace: true,
             })
+            this.showModal = false
         },
         closeModal() {
             this.showModal = false

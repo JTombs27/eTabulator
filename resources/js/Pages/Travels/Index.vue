@@ -25,21 +25,32 @@
                         <tr>
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
-                            <th scope="col">Actual Driver</th>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
-                            <th scope="col" style="width: 30%"></th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(item, index) in travels" :key="index">
                             <td>{{item.FDESC}} <strong>({{ item.PLATENO}})</strong></td>
-                            <td>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
-                            <td>{{item.actual_driver}}</td>
+                            <td v-if="item.actual_driver">{{item.actual_driver}}</td>
+                            <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
                             <td>{{item.date_from}}</td>
                             <td>{{item.date_to}}</td>
-                            <td></td>
+                            <td style="text-align: right">
+                                <!-- v-if="user.can.edit" -->
+                                <div class="dropdown dropstart">
+                                  <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                      <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    </svg>
+                                  </button>
+                                  <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                    <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`">Edit</Link></li>
+                                    <li><Link class="dropdown-item" :href="`/travels/approve`">Approve</Link></li>
+                                  </ul>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -61,7 +72,14 @@
 export default {
     props: {
         can: Object,
-        travels:Object
+        travels:Object,
+        user:Object
+    },
+
+    methods:{
+        approved() {
+            
+        }
     },
 
     computed: {

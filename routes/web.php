@@ -14,7 +14,9 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
+
 
 
 
@@ -91,7 +93,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/', [VehicleController::class, 'store']);
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
-        Route::delete('/{id}', [VehicleController::class, 'destroy']);
+        Route::post('/{id}', [VehicleController::class, 'destroy']);
         Route::post('/getVehicles', [VehicleController::class, 'getVehicles']);
     });
 
@@ -111,8 +113,19 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('sync')->group(function() {
-        Route::post('employees', [EmployeeController::class, 'sync']);
-        Route::post('offices', [OfficeController::class, 'sync']);
+        Route::post('employees', [EmployeeController::class, '_sync']);
+        Route::post('offices', [OfficeController::class, '_sync']);
+    });
+
+    Route::prefix('soatravels')->group(function() {
+        Route::get('/', [SoaTravelController::class, 'index']);
+        Route::post('/', [SoaTravelController::class, 'store']);
+        Route::post('/remove', [SoaTravelController::class, 'remove']);
+    });
+
+    //for employees
+    Route::prefix('employees')->group(function () {
+        Route::get('getEmployees', [EmployeeController::class, 'getEmployees']);
     });
     
 });
