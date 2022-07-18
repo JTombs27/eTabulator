@@ -19,9 +19,44 @@ class SoaTravelController extends Controller
     {
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
+            "soaTravel" => $this->soatravel
+            	->when($request->search, function ($query, $searchItem) {
+                    $query->where('cafoa_number', 'like', '%' . $searchItem . '%');
+                })
+                ->latest()
+                ->simplePaginate(10)
+                ->withQueryString()
+                ,
+            "filters" => $request->only(['search']),
+            "can" => [
+                'canCreateSoaTravel' => auth()->user()->can('canCreateSoaTravel', User::class)
+            ]
+        ]);
+    }
+
+    public function show(Request $request)
+    {
+        return inertia('SoaTravels/Show', [
+            //returns an array of users with name field only
             "travel" => $this->model
             	->orderBy('date_from', 'asc')
             	->get(),
+        ]);
+    }
+
+    public function details(Request $request, $id)
+    {
+        return inertia('SoaTravels/Details', [
+            //returns an array of users with name field only
+            "travels" => $this->model
+            	->latest()
+            	->when($request->search, function ($query, $searchItem) {
+                    $query->where('ticket_number', 'like', '%' . $searchItem . '%');
+                })
+            	->where('soa_travel', $id)
+            	->simplePaginate(10),
+            "filters" => $request->only(['search']),
+            "soaTravelId" =>$id,
         ]);
     }
 
@@ -61,6 +96,21 @@ class SoaTravelController extends Controller
     	$travel = $this->model->findOrFail($request->id);
     	$travel->update(['soa_travel' => null]);
 
-    	return redirect('/soatravels')->with('message', 'Tag removed');
+    	return redirect('/soatravels/'.$request->soa_travel.'/details')->with('message', 'Tag removed');
+    }
+
+     public function destroy(Request $request)
+    {
+        $data = $this->soatravel->findOrFail($request->id);
+
+        $travel = $this->model->where('soa_travel', $data->id)->get();
+
+        	foreach($travel as $travels){
+        		$travels->update(['soa_travel' => null]);
+        	}
+        
+        $data->delete();
+
+        return redirect('/soatravels')->with('message', 'Soa Travel deleted');
     }
 }
