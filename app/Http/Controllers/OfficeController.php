@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class OfficeController extends Controller
 {
-    public function sync()
+    public function _sync()
     {
         try {
             //code...

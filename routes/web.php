@@ -14,7 +14,9 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
+
 
 
 
@@ -42,6 +44,7 @@ Route::middleware('auth')->group(function() {
 
     //marvin
     Route::prefix('/VehicleStatus')->group(function() {
+        //return inertia('VehicleStatus');
         Route::post('/', [VehicleStatusController::class, 'store']);
         Route::get('{id}', [VehicleStatusController::class, 'index']);
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
@@ -101,15 +104,30 @@ Route::middleware('auth')->group(function() {
         Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
     });
     
-    Route::prefix('travels')->group(function() {
+    Route::prefix('/travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
         Route::get('create', [TravelController::class, 'create']);
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
+        Route::post('/', [TravelController::class, 'store']);
     });
 
     Route::prefix('sync')->group(function() {
-        Route::post('employees', [EmployeeController::class, 'sync']);
-        Route::post('offices', [OfficeController::class, 'sync']);
+        Route::post('employees', [EmployeeController::class, '_sync']);
+        Route::post('offices', [OfficeController::class, '_sync']);
+    });
+
+    Route::prefix('soatravels')->group(function() {
+        Route::get('/', [SoaTravelController::class, 'index']);
+        Route::get('/merge', [SoaTravelController::class, 'show']);
+        Route::get('/{id}/details', [SoaTravelController::class, 'details']);
+        Route::post('/', [SoaTravelController::class, 'store']);
+        Route::post('/{id}/remove', [SoaTravelController::class, 'remove']);
+        Route::delete('/{id}', [SoaTravelController::class, 'destroy']);
+    });
+
+    //for employees
+    Route::prefix('employees')->group(function () {
+        Route::get('getEmployees', [EmployeeController::class, 'getEmployees']);
     });
     
 });
