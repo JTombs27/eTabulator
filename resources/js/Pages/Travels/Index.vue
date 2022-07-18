@@ -46,8 +46,8 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`">Edit</Link></li>
-                                    <li><Link class="dropdown-item" :href="`/travels/approve`">Approve</Link></li>
+                                    <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
+                                    <li><Link class="dropdown-item" :href="`/travels/set-status`" @click="approveStatus(item)" as="button">Approve</Link></li>
                                   </ul>
                                 </div>
                             </td>
@@ -65,7 +65,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -76,8 +75,16 @@ export default {
         user:Object
     },
 
+    data() {
+        return{
+            form: this.$inertia.form({
+                
+            })
+        }
+    },
+
     methods:{
-        approved() {
+        approvedStatus() {
             
         }
     },

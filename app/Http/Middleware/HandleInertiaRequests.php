@@ -46,7 +46,8 @@ class HandleInertiaRequests extends Middleware
                     'user' => [
                         'username' => ucfirst(auth()->user()->name),
                         //'photo' => $profile ? $profile->getUrl() : ''
-                        'photo' => auth()->user()->user_photo
+                        'photo' => auth()->user()->user_photo,
+                        'role' => auth()->user()->role
                     ]
                 ] : null,
                 'flash' => [
