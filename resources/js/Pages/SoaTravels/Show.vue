@@ -68,14 +68,16 @@
                         <td v-if="!sortedEmp.length" colspan="6">No record found.</td>
                     </tbody>
                 </table>
-                <p>
-                    <button class="btn btn-sm btn-outline-primary"  v-if="this.currentPage > 1" @click="prevPage">Prev</button> &nbsp;
-                    <button class="btn btn-sm btn-outline-primary"  v-if="this.currentPage <= 1" :disabled='true' @click="prevPage">Prev</button> &nbsp;
-                    <button class="btn btn-sm btn-outline-primary" v-if="(this.currentPage*this.pageSize) < this.myLength" @click="nextPage">Next</button>
-                    <button class="btn btn-sm btn-outline-primary" v-if="(this.currentPage*this.pageSize) >= this.myLength" :disabled='true' @click="nextPage">Next</button>
-                </p>
-                {{ ((currentPage-1)*pageSize)+1 }} to {{ getTo() }} of {{ myLength }} results
-                
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button class="page-link"  v-if="this.currentPage > 1" @click="prevPage" preserve-scroll style="color: grey">Previous</button>
+                        <button class="page-link"  v-if="this.currentPage <= 1" :disabled='true' @click="prevPage" style="color: grey">Previous</button> 
+                    </li>
+                    <li class="page-iteme">
+                        <button class="page-link" v-if="(this.currentPage*this.pageSize) < this.myLength" @click="nextPage" preserve-scroll style="color: grey">Next</button>
+                        <button class="page-link" v-if="(this.currentPage*this.pageSize) >= this.myLength" :disabled='true' @click="nextPage" style="color: grey">Next</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -94,6 +96,7 @@ export default {
     components: { Pagination, Filtering },
     props: {
         travel: Array,
+        auth: Object
     },
 
     data(){
@@ -107,6 +110,8 @@ export default {
                 date_from: "",
                 date_to: "",
                 travels: [],
+                user_id: this.auth.user.id,
+                office_id: this.auth.user.office_id,
             }),
             temp2:[],
         }
