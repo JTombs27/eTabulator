@@ -119,8 +119,11 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('soatravels')->group(function() {
         Route::get('/', [SoaTravelController::class, 'index']);
+        Route::get('/merge', [SoaTravelController::class, 'show']);
+        Route::get('/{id}/details', [SoaTravelController::class, 'details']);
         Route::post('/', [SoaTravelController::class, 'store']);
-        Route::post('/remove', [SoaTravelController::class, 'remove']);
+        Route::post('/{id}/remove', [SoaTravelController::class, 'remove']);
+        Route::delete('/{id}', [SoaTravelController::class, 'destroy']);
     });
 
     //for employees

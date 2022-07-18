@@ -1,68 +1,71 @@
 <template>
+    <Head>
+        <title>Soa Travels</title>
+    </Head>
+
     <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Soa Travels</h3>
             <div class="peers">
-                <div class="peer mR-5">
-                    <div class="input-group">
-                        <span class="input-group-text">From</span>
-                        <input type="date" v-model="form.date_from" @change="date_from()" class="form-control">
-                    </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
+                <div class="peer mR-10">
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
-                <div class="peer mR-5">
-                    <div class="input-group">
-                        <span class="input-group-text">To</span>
-                        <input type="date" v-model="form.date_to"  @change="date_to()" class="form-control">
-                    </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
-                </div>
-                <div class="peer">
-                    <button class="btn btn-primary text-white" @click="submit()" :disabled="form.temp1 == 0">Merge</button>
+                <div class="peer"  v-if="can.canCreateSoaTravel">
+                    <Link class="btn btn-primary btn-sm" href="/soatravels/merge">Add Merge</Link>
+                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
                 </div>
             </div>
         </div>
+
+        <filtering v-if="filter" @closeFilter="filter=false">
+            <label>Sample Inputs</label>
+            <input type="text" class="form-control">
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
+        </filtering>
+ 
         <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Ticket Number</th>
-                            <th scope="col">Travel Date</th>
-                            <th scope="col">Time Departure</th>
-                            <th scope="col">Time Arrival</th>
-                            <th scope="col">Gas Type</th>
-                            <th scope="col">Liters</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Cafoa Number</th>
+                            <th scope="col">Date From</th>
+                            <th scope="col">Date To</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="soa_travel in sortedEmp">
-                            <td>{{ soa_travel.ticket_number }}</td>
-                            <td>{{ soa_travel.travel_date }}</td>
-                            <td>{{ soa_travel.time_departure }}</td>
-                            <td>{{ soa_travel.time_arrival }}</td>
-                            <td>{{ soa_travel.gas_type }}</td>
-                            <td>{{ soa_travel.total_liters }}</td>
-                            <td>
-                                <button class="btn btn-secondary btn-sm action-btn" v-if="soa_travel.soa_travel !== null" @click="remove(soa_travel)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
-                                    <path d="M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z"/>
-                                    </svg> remove
-                                </button>
+                        <tr v-for="(soaTravels, index) in soaTravel.data" :key="index">
+                            <td>{{ soaTravels.cafoa_number }}</td>
+                            <td>{{ soaTravels.date_from }}</td>
+                            <td>{{ soaTravels.date_to }}</td>
+                            <td>{{ Number(soaTravels.travels_sum_price).toLocaleString("en") }}</td>
+                            <td style="text-align: right">
+                                <!-- v-if="user.can.edit" -->
+                                <div class="dropdown dropstart">
+                                  <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                      <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    </svg>
+                                  </button>
+                                  <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                    <li><Link class="dropdown-item" :href="`/soatravels/${soaTravels.id}/details`">Details</Link></li>
+                                    <li><Link class="text-danger dropdown-item" @click="deleteSoaTravel(soaTravels.id)">Delete</Link></li>
+                                  </ul>
+                                </div>
                             </td>
                         </tr>
-                        <td v-if="!sortedEmp.length" colspan="6">No record found.</td>
                     </tbody>
                 </table>
-                <p>
-                    <button class="btn btn-sm btn-outline-primary"  v-if="this.currentPage > 1" @click="prevPage">Prev</button> &nbsp;
-                    <button class="btn btn-sm btn-outline-primary"  v-if="this.currentPage <= 1" :disabled='true' @click="prevPage">Prev</button> &nbsp;
-                    <button class="btn btn-sm btn-outline-primary" v-if="(this.currentPage*this.pageSize) < this.myLength" @click="nextPage">Next</button>
-                    <button class="btn btn-sm btn-outline-primary" v-if="(this.currentPage*this.pageSize) >= this.myLength" :disabled='true' @click="nextPage">Next</button>
-                </p>
-                {{ ((currentPage-1)*pageSize)+1 }} to {{ getTo() }} of {{ myLength }} results
-                
+
+                <div class="row justify-content-center">
+                    <div class="col-md-12">
+                        <!-- read the explanation in the Paginate.vue component -->
+                        <!-- <pagination :links="soaTravel.links" /> -->
+                        <pagination :next="soaTravel.next_page_url" :prev="soaTravel.prev_page_url" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -72,124 +75,48 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
-import { useForm } from "@inertiajs/inertia-vue3";
-import { computed } from 'vue'
-
 
 export default {
-    name: 'Soa Travel',
     components: { Pagination, Filtering },
     props: {
-        travel: Array,
+        soaTravel: Object,
+        filters: Object,
+        can: Object,
     },
-
-    data(){
-        return{
-            Travels: [],
-            currentSort:'name',
-            currentSortDir:'asc',
-            pageSize:10,
-            currentPage:1,
-            form: useForm({
-                date_from: "",
-                date_to: "",
-                travels: [],
-            }),
-            temp2:[],
-        }
+    data() {
+        return {
+            search: this.$props.filters.search,
+            confirm: false,
+            filter: false,
+            showModal: false,
+            permissions: [],
+            selectedPermissions: [],
+            selectedUser: ""
+        };
     },
-    computed:{
-        sortedEmp:function() {
-            
-            let startDate = this.form.date_from;
-            let endDate = this.form.date_to;
-
-            if ( startDate == "" ) {
-                this.temp2;
-            } else {
-
-                this.temp2 = this.Travels
-                .filter(item => {
-                    const travelDate = item.travel_date
-                if ( startDate && endDate ) {
-                    return startDate <= travelDate && travelDate <= endDate;
+    watch: {
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/soatravels",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
                 }
-                if ( startDate && !endDate ) {
-                    return startDate <= travelDate;
-                }
-                if ( !startDate && endDate ) {
-                    return travelDate <= endDate;
-                }
-                    return this.temp2
-                })
-
-            }
-            this.form.travels = this.temp2.filter(item => item.soa_travel === null)
-            this.myLength = this.temp2.length;
-            return this.temp2.sort((a,b) => {
-                        let modifier = 1;
-                        if(this.currentSortDir === 'desc') modifier = -1;
-                        if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-                        if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
-                        return 0;
-                    }
-                    ).filter((row, index) => {
-                        let start = (this.currentPage-1)*this.pageSize;
-                        let end = this.currentPage*this.pageSize;
-                        if(index >= start && index < end) return true;
-            });
-        },
+            );
+        }, 300),
     },
-    mounted(){
-        this.getData();
-    },
-    methods:{
-        async getData(){
-            this.Travels = this.travel;
-            this.myLength = this.Travels.length;
-        },
-        nextPage:function() {
-            
-            if((this.currentPage*this.pageSize) < this.myLength) this.currentPage++;
-        },
-        prevPage:function() {
-            
-            if(this.currentPage > 1) this.currentPage--;
-        },
-        sort:function(s) {
-            if(s === this.currentSort) {
-                this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
-            }
-            this.currentSort = s;
-        },
-        getTo(){
-            var toPage= this.currentPage;
-            toPage = toPage*this.pageSize;
-            if(toPage>this.myLength){
-                toPage = toPage -(toPage-this.myLength);
-            }
-            return toPage;
-        },
-        date_from(){
-            this.currentPage=1;
-        },
-        date_to(){
-            this.currentPage=1;
-        },
-
-        submit() {
-            this.$inertia.visit("/soatravels", {method: 'post', data:this.form});
-            
-        },
-
-        remove(soa_travel) {
-                this.item = soa_travel;
-            let text = "WARNING!\nAre you sure you want to Remove the tag?";
+    methods: {
+        deleteSoaTravel(id) {
+            let text = "WARNING!\nAre you sure you want to delete the record?";
               if (confirm(text) == true) {
-                this.$inertia.visit("/soatravels/remove", {method: 'post', data:this.item}) ;
+                this.$inertia.delete("/soatravels/" + id);
               }
         },
+        showFilter() {
+            this.filter = !this.filter
+        }
     },
-    
 };
 </script>

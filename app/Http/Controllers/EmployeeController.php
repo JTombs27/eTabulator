@@ -51,14 +51,15 @@ class EmployeeController extends Controller
 
     public function getEmployees(Request $request)
     {
-        $data = $this->model;
-        if($request->empl_id) {
-            $data->whereEqual($data, 'empl_id', $request->empl_id);
+        if ($request->search) {
+            $data = $this->model
+                    ->where('empl_id', 'like', "%{$request->search}%")
+                    ->orWhere('last_name', 'like', "%{$request->search}%");
+            return $data->get()->map(fn($item) => [
+                'id' => $item->full_name,
+                'text' => $item->full_name
+            ]);
         }
-        return $data->get()->map(fn($item) => [
-            'id' => $item->full_name,
-            'text' => $item->full_name
-        ]);
     }
 
     protected function whereEqual($query, $fieldName, $_params)

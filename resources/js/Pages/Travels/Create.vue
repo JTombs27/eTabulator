@@ -67,8 +67,9 @@
                 <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver">
                 <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
                 <hr>
+                <Select2 id="paseengers" @select="appendPassenger($event)" />
                 <label for="">Name of Authorized Passenger/s</label>
-                <Select2 v-model="form.official_passenger" :options="employees" :settings="{ multiple: true, tags:true }" id="actualDriver"/>
+                <textarea class="form-control" cols="3" v-model="form.official_passenger"></textarea>
                 <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
                 <label for="">Place to visit</label>
                 <input type="text" v-model="form.place_to_visit" class="form-control">
@@ -115,7 +116,7 @@ export default {
                 time_arrival:'',
                 time_departure:'',
                 total_liters:null,
-                official_passenger:null,
+                official_passenger:"",
                 driver_vehicles_id:null,
                 actual_driver:"",
                 date_from:'',
@@ -134,7 +135,36 @@ export default {
 
     mounted() {
         this.getVehicles();
-        this.getEmployees();
+
+        $('#paseengers').select2({
+            ajax: {
+                type:"GET",
+                dataType:"json",
+                url: "/employees/getEmployees",
+                delay:400,
+                data:function(data) {
+                    return{ search:data.term }
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return {
+                        results: $.map(data, (obj) => {
+                            return {
+                                id:obj.text,
+                                text:obj.text
+                            }
+                        })
+                    }
+                },
+                cache: true,
+            },
+            placeholder: 'Search or Add  Passenger',
+            // multiple:true,
+            tags:true,
+            data:[{"text": "", "id":"", "selected": true}]
+            
+        })
         // $("#actualDriver").select2({
         //   tags: true
         // });
@@ -169,6 +199,17 @@ export default {
                         
                     })                     
                 })
+        },
+
+        appendPassenger(e) {
+            // console.log("test")
+            let separator = "";
+            if (this.form.official_passenger != "") {
+                separator = ", ";
+                this.form.official_passenger += `${separator}${e.text}`
+                return false;
+            }
+            this.form.official_passenger += `${separator}${e.text}`
         },
 
         setDriverVehicle($event) {
