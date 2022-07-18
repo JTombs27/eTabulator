@@ -22,9 +22,7 @@ Auth::routes();
 
 
 Route::middleware('auth')->group(function() {
-    Route::get('/', function () {
-        return inertia('Home');
-    });
+    Route::get('/', [HomeController::class, 'index']);
 
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
@@ -44,6 +42,7 @@ Route::middleware('auth')->group(function() {
 
     //marvin
     Route::prefix('/VehicleStatus')->group(function() {
+        //return inertia('VehicleStatus');
         Route::post('/', [VehicleStatusController::class, 'store']);
         Route::get('{id}', [VehicleStatusController::class, 'index']);
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
@@ -104,10 +103,11 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/delete/{did}', [DriverVehicleController::class, 'destroy']);
     });
     
-    Route::prefix('travels')->group(function() {
+    Route::prefix('/travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
         Route::get('create', [TravelController::class, 'create']);
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
+        Route::post('/', [TravelController::class, 'store']);
     });
 
     Route::prefix('sync')->group(function() {

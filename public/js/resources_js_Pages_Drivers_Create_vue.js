@@ -164,7 +164,8 @@ var _hoisted_13 = {
 };
 
 var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "for": ""
+  "for": "",
+  "class": "col-mb-3 col-form-label"
 }, "Drivers Name", -1
 /* HOISTED */
 );
@@ -174,7 +175,8 @@ var _hoisted_15 = {
 };
 
 var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "for": ""
+  "for": "",
+  "class": "col-mb-3 col-form-label"
 }, "Date From", -1
 /* HOISTED */
 );
@@ -188,7 +190,8 @@ var _hoisted_18 = {
 };
 
 var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "for": ""
+  "for": "",
+  "class": "col-mb-3 col-form-label"
 }, "Date To", -1
 /* HOISTED */
 );

@@ -13,17 +13,21 @@ class VehicleController extends Controller
         $this->model = $model;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         return inertia('Vehicles/Index', [
             "vehicles" => $this->model
-
+            
+            ->when($request->search, function ($query, $searchItem) {
+                $query->where('PLATENO', 'like', '%'.$searchItem . '%');
+            })
+            
             ->latest()
             ->simplePaginate(10)
             ->withQueryString(),
             
+            "filters" => $request->only(['search']),
         ]);
-
     }
 
     public function create(Request $request)
@@ -40,9 +44,13 @@ class VehicleController extends Controller
             'FDESC' => 'required',
             
         ]);
-        $this->model->create($request->all());
+        $vehicle = $this->model->create($request->except('checkadd'));
 
-        return redirect('/vehicles')->with('message', 'Added Successfully');
+        if (!!$request->checkadd) {
+            return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');
+        } else {
+            return redirect('/vehicles')->with('message', 'Added Successfully');
+        }
     }
 
     public function edit(Request $request, $id)

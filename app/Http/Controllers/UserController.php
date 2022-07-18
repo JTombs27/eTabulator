@@ -39,7 +39,7 @@ class UserController extends Controller
                     'permissions' => $user->permissions,
                     'email' => $user->email,
                     'name' => $user->name,
-                    'photo' => $user->getFirstMedia('avatars') ? $user->getFirstMedia('avatars')->getUrl() : '/images/no-avatar.png',
+                    'photo' => $user->user_photo,
                     "can" => [
                         // 'edit' => auth()->user()->can('edit', $user),
                     ],
@@ -64,13 +64,14 @@ class UserController extends Controller
             'username' => 'required|unique:users',
             'password' => ['required', 'confirmed'],
         ]);
-
+     
         //transactions are functions that are used when you want to CRUD multiple table simultaneously
         //this will help rollback all changes if one of the table breaks which saves time to clean the mess
         DB::beginTransaction();
         try {
 
             $attributes['password'] = bcrypt($request->password);
+            $attributes['cats'] = $request->cats;
             $newUser = $this->model->create($attributes);
             $user = User::find($newUser->id);
 

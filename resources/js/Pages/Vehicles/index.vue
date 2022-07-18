@@ -12,7 +12,7 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-success btn-sm" href="/vehicles/create">Add Vehicles</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white">Filter</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td> {{vehicle.TYPECODE}}</td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> {{vehicle.FACQCOST}}</td>
+                            <td> {{ Number(vehicle.FACQCOST).toLocaleString()}}</td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
@@ -91,10 +91,13 @@
 
 <script>
 import Pagination from "@/Shared/Pagination";
+import Filtering from "@/Shared/Filter";;
+
 export default ({
-    components: { Pagination},
+    components: { Pagination, Filtering},
     props: {
-        vehicles: Object
+        vehicles: Object,
+        filters: Object
     },
     data() {
         return {
@@ -115,6 +118,10 @@ export default ({
             if(confirm(text) == true) {
                 this.$inertia.post("/vehicles/" + vehicle.id);
             }
+        },
+        showFilter()
+        {
+
         }
     },
 })

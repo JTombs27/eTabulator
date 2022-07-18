@@ -32,8 +32,7 @@
                         <tbody>
                             <tr v-for="(item,index) in driver_vehicles.data" :key="index">
                                 <td>{{item.vehicle.PLATENO}}</td>
-                                <td v-if="!!item.driver"> {{item.driver.full_name}}</td>
-                                <td v-else></td>
+                                <td> {{`${item.driver.first_name} ${mi(item.driver.middle_name)} ${item.driver.last_name}`}}</td>
                                 <td>{{item.date_from}}</td>
                                 <td>{{item.date_to}}</td>
                                 <td> {{item.office.office}}</td>
@@ -89,13 +88,21 @@ export default ({
 
         deleteDriver(id)
         {
-            let text = "Warning! \Are you sure you want to Delete the Driver ";
+            let text = "Warning! \nAre you sure you want to Delete the Driver ";
 
             if (confirm(text) == true) {
                 this.$inertia.delete("/drivers/" + this.Vdriver.id+"/delete/" + id);
             }
         }
+    },
+
+     computed: {
+        mi() {
+            return value => value ? `${value.charAt(0)}.` : "";
+        }
     }
+
+
 
 })
 </script>
