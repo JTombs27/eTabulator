@@ -24,6 +24,7 @@ class DriverVehicleController extends Controller
             ])
 
             ->latest()
+            ->where('vehicles_id','=',$id)
             ->simplePaginate(10)
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()

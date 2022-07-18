@@ -53,6 +53,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="driver_vehicles.data == 0"><td class="text-center" colspan="5">No Data Found</td></tr>
                         </tbody>
                     </table>
 

@@ -53,8 +53,7 @@ __webpack_require__.r(__webpack_exports__);
         this.form.post("/vehicles", this.form);
       }
     },
-    addDriver: function addDriver() {// this.$inertia.get("/drivers/" + this.Vdriver+"/create");
-    }
+    addDriver: function addDriver() {}
   }
 });
 
