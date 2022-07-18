@@ -44,10 +44,12 @@ class HandleInertiaRequests extends Middleware
             return array_merge(parent::share($request), [
                 'auth' => auth()->user() ? [ //if there is a user
                     'user' => [
+                        'id' => auth()->user()->id,
                         'username' => ucfirst(auth()->user()->name),
                         //'photo' => $profile ? $profile->getUrl() : ''
                         'photo' => auth()->user()->user_photo,
-                        'role' => auth()->user()->role
+                        'role' => auth()->user()->role,
+                        'office_id' => auth()->user()->office_id
                     ]
                 ] : null,
                 'flash' => [

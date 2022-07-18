@@ -77,8 +77,7 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
-        		
-        		$soaTravel = $this->soatravel->create($attributes);
+        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id'));
         		foreach ($request->travels as $key ) {
         			$travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
         		}

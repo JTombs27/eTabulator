@@ -96,6 +96,7 @@ export default {
     components: { Pagination, Filtering },
     props: {
         travel: Array,
+        auth: Object
     },
 
     data(){
@@ -109,6 +110,8 @@ export default {
                 date_from: "",
                 date_to: "",
                 travels: [],
+                user_id: this.auth.user.id,
+                office_id: this.auth.user.office_id,
             }),
             temp2:[],
         }
