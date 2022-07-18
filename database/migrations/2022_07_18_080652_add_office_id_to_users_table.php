@@ -14,7 +14,7 @@ class AddOfficeIdToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('office_id')->after('user_photo');
+            $table->string('office_id')->after('user_photo')->nullable();
         });
     }
 

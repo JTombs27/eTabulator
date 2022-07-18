@@ -25,6 +25,7 @@ class Travel extends Model
         'soa_travel',
         'user_id',
         'price',
+        'status',
         
 
     ];

@@ -81,6 +81,9 @@ export default {
         }
     },
 
+    mounted(){
+        console.log()
+    },
     computed: {
         mi() {
             return value => value ? `${value.charAt(0)}.` : "";

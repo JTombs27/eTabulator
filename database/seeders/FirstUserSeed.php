@@ -19,6 +19,7 @@ class FirstUserSeed extends Seeder
             'name' => 'Administrator',
             'cats' => '0828',
             'email' => 'admin@admin.com',
+            'role' => 'Admin',
             'username'=> 'admin',
             'password' => bcrypt('12345678'),
         ]);
