@@ -24,6 +24,7 @@ class SoaTravelController extends Controller
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('cafoa_number', 'like', '%' . $searchItem . '%');
                 })
+                ->where('office_id',auth()->user()->office_id)
                 ->latest()
                 ->simplePaginate(10)
                 ->withQueryString()
@@ -40,6 +41,7 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Show', [
             //returns an array of users with name field only
             "travel" => $this->model
+            	->where('office_id', auth()->user()->office_id)
             	->orderBy('date_from', 'asc')
             	->get(),
         ]);
@@ -54,6 +56,7 @@ class SoaTravelController extends Controller
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_number', 'like', '%' . $searchItem . '%');
                 })
+                ->where('office_id', auth()->user()->office_id)
             	->where('soa_travel', $id)
             	->simplePaginate(10),
             "filters" => $request->only(['search']),
@@ -74,6 +77,7 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
+        		
         		$soaTravel = $this->soatravel->create($attributes);
         		foreach ($request->travels as $key ) {
         			$travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
