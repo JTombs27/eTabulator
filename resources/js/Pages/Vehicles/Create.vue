@@ -114,7 +114,7 @@ export default ({
 
         addDriver()
         {
-            // this.$inertia.get("/drivers/" + this.Vdriver+"/create");
+            
         }
     }
 })
