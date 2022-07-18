@@ -44,7 +44,7 @@
                             <th scope="col">Time Arrival</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
-                            <th scope="col">Price</th>
+                            <th scope="col" style="text-align: right">Price</th>
                             <!-- <th scope="col">Action</th> -->
                         </tr>
                     </thead>
@@ -56,7 +56,7 @@
                             <td>{{ soa_travel.time_arrival }}</td>
                             <td>{{ soa_travel.gas_type }}</td>
                             <td>{{ soa_travel.total_liters }}</td>
-                            <td>{{ Number(soa_travel.price).toLocaleString("en") }}</td>
+                            <td class="text-end">{{ Number(soa_travel.price).toLocaleString("en") }}</td>
                             <!-- <td>
                                 <button class="btn btn-secondary btn-sm action-btn" v-if="soa_travel.soa_travel !== null" @click="remove(soa_travel)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
