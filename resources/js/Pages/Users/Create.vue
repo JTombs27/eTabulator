@@ -19,20 +19,14 @@
                 <Select2 v-model="form.name" id="emp_name" @select="selectName($event)"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
 
-                <label for="">Municipality</label>
-                <Select2 v-model="form.citymunCode" :options="municipals" id="municipals" @select="loadBarangays" />
-                <div class="fs-6 c-red-500" v-if="form.errors.citymunCode">{{ form.errors.citymunCode }}</div>
-
-                <label for="">Barangay</label>
-                <Select2 v-model="form.brgyCode" :options="barangays" />
-                <div class="fs-6 c-red-500" v-if="form.errors.brgyCode">{{ form.errors.brgyCode }}</div>
-
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
+
                     <option value="Admin">Admin</option>
                     <option value="Basic">Basic</option>
+                    <option value="PG-Head">PG-Head</option>
                 </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.brgyCode">{{ form.errors.brgyCode }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
 
                 <label for="">Username</label>
                 <input type="text" v-model="form.username" class="form-control" autocomplete="chrome-off">
@@ -101,8 +95,7 @@ export default {
             this.form.name = this.editData.name
             this.form.email = this.editData.email
             this.form.id = this.editData.id
-            this.form.citymunCode = this.editData.citymunCode
-            this.form.brgyCode = this.editData.brgyCode
+            this.form.permission = this.editData.role
         } else {
             this.pageTitle = "Create"
         }
@@ -134,6 +127,7 @@ export default {
                 },
                 cache: true
             },
+            data:[{"text": this.form.name, "id":this.form.name, "selected": true}],
             placeholder: 'Search for a repository',
             minimumInputLength: 3,
             templateResult: this.formatRepo,
