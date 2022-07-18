@@ -14,7 +14,7 @@ class AddStatusToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->string('status', 50)->after('actual_driver');
+            $table->string('status', 50)->after('actual_driver')->nullable();
             $table->string('price', 50)->after('gas_type');
         });
     }

@@ -28,6 +28,7 @@
                         </div>
                     </Transition>
                     <div class="col-md-12">
+                        <br>
                          <div class="form-check ">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="form.rangedDate">
                             <label class="form-check-label disable-select" for="flexCheckDefault">
@@ -49,18 +50,26 @@
                     </div>
                 </div>
                 <label for="">Vehicle Name</label>
-                <Select2 v-model="vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
+                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <label>Authorized Driver</label>
-                <Select2 id="authorizedDriver"  :options="drivers" @select="setDriverVehicle($event)"/>
+                <Select2 id="authorizedDriver" v-model="form.drivers_id"  :options="drivers" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
-                <label>Actual Driver</label>
-                <Select2 v-model="form.actual_driver" class="form-control">
-
-                </Select2>
-                <input type="text" v-model="form.actual_driver" class="form-control" >
+                <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
+                <br>
+                <div class="form-check ">
+                    <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver">
+                    <label class="form-check-label disable-select" for="actualDriverBox">
+                        Check to set substitute driver
+                    </label>
+                </div>
+                <label v-if="form.showActualDriver">Actual Driver</label>
+                <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver">
+                <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
+                <hr>
                 <label for="">Name of Authorized Passenger/s</label>
-                <input type="text" v-model="form.official_passenger" class="form-control">
+                <Select2 v-model="form.official_passenger" :options="employees" :settings="{ multiple: true, tags:true }" id="actualDriver"/>
+                <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
                 <label for="">Place to visit</label>
                 <input type="text" v-model="form.place_to_visit" class="form-control">
                 <label for="">Purpose of Travel</label>
@@ -98,7 +107,6 @@ export default {
     data() {
         return{
             vehicles: [],
-            vehicles_id:null,
             driverName:"",
             form: useForm({
                 official_passenger:'',
@@ -109,21 +117,27 @@ export default {
                 total_liters:null,
                 official_passenger:null,
                 driver_vehicles_id:null,
-                actual_driver:[],
+                actual_driver:"",
                 date_from:'',
                 date_to:'',
                 rangedDate:null,
-                price:null
+                price:null,
+                showActualDriver:false,
+                vehicles_id:null,
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
-            
+            employees:[],
             drivers:[],
         }
     },
 
     mounted() {
         this.getVehicles();
+        this.getEmployees();
+        // $("#actualDriver").select2({
+        //   tags: true
+        // });
     },
 
     methods:{
@@ -133,8 +147,14 @@ export default {
             })
         },
 
+        getEmployees() {
+            axios.get('/employees/getEmployees').then((response) => {
+                this.employees = response.data;
+            })
+        },
+
         getVehicleDetails() {
-            axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.vehicles_id})
+            axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.form.vehicles_id})
                 .then((response) => {
                     this.drivers = response.data.map(obj => {
                         let mi = "";

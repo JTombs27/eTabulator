@@ -112,14 +112,19 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('sync')->group(function() {
-        Route::post('employees', [EmployeeController::class, 'sync']);
-        Route::post('offices', [OfficeController::class, 'sync']);
+        Route::post('employees', [EmployeeController::class, '_sync']);
+        Route::post('offices', [OfficeController::class, '_sync']);
     });
 
     Route::prefix('soatravels')->group(function() {
         Route::get('/', [SoaTravelController::class, 'index']);
         Route::post('/', [SoaTravelController::class, 'store']);
         Route::post('/remove', [SoaTravelController::class, 'remove']);
+    });
+
+    //for employees
+    Route::prefix('employees')->group(function () {
+        Route::get('getEmployees', [EmployeeController::class, 'getEmployees']);
     });
     
 });
