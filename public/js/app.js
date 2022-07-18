@@ -174,6 +174,26 @@ __webpack_require__.r(__webpack_exports__);
         e.preventDefault();
       });
     });
+  },
+  methods: {
+    syncEmployees: function syncEmployees() {
+      var _this = this;
+
+      this.syncingEmployees = true;
+      axios.post('/sync/employees').then(function (response) {
+        _this.syncingEmployees = false;
+        alert('Employees synced successfully');
+      });
+    },
+    syncOffices: function syncOffices() {
+      var _this2 = this;
+
+      this.syncingOffices = true;
+      axios.post('/sync/offices').then(function (response) {
+        _this2.syncingOffices = false;
+        alert('Offices synced successfully');
+      });
+    }
   }
 });
 
@@ -841,14 +861,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "sidebar-link",
     href: "javascript:void(0)",
     onClick: _cache[0] || (_cache[0] = function ($event) {
-      return _ctx.syncEmployees();
+      return $options.syncEmployees();
     })
   }, _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.syncingEmployees ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_25, _hoisted_28)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [!_ctx.syncingOffices ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
     key: 0,
     "class": "sidebar-link",
     href: "javascript:void(0)",
     onClick: _cache[1] || (_cache[1] = function ($event) {
-      return _ctx.syncOffices();
+      return $options.syncOffices();
     })
   }, _hoisted_31)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.syncingOffices ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_32, _hoisted_35)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": "sidebar-link",

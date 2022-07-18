@@ -257,6 +257,23 @@ export default {
             });
 
         });
+    },
+
+     methods: {
+        syncEmployees() {
+            this.syncingEmployees = true
+            axios.post('/sync/employees').then((response) => {
+                this.syncingEmployees = false;
+                alert('Employees synced successfully')
+            })
+        },
+        syncOffices() {
+            this.syncingOffices = true
+             axios.post('/sync/offices').then((response) => {
+                this.syncingOffices = false;
+                alert('Offices synced successfully')
+            })
+        }
     }
 }
 </script>
