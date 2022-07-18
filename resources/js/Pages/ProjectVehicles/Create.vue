@@ -4,7 +4,7 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Vehicle </h3>
             <Link @click="backToMain()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg"
+               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"  fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
                         d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
@@ -14,48 +14,66 @@
             </Link>
         </div>
         <div class="col-12"> <h5>Project Description: <small>{{project.description}}</small></h5></div>
-        <div class="row">
-            <div class="col-12 bgc-white p-20 bd">
-                <form @submit.prevent="submit()">
-                    <div class="row">
-                        <div class="col-6">
-                            <label for="">Vehicle Selection</label>
-                            <Select2 v-model="form.vehicle_id" :options="vehicles" :disabled="disableVehicle" id="vehicles"  />
-                            <div class="fs-6 c-red-500" v-if="form.errors.vehicle_id">{{ form.errors.vehicle_id }}</div>
-
-                        </div>
-                        <div class="col-3">
-                            <label for="">Period From</label>
-                            <input type="date" v-model="form.date_from" class="form-control" autocomplete="chrome-off">
-                            <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
-                            <div class="fs-6 c-red-500" v-if="form.errors.date_fromX">{{ form.errors.date_fromX }}</div>
-                        </div>
-                        <div class="col-3">
-                            <label for="">Period To</label>
-                            <input type="date" v-model="form.date_to" class="form-control" autocomplete="chrome-off">
-                            <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
-                            <div class="fs-6 c-red-500" v-if="form.errors.date_toX">{{ form.errors.date_toX }}</div>
+        
+            <div class="col-md-12 p-20 bd">
+                <div class="row">
+                    <div class="col-12" style="margin-top:-15px;">
+                            <button type="button" @click="addNew()" class="btn btn-sm btn-secondary pull-right">+</button>
+                    </div>
+                </div>
+                <form @submit.prevent="submit()" id="mainForm">
+                    <div class="row" v-for="(vehicle, index) in vehiclesGroup" >
+                        <div class="col-12 bgc-white p-10 bd" style="margin-top:10px;">
+                            <div class="row">
+                                <div class="col-6">
+                                    <label for="">Vehicle Selection</label>
+                                    <Select2 v-model="vehicle.vehicle_id" :options="vehicles" :disabled="disableVehicle" id="vehicles"  /> 
+                                    <div class="fs-6 c-red-500" v-if="form.errors.vehicle_id">{{ form.errors.vehicle_id }}</div>
+                                </div>
+                                <div class="col-3">
+                                    <label for="">Period From</label>
+                                    <input type="date" v-model="vehicle.date_from" class="form-control" autocomplete="chrome-off">
+                                    <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
+                                    <div class="fs-6 c-red-500" v-if="form.errors.date_fromX">{{ form.errors.date_fromX }}</div>
+                                </div>
+                                <div class="col-3">
+                                    <div class="peers fxw-nw jc-sb ai-c">
+                                          <label for="">Period To </label>
+                                          
+                                           <span  @click="removeNode(index)" style="margin-top:-10px;">
+                                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="font-size: 18px; font-weight: bolder; color:red;" fill="currentColor" class="bi bi-x-lg"
+                                                viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+                                                <path fill-rule="evenodd"
+                                                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                  
+                                    <input type="date" v-model="vehicle.date_to" class="form-control" autocomplete="chrome-off">
+                                    <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
+                                    <div class="fs-6 c-red-500" v-if="form.errors.date_toX">{{ form.errors.date_toX }}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="">Purpose</label>
+                                    <textarea type="text" v-model="vehicle.purpose" class="form-control" autocomplete="chrome-off"></textarea>
+                                    <div class="fs-6 c-red-500" v-if="form.errors.purpose">{{ form.errors.purpose }}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <label for="">Purpose</label>
-                            <textarea type="text" v-model="form.purpose" class="form-control" autocomplete="chrome-off"></textarea>
-                            <div class="fs-6 c-red-500" v-if="form.errors.purpose">{{ form.errors.purpose }}</div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 text-right">
-                            <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">
+                            <button type="button" class="btn btn-primary pull-right mt-3" @click="submit()" :disabled="form.processing">
                                 {{pageTitle=="Add" ? "Save/Create":"Save Changes"}}
                             </button>
                         </div>
                     </div>
-                   
                 </form>
             </div>
-        </div>
-        
     </div>
 
 </template>
@@ -69,14 +87,22 @@ export default {
     },
     data() {
         return {
-            form: useForm({
+            form: useForm([{
                 vehicle_id: "",
                 date_from: "",
                 date_to:"",
                 purpose:"",
                 project_id:"",
                 id: null
-            }),
+            }]),
+            vehiclesGroup:[{
+                 vehicle_id: "",
+                 date_from: "",
+                 date_to:"",
+                 purpose:"",
+                 project_id:"",
+                 id: null
+            }],
             vehicles:[],
             testValue:"",
             pageTitle: "",
@@ -120,8 +146,23 @@ export default {
             }
 
         },
+        addNew(){
+                this.vehiclesGroup.push({
+                    vehicle_id  : "",
+                    date_from   : "",
+                    date_to     :"",
+                    purpose     :"",
+                    project_id  :"",
+                    id          : null
+                });
 
-        loadVehicles() { 
+        },
+        removeNode(index){
+            this.vehiclesGroup.splice(index,1);
+        }
+        ,
+        loadVehicles() 
+        { 
             axios.get('/projects-vehicle/vehicles').then((response) => {
                 this.vehicles = response.data
             })
