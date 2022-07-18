@@ -165,16 +165,21 @@ export default {
         },
         updatePermissions() {
            
-
+            
             this.$inertia.post('update-user-permissions', {
                     'user_id' : this.selectedUser,
                     'permissions' : this.selectedPermissions
                 }, {
                 replace: true,
             })
+            $("#modal").hide();
+            $('body').removeClass('modal-open');
+            $('body').css("overflow","scroll");
+            $('.modal-backdrop').remove();
             this.showModal = false
         },
         closeModal() {
+            
             this.showModal = false
         },
         async getAllPermissions() {

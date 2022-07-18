@@ -126,7 +126,7 @@
                         ><span class="title">Posts</span></Link
                     >
                 </li> -->
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" v-if="$page.props.auth.user.role == 'Admin'">
                     <a class="dropdown-toggle" href="javascript:void(0);"
                         ><span class="icon-holder"
                             ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">

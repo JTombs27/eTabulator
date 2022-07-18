@@ -76,4 +76,9 @@ class TravelController extends Controller
         return redirect('/travels')->with('message', 'Travel successfully added');
         
     }
+
+    public function setStatus(Request $request, $id)
+    {
+
+    }
 }

@@ -102,12 +102,20 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
         $data = $this->model->findOrFail($request->id);
+        if ($request->username != $data->username) {
+            
+        }
+        $password = bcrypt($request->password);
+        if (!$request->password) {
+            $password = $data->password;
+        }
         $data->update([
             'name' => $request->name,
-            'role' => $request->permission
+            'role' => $request->permission,
+            'password' => $password
             ,
         ]);
 
