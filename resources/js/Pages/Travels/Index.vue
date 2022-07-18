@@ -75,17 +75,9 @@ export default {
         user:Object
     },
 
-    data() {
-        return{
-            form: this.$inertia.form({
-                
-            })
-        }
-    },
-
     methods:{
-        approvedStatus() {
-            
+        approvedStatus(item) {
+            this.$inertia.post('/travels/set-status', {id:item.id, status:item.status})
         }
     },
 

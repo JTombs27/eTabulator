@@ -48,6 +48,7 @@ __webpack_require__.r(__webpack_exports__);
       this.loading = true;
       this.pageTitle = "Edit";
       this.form.name = this.editData.name;
+      this.form.username = this.editData.username;
       this.form.email = this.editData.email;
       this.form.id = this.editData.id;
       this.form.permission = this.editData.role;

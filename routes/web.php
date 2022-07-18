@@ -110,7 +110,7 @@ Route::middleware('auth')->group(function() {
         Route::get('create', [TravelController::class, 'create']);
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
         Route::post('/', [TravelController::class, 'store']);
-        Route::post('{$id}/set-status', [TravelController::class, 'setStatus']);
+        Route::post('set-status', [TravelController::class, 'setStatus']);
     });
 
     Route::prefix('sync')->group(function() {

@@ -70,6 +70,7 @@ class TravelController extends Controller
         $request['official_passenger'] = join(', ', $request->official_passenger);
         $request['ticket_number'] = 0;
         $request['user_id'] = auth()->user()->id;
+        $request['office_id'] = auth()->user()->office_id;
 
         $travel = Travel::create($request->all());
         $travel->updateTicket();

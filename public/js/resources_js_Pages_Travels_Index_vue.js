@@ -17,13 +17,13 @@ __webpack_require__.r(__webpack_exports__);
     travels: Object,
     user: Object
   },
-  data: function data() {
-    return {
-      form: this.$inertia.form({})
-    };
-  },
   methods: {
-    approvedStatus: function approvedStatus() {}
+    approvedStatus: function approvedStatus(item) {
+      this.$inertia.post('/travels/set-status', {
+        id: item.id,
+        status: item.status
+      });
+    }
   },
   computed: {
     mi: function mi() {
