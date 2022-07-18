@@ -20,7 +20,7 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
             "travel" => $this->model
-            	->orderBy('travel_date', 'asc')
+            	->orderBy('date_from', 'asc')
             	->get(),
         ]);
     }

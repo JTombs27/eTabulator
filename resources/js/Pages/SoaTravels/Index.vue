@@ -39,7 +39,7 @@
                     <tbody>
                         <tr v-for="soa_travel in sortedEmp">
                             <td>{{ soa_travel.ticket_number }}</td>
-                            <td>{{ soa_travel.travel_date }}</td>
+                            <td>{{ soa_travel.travelDate}}</td>
                             <td>{{ soa_travel.time_departure }}</td>
                             <td>{{ soa_travel.time_arrival }}</td>
                             <td>{{ soa_travel.gas_type }}</td>
@@ -110,16 +110,21 @@ export default {
 
                 this.temp2 = this.Travels
                 .filter(item => {
-                    const travelDate = item.travel_date
+                    const travelDateFrom = item.date_from
+                    const travelDateTo = item.date_to
                 if ( startDate && endDate ) {
-                    return startDate <= travelDate && travelDate <= endDate;
+                    if(!!travelDateTo) {
+                        return startDate <= travelDateFrom && travelDateTo <= endDate;
+                    } else {
+                        return startDate <= travelDateFrom && travelDateFrom <= endDate;
+                    }
                 }
-                if ( startDate && !endDate ) {
-                    return startDate <= travelDate;
+                /*if ( startDate && !endDate ) {
+                    return startDate <= travelDateFrom;
                 }
                 if ( !startDate && endDate ) {
-                    return travelDate <= endDate;
-                }
+                    return travelDateTo <= endDate;
+                }*/
                     return this.temp2
                 })
 

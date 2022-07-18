@@ -62,19 +62,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.temp2;
       } else {
         this.temp2 = this.Travels.filter(function (item) {
-          var travelDate = item.travel_date;
+          var travelDateFrom = item.date_from;
+          var travelDateTo = item.date_to;
 
           if (startDate && endDate) {
-            return startDate <= travelDate && travelDate <= endDate;
+            if (!!travelDateTo) {
+              return startDate <= travelDateFrom && travelDateTo <= endDate;
+            } else {
+              return startDate <= travelDateFrom && travelDateFrom <= endDate;
+            }
           }
+          /*if ( startDate && !endDate ) {
+              return startDate <= travelDateFrom;
+          }
+          if ( !startDate && endDate ) {
+              return travelDateTo <= endDate;
+          }*/
 
-          if (startDate && !endDate) {
-            return startDate <= travelDate;
-          }
-
-          if (!startDate && endDate) {
-            return travelDate <= endDate;
-          }
 
           return _this.temp2;
         });
@@ -361,7 +365,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   , _hoisted_14)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.sortedEmp, function (soa_travel) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soa_travel.ticket_number), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soa_travel.travel_date), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soa_travel.travelDate), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soa_travel.time_departure), 1
     /* TEXT */
