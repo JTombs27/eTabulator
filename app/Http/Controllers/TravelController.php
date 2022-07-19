@@ -31,14 +31,17 @@ class TravelController extends Controller
                                 'employees.last_name',
                                 'travels.date_from',
                                 'travels.date_to',
-                                'travels.actual_driver'
+                                'travels.actual_driver',
+                                'travels.id',
+                                'travels.status'
                             )
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
                             ->get(),
             "can" => [
-                'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class)
+                'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
+                'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
             ]
         ]);
     }
@@ -87,8 +90,10 @@ class TravelController extends Controller
         
     }
 
-    public function setStatus(Request $request, $id)
+    public function setStatus(Request $request)
     {
-
+        $data = $this->model->findOrFail($request->id);
+        $data->setStatus();
+        return redirect('/travels')->with('message',"Status {$data->status}");
     }
 }
