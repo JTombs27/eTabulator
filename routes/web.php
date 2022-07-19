@@ -16,13 +16,10 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
-
-
+use Illuminate\Support\Facades\Auth;
 
 
 Auth::routes();
-
-
 Route::middleware('auth')->group(function() {
     Route::get('/', [HomeController::class, 'index']);
 
@@ -111,6 +108,7 @@ Route::middleware('auth')->group(function() {
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
         Route::post('/', [TravelController::class, 'store']);
         Route::post('set-status', [TravelController::class, 'setStatus']);
+        Route::get('/{id}/edit', [TravelController::class, 'edit']);
     });
 
     Route::prefix('sync')->group(function() {
