@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title> Drivers Vehicle</title>
+        <title> Drivers Assignment</title>
     </Head>
 
     <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Drivers Vehicle</h3>
+            <h3>Drivers Assignment</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -18,6 +18,9 @@
         </div>
             <div class="col-12">
                 <div class="bcg-white p-20 bd">
+                    <div class="peer">
+                    <Link class="btn btn-danger btn-sm pull-right" href="/vehicles">Return to Vehicles</Link>
+                </div>
                     <table class="table">
                         <thead>
                             <tr>

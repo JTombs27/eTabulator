@@ -14,13 +14,17 @@ class DriverVehicleController extends Controller
         $this->model = $model;
     }
 
-    public function index($id)
+    public function index(Request $requet,$id)
     {
         return inertia('Drivers/Index', [
             'driver_vehicles' => $this->model->with([
                 'vehicle',
                 'driver',
                 'office'
+
+                // ->when($request->search, function($query, $searchItem) {
+                //     $query->where()
+                // })
             ])
 
             ->latest()
@@ -29,6 +33,8 @@ class DriverVehicleController extends Controller
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
         ]);
+
+        // "filters" => $request->only(['search']),
     }
 
     public function create($id)

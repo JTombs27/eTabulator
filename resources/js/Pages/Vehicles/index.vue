@@ -18,7 +18,21 @@
         </div>
 
         <filtering v-if="filter" @closeFilter="filter=false">
-            <label>Sample Inputs</label>
+            <label>Plate No</label>
+            <input type="text" class="form-control">
+
+            <label>Type</label>
+            <select class="form-select">
+                <option disabled value="">Select Type</option>
+                <option value="1">Motorcycle</option>
+                <option value="2">Light Vehicle</option>
+                <option value="3">Heavy Equipment</option>
+            </select>
+
+            <label>Date Acquired</label>
+            <input type="text" class="form-control">
+
+            <label>Description</label>
             <input type="text" class="form-control">
             <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
         </filtering>
@@ -41,7 +55,7 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td> {{vehicle.TYPECODE}}</td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> {{ Number(vehicle.FACQCOST).toLocaleString()}}</td>
+                            <td> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
@@ -97,7 +111,7 @@
 
 <script>
 import Pagination from "@/Shared/Pagination";
-import Filtering from "@/Shared/Filter";;
+import Filtering from "@/Shared/Filter";
 
 export default ({
     components: { Pagination, Filtering},
@@ -108,8 +122,22 @@ export default ({
     data() {
         return {
             driverid: "",
+            search: this.$props.filters.search,
             filter:false
         }
+    },
+     watch: {
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/vehicles",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
     },
 
     methods: {
@@ -131,6 +159,8 @@ export default ({
             this.filter = !this.filter
         }
     },
+
+
 })
 </script>
  
