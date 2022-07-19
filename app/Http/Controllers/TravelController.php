@@ -81,4 +81,23 @@ class TravelController extends Controller
     {
 
     }
+
+    public function tripTicket(Request $request)
+    {
+        $travel = DB::table('travels')
+                            ->select(
+                                'vehicles.PLATENO',
+                                'vehicles.FDESC',
+                                'employees.first_name',
+                                'employees.middle_name',
+                                'employees.last_name',
+                                'travels.*',
+                            )
+                            ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
+                            ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
+                            ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
+                            ->where('travels.id', 1)
+                            ->first();
+        return $travel;
+    }
 }

@@ -134,3 +134,8 @@ Route::middleware('auth')->group(function() {
     });
     
 });
+
+    //for api
+    Route::prefix('/reports')->group(function() {
+        Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
+    });
