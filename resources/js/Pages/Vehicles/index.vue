@@ -8,14 +8,20 @@
             <h3>Vehicles</h3>
             <div class="peers">
                 <div class="peer mR-10">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer">
                     <Link class="btn btn-success btn-sm" href="/vehicles/create">Add Vehicles</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white">Filter</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
         </div>
+
+        <filtering v-if="filter" @closeFilter="filter=false">
+            <label>Sample Inputs</label>
+            <input type="text" class="form-control">
+            <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
+        </filtering>
 
         <div class="col-12">
             <div class="bcg-white p-20 bd">
@@ -35,7 +41,7 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td> {{vehicle.TYPECODE}}</td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> {{vehicle.FACQCOST}}</td>
+                            <td> {{ Number(vehicle.FACQCOST).toLocaleString()}}</td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
@@ -57,7 +63,6 @@
                                             <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
                                         </svg> Status</Link></li>
 
-                                        <!-- <li><Link class="dropdown-item" :href="`/drivers/${vehicle.id}`"> -->
                                         <li><Link class="dropdown-item" @click="driverVehicle(vehicle.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
                                         <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
@@ -92,14 +97,18 @@
 
 <script>
 import Pagination from "@/Shared/Pagination";
+import Filtering from "@/Shared/Filter";;
+
 export default ({
-    components: { Pagination},
+    components: { Pagination, Filtering},
     props: {
-        vehicles: Object
+        vehicles: Object,
+        filters: Object
     },
     data() {
         return {
-            driverid: ""
+            driverid: "",
+            filter:false
         }
     },
 
@@ -113,9 +122,13 @@ export default ({
         {
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
-            if(confirm(text) == true){
-                this.$inertia.delete("/vehicles/" + vehicle.id);
+            if(confirm(text) == true) {
+                this.$inertia.post("/vehicles/" + vehicle.id);
             }
+        },
+        showFilter()
+        {
+            this.filter = !this.filter
         }
     },
 })

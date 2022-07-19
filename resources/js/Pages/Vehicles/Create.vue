@@ -19,31 +19,31 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="col">
-                                            <label>Plate Number</label>
+                                            <label >Plate Number</label>
                                             <input type="text" v-model="form.PLATENO" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.PLATENO">{{ form.errors.PLATENO }}</div>
                                         </div>
                                         <div class="col-mb-3">
-                                            <label>Vehicle Type</label>
+                                            <label class="col-mb-3 col-form-label">Vehicle Type</label>
                                             <select class="form-select md" v-model="form.TYPECODE">
                                                 <option disabled value="">Select Type</option>
-                                                <option>Motorcycle</option>
-                                                <option>Light Vehicle</option>
-                                                <option>Heavy Equipment</option>
+                                                <option value="1">Motorcycle</option>
+                                                <option value="2">Light Vehicle</option>
+                                                <option value="3">Heavy Equipment</option>
                                             </select>
-                                            <!-- <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div> -->
+                                            <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div>
                                         </div>
                                         <div class="col">
-                                            <label>Date Acquired</label>
+                                            <label class="col-mb-3 col-form-label">Date Acquired</label>
                                             <input type="date" v-model="form.FDATEACQ" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.FDATEACQ">{{ form.errors.FDATEACQ }}</div>
                                         </div>
                                         <div class="col">
-                                            <label>Acquisition Cost</label>
+                                            <label class="col-mb-3 col-form-label">Acquisition Cost</label>
                                             <input type="text" v-model="form.FACQCOST" class="form-control" autocomplete="chrome-off">
                                         </div>
                                         <div class="col">
-                                            <label>Description</label>
+                                            <label class="col-mb-3 col-form-label">Description</label>
                                             <input type="text" v-model="form.FDESC" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.FDESC">{{ form.errors.FDESC }}</div>
                                         </div>
@@ -51,6 +51,10 @@
                                 </div>
                             </div>
                                 <div class="modal-footer p-1">
+                                    <div class="from-check" v-if="pageTitle === 'Create Vehicles'">
+                                        <input class="form-check-input" type="checkbox" v-model="form.checkadd" name="checkbox" id="checkbox" >
+                                        <label class="form-check-label" for="checkbox" > Add Driver Vehicle</label>
+                                    </div>
                                     <button type="button" class="btn btn-primary mt-3" @click="submit()">Save</button>
                                 </div>
                         </form>
@@ -66,7 +70,8 @@ import { useForm} from "@inertiajs/inertia-vue3"
 
 export default ({
     props: {
-        editData: Object
+        editData: Object,
+        Vdriver: Object
     }, 
 
     data() {
@@ -77,8 +82,10 @@ export default ({
                 FDATEACQ: "",
                 FACQCOST: "",
                 FDESC: "",
+                checkadd: ""
             }),
-        pageTitle: ""
+        pageTitle: "",
+        // isDisabled:false
         }
     },
 
@@ -103,6 +110,11 @@ export default ({
             } else {
                 this.form.post("/vehicles", this.form);
             }
+        },
+
+        addDriver()
+        {
+            
         }
     }
 })

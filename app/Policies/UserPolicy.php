@@ -23,4 +23,14 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_create_travel')->exists();
     }
+
+    public function canSetStatus(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_set_status')->exists();
+    }
+
+    public function canCreateSoaTravel(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_merge_travel')->exists();
+    }
 }

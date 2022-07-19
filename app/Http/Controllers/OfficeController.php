@@ -2,18 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Office;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class OfficeController extends Controller
 {
-    public function sync()
+    public function __construct(Office $office)
+    {
+        $this->model = $office;
+    }
+
+    public function _sync()
     {
         try {
             //code...
             DB::table('offices')->truncate();
-            $offices = Http::get('http://192.168.9.101:91//api/PGDDODepartments')->collect();
+            $url = env('MIX_API_URL');
+            $offices = Http::get("{$url}/PGDDODepartments")->collect();
             $officeArray = [];
             foreach ($offices as $value) {
                 $data = [
@@ -30,5 +37,16 @@ class OfficeController extends Controller
             return $th;
         }
         
+    }
+    
+    public function loadOffices(Request $request)
+    {
+        $query = $this->model->get()
+                    ->map(fn($item) => [
+                        'id' => $item->department_code,
+                        'text' => $item->office
+                    ]);
+
+        return $query;
     }
 }

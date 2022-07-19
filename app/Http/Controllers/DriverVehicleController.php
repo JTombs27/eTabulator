@@ -14,7 +14,7 @@ class DriverVehicleController extends Controller
         $this->model = $model;
     }
 
-    public function index(Request $request,$id)
+    public function index($id)
     {
         return inertia('Drivers/Index', [
             'driver_vehicles' => $this->model->with([
@@ -24,13 +24,14 @@ class DriverVehicleController extends Controller
             ])
 
             ->latest()
+            ->where('vehicles_id','=',$id)
             ->simplePaginate(10)
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
         ]);
     }
 
-    public function create(Request $request,$id)
+    public function create($id)
     {
         return inertia("Drivers/Create", [
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
@@ -48,6 +49,15 @@ class DriverVehicleController extends Controller
         $this->model->create($request->all());
 
         return redirect('/drivers/'.$id.'/vehicles')->with('message', 'Added Successfully');
+    }
+
+    public function destroy(Request $request,$id,$did)
+    {
+        $data = $this->model->findOrFail($did);
+        $data->delete();
+
+
+        return back()->with('message', 'deleted successfuly');
     }
 
 }

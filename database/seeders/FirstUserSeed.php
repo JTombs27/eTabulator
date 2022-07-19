@@ -17,7 +17,9 @@ class FirstUserSeed extends Seeder
         DB::table('users')->insert([
             'id' => 1,
             'name' => 'Administrator',
+            'cats' => '0828',
             'email' => 'admin@admin.com',
+            'role' => 'Admin',
             'username'=> 'admin',
             'password' => bcrypt('12345678'),
         ]);
