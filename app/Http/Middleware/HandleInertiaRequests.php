@@ -21,26 +21,16 @@ class HandleInertiaRequests extends Middleware
         if (auth()->check()) {
             //$profile =  User::where('id', auth()->user()->id)->first()->getFirstMedia('avatars');
             $UsrCats = auth()->user()->cats;
-           
             $photo = null;
-
-         
             $UsrPhotoExst = User::where("cats",$UsrCats)->whereNotNull('user_photo')->exists();
-            
             if (!$UsrPhotoExst) {
                 $UserPhoto =  Http::get(env('MIX_API_URL')."/PGDDOEmployeePhoto?empl_id=".$UsrCats)->collect();
                 $cats = $UserPhoto[0]['empl_id'];
                 $photo = $UserPhoto[0]['empl_photo_img'];
-                
-               
                 User::where("cats",$UsrCats)->update(["user_photo"=>"data:image/png;base64,".$photo["data"]]);
-
                   $photo = "data:image/png;base64,".$photo["data"];
             }
           
-            
-            
-
             return array_merge(parent::share($request), [
                 'auth' => auth()->user() ? [ //if there is a user
                     'user' => [
