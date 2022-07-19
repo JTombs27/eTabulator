@@ -73,6 +73,23 @@ class TravelController extends Controller
     public function store(TravelRequest $request)
     {
         
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
+        $isExistTravel = $this->model
+                            ->where('driver_vehicles_id', $request->driver_vehicles_id)
+                            ->where(function($query) use($date_from, $date_to) {
+                                $query->whereBetween('date_from', [$date_from, $date_to])
+                                        ->OrWhereBetween('date_to', [$date_from, $date_to]);
+                            })
+                            ->exists();
+        if ($isExistTravel) {
+             inertia()->share([
+                'flash' => [
+                    'message' => null,
+                    'error' => "Record exist"
+                ]
+            ]);
+        }
         $attributes = $request->validated();
         
         // $travel = User::latest()->first();
@@ -93,7 +110,7 @@ class TravelController extends Controller
     public function setStatus(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-        $data->setStatus();
+        $data->setStatus($request->status);
         return redirect('/travels')->with('message',"Status {$data->status}");
     }
 }

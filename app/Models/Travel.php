@@ -52,13 +52,9 @@ class Travel extends Model
 
     }
 
-    public function setStatus()
+    public function setStatus($value)
     {
-        if(!$this->status || $this->status == "Unapproved") {
-            $this->status = "Approved";
-        } else if($this->status == "Approved") {
-            $this->status = "Unapproved";
-        }
+        $this->status = $value;
         $this->save();
     }
 
