@@ -15,12 +15,9 @@ use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\OfficeController;
-
-
+use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
-
-
 Route::middleware('auth')->group(function() {
     Route::get('/', [HomeController::class, 'index']);
 

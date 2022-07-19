@@ -19,7 +19,13 @@
                 <label for="">Plate number</label>
                 <input type="text" v-model="PLATENO" class="form-control" autocomplete="chrome-off" disabled readonly>
                 <label for="">Condition</label>
-                <input type="text" v-model="form.condition" class="form-control" autocomplete="chrome-off" :disabled="_disbled" :readonly="_disbled">
+                 <select class="form-select md" v-model="form.condition" :disabled="_disbled" :readonly="_disbled">
+                    <option disabled value="">Select Status</option>
+                    <option>Good Condition</option>
+                    <option>On-repair</option>
+                    <option>Wasted</option>
+                 </select>
+                <!-- <input type="text" v-model="form.condition" class="form-control" autocomplete="chrome-off" :disabled="_disbled" :readonly="_disbled"> -->
                 <button type="button" class="btn btn-primary mt-3" @click="Edit()" :disabled="form.processing" v-if="_disbled">{{button_text}}</button>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing" v-if="!_disbled">save</button>
             </form>
@@ -75,7 +81,8 @@ export default {
         },
 
         Edit() {
-            this._disbled = false
+           this._disbled = false
+           
         },
 
         // loadMunicipals() { 
