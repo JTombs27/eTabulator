@@ -58,4 +58,9 @@ class Travel extends Model
         $this->save();
     }
 
+    public function driverVehicle()
+    {
+        return $this->belongsTo(DriverVehicle::class, 'driver_vehicles_id', 'id');
+    }
+
 }

@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function() {
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
         Route::post('/', [TravelController::class, 'store']);
         Route::post('set-status', [TravelController::class, 'setStatus']);
+        Route::get('/{id}/edit', [TravelController::class, 'edit']);
     });
 
     Route::prefix('sync')->group(function() {

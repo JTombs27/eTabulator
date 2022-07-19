@@ -6,6 +6,7 @@ use App\Http\Requests\TravelRequest;
 use App\Models\DriverVehicle;
 use App\Models\Travel;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -54,9 +55,33 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
-        return inertia('Travels/Create', [
+        return inertia('Travels/Create');
+    }
 
+    public function edit(Request $request, $id)
+    {
+        $editData = $this->model->with('driverVehicle','driverVehicle.driver')->findOrFail($id);
+        return inertia('Travels/Create', [
+            'editData' => $editData->map(fn($item) => [
+                'date_from' => $item->date_from,
+                'date_to' => $item->date_to,
+                'official_passenger' => $item->official_passenger,
+                'place_to_visit' => $item->place_to_visit,
+                'gas_type' => $item->gas_type,
+                'time_arrival' => $item->time_arrival,
+                'time_departure' => $item->time_departure,
+                'total_liters' => $item->total_liters,
+                'driver_vehicles_id' => $item->driver_vehicles_id,
+                'actual_driver' => $item->actual_driver,
+                'price' => $item->price,
+                'vehicles_id' => $item->vehicles_id,
+                'driver' => [
+                    'id' => $item->empl_id,
+                    'text'
+                ]
+            ])
         ]);
+        
     }
 
     public function getVehicleDriver(Request $request)
@@ -72,9 +97,11 @@ class TravelController extends Controller
 
     public function store(TravelRequest $request)
     {
-        
         $date_from = $request->date_from;
         $date_to = $request->date_to;
+        // $now = Carbon::now();
+        // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
+        // $weekEndDate = Carbon::parse($date_to)->endOfWeek()->format('Y-m-d');
         $isExistTravel = $this->model
                             ->where('driver_vehicles_id', $request->driver_vehicles_id)
                             ->where(function($query) use($date_from, $date_to) {
@@ -82,14 +109,11 @@ class TravelController extends Controller
                                         ->OrWhereBetween('date_to', [$date_from, $date_to]);
                             })
                             ->exists();
+      
         if ($isExistTravel) {
-             inertia()->share([
-                'flash' => [
-                    'message' => null,
-                    'error' => "Record exist"
-                ]
-            ]);
+            return redirect('/travels/create')->with('error', 'This record already exist.');
         }
+
         $attributes = $request->validated();
         
         // $travel = User::latest()->first();
