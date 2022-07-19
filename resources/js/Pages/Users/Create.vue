@@ -19,6 +19,10 @@
                 <Select2 v-model="form.name" id="emp_name" @select="selectName($event)"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
 
+                <label for="">Office</label>
+                <Select2 v-model="form.office_id" id="office" :options="offices"/>
+                <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
+
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
 
@@ -55,6 +59,7 @@
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
+import axios from "axios";
 
 export default {
     props: {
@@ -73,11 +78,12 @@ export default {
                 password_confirmation:"",
                 username:"",
                 cats:null,
-                id: null
+                id: null,
+                office_id:null,
             }),
             municipals:[],
             barangays:[],
-            puroks:[],
+            offices:[],
             employees:[],
             testValue:"",
             pageTitle: "",
@@ -88,11 +94,11 @@ export default {
         };
     },
     mounted() {
-
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
             this.form.name = this.editData.name
+            this.form.username = this.editData.username
             this.form.email = this.editData.email
             this.form.id = this.editData.id
             this.form.permission = this.editData.role
@@ -100,11 +106,9 @@ export default {
             this.pageTitle = "Create"
         }
 
-        this.loadMunicipals()
-        this.loadBarangays()
         $("#emp_name").select2({
             ajax : {
-                url: "http://192.168.9.101:91//api/PGDDO_Employees",
+                url: `${process.env.MIX_API_URL}/PGDDO_Employees`,
                 dataType:'json',
                 delay:700,
                 data: function(params) {
@@ -133,6 +137,7 @@ export default {
             templateResult: this.formatRepo,
             templateSelection: this.formatRepoSelection
         })
+        this.loadOffices();
     },
 
     methods: {
@@ -203,6 +208,13 @@ export default {
                 this.puroks = []
             })
         },
+
+        loadOffices() {
+            axios.get('/offices/fetch').then((response) => {
+                this.offices = response.data;
+
+            })
+        }
     },
 
     watch: {
