@@ -87,14 +87,14 @@ Route::middleware('auth')->group(function() {
     Route::post('update-user-permissions', [PermissionController::class, 'updateUserPermissions']);
 
     //Vehicles
-    Route::prefix('/vehicles')->group(function() {
+    Route::prefix('vehicles')->group(function() {
         Route::get('/', [VehicleController::class, 'index']);
         Route::get('/create', [VehicleController::class, 'create']);
         Route::post('/', [VehicleController::class, 'store']);
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::post('/{id}', [VehicleController::class, 'destroy']);
-        Route::post('/getVehicles', [VehicleController::class, 'getVehicles']);
+        Route::get('/getVehicles', [VehicleController::class, 'getVehicles']);
     });
 
     // Driver Vehicles
@@ -110,6 +110,7 @@ Route::middleware('auth')->group(function() {
         Route::get('create', [TravelController::class, 'create']);
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
         Route::post('/', [TravelController::class, 'store']);
+        Route::post('set-status', [TravelController::class, 'setStatus']);
     });
 
     Route::prefix('sync')->group(function() {
@@ -126,9 +127,15 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [SoaTravelController::class, 'destroy']);
     });
 
+
     //for employees
     Route::prefix('employees')->group(function () {
         Route::get('getEmployees', [EmployeeController::class, 'getEmployees']);
+    });
+
+    //for Offices
+    Route::prefix('offices')->group(function () {
+        Route::get('fetch', [OfficeController::class, 'loadOffices']);
     });
     
 });

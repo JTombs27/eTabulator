@@ -20,6 +20,7 @@ class TravelController extends Controller
 
     public function index()
     {
+        
         return inertia('Travels/Index',[
             "travels" => DB::table('travels')
                             ->select(
@@ -44,6 +45,12 @@ class TravelController extends Controller
 
     public function create()
     {
+        // inertia()->share([
+        //     'flash' => [
+        //         'message' => null,
+        //         'error' => "Ews"
+        //     ]
+        // ]);
         return inertia('Travels/Create', [
 
         ]);
@@ -62,18 +69,26 @@ class TravelController extends Controller
 
     public function store(TravelRequest $request)
     {
-       
+        
         $attributes = $request->validated();
+        
         // $travel = User::latest()->first();
         // $secondDigit = $travel->id+1;
         // $series = date('y').sprintf('%08d', $secondDigit);
-        $request['official_passenger'] = join(', ', $request->official_passenger);
+        // $request['official_passenger'] = join(', ', $request->official_passenger);
         $request['ticket_number'] = 0;
         $request['user_id'] = auth()->user()->id;
+        $request['office_id'] = auth()->user()->office_id;
 
         $travel = Travel::create($request->all());
         $travel->updateTicket();
+        
         return redirect('/travels')->with('message', 'Travel successfully added');
         
+    }
+
+    public function setStatus(Request $request, $id)
+    {
+
     }
 }

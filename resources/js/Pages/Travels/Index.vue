@@ -46,8 +46,8 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`">Edit</Link></li>
-                                    <li><Link class="dropdown-item" :href="`/travels/approve`">Approve</Link></li>
+                                    <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
+                                    <li><Link class="dropdown-item" :href="`/travels/set-status`" @click="approveStatus(item)" as="button">Approve</Link></li>
                                   </ul>
                                 </div>
                             </td>
@@ -65,7 +65,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -77,11 +76,14 @@ export default {
     },
 
     methods:{
-        approved() {
-            
+        approvedStatus(item) {
+            this.$inertia.post('/travels/set-status', {id:item.id, status:item.status})
         }
     },
 
+    mounted(){
+        console.log()
+    },
     computed: {
         mi() {
             return value => value ? `${value.charAt(0)}.` : "";
