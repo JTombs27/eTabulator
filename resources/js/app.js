@@ -4,6 +4,7 @@ import { createApp, h } from 'vue'
 import { createInertiaApp, Head, Link } from '@inertiajs/inertia-vue3'
 import Layout  from "./Shared/Layout"
 import Modal  from "./Shared/Modal"
+import BackButton from "./Shared/BackButton"
 import Notification  from "./Shared/Notification"
 import { InertiaProgress } from '@inertiajs/progress'
 import Select2 from 'vue3-select2-component';
@@ -42,6 +43,7 @@ createInertiaApp({
       .component("Link", Link)
       .component("Head", Head)
       .component("Modal", Modal)
+      .component("BackButton", BackButton)
       .component("Notification", Notification)
       .component("FilePond", FilePond)
       .component('Select2', Select2)
