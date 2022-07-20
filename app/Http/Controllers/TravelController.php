@@ -121,4 +121,21 @@ class TravelController extends Controller
         
         return redirect('/travels')->with($statType,"Status {$data->status}");
     }
+
+    public function tripTicket(Request $request)
+    {
+        $travel = DB::table('travels')
+                            ->select(DB::raw('vehicles.PLATENO,
+                                vehicles.FDESC,
+                                employees.first_name,
+                                employees.middle_name,
+                                employees.last_name,
+                                travels.*, TIME_FORMAT(travels.time_departure, "%p") as departure, TIME_FORMAT(travels.time_arrival, "%p") as arrival'))
+                            ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
+                            ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
+                            ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
+                            ->where('travels.id', $request->id)
+                            ->first();
+        return $travel;
+    }
 }

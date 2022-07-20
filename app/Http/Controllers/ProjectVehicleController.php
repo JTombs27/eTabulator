@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Project;
 use App\Models\Vehicle;
+use Carbon\Carbon;
 
 class ProjectVehicleController extends Controller
 {
@@ -73,67 +74,118 @@ class ProjectVehicleController extends Controller
 
     public function store(Request $request,$id)
     {
-        $attributes = $request->validate([  "vehicle_id"=>"required",
-                                            "purpose"=>"required",
-                                            "date_from"=>"required|date",
-                                            "date_to"=>"required|date|after:date_from"]);
+        $attributes = $request->validate([  "vehiclesGroup.*.vehicle_id"=>"required",
+        "vehiclesGroup.*.purpose"       =>"required",
+        "vehiclesGroup.*.date_from"     =>"required|date",
+        "vehiclesGroup.*.date_to"       =>"required|date|after_or_equal:vehiclesGroup.*.date_from"],
+        ["vehiclesGroup.*.vehicle_id.required"=>"Vehicle is Required",
+        "vehiclesGroup.*.purpose.required"    =>"Purpose is Required",
+        "vehiclesGroup.*.date_from.required"  =>"Date From is Required",
+        "vehiclesGroup.*.date_to.required"    =>"Date To is Required",
+        "vehiclesGroup.*.date_to.after_or_equal" =>"Date To must be a date after date From"] );
+        foreach ($request->vehiclesGroup as $index => $value) 
+        {
+            foreach ($request->vehiclesGroup as $index2 => $value2) 
+            {
+                if($index !== $index2)
+                {
+                    //VALIDATE IF SAME VEHICLE is used for the same period or Not Same Period but
+                    //but same purpose
+                    if($value["vehicle_id"] === $value2["vehicle_id"]
+                     && 
+                     (
+                        ($value["date_from"] === $value2["date_from"])
+                     )
+                    )
+                    {
 
-        $data = $this->model->where('vehicle_id',$request->vehicle_id)
-        ->where(function ($qeury) use($request){
-            $qeury->whereBetween("date_from",[$request->date_from,$request->date_to])
-            ->orWhereBetween("date_to",[$request->date_from,$request->date_to]);
-        })->first();
-        if($data)
-        {
-            $attributes = $request->validate([
-            "date_fromX"=>"required",
-            "date_toX"=>"required"],[
-                "date_fromX.required"=>"Date Conflict to other entry",
-                "date_toX.required"=>"Date Conflict to other entry"
-            ]);
-        }
-        else
-        {
-            try {
-                //code...
-                $this->model->create($request->all());
-                return redirect('/projects-vehicle/'.$id.'/vehicles')->with('message', 'Added Successfully');
-            } catch (\Throwable $th) {
-                //throw $th;
-                return redirect('/projects-vehicle/'.$id.'/create')->with('error','Please Provide required Data');
+                        $attributes = $request->validate(
+                        [  
+                            "vehiclesGroup.$index.vehicle_idX"=>"required",
+                            "vehiclesGroup.$index2.vehicle_idX"=>"required",
+                        ],
+                        [  
+                            "vehiclesGroup.$index.vehicle_idX.required"=>"Vehicle conflic with the same period.",
+                            "vehiclesGroup.$index2.vehicle_idX.required"=>"Vehicle conflic with the same period.",
+                        ] );
+                    }
+                    if($value["vehicle_id"] === $value2["vehicle_id"]
+                     && 
+                     (
+                        (
+                            $value["date_from"] > $value2["date_from"] &&
+                            $value["date_from"] <= $value2["date_to"] &&
+                            $value["purpose"] == $value2["purpose"]
+                        )
+                     )
+                    )
+                    {
+                        $attributes = $request->validate(
+                            [  
+                                "vehiclesGroup.$index.vehicle_idX"=>"required",
+                                "vehiclesGroup.$index2.vehicle_idX"=>"required",
+                            ],
+                            [  
+                                "vehiclesGroup.$index.vehicle_idX.required"   =>"Same vehicle must have unique purpose.",
+                                "vehiclesGroup.$index2.vehicle_idX.required"  =>"Same vehicle must have unique purpose.",
+                            ] );
+                    }
+                }
             }
         }
-        
-       
+        foreach($request->vehiclesGroup as $key=>$vehicle) 
+        { 
+            $this->model->create([
+                'purpose'   => $vehicle["purpose"],
+                'date_from' => $vehicle["date_from"],
+                'date_to'   => $vehicle["date_to"],
+                'project_id'=> $vehicle["project_id"],
+                'vehicle_id'=> $vehicle["vehicle_id"]
+            ]); 
+        }
+        return redirect("/projects-vehicle/$id/vehicles")->with('message', 'Added Successfully');
     }
 
     public function update(Request $request,$id,$vid)
     {
-        $attributes = $request->validate([  
-                                            "purpose"=>"required",
-                                            "date_from"=>"required|date",
-                                            "date_to"=>"required|date|after:date_from"]);
+        $attributes = $request->validate([  "vehiclesGroup.*.vehicle_id"=>"required",
+                                        "vehiclesGroup.*.purpose"   =>"required",
+                                        "vehiclesGroup.*.date_from" =>"required|date",
+                                        "vehiclesGroup.*.date_to"   =>"required|date|after_or_equal:vehiclesGroup.*.date_from"],
+                                        ["vehiclesGroup.*.vehicle_id.required"=>"Vehicle is Required",
+                                        "vehiclesGroup.*.purpose.required"    =>"Purpose is Required",
+                                        "vehiclesGroup.*.date_from.required"  =>"Date From is Required",
+                                        "vehiclesGroup.*.date_to.required"    =>"Date To is Required",
+                                        "vehiclesGroup.*.date_to.after_or_equal"       =>"Date To must be a date after date From"] );
+        
         $data = $this->model
         ->where('id','!=',$vid)
-        ->where('vehicle_id',$request->vehicle_id)
+        ->where('vehicle_id',$request->vehiclesGroup[0]["vehicle_id"])
         ->where(function ($qeury) use($request){
-            $qeury->whereBetween("date_from",[$request->date_from,$request->date_to])
-            ->orWhereBetween("date_to",[$request->date_from,$request->date_to]);
+            $qeury->where("date_from",$request->vehiclesGroup[0]["date_from"])
+            ->orWhere(function($query2) use ($request){
+                $query2->whereBetween("date_from",[$request->vehiclesGroup[0]["date_from"],$request->vehiclesGroup[0]["date_to"]])
+                ->where("purpose",$request->vehiclesGroup[0]["purpose"]);
+            });
         })
         ->first();
         if($data)
         {
             $attributes = $request->validate([
-            "date_fromX"=>"required",
-            "date_toX"=>"required"],[
-                "date_fromX.required"=>"Date Conflic to other entry",
-                "date_toX.required"=>"Date Conflic to other entry"
+            "vehiclesGroup.*.ate_fromX"=>"required",
+            "vehiclesGroup.*.ate_toX"=>"required"],[
+                "vehiclesGroup.*.date_fromX.required"=>"Date Conflic to other entry",
+                "vehiclesGroup.*.date_toX.required"=>"Date Conflic to other entry"
             ]);
         }
         try {
             //code...
             $data = $this->model->findOrFail($vid);
-            $data->update($request->all());
+            $data->update([
+                'purpose' => $request->vehiclesGroup[0]["purpose"],
+                'date_from' => $request->vehiclesGroup[0]["date_from"],
+                'date_to' => $request->vehiclesGroup[0]["date_to"]
+            ]);
             //$data->update([
             //                "purpose"=>$request->purpose,
             //                "date_from"=>$request->date_from,
