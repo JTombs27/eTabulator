@@ -84,7 +84,7 @@
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
                         <!-- <pagination :links="users.links" /> -->
-                        <pagination :next="users.next_page_url" :prev="users.prev_page_url" />
+                        <pagination :links="users.links" />
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@
 
 <script>
 import Filtering from "@/Shared/Filter";
-import Pagination from "@/Shared/Pagination";
+import Pagination from "@/Shared/PaginationNumber";
 
 export default {
     components: { Pagination, Filtering },
@@ -165,16 +165,21 @@ export default {
         },
         updatePermissions() {
            
-
+            
             this.$inertia.post('update-user-permissions', {
                     'user_id' : this.selectedUser,
                     'permissions' : this.selectedPermissions
                 }, {
                 replace: true,
             })
+            $("#modal").hide();
+            $('body').removeClass('modal-open');
+            $('body').css("overflow","scroll");
+            $('.modal-backdrop').remove();
             this.showModal = false
         },
         closeModal() {
+            
             this.showModal = false
         },
         async getAllPermissions() {

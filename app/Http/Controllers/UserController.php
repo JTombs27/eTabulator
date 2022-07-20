@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\TemporaryFile;
@@ -32,7 +33,7 @@ class UserController extends Controller
                     $query->where('name', 'like', '%' . $searchItem . '%');
                 })
                 ->orderBy('name', 'asc')
-                ->simplePaginate(10)
+                ->paginate(10)
                 ->withQueryString()
                 ->through(fn($user) => [
                     'id' => $user->id,
@@ -57,13 +58,9 @@ class UserController extends Controller
         return inertia('Users/Create');
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $attributes = $request->validate([
-            'name' => 'required|unique:users',
-            'username' => 'required|unique:users',
-            'password' => ['required', 'confirmed'],
-        ]);
+        $attributes = $request->validated();
      
         //transactions are functions that are used when you want to CRUD multiple table simultaneously
         //this will help rollback all changes if one of the table breaks which saves time to clean the mess
@@ -72,6 +69,7 @@ class UserController extends Controller
 
             $attributes['password'] = bcrypt($request->password);
             $attributes['cats'] = $request->cats;
+            $attributes['role'] = $request->permission;
             $newUser = $this->model->create($attributes);
             $user = User::find($newUser->id);
 
@@ -96,7 +94,7 @@ class UserController extends Controller
     public function edit(Request $request, $id)
     {
         $data = $this->model->where('id', $id)->first([
-            'name', 'id', 'email', 'citymunCode', 'brgyCode',
+            'name', 'id', 'email', 'cats', 'role', 'username'
         ]);
 
         return inertia('Users/Create', [
@@ -107,10 +105,24 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
+        if ($request->username != $data->username) {
+            $request->validate([
+                'username' => 'required|unique:users'
+            ]);
+        }
+        if ($request->password) {
+            $request->validate([
+                'password' => ['required', 'confirmed'],
+            ]);
+            $password = bcrypt($request->password);
+        } else {
+            $password = $data->password;
+        }
         $data->update([
             'name' => $request->name,
-            'citymunCode' => $request->municipal_id,
-            'brgyCode' => $request->barangay_id,
+            'permission' => $request->permission,
+            'username' => $request->username,
+            'password' => $password
         ]);
 
         return redirect('/users')->with('message', 'User updated');

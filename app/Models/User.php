@@ -23,7 +23,8 @@ class User extends Authenticatable implements HasMedia
         'cats',
         'password',
         'citymunCode',
-        'brgyCode'
+        'brgyCode',
+        'role'
     ];
 
     protected $hidden = [

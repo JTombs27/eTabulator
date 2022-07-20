@@ -44,7 +44,7 @@
                             <th scope="col">Time Arrival</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
-                            <th scope="col">Price</th>
+                            <th scope="col" style="text-align: right">Price</th>
                             <!-- <th scope="col">Action</th> -->
                         </tr>
                     </thead>
@@ -56,7 +56,7 @@
                             <td>{{ soa_travel.time_arrival }}</td>
                             <td>{{ soa_travel.gas_type }}</td>
                             <td>{{ soa_travel.total_liters }}</td>
-                            <td>{{ Number(soa_travel.price).toLocaleString("en") }}</td>
+                            <td class="text-end">{{ Number(soa_travel.price).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</td>
                             <!-- <td>
                                 <button class="btn btn-secondary btn-sm action-btn" v-if="soa_travel.soa_travel !== null" @click="remove(soa_travel)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
@@ -68,14 +68,16 @@
                         <td v-if="!sortedEmp.length" colspan="6">No record found.</td>
                     </tbody>
                 </table>
-                <p>
-                    <button class="btn btn-sm btn-outline-primary"  v-if="this.currentPage > 1" @click="prevPage">Prev</button> &nbsp;
-                    <button class="btn btn-sm btn-outline-primary"  v-if="this.currentPage <= 1" :disabled='true' @click="prevPage">Prev</button> &nbsp;
-                    <button class="btn btn-sm btn-outline-primary" v-if="(this.currentPage*this.pageSize) < this.myLength" @click="nextPage">Next</button>
-                    <button class="btn btn-sm btn-outline-primary" v-if="(this.currentPage*this.pageSize) >= this.myLength" :disabled='true' @click="nextPage">Next</button>
-                </p>
-                {{ ((currentPage-1)*pageSize)+1 }} to {{ getTo() }} of {{ myLength }} results
-                
+                <ul class="pagination">
+                    <li class="page-item">
+                        <button class="page-link"  v-if="this.currentPage > 1" @click="prevPage" preserve-scroll style="color: grey">Previous</button>
+                        <button class="page-link"  v-if="this.currentPage <= 1" :disabled='true' @click="prevPage" style="color: grey">Previous</button> 
+                    </li>
+                    <li class="page-iteme">
+                        <button class="page-link" v-if="(this.currentPage*this.pageSize) < this.myLength" @click="nextPage" preserve-scroll style="color: grey">Next</button>
+                        <button class="page-link" v-if="(this.currentPage*this.pageSize) >= this.myLength" :disabled='true' @click="nextPage" style="color: grey">Next</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -94,6 +96,7 @@ export default {
     components: { Pagination, Filtering },
     props: {
         travel: Array,
+        auth: Object
     },
 
     data(){
@@ -107,6 +110,8 @@ export default {
                 date_from: "",
                 date_to: "",
                 travels: [],
+                user_id: this.auth.user.id,
+                office_id: this.auth.user.office_id,
             }),
             temp2:[],
         }

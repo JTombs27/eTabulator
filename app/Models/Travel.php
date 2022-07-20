@@ -25,6 +25,7 @@ class Travel extends Model
         'soa_travel',
         'user_id',
         'price',
+        'status',
         
 
     ];
@@ -51,5 +52,15 @@ class Travel extends Model
 
     }
 
+    public function setStatus($value)
+    {
+        $this->status = $value;
+        $this->save();
+    }
+
+    public function driverVehicle()
+    {
+        return $this->belongsTo(DriverVehicle::class, 'driver_vehicles_id', 'id');
+    }
 
 }

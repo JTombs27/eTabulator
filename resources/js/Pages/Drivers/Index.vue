@@ -1,11 +1,11 @@
 <template>
     <Head>
-        <title> Drivers Vehicle</title>
+        <title> Drivers Assignment</title>
     </Head>
 
     <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>Drivers Vehicle</h3>
+            <h3>Drivers Assignment</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input type="text" class="form-control form-control-sm" placeholder="Search...">
@@ -18,6 +18,9 @@
         </div>
             <div class="col-12">
                 <div class="bcg-white p-20 bd">
+                    <div class="peer">
+                    <Link class="btn btn-danger btn-sm pull-right" href="/vehicles">Return to Vehicles</Link>
+                </div>
                     <table class="table">
                         <thead>
                             <tr>
@@ -30,12 +33,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(driver,index) in driver_vehicles.data" :key="index">
-                                <td>{{driver.vehicle.PLATENO}}</td>
-                                <td> </td>
-                                <td>{{driver.date_from}}</td>
-                                <td>{{driver.date_to}}</td>
-                                <td> </td>
+                            <tr v-for="(item,index) in driver_vehicles.data" :key="index">
+                                <td>{{item.vehicle.PLATENO}}</td>
+                                <td> {{`${item.driver.first_name} ${mi(item.driver.middle_name)} ${item.driver.last_name}`}}</td>
+                                <td>{{item.date_from}}</td>
+                                <td>{{item.date_to}}</td>
+                                <td> {{item.office.office}}</td>
                                 <td style="text-align: right">
                                     <div class="dropdown downstart">
                                         <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -43,10 +46,17 @@
                                         <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                         </svg>
                                         </button>
-                                    
+                                        <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                            <li> <hr class="dropdown-divider action-divider"></li>
+                                        <li><Link class="text-danger dropdown-item" @click="deleteDriver(item.id)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                        </svg> Delete </Link></li>
+                                        </ul>
                                     </div>
                                 </td>
                             </tr>
+                            <tr v-if="driver_vehicles.data == 0"><td class="text-center" colspan="5">No Data Found</td></tr>
                         </tbody>
                     </table>
 
@@ -78,8 +88,25 @@ export default ({
         createDriver()
         {
             this.$inertia.get("/drivers/" + this.Vdriver.id+"/create");
+        },
+
+        deleteDriver(id)
+        {
+            let text = "Warning! \nAre you sure you want to Delete the Driver ";
+
+            if (confirm(text) == true) {
+                this.$inertia.delete("/drivers/" + this.Vdriver.id+"/delete/" + id);
+            }
+        }
+    },
+
+     computed: {
+        mi() {
+            return value => value ? `${value.charAt(0)}.` : "";
         }
     }
+
+
 
 })
 </script>
