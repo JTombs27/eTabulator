@@ -21,7 +21,7 @@
             <label>Plate No</label>
             <input type="text" class="form-control">
 
-            <label>Type</label>
+            <label>Vehicle Type</label>
             <select class="form-select">
                 <option disabled value="">Select Type</option>
                 <option value="1">Motorcycle</option>
@@ -30,7 +30,7 @@
             </select>
 
             <label>Date Acquired</label>
-            <input type="text" class="form-control">
+            <input type="date" class="form-control">
 
             <label>Description</label>
             <input type="text" class="form-control">
@@ -124,6 +124,7 @@ export default ({
             driverid: "",
             search: this.$props.filters.search,
             filter:false
+
         }
     },
      watch: {
@@ -138,7 +139,10 @@ export default ({
                 }
             );
         }, 300),
+
     },
+
+    
 
     methods: {
         driverVehicle(driverid)

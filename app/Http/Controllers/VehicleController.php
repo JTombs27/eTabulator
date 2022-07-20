@@ -38,10 +38,10 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
-            'PLATENO' => 'required',
-            'TYPECODE' => 'required',
-            'FDATEACQ' => 'required',
-            'FDESC' => 'required',
+            'PLATENO' => "required",
+            'TYPECODE' => "required",
+            'FDATEACQ' => "required",
+            'FDESC' => "required",
             
         ]);
         $vehicle = $this->model->create($request->except('checkadd'));
