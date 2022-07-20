@@ -63,7 +63,11 @@ __webpack_require__.r(__webpack_exports__);
 
     $("#emp_name").select2({
       ajax: {
+<<<<<<< HEAD
         url: "".concat(process.env.MIX_API_URL, "/PGDDO_Employees"),
+=======
+        url: "".concat("http://192.168.9.101:91//api", "/PGDDO_Employees"),
+>>>>>>> e6335626c6f40394e6339cb210e49ce656acc30a
         dataType: 'json',
         delay: 700,
         data: function data(params) {

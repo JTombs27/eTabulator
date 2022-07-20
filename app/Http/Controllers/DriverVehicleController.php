@@ -21,6 +21,10 @@ class DriverVehicleController extends Controller
                 'vehicle',
                 'driver',
                 'office'
+
+                // ->when($request->search, function($query, $searchItem) {
+                //     $query->where()
+                // })
             ])
 
             ->latest()
@@ -29,6 +33,8 @@ class DriverVehicleController extends Controller
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
         ]);
+
+        // "filters" => $request->only(['search']),
     }
 
     public function create($id)
@@ -42,13 +48,33 @@ class DriverVehicleController extends Controller
     public function store(Request $request, $id)
     {
         $attributes = $request->validate([
-            'date_from' => 'required',
-            'date_to' => 'required',
-            
-        ]); 
-        $this->model->create($request->all());
+            'date_from' => "required|date",
+            'date_to' => "required|date|after_or_equal:date_from", 
+        ]);
 
-        return redirect('/drivers/'.$id.'/vehicles')->with('message', 'Added Successfully');
+        $data = $this->model->where('vehicles_id',$request->vehicles_id)
+        ->where(function ($query) use($request){
+            $query->whereBetween("date_from",[$request->date_from,$request->date_to])
+            ->orWhereBetween("date_to",[$request->date_from,$request->date_to]);
+        })->first();
+
+        if ($data) {
+            $attributes = $request->validate([
+                "date_fromA"=>"required",
+                "date_toB"=>"required"],[
+                    "date_fromA.required"=>"Date Conflict to other entry",
+                    "date_toB.required"=>"Date Conflict to other entry"
+                ]);
+        } else {
+            try {
+                $this->model->create($request->all());
+                return redirect('/drivers/'.$id.'/vehicles')->with('message', 'Added Successfully');
+            } catch(\Throwable $th) {
+                return redirect('/drivers/'.$id.'/create')->with('error', 'Please provide Valid Data');
+
+            }
+        }
+
     }
 
     public function destroy(Request $request,$id,$did)
