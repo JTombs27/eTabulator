@@ -14,7 +14,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
-/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -63,11 +62,7 @@ __webpack_require__.r(__webpack_exports__);
 
     $("#emp_name").select2({
       ajax: {
-<<<<<<< HEAD
-        url: "".concat(process.env.MIX_API_URL, "/PGDDO_Employees"),
-=======
-        url: "".concat("http://192.168.9.101:91//api", "/PGDDO_Employees"),
->>>>>>> e6335626c6f40394e6339cb210e49ce656acc30a
+        url: "http://192.168.9.101:91//api/PGDDO_Employees",
         dataType: 'json',
         delay: 700,
         data: function data(params) {

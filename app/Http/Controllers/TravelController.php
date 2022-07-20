@@ -117,7 +117,8 @@ class TravelController extends Controller
     public function setStatus(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-        $data->setStatus($request->status);
-        return redirect('/travels')->with('message',"Status {$data->status}");
+        $statType = $data->setStatus($request->status);
+        
+        return redirect('/travels')->with($statType,"Status {$data->status}");
     }
 }
