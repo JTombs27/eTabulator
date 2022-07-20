@@ -110,7 +110,6 @@ export default {
             vehicles: [],
             driverName:"",
             form: useForm({
-                official_passenger:'',
                 place_to_visit:'',
                 gas_type:'',
                 time_arrival:'',
@@ -135,7 +134,6 @@ export default {
 
     mounted() {
         this.getVehicles();
-
         $('#paseengers').select2({
             ajax: {
                 type:"GET",
@@ -165,6 +163,8 @@ export default {
             data:[{"text": "", "id":"", "selected": true}]
             
         })
+
+        
         // $("#actualDriver").select2({
         //   tags: true
         // });

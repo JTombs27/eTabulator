@@ -20,8 +20,8 @@ class CreateTravelsTable extends Migration
             $table->date('travel_date');
             $table->longText('place_to_visit')->nullable();
             $table->longText('purpose')->nullable();
-            $table->string('time_departure',45);
-            $table->string('time_arrival',45);
+            $table->string('time_departure',45)->nullable();
+            $table->string('time_arrival',45)->nullable();
             $table->string('gas_type',45);
             $table->integer('total_liters');
             $table->integer('user_id');

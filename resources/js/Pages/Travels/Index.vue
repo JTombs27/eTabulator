@@ -8,7 +8,7 @@
             <h3>Travels</h3>
             <div class="peers">
                 <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+                    <!-- <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search..."> -->
                 </div>
                 <div class="peer"  v-if="can.canCreateTravel">
                     <Link class="btn btn-primary btn-sm" href="/travels/create">Add Travel</Link>
@@ -27,6 +27,7 @@
                             <th scope="col">Driver</th>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
+                            <th scope="col">Status</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
@@ -37,17 +38,30 @@
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
                             <td>{{item.date_from}}</td>
                             <td>{{item.date_to}}</td>
+                            <td v-html="statusDisplay(item)"></td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
-                                  <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" 
+                                    aria-expanded="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                       <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                     </svg>
                                   </button>
-                                  <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                  <ul class="dropdown-menu" :id="item.id" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
-                                    <li><Link class="dropdown-item" :href="`/travels/set-status`" @click="approveStatus(item)" as="button">Approve</Link></li>
+                                    <!-- <li><Link class="dropdown-item" :href="`/travels/set-status`" method="post" :data="item" as="button" v-if="can.canSetStatus">Approve</Link></li> -->
+                                    <li v-if="item.status == 'Disapproved' || item.status==null">
+                                        
+                                        <button as="button" class="dropdown-item" @click="approvedStatus(item,'Approved')" v-if="can.canSetStatus && !loader">
+                                            <span  class="text-success">Approve</span>
+                                        </button>
+                                    </li>
+                                    <li v-if="item.status == 'Approved' || item.status==null">
+                                        <button as="button" class="dropdown-item" @click="approvedStatus(item, 'Disapproved')" v-if="can.canSetStatus && !loader">
+                                            <span  class="text-danger">Disapprove</span>
+                                        </button>
+                                    </li>
                                   </ul>
                                 </div>
                             </td>
@@ -75,9 +89,51 @@ export default {
         user:Object
     },
 
+    data() {
+        
+        return {
+            loader:false,
+            itemId:"",
+            dropdownOption:"outside"
+        }
+    },
+
     methods:{
-        approvedStatus(item) {
-            this.$inertia.post('/travels/set-status', {id:item.id, status:item.status})
+        approvedStatus(item, status) {
+            //   $(`.dropdown-menu#${item.id}`).toggle();
+            this.$inertia.post('/travels/set-status', {id:item.id, status:status}, { 
+                onStart: (data) => {
+                    this.loader = true
+                    this.itemId = item.id
+                },
+
+                onFinish: () => {
+                    this.loader = false
+                }
+
+                
+            })
+        },
+        
+        statusDisplay(item) {
+            if (this.loader && item.id == this.itemId) {
+                return `<span v-if="loader" class="dropdown-item">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden"></span>
+                    </div>
+                    Processing...
+                </span>`
+            } else {
+                let classText = "";
+                if (item.status == "Approved") {
+                    classText = "badge bg-success";
+                } else if (item.status == "Disapproved") {
+                    classText = "badge bg-danger";
+                } else {
+                    classText = "badge bg-secondary";
+                }
+                return `<span class="${classText}">${this.status(item.status)}</span>`
+            }
         }
     },
 
@@ -87,11 +143,59 @@ export default {
     computed: {
         mi() {
             return value => value ? `${value.charAt(0)}.` : "";
+        },
+
+        status() {
+            return value => {
+                if (value == "Approved") {
+                    return "Approved"
+                } else if (!value) {
+                    return "Pending"
+                } else if(value == "Disapproved") {
+                    return "Disapproved"
+                }
+            }
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
+
+    .dot-typing {
+      position: relative;
+      left: -9999px;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      background-color: #9880ff;
+      color: #9880ff;
+      box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      animation: dotTyping 1.5s infinite linear;
+    }
+
+    @keyframes dotTyping {
+      0% {
+        box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      }
+      16.667% {
+        box-shadow: 9984px -10px 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      }
+      33.333% {
+        box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      }
+      50% {
+        box-shadow: 9984px 0 0 0 #9880ff, 9999px -10px 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      }
+      66.667% {
+        box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      }
+      83.333% {
+        box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px -10px 0 0 #9880ff;
+      }
+      100% {
+        box-shadow: 9984px 0 0 0 #9880ff, 9999px 0 0 0 #9880ff, 10014px 0 0 0 #9880ff;
+      }
+    }
 
 </style>
