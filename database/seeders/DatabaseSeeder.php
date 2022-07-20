@@ -30,6 +30,6 @@ class DatabaseSeeder extends Seeder
 
         ]);
 
-        \App\Models\User::factory(100)->create();
+        // \App\Models\User::factory(100)->create();
     }
 }

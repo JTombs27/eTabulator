@@ -1,6 +1,6 @@
 <template>
      <Head>
-        <title>Users</title>
+        <title>Travels</title>
     </Head>
 
     <div class="row gap-10 masonry pos-r">

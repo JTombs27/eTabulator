@@ -1,5 +1,7 @@
 <template>
-
+     <Head>
+        <title>{{ pageTitle }} users</title>
+    </Head>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} users</h3>
@@ -108,7 +110,7 @@ export default {
 
         $("#emp_name").select2({
             ajax : {
-                url: `${process.env.MIX_API_URL}/PGDDO_Employees`,
+                url: `http://192.168.9.101:91//api/PGDDO_Employees`,
                 dataType:'json',
                 delay:700,
                 data: function(params) {

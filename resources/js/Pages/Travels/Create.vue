@@ -1,4 +1,7 @@
 <template>
+    <Head>
+        <title>{{ pageTitle }} travel</title>
+    </Head>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3>
@@ -105,6 +108,10 @@ import { useForm } from '@inertiajs/inertia-vue3';
 
 export default {
 
+    props: {
+        editData: Object,
+    },
+
     data() {
         return{
             vehicles: [],
@@ -124,6 +131,7 @@ export default {
                 price:null,
                 showActualDriver:false,
                 vehicles_id:null,
+                purpose:"",
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -133,6 +141,21 @@ export default {
     },
 
     mounted() {
+        if (this.editData !== undefined) {
+            this.loading = true
+            this.pageTitle = "Edit"
+            this.form.place_to_visit = this.editData.place_to_visit
+            this.form.gas_type = this.editData.gas_type
+            this.form.time_arrival = this.editData.time_arrival
+            this.form.time_departure = this.editData.time_departure
+            this.form.total_liters = this.editData.total_liters
+            this.form.vehicles_id = this.editData.driver_vehicle.vehicles_id
+            this.form.driver_vehicles_id = this.editData.driver_vehicle.id
+            this.form.purpose = this.editData.purpose
+            this.getVehicleDetails();
+        } else {
+            this.pageTitle = "Create"
+        }
         this.getVehicles();
         $('#paseengers').select2({
             ajax: {
@@ -184,7 +207,7 @@ export default {
         },
 
         getVehicleDetails() {
-            axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.form.vehicles_id})
+            axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
                 .then((response) => {
                     this.drivers = response.data.map(obj => {
                         let mi = "";
