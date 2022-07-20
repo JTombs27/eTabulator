@@ -60,26 +60,9 @@ class TravelController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $editData = $this->model->with('driverVehicle','driverVehicle.driver')->findOrFail($id);
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.driver')->where('id',$id)->first();
         return inertia('Travels/Create', [
-            'editData' => $editData->map(fn($item) => [
-                'date_from' => $item->date_from,
-                'date_to' => $item->date_to,
-                'official_passenger' => $item->official_passenger,
-                'place_to_visit' => $item->place_to_visit,
-                'gas_type' => $item->gas_type,
-                'time_arrival' => $item->time_arrival,
-                'time_departure' => $item->time_departure,
-                'total_liters' => $item->total_liters,
-                'driver_vehicles_id' => $item->driver_vehicles_id,
-                'actual_driver' => $item->actual_driver,
-                'price' => $item->price,
-                'vehicles_id' => $item->vehicles_id,
-                'driver' => [
-                    'id' => $item->empl_id,
-                    'text'
-                ]
-            ])
+            'editData' => $editData
         ]);
         
     }
