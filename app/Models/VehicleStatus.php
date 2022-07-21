@@ -10,6 +10,7 @@ class VehicleStatus extends Model
     use HasFactory;
     protected $table = 'vehicle_status';
     protected $fillable = [
+        'vehicle_status_date',
         'condition',
         'vehicle_id'
     ];

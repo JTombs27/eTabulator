@@ -95,8 +95,7 @@
         v-if="showModal" 
         :modalTitle="'Permissions'" 
         @closeModal="closeModal"
-        @saveModal="updatePermissions"
-    >
+        @saveModal="updatePermissions">
         <div v-for="permission, index in permissions">
             <div v-for="item in permission">
                 <input type="checkbox" v-model="selectedPermissions" :value="item.id" :id="item.id"> <label :for="item.id">{{ item.permission_name }}</label>
