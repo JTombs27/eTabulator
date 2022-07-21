@@ -81,6 +81,7 @@ export default {
         },
 
         Edit() {
+            
            this._disbled = false
            
         },
