@@ -22,14 +22,15 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
 
                 <label for="">Office</label>
-                <Select2 v-model="form.office_id" id="office" :options="offices"/>
+                <Select2 v-model="form.office_id" id="office" />
                 <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
 
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
 
-                    <option value="Admin">Admin</option>
-                    <option value="Basic">Basic</option>
+                    <option value="PGO">Admin</option>
+                    <option value="RO">Requestioning Office</option>
+                    <option value="PGSO">PGSO</option>
                     <option value="PG-Head">PG-Head</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
@@ -139,7 +140,31 @@ export default {
             templateResult: this.formatRepo,
             templateSelection: this.formatRepoSelection
         })
-        this.loadOffices();
+
+        $('#office').select2({
+            ajax: {
+                url: '/offices/fetch',
+                dataType:'json',
+                delay:500,
+                data: function(filter) {
+                    return {filter:filter.term};
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return{
+                        results: $.map(data, function(obj) {
+                            return {
+                                id: obj.id,
+                                text: obj.text
+                            }
+                        })
+                    }
+                },
+                minimumInputLength: 2,
+            }
+        })
+        // this.loadOffices();
     },
 
     methods: {

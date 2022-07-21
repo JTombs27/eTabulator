@@ -7,21 +7,17 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Drivers Assignment</h3>
             <div class="peers">
-                <div class="peer mR-10">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
                 <div class="peer">
                     <Link class="btn btn-success btn-sm" @click="createDriver()">Add Drivers</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white">Filter</button>
                 </div>
             </div>
         </div>
             <div class="col-12">
-                <div class="bcg-white p-20 bd">
+                <div class="bgc-white p-20 bd">
                     <div class="peer">
                     <Link class="btn btn-danger btn-sm pull-right" href="/vehicles">Return to Vehicles</Link>
                 </div>
-                    <table class="table">
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">Vehicle Plate Number</th>
