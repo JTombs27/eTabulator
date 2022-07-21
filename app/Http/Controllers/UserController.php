@@ -75,7 +75,9 @@ class UserController extends Controller
 
             if ($request->permission == 'Admin') {
                 //1,2,3 are all available permissions for the admin
-                $user->permissions()->sync([1, 2, 3]);
+                $user->permissions()->sync([4,5,6,7,8]);
+            } elseif ($request->permission == 'RO') {
+                $user->permissions()->sync([]);
             } else {
                 //specify an Array of permissions id here manually
                 $user->permissions()->sync([]);
