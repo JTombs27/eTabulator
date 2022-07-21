@@ -73,11 +73,13 @@ class UserController extends Controller
             $newUser = $this->model->create($attributes);
             $user = User::find($newUser->id);
 
-            if ($request->permission == 'Admin') {
+            if ($request->permission == 'PGO') {
                 //1,2,3 are all available permissions for the admin
                 $user->permissions()->sync([4,5,6,7,8]);
             } elseif ($request->permission == 'RO') {
-                $user->permissions()->sync([]);
+                $user->permissions()->sync([5]);
+            } elseif ($request->permission == 'PGSO') {
+                $user->permissions()->sync([4,8]);
             } else {
                 //specify an Array of permissions id here manually
                 $user->permissions()->sync([]);

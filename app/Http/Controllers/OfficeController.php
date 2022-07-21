@@ -20,13 +20,15 @@ class OfficeController extends Controller
             //code...
             DB::table('offices')->truncate();
             $url = env('MIX_API_URL');
-            $offices = Http::get("{$url}/PGDDODepartments")->collect();
+            $offices = Http::get("http://192.168.9.101:91//api/PGDDODepartments")->collect();
+            // return $offices;
             $officeArray = [];
             foreach ($offices as $value) {
                 $data = [
                     'id' => $value['department_code'],
                     'office' => $value['department_name1'],
                     'department_code' => $value['department_code'],
+                    'short_name' => $value['department_short_name'],
                     'created_at' => now()
                 ];
                 array_push($officeArray, $data);

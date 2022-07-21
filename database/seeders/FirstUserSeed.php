@@ -19,7 +19,7 @@ class FirstUserSeed extends Seeder
             'name' => 'Administrator',
             'cats' => '0828',
             'email' => 'admin@admin.com',
-            'role' => 'Super User',
+            'role' => 'Admin',
             'username'=> 'admin',
             'password' => bcrypt('12345678'),
         ],
@@ -28,7 +28,7 @@ class FirstUserSeed extends Seeder
             'name' => 'RO',
             'cats' => '0828',
             'email' => 'ro@admin.com',
-            'role' => 'Basic',
+            'role' => 'RO',
             'username'=> 'ro',
             'password' => bcrypt('12345678'),
         ],
@@ -39,6 +39,15 @@ class FirstUserSeed extends Seeder
             'email' => 'PG-HEAD@admin.com',
             'role' => 'PG-Head',
             'username'=> 'pghead',
+            'password' => bcrypt('12345678'),
+        ],
+        [
+            'id' => 4,
+            'name' => 'PGO-Admn',
+            'cats' => '0828',
+            'email' => 'pgoAdmin@admin.com',
+            'role' => 'PGO',
+            'username'=> 'pgoadmin',
             'password' => bcrypt('12345678'),
         ]);
 

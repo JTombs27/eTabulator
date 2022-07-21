@@ -28,7 +28,7 @@
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
 
-                    <option value="Admin">Admin</option>
+                    <option value="PGO">Admin</option>
                     <option value="RO">Requestioning Office</option>
                     <option value="PGSO">PGSO</option>
                     <option value="PG-Head">PG-Head</option>
