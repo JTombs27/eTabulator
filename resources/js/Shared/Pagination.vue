@@ -16,8 +16,8 @@
             class="p-3 text-decoration-none"
             :class="{'text-muted' : !link.url, 'fw-bold' : link.active}"
         /> --> 
-<!-- 
-        <ul class="pagination">
+
+        <!-- <ul class="pagination">
             <li 
                 v-for="(link, index) in links"
                 :key="index"
@@ -34,7 +34,7 @@
             
           </ul> -->
 
-        <ul class="pagination">
+         <ul class="pagination">
             <li class="page-item">
                 <Link class="page-link" :href="prev" v-if="prev" preserve-scroll>Previous</Link>
                 <span class="page-link" :class="{ 'text-muted' : !prev }" v-else >Previous</span>

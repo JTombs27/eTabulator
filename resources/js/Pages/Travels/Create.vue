@@ -1,4 +1,7 @@
 <template>
+    <Head>
+        <title>{{ pageTitle }} travel</title>
+    </Head>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3>
@@ -53,7 +56,7 @@
                 <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <label>Authorized Driver</label>
-                <Select2 id="authorizedDriver" v-model="form.drivers_id"  :options="drivers" @select="setDriverVehicle($event)"/>
+                <Select2 id="authorizedDriver" class="js-data-example-ajax" v-model="form.drivers_id" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
                 <br>
@@ -105,6 +108,10 @@ import { useForm } from '@inertiajs/inertia-vue3';
 
 export default {
 
+    props: {
+        editData: Object,
+    },
+
     data() {
         return{
             vehicles: [],
@@ -124,6 +131,7 @@ export default {
                 price:null,
                 showActualDriver:false,
                 vehicles_id:null,
+                purpose:"",
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -134,6 +142,23 @@ export default {
 
     mounted() {
         this.getVehicles();
+        if (this.editData !== undefined) {
+            this.loading = true
+            this.pageTitle = "Edit"
+            this.form.place_to_visit = this.editData.place_to_visit
+            this.form.gas_type = this.editData.gas_type
+            this.form.time_arrival = this.editData.time_arrival
+            this.form.time_departure = this.editData.time_departure
+            this.form.total_liters = this.editData.total_liters
+            this.form.vehicles_id = String(this.editData.driver_vehicle.vehicles_id)
+            this.form.driver_vehicles_id = this.editData.driver_vehicle.id
+            this.form.purpose = this.editData.purpose
+            this.form.price = this.editData.price
+            this.getVehicleDetails();
+        } else {
+            this.pageTitle = "Create"
+        }
+        
         $('#paseengers').select2({
             ajax: {
                 type:"GET",
@@ -184,9 +209,16 @@ export default {
         },
 
         getVehicleDetails() {
-            axios.post('/travels/vehicle-details',{travel_date:this.form.travel_date, vehicles_id:this.form.vehicles_id})
+            var data = [];
+            axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
                 .then((response) => {
-                    this.drivers = response.data.map(obj => {
+                    data =  response.data.map(obj => {
+                        let _selected = false;
+                        if (this.editData != undefined) {
+                            _selected = obj.driver.empl_id === this.editData.driver_vehicle.drivers_id
+                            console.log(_selected)
+                        }
+                            console.log(_selected)
                         let mi = "";
                         if (obj.driver.middle_name) {
                             mi = obj.driver.middle_name.charAt(0);
@@ -194,10 +226,13 @@ export default {
                         return {
                             id: obj.driver.empl_id,
                             text: `${obj.driver.first_name} ${mi}. ${obj.driver.last_name}`,
-                            dv_id: obj.id
+                            dv_id: obj.id,
+                            "selected": _selected
                         }
-                        
-                    })                     
+                    })                   
+                    $('#authorizedDriver').select2({
+                        data:data,
+                    })
                 })
         },
 

@@ -60,26 +60,9 @@ class TravelController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $editData = $this->model->with('driverVehicle','driverVehicle.driver')->findOrFail($id);
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.driver')->where('id',$id)->first();
         return inertia('Travels/Create', [
-            'editData' => $editData->map(fn($item) => [
-                'date_from' => $item->date_from,
-                'date_to' => $item->date_to,
-                'official_passenger' => $item->official_passenger,
-                'place_to_visit' => $item->place_to_visit,
-                'gas_type' => $item->gas_type,
-                'time_arrival' => $item->time_arrival,
-                'time_departure' => $item->time_departure,
-                'total_liters' => $item->total_liters,
-                'driver_vehicles_id' => $item->driver_vehicles_id,
-                'actual_driver' => $item->actual_driver,
-                'price' => $item->price,
-                'vehicles_id' => $item->vehicles_id,
-                'driver' => [
-                    'id' => $item->empl_id,
-                    'text'
-                ]
-            ])
+            'editData' => $editData
         ]);
         
     }
@@ -134,7 +117,25 @@ class TravelController extends Controller
     public function setStatus(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-        $data->setStatus($request->status);
-        return redirect('/travels')->with('message',"Status {$data->status}");
+        $statType = $data->setStatus($request->status);
+        
+        return redirect('/travels')->with($statType,"Status {$data->status}");
+    }
+
+    public function tripTicket(Request $request)
+    {
+        $travel = DB::table('travels')
+                            ->select(DB::raw('vehicles.PLATENO,
+                                vehicles.FDESC,
+                                employees.first_name,
+                                employees.middle_name,
+                                employees.last_name,
+                                travels.*, TIME_FORMAT(travels.time_departure, "%p") as departure, TIME_FORMAT(travels.time_arrival, "%p") as arrival'))
+                            ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
+                            ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
+                            ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
+                            ->where('travels.id', $request->id)
+                            ->first();
+        return $travel;
     }
 }

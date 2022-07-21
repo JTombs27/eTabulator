@@ -46,6 +46,8 @@
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col">Acquisition</th>
+                            <th scope="col">Office</th>
+                            <th scope="col">Driver</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right"> Action</th>
                         </tr>
@@ -55,7 +57,9 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td> {{vehicle.TYPECODE}}</td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> <div style="width: 50%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
+                            <td> <div style="width: 60%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
+                            <td></td>
+                            <td></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">

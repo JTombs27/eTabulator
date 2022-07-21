@@ -40,7 +40,7 @@
                             <td>{{ soaTravels.cafoa_number }}</td>
                             <td>{{ soaTravels.date_from }}</td>
                             <td>{{ soaTravels.date_to }}</td>
-                            <td class="text-end">{{ Number(soaTravels.travels_sum_price).toLocaleString("en") }}</td>
+                            <td class="text-end">{{ Number(soaTravels.travels_sum_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">

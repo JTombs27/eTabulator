@@ -42,7 +42,7 @@
                             <td>{{ detailTravels.time_arrival }}</td>
                             <td>{{ detailTravels.gas_type }}</td>
                             <td>{{ detailTravels.total_liters }}</td>
-                            <td class="text-end">{{ Number(detailTravels.price).toLocaleString("en") }}</td>
+                            <td class="text-end">{{ Number(detailTravels.price).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm action-btn" v-if="detailTravels.soa_travel !== null" @click="remove(detailTravels)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
