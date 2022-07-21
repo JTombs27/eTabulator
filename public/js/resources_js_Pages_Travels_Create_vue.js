@@ -45,6 +45,8 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
+    this.getVehicles();
+
     if (this.editData !== undefined) {
       this.loading = true;
       this.pageTitle = "Edit";
@@ -53,15 +55,15 @@ __webpack_require__.r(__webpack_exports__);
       this.form.time_arrival = this.editData.time_arrival;
       this.form.time_departure = this.editData.time_departure;
       this.form.total_liters = this.editData.total_liters;
-      this.form.vehicles_id = this.editData.driver_vehicle.vehicles_id;
+      this.form.vehicles_id = String(this.editData.driver_vehicle.vehicles_id);
       this.form.driver_vehicles_id = this.editData.driver_vehicle.id;
       this.form.purpose = this.editData.purpose;
+      this.form.price = this.editData.price;
       this.getVehicleDetails();
     } else {
       this.pageTitle = "Create";
     }
 
-    this.getVehicles();
     $('#paseengers').select2({
       ajax: {
         type: "GET",
@@ -116,10 +118,19 @@ __webpack_require__.r(__webpack_exports__);
     getVehicleDetails: function getVehicleDetails() {
       var _this3 = this;
 
+      var data = [];
       axios.post('/travels/vehicle-details', {
         vehicles_id: this.form.vehicles_id
       }).then(function (response) {
-        _this3.drivers = response.data.map(function (obj) {
+        data = response.data.map(function (obj) {
+          var _selected = false;
+
+          if (_this3.editData != undefined) {
+            _selected = obj.driver.empl_id === _this3.editData.driver_vehicle.drivers_id;
+            console.log(_selected);
+          }
+
+          console.log(_selected);
           var mi = "";
 
           if (obj.driver.middle_name) {
@@ -129,8 +140,12 @@ __webpack_require__.r(__webpack_exports__);
           return {
             id: obj.driver.empl_id,
             text: "".concat(obj.driver.first_name, " ").concat(mi, ". ").concat(obj.driver.last_name),
-            dv_id: obj.id
+            dv_id: obj.id,
+            "selected": _selected
           };
+        });
+        $('#authorizedDriver').select2({
+          data: data
         });
       });
     },
@@ -495,17 +510,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
     id: "authorizedDriver",
+    "class": "js-data-example-ajax",
     modelValue: $data.form.drivers_id,
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.form.drivers_id = $event;
     }),
-    options: $data.drivers,
     onSelect: _cache[8] || (_cache[8] = function ($event) {
       return $options.setDriverVehicle($event);
     })
   }, null, 8
   /* PROPS */
-  , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" class=\"form-control\" v-model=\"driverName\"> "), $data.form.errors.driver_vehicles_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.driver_vehicles_id), 1
+  , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" class=\"form-control\" v-model=\"driverName\"> "), $data.form.errors.driver_vehicles_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.driver_vehicles_id), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "form-check-input",

@@ -56,7 +56,7 @@
                 <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <label>Authorized Driver</label>
-                <Select2 id="authorizedDriver" v-model="form.drivers_id"  :options="drivers" @select="setDriverVehicle($event)"/>
+                <Select2 id="authorizedDriver" class="js-data-example-ajax" v-model="form.drivers_id" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
                 <br>
@@ -141,6 +141,7 @@ export default {
     },
 
     mounted() {
+        this.getVehicles();
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
@@ -149,14 +150,15 @@ export default {
             this.form.time_arrival = this.editData.time_arrival
             this.form.time_departure = this.editData.time_departure
             this.form.total_liters = this.editData.total_liters
-            this.form.vehicles_id = this.editData.driver_vehicle.vehicles_id
+            this.form.vehicles_id = String(this.editData.driver_vehicle.vehicles_id)
             this.form.driver_vehicles_id = this.editData.driver_vehicle.id
             this.form.purpose = this.editData.purpose
+            this.form.price = this.editData.price
             this.getVehicleDetails();
         } else {
             this.pageTitle = "Create"
         }
-        this.getVehicles();
+        
         $('#paseengers').select2({
             ajax: {
                 type:"GET",
@@ -207,9 +209,16 @@ export default {
         },
 
         getVehicleDetails() {
+            var data = [];
             axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
                 .then((response) => {
-                    this.drivers = response.data.map(obj => {
+                    data =  response.data.map(obj => {
+                        let _selected = false;
+                        if (this.editData != undefined) {
+                            _selected = obj.driver.empl_id === this.editData.driver_vehicle.drivers_id
+                            console.log(_selected)
+                        }
+                            console.log(_selected)
                         let mi = "";
                         if (obj.driver.middle_name) {
                             mi = obj.driver.middle_name.charAt(0);
@@ -217,10 +226,13 @@ export default {
                         return {
                             id: obj.driver.empl_id,
                             text: `${obj.driver.first_name} ${mi}. ${obj.driver.last_name}`,
-                            dv_id: obj.id
+                            dv_id: obj.id,
+                            "selected": _selected
                         }
-                        
-                    })                     
+                    })                   
+                    $('#authorizedDriver').select2({
+                        data:data,
+                    })
                 })
         },
 

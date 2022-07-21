@@ -56,6 +56,10 @@ class Travel extends Model
     {
         $this->status = $value;
         $this->save();
+        if ($value == 'Disapproved') {
+            return 'error';
+        }
+        return 'message';
     }
 
     public function driverVehicle()
