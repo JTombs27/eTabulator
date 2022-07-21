@@ -56,7 +56,7 @@
                 <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <label>Authorized Driver</label>
-                <Select2 id="authorizedDriver" class="js-data-example-ajax" v-model="form.drivers_id" @select="setDriverVehicle($event)"/>
+                <Select2 id="authorizedDriver" class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
                 <br>
@@ -132,6 +132,7 @@ export default {
                 showActualDriver:false,
                 vehicles_id:null,
                 purpose:"",
+                drivers_id:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -154,6 +155,7 @@ export default {
             this.form.driver_vehicles_id = this.editData.driver_vehicle.id
             this.form.purpose = this.editData.purpose
             this.form.price = this.editData.price
+            this.form.drivers_id = this.editData.driver_vehicle.drivers_id
             this.getVehicleDetails();
         } else {
             this.pageTitle = "Create"
@@ -189,7 +191,7 @@ export default {
             
         })
 
-        
+       
         // $("#actualDriver").select2({
         //   tags: true
         // });
@@ -209,10 +211,10 @@ export default {
         },
 
         getVehicleDetails() {
-            var data = [];
+           
             axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
                 .then((response) => {
-                    data =  response.data.map(obj => {
+                    this.drivers =  response.data.map(obj => {
                         let _selected = false;
                         if (this.editData != undefined) {
                             _selected = obj.driver.empl_id === this.editData.driver_vehicle.drivers_id
@@ -230,9 +232,6 @@ export default {
                             "selected": _selected
                         }
                     })                   
-                    $('#authorizedDriver').select2({
-                        data:data,
-                    })
                 })
         },
 
@@ -248,6 +247,7 @@ export default {
         },
 
         setDriverVehicle($event) {
+            console.log($event)
             this.form.driver_vehicles_id = $event.dv_id;
         },
         

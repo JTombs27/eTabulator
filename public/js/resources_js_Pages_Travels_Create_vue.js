@@ -36,7 +36,8 @@ __webpack_require__.r(__webpack_exports__);
         price: null,
         showActualDriver: false,
         vehicles_id: null,
-        purpose: ""
+        purpose: "",
+        drivers_id: null
       }),
       pageTitle: "Create",
       columnFrom: "col-md-12",
@@ -59,6 +60,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.driver_vehicles_id = this.editData.driver_vehicle.id;
       this.form.purpose = this.editData.purpose;
       this.form.price = this.editData.price;
+      this.form.drivers_id = this.editData.driver_vehicle.drivers_id;
       this.getVehicleDetails();
     } else {
       this.pageTitle = "Create";
@@ -118,11 +120,10 @@ __webpack_require__.r(__webpack_exports__);
     getVehicleDetails: function getVehicleDetails() {
       var _this3 = this;
 
-      var data = [];
       axios.post('/travels/vehicle-details', {
         vehicles_id: this.form.vehicles_id
       }).then(function (response) {
-        data = response.data.map(function (obj) {
+        _this3.drivers = response.data.map(function (obj) {
           var _selected = false;
 
           if (_this3.editData != undefined) {
@@ -144,9 +145,6 @@ __webpack_require__.r(__webpack_exports__);
             "selected": _selected
           };
         });
-        $('#authorizedDriver').select2({
-          data: data
-        });
       });
     },
     appendPassenger: function appendPassenger(e) {
@@ -162,6 +160,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.official_passenger += "".concat(separator).concat(e.text);
     },
     setDriverVehicle: function setDriverVehicle($event) {
+      console.log($event);
       this.form.driver_vehicles_id = $event.dv_id;
     },
     submit: function submit() {
@@ -515,12 +514,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.form.drivers_id = $event;
     }),
+    options: $data.drivers,
     onSelect: _cache[8] || (_cache[8] = function ($event) {
       return $options.setDriverVehicle($event);
     })
   }, null, 8
   /* PROPS */
-  , ["modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" class=\"form-control\" v-model=\"driverName\"> "), $data.form.errors.driver_vehicles_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.driver_vehicles_id), 1
+  , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" class=\"form-control\" v-model=\"driverName\"> "), $data.form.errors.driver_vehicles_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_24, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.driver_vehicles_id), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_25, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "form-check-input",

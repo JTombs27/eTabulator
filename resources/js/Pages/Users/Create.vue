@@ -159,10 +159,11 @@ export default {
                                 text: obj.text
                             }
                         })
-                    }
+                    };
                 },
-                minimumInputLength: 2,
-            }
+                cache: true
+            },
+            minimumInputLength: 2,
         })
         // this.loadOffices();
     },
