@@ -50,6 +50,11 @@
                                   </button>
                                   <ul class="dropdown-menu" :id="item.id" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
+                                    <li v-if="item.status == 'Approved'">
+                                        <button as="button" class="dropdown-item" @click="tripTicket(item.id)">
+                                            <span>Trip Ticket</span>
+                                        </button>
+                                    </li>
                                     <!-- <li><Link class="dropdown-item" :href="`/travels/set-status`" method="post" :data="item" as="button" v-if="can.canSetStatus">Approve</Link></li> -->
                                     <li v-if="item.status == 'Disapproved' || item.status==null">
                                         
@@ -113,6 +118,9 @@ export default {
 
                 
             })
+        },
+        tripTicket(id) {
+            window.open("http://192.168.6.23:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftrip_ticket&standAlone=true&decorate=no&id="+id,"_blank");
         },
         
         statusDisplay(item) {
