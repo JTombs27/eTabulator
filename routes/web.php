@@ -16,6 +16,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\ChargeController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -134,6 +135,16 @@ Route::middleware('auth')->group(function() {
     //for Offices
     Route::prefix('offices')->group(function () {
         Route::get('fetch', [OfficeController::class, 'loadOffices']);
+    });
+
+    //for Charges
+    Route::prefix('charges')->group(function () {
+        Route::get('/', [ChargeController::class, 'index']);
+        Route::get('/create', [ChargeController::class, 'create']);
+        Route::post('/store', [ChargeController::class, 'store']);
+        Route::get('/{id}/edit', [ChargeController::class, 'edit']);
+        Route::patch('/{id}', [ChargeController::class, 'update']);
+        Route::delete('/{id}', [ChargeController::class, 'destroy']);
     });
     
 });

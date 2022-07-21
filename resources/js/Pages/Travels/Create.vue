@@ -209,10 +209,11 @@ export default {
         },
 
         getVehicleDetails() {
-            var data = [];
+            //var data = [];
+            this.drivers = [];
             axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
                 .then((response) => {
-                    data =  response.data.map(obj => {
+                    this.drivers =  response.data.map(obj => {
                         let _selected = false;
                         if (this.editData != undefined) {
                             _selected = obj.driver.empl_id === this.editData.driver_vehicle.drivers_id
@@ -231,7 +232,7 @@ export default {
                         }
                     })                   
                     $('#authorizedDriver').select2({
-                        data:data,
+                        data:this.drivers,
                     })
                 })
         },
@@ -248,10 +249,13 @@ export default {
         },
 
         setDriverVehicle($event) {
-            this.form.driver_vehicles_id = $event.dv_id;
+            alert(1212)
+            console.log($event);
+            //this.form.driver_vehicles_id = this.drivers[$event];
         },
         
         submit() {
+            this.form
             this.form.post("/travels", this.form);
         }
     },
