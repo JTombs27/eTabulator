@@ -29,7 +29,8 @@
                 <select class="form-select" v-model="form.permission">
 
                     <option value="Admin">Admin</option>
-                    <option value="Basic">Basic</option>
+                    <option value="RO">Requestioning Office</option>
+                    <option value="PGSO">PGSO</option>
                     <option value="PG-Head">PG-Head</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
