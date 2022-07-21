@@ -16,7 +16,7 @@
             class="p-3 text-decoration-none"
             :class="{'text-muted' : !link.url, 'fw-bold' : link.active}"
         /> --> 
-
+<!-- 
         <ul class="pagination">
             <li 
                 v-for="(link, index) in links"
@@ -32,9 +32,9 @@
                 />
             </li>
             
-          </ul>
+          </ul> -->
 
-        <!-- <ul class="pagination">
+        <ul class="pagination">
             <li class="page-item">
                 <Link class="page-link" :href="prev" v-if="prev" preserve-scroll>Previous</Link>
                 <span class="page-link" :class="{ 'text-muted' : !prev }" v-else >Previous</span>
@@ -43,7 +43,7 @@
                 <Link class="page-link" :href="next" v-if="next" preserve-scroll>Next</Link>
                 <span class="page-link" :class="{ 'text-muted' : !next }" v-else >Next</span>
             </li>
-        </ul> -->
+        </ul>
     </div>
 </template>
 

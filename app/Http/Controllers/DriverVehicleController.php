@@ -21,10 +21,6 @@ class DriverVehicleController extends Controller
                 'vehicle',
                 'driver',
                 'office'
-
-                // ->when($request->search, function($query, $searchItem) {
-                //     $query->where()
-                // })
             ])
 
             ->latest()
@@ -33,8 +29,6 @@ class DriverVehicleController extends Controller
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
         ]);
-
-        // "filters" => $request->only(['search']),
     }
 
     public function create($id)
