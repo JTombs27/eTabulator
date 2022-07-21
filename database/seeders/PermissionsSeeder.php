@@ -21,8 +21,9 @@ class PermissionsSeeder extends Seeder
             array('id' => 4,'permission_name' => 'can_create_vehicle'),
             array('id' => 5,'permission_name' => 'can_create_travel'),
             array('id' => 6,'permission_name' => 'can_approve_travel'),
-            array('id' => 7,'permission_name' => 'can_merge_travel'),
+            array('id' => 7,'permission_name' => 'can_merge_travel'),//for RO
             array('id' => 8,'permission_name' => 'can_set_status'),
+            array('id' => 9,'permission_name' => 'can_create_charges'),//for super user
         );
     }
 }
