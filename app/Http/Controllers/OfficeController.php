@@ -43,7 +43,9 @@ class OfficeController extends Controller
     
     public function loadOffices(Request $request)
     {
-        $query = $this->model->get()
+        $query = $this->model
+                    ->where('office', 'like', "%$request->filter%")
+                    ->orWhere('short_name', 'like', "%$request->filter%")->get()
                     ->map(fn($item) => [
                         'id' => $item->department_code,
                         'text' => $item->office

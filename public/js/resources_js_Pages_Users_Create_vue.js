@@ -96,7 +96,30 @@ __webpack_require__.r(__webpack_exports__);
       templateResult: this.formatRepo,
       templateSelection: this.formatRepoSelection
     });
-    this.loadOffices();
+    $('#office').select2({
+      ajax: {
+        url: '/offices/fetch',
+        dataType: 'json',
+        delay: 500,
+        data: function data(filter) {
+          return {
+            filter: filter.term
+          };
+        },
+        processResults: function processResults(data, params) {
+          params.page = params.page || 1;
+          return {
+            results: $.map(data, function (obj) {
+              return {
+                id: obj.id,
+                text: obj.text
+              };
+            })
+          };
+        },
+        minimumInputLength: 2
+      }
+    }); // this.loadOffices();
   },
   methods: {
     selectName: function selectName($event) {
@@ -363,11 +386,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.form.office_id = $event;
     }),
-    id: "office",
-    options: $data.offices
+    id: "office"
   }, null, 8
   /* PROPS */
-  , ["modelValue", "options"]), $data.form.errors.office_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.office_id), 1
+  , ["modelValue"]), $data.form.errors.office_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.office_id), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select",
