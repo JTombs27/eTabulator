@@ -3,7 +3,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Vehicle </h3>
-            <back-button :backToURL="backToMyUrl"></back-button>
+            <back-button :href="backToMyUrl"></back-button>
         </div>
         <div class="col-12"> <h5>Project Description: <small>{{project.description}}</small></h5></div>
         
