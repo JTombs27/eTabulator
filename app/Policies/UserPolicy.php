@@ -33,4 +33,9 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_merge_travel')->exists();
     }
+
+    public function canCreateCharge(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_charges')->exists();
+    }
 }
