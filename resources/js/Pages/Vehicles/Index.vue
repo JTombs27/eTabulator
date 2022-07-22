@@ -45,7 +45,7 @@
                             <th scope="col">Plate Number</th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
-                            <th scope="col">Acquisition</th>
+                            <th scope="col" style="text-align: center">Acquisition</th>
                             <th scope="col">Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
@@ -57,8 +57,8 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td> {{vehicle.TYPECODE}}</td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> <div style="width: 60%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
-                            <td></td>
+                            <td> <div style="width: 70%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
+                            <td> </td>
                             <td></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
@@ -88,7 +88,7 @@
                                         </svg> Drivers Assignment</Link></li>
 
                                         <li> <hr class="dropdown-divider action-divider"></li>
-                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)">
+                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicles.driver_vehicles != 0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                         </svg> Delete </Link></li>

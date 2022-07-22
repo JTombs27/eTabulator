@@ -27,9 +27,9 @@
                                             <label class="col-mb-3 col-form-label">Vehicle Type</label>
                                             <select class="form-select md" v-model="form.TYPECODE">
                                                 <option disabled value="">Select Type</option>
-                                                <option value="1">Motorcycle</option>
-                                                <option value="2">Light Vehicle</option>
-                                                <option value="3">Heavy Equipment</option>
+                                                <option >Motorcycle</option>
+                                                <option >Light Vehicle</option>
+                                                <option >Heavy Equipment</option>
                                             </select>
                                             <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div>
                                         </div>
