@@ -10,6 +10,7 @@ class OfficeVehicles extends Model
     use HasFactory;
     protected $table = 'office_vehicle';
     protected $fillable = [
+        'vehicles_id',
         'department_code',
         'plate_no'
     ];

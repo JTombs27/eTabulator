@@ -16,6 +16,7 @@
         </div> 
         <div class="col-md-8">
             <form @submit.prevent="submit()">
+               
                 <label for="">Plate number</label>
                 <input type="text" v-model="form.plate_no" class="form-control" autocomplete="chrome-off" disabled readonly>
                 <label for="">Date</label>
@@ -46,7 +47,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 
 export default {
     props: {
-      plate_no : Object,
+      vehicle : Object,
     },
     data() {
         return {
@@ -59,6 +60,7 @@ export default {
             button_label:'',
             form: useForm({
                id:'',
+               vehicles_id:'',
                vehicle_status_date:'',
                plate_no:'',
                condition:''
@@ -71,9 +73,9 @@ export default {
     
     mounted() {
        // this.plate_no = this.id
-        this.form.plate_no = this.plate_no
+        this.form.plate_no = this.vehicle.PLATENO
        
-            
+        this.form.vehicles_id = this.vehicle.id
             
     },
     methods: {

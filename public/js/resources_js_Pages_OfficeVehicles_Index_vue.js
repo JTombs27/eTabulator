@@ -23,7 +23,8 @@ __webpack_require__.r(__webpack_exports__);
     Filtering: _Shared_Filter__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
-    officevehicle: Object
+    officevehicle: Object,
+    vehicles_id: Object
   },
   data: function data() {
     return {
@@ -52,7 +53,7 @@ __webpack_require__.r(__webpack_exports__);
       this.filter = !this.filter;
     },
     gotoCreate: function gotoCreate() {
-      this.$inertia.get("/VehicleStatus/" + this.plate_no + "/Create");
+      this.$inertia.get("/officeVehicles/" + this.vehicles_id + "/create");
     } // loadMunicipals() { 
     //     axios.post('/municipalities').then((response) => {
     //         this.municipals = response.data
@@ -266,7 +267,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": "btn btn-primary btn-sm",
-    href: "/officeVehicles/create"
+    onClick: _cache[1] || (_cache[1] = function ($event) {
+      return $options.gotoCreate();
+    })
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_6];
@@ -276,7 +279,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
-    onClick: _cache[1] || (_cache[1] = function ($event) {
+    onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.showFilter();
     })
   }, "Filter"), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
@@ -290,7 +293,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   })])])]), $data.filter ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_filtering, {
     key: 0,
-    onCloseFilter: _cache[2] || (_cache[2] = function ($event) {
+    onCloseFilter: _cache[3] || (_cache[3] = function ($event) {
       return $data.filter = false;
     })
   }, {

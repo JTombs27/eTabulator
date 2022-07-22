@@ -16,11 +16,11 @@ class VehicleStatusController extends Controller
 
     public function index($id)
     {
-       
+      
         return inertia('VehicleStatus/index',[
             'vehicle_status' =>  $this->model->with('vehicle')
-                                    ->where('plate_no',$id)->latest()->simplePaginate(10),
-            'plate_no' => $id
+                                    ->where('vehicles_id',$id)->latest()->simplePaginate(10),
+            'vehicles_id' => $id
                                     
         ]);
 
@@ -40,8 +40,9 @@ class VehicleStatusController extends Controller
 
     public function Create(Request $request,$id)
     {
+       
         return inertia('VehicleStatus/Create',[
-            'plate_no' => $id
+            'vehicle' => $this->vehicle->findOrFail($id)
         ]);
     }
 

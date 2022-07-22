@@ -15,6 +15,7 @@ class CreateOfficeVehicleTable extends Migration
     {
         Schema::create('office_vehicle', function (Blueprint $table) {
             $table->id();
+            $table->string("vehicles_id");
             $table->string("department_code");
             $table->string("plate_no");
             $table->timestamps();

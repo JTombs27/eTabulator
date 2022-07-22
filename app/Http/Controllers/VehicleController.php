@@ -94,4 +94,16 @@ class VehicleController extends Controller
             'text' => $item->PLATENO
         ]);
     }
+    public function loadVehicles(Request $request)
+    {
+        $query = $this->model
+                    ->where('FDESC', 'like', "%$request->filter%")
+                    ->orWhere('PLATENO', 'like', "%$request->filter%")->get()
+                    ->map(fn($item) => [
+                        'id' => $item->PLATENO,
+                        'text' => $item->FDESC
+                    ]);
+         
+        return $query;
+    }
 }

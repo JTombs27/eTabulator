@@ -53,8 +53,9 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('/officeVehicles')->group(function() {
-         Route::get('/', [OfficeVehiclesController::class, 'index']);
-         Route::get('/create', [OfficeVehiclesController::class, 'create']);
+         Route::get('/{id}', [OfficeVehiclesController::class, 'index']);
+         Route::get('/{id}/create', [OfficeVehiclesController::class, 'create']);
+         Route::post('/', [OfficeVehiclesController::class, 'store']);
         // Route::post('/', [OfficeVehiclesController::class, 'store']);
         // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);
        
@@ -106,6 +107,7 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::post('/{id}', [VehicleController::class, 'destroy']);
         Route::get('/getVehicles', [VehicleController::class, 'getVehicles']);
+        Route::get('fetch', [OfficeController::class, 'loadVehicles']);
     });
 
     // Driver Vehicles
@@ -128,6 +130,7 @@ Route::middleware('auth')->group(function() {
     Route::prefix('sync')->group(function() {
         Route::post('employees', [EmployeeController::class, '_sync']);
         Route::post('offices', [OfficeController::class, '_sync']);
+        Route::post('offices', [OfficeController::class, '_sync']);
     });
 
     Route::prefix('soatravels')->group(function() {
@@ -149,6 +152,7 @@ Route::middleware('auth')->group(function() {
     Route::prefix('offices')->group(function () {
         Route::get('fetch', [OfficeController::class, 'loadOffices']);
     });
+    
 
     //for Charges
     Route::prefix('charges')->group(function () {

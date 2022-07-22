@@ -10,7 +10,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer" >
-                    <Link class="btn btn-primary btn-sm" href="/officeVehicles/create">Assign Vehicle To Office</Link>
+                    <Link class="btn btn-primary btn-sm" @click="gotoCreate()">Assign Vehicle To Office</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     &nbsp;&nbsp;
                      <Link href="/vehicles">
@@ -84,6 +84,7 @@ export default {
     components: { Pagination, Filtering },
     props: {
        officevehicle: Object,
+       vehicles_id:Object,
     },
     data() {
         return {
@@ -119,7 +120,7 @@ export default {
         },
 
         gotoCreate() {
-             this.$inertia.get("/VehicleStatus/" + this.plate_no+"/Create");
+             this.$inertia.get("/officeVehicles/" + this.vehicles_id+"/create");
         },
 
         // loadMunicipals() { 

@@ -17,20 +17,15 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <label for="">Plate Number</label>
-                <Select2 v-model="form.plate_no" id="plate_no"/>
+                <input type="text" v-model="form.plate_no" class="form-control" autocomplete="chrome-off" readonly>
                 <div class="fs-6 c-red-500" v-if="form.errors.plate_no">{{ form.errors.plate_no}}</div>
-                <label for="">Department Name</label>
-                <Select2 v-model="form.department_code" id="department_code"/>
-                <div class="fs-6 c-red-500" v-if="form.errors.plate_no">{{ form.errors.plate_no}}</div>
+                <label for="">Office</label>
+                <Select2 v-model="form.department_code" id="department_code" />
+                <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">save</button>
             </form>
         </div>
         
-        
-
-        
-     
-      
     </div>
     <div></div>
 </template>
@@ -39,7 +34,6 @@ import { useForm } from "@inertiajs/inertia-vue3";
 
 export default {
     props: {
-         offices : Object,
          vehicles:Object,
     },
     data() {
@@ -50,6 +44,7 @@ export default {
             _disbled:true,
             button_label:'',
             form: useForm({
+                vehicles_id:'',
                 plate_no:'',
                 department_code:'',
             }),
@@ -60,17 +55,67 @@ export default {
     },
     
     mounted() {
-       // this.plate_no = this.id
-        this.form.plate_no = this.plate_no
        
+           this.form.vehicles_id = this.vehicles[0].id
+           this.form.plate_no = this.vehicles[0].PLATENO
+           
+           $('#department_code').select2({
+            ajax: {
+                url: '/offices/fetch',
+                dataType:'json',
+                delay:500,
+                data: function(filter) {
+                    return {filter:filter.term};
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return{
+                        results: $.map(data, function(obj) {
+                            return {
+                                id: obj.id,
+                                text: obj.text
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2,
+        })
+
+        $('#plate_no').select2({
+            ajax: {
+                url: '/vehicles/fetch',
+                dataType:'json',
+                delay:500,
+                data: function(filter) {
+                    return {filter:filter.term};
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return{
+                        results: $.map(data, function(obj) {
+                            return {
+                                id: obj.id,npm,
+                                text: obj.text
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2,
+        })
             
             
     },
     methods: {
         submit() {
 
-            //console.log(this.form)
-            this.form.post("/VehicleStatus", this.form);
+           // console.log(this.form)
+            this.form.post("/officeVehicles", this.form);
 
            
             // if (!!this.vehicle.vehicle_status) {
@@ -83,6 +128,9 @@ export default {
         Edit() {
            this._disbled = false
         },
+
+       
+
         // showFilter() {
         //     this.filter = !this.filter
         // },

@@ -15,7 +15,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    offices: Object,
     vehicles: Object
   },
   data: function data() {
@@ -26,6 +25,7 @@ __webpack_require__.r(__webpack_exports__);
       _disbled: true,
       button_label: '',
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+        vehicles_id: '',
         plate_no: '',
         department_code: ''
       }),
@@ -34,13 +34,64 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    // this.plate_no = this.id
-    this.form.plate_no = this.plate_no;
+    this.form.vehicles_id = this.vehicles[0].id;
+    this.form.plate_no = this.vehicles[0].PLATENO;
+    $('#department_code').select2({
+      ajax: {
+        url: '/offices/fetch',
+        dataType: 'json',
+        delay: 500,
+        data: function data(filter) {
+          return {
+            filter: filter.term
+          };
+        },
+        processResults: function processResults(data, params) {
+          params.page = params.page || 1;
+          return {
+            results: $.map(data, function (obj) {
+              return {
+                id: obj.id,
+                text: obj.text
+              };
+            })
+          };
+        },
+        cache: true
+      },
+      minimumInputLength: 2
+    });
+    $('#plate_no').select2({
+      ajax: {
+        url: '/vehicles/fetch',
+        dataType: 'json',
+        delay: 500,
+        data: function data(filter) {
+          return {
+            filter: filter.term
+          };
+        },
+        processResults: function processResults(data, params) {
+          params.page = params.page || 1;
+          return {
+            results: $.map(data, function (obj) {
+              return {
+                id: obj.id,
+                npm: npm,
+                text: obj.text
+              };
+            })
+          };
+        },
+        cache: true
+      },
+      minimumInputLength: 2
+    });
   },
   methods: {
     submit: function submit() {
-      //console.log(this.form)
-      this.form.post("/VehicleStatus", this.form); // if (!!this.vehicle.vehicle_status) {
+      // console.log(this.form)
+      this.form.post("/officeVehicles", this.form); // if (!!this.vehicle.vehicle_status) {
       //     this.form.patch("/VehicleStatus/" + this.form.id, this.form);
       // } 
       // else {
@@ -111,7 +162,7 @@ var _hoisted_6 = {
 
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Department Name", -1
+}, "Office", -1
 /* HOISTED */
 );
 
@@ -145,15 +196,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onSubmit: _cache[3] || (_cache[3] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
-  }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
-    modelValue: $data.form.plate_no,
+  }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "text",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.form.plate_no = $event;
     }),
-    id: "plate_no"
-  }, null, 8
-  /* PROPS */
-  , ["modelValue"]), $data.form.errors.plate_no ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.plate_no), 1
+    "class": "form-control",
+    autocomplete: "chrome-off",
+    readonly: ""
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.plate_no]]), $data.form.errors.plate_no ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.plate_no), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
     modelValue: $data.form.department_code,
@@ -163,7 +216,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     id: "department_code"
   }, null, 8
   /* PROPS */
-  , ["modelValue"]), $data.form.errors.plate_no ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.plate_no), 1
+  , ["modelValue"]), $data.form.errors.office_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.office_id), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",

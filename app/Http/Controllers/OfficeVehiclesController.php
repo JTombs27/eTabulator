@@ -16,24 +16,32 @@ class OfficeVehiclesController extends Controller
         $this->officevehicles = $officevehicles;
     }
 
-    public function index(Request $request)
+    public function index(Request $request,$id)
     {
-       
-       
        return inertia('OfficeVehicles/Index',[
-           'officevehicle' => $this->officevehicles->with('vehicle')
-           ->latest()->simplePaginate(10)
+           'officevehicle' => $this->officevehicles->with('vehicle')->where('vehicles_id',$id)
+           ->latest()->simplePaginate(10),
+           'vehicles_id' => $id
        ]);
-
     }
 
-    public function create(Request $request)
+    
+    public function store(Request $request)
     {
-       
+        $attributes = $request->validate([
+            'department_code' => 'required',
+            
+        ]);
+        $this->officevehicles->create($request->all());
+        return redirect('/vehicles')->with('message', 'Vehicle status added!');
+    }
+
+
+    public function create(Request $request,$id)
+    {
       
        return inertia('OfficeVehicles/Create',[
-           'offices' => $this->offices->get(),
-           'vehicles' => $this->vehicles->get()
+          'vehicles' => $this->vehicles->where('id',$id)->get()
        ]);
 
     }

@@ -17,7 +17,7 @@ class CreateVehicleStatusTable extends Migration
             $table->id();
             $table->date('vehicle_status_date');
             $table->string('condition')->nullable();
-            $table->string('plate_no');
+            $table->integer('vehicles_id');
             $table->timestamps();
         });
     }
