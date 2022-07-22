@@ -43,8 +43,10 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/VehicleStatus')->group(function() {
         //return inertia('VehicleStatus');
         Route::post('/', [VehicleStatusController::class, 'store']);
+        Route::get('/{id}/Create', [VehicleStatusController::class, 'Create']);
         Route::get('{id}', [VehicleStatusController::class, 'index']);
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
+       
     });
 
     Route::prefix('/projects')->group(function() {

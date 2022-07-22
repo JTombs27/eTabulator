@@ -21,15 +21,13 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
-            /*FirstUserSeed::class,
-            PermissionUserSeeder::class,*/
-            // PermissionsSeeder::class,
-            /*Municipalities::class,
+            FirstUserSeed::class,
+            PermissionUserSeeder::class,
+            PermissionsSeeder::class,
+            Municipalities::class,
             Barangays::class,
-            VehicleSeeder::class,*/
+            VehicleSeeder::class,
 
         ]);
-
-        \App\Models\User::factory(100)->create();
     }
 }

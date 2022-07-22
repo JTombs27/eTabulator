@@ -1514,6 +1514,16 @@ var map = {
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
+	"./Office_vehicles/Index": [
+		"./resources/js/Pages/Office_vehicles/Index.vue",
+		9,
+		"resources_js_Pages_Office_vehicles_Index_vue"
+	],
+	"./Office_vehicles/Index.vue": [
+		"./resources/js/Pages/Office_vehicles/Index.vue",
+		9,
+		"resources_js_Pages_Office_vehicles_Index_vue"
+	],
 	"./Posts/Index": [
 		"./resources/js/Pages/Posts/Index.vue",
 		9,
@@ -1664,6 +1674,16 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
 	],
+	"./VehicleStatus/Create": [
+		"./resources/js/Pages/VehicleStatus/Create.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_Create_vue"
+	],
+	"./VehicleStatus/Create.vue": [
+		"./resources/js/Pages/VehicleStatus/Create.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_Create_vue"
+	],
 	"./VehicleStatus/index": [
 		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
@@ -1673,16 +1693,6 @@ var map = {
 		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
-	],
-	"./VehicleStatus/raymart": [
-		"./resources/js/Pages/VehicleStatus/raymart.vue",
-		9,
-		"resources_js_Pages_VehicleStatus_raymart_vue"
-	],
-	"./VehicleStatus/raymart.vue": [
-		"./resources/js/Pages/VehicleStatus/raymart.vue",
-		9,
-		"resources_js_Pages_VehicleStatus_raymart_vue"
 	],
 	"./VehicleStatus/status": [
 		"./resources/js/Pages/VehicleStatus/status.vue",
