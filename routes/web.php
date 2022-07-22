@@ -14,6 +14,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\TravelValidationController;
 use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\ChargeController;
@@ -150,6 +151,10 @@ Route::middleware('auth')->group(function() {
 });
 
     //for api
-    Route::prefix('/reports')->group(function() {
-        Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
-    });
+Route::prefix('/reports')->group(function() {
+    Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
+});
+
+Route::prefix('/travelTicket')->group(function() {
+    Route::get('/validate-travel/{id}', [TravelValidationController::class, 'index']);
+});

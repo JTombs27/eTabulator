@@ -159,16 +159,18 @@ export default {
                                 text: obj.text
                             }
                         })
-                    }
+                    };
                 },
-                minimumInputLength: 2,
-            }
+                cache: true
+            },
+            minimumInputLength: 2,
         })
         // this.loadOffices();
     },
 
     methods: {
         selectName($event) {
+            console.log($event)
             this.form.cats = $event.cats
         },
 
