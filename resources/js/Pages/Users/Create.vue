@@ -1,5 +1,7 @@
 <template>
-
+     <Head>
+        <title>{{ pageTitle }} users</title>
+    </Head>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} users</h3>
@@ -20,14 +22,15 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
 
                 <label for="">Office</label>
-                <Select2 v-model="form.office_id" id="office" :options="offices"/>
+                <Select2 v-model="form.office_id" id="office" />
                 <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
 
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
 
-                    <option value="Admin">Admin</option>
-                    <option value="Basic">Basic</option>
+                    <option value="PGO">Admin</option>
+                    <option value="RO">Requestioning Office</option>
+                    <option value="PGSO">PGSO</option>
                     <option value="PG-Head">PG-Head</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
@@ -108,7 +111,7 @@ export default {
 
         $("#emp_name").select2({
             ajax : {
-                url: `${process.env.MIX_API_URL}/PGDDO_Employees`,
+                url: `http://192.168.9.101:91//api/PGDDO_Employees`,
                 dataType:'json',
                 delay:700,
                 data: function(params) {
@@ -137,11 +140,37 @@ export default {
             templateResult: this.formatRepo,
             templateSelection: this.formatRepoSelection
         })
-        this.loadOffices();
+
+        $('#office').select2({
+            ajax: {
+                url: '/offices/fetch',
+                dataType:'json',
+                delay:500,
+                data: function(filter) {
+                    return {filter:filter.term};
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return{
+                        results: $.map(data, function(obj) {
+                            return {
+                                id: obj.id,
+                                text: obj.text
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 2,
+        })
+        // this.loadOffices();
     },
 
     methods: {
         selectName($event) {
+            console.log($event)
             this.form.cats = $event.cats
         },
 

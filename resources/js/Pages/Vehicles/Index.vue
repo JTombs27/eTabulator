@@ -18,20 +18,36 @@
         </div>
 
         <filtering v-if="filter" @closeFilter="filter=false">
-            <label>Sample Inputs</label>
+            <label>Plate No</label>
+            <input type="text" class="form-control">
+
+            <label>Vehicle Type</label>
+            <select class="form-select">
+                <option disabled value="">Select Type</option>
+                <option value="1">Motorcycle</option>
+                <option value="2">Light Vehicle</option>
+                <option value="3">Heavy Equipment</option>
+            </select>
+
+            <label>Date Acquired</label>
+            <input type="date" class="form-control">
+
+            <label>Description</label>
             <input type="text" class="form-control">
             <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
         </filtering>
 
         <div class="col-12">
-            <div class="bcg-white p-20 bd">
-                <table class="table">
+            <div class="bgc-white p-20 bd">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Plate Number</th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
-                            <th scope="col">Acquisition</th>
+                            <th scope="col" style="text-align: center">Acquisition</th>
+                            <th scope="col">Office</th>
+                            <th scope="col">Driver</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right"> Action</th>
                         </tr>
@@ -41,7 +57,10 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td> {{vehicle.TYPECODE}}</td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> {{ Number(vehicle.FACQCOST).toLocaleString()}}</td>
+                            <td> <div style="width: 70%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
+                            <td> </td>
+                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].driver.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].driver.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].driver.last_name}`}}</td>
+                            <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
@@ -67,10 +86,10 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
                                         <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
                                         <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2H2Z"/>
-                                        </svg> Driver Vehicle</Link></li>
+                                        </svg> Drivers Assignment</Link></li>
 
                                         <li> <hr class="dropdown-divider action-divider"></li>
-                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)">
+                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicles.driver_vehicles != 0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                         </svg> Delete </Link></li>
@@ -85,7 +104,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
-                        <!-- <pagination :links="users.links" /> -->
+                        <!-- <pagination :links="vehicles.links" /> -->
                         <pagination :next="vehicles.next_page_url" :prev="vehicles.prev_page_url" />
                     </div>
                 </div>
@@ -97,7 +116,7 @@
 
 <script>
 import Pagination from "@/Shared/Pagination";
-import Filtering from "@/Shared/Filter";;
+import Filtering from "@/Shared/Filter";
 
 export default ({
     components: { Pagination, Filtering},
@@ -108,9 +127,33 @@ export default ({
     data() {
         return {
             driverid: "",
+            search: this.$props.filters.search,
             filter:false
+
         }
     },
+    computed: {
+        mi() {
+            return value => value ? `${value.charAt(0)}.` : "";
+        },
+
+    },
+     watch: {
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/vehicles",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 300),
+
+    },
+
+    
 
     methods: {
         driverVehicle(driverid)
@@ -131,6 +174,8 @@ export default ({
             this.filter = !this.filter
         }
     },
+
+
 })
 </script>
  

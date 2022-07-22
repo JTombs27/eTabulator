@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Faker\Core\Number;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Vehicle extends Model
 {
@@ -16,8 +17,9 @@ class Vehicle extends Model
     {
         return $this->hasMany(VehicleStatus::class,"plate_no","PLATENO");
     }
-    public function driver()
+    public function driverassign()
     {
-        return $this->hasMany(Driver::class, 'drivers_id', 'id');
+        return $this->hasMany(DriverVehicle::class, 'vehicles_id', 'id');
     }
+
 }

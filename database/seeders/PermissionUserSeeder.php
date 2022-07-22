@@ -18,6 +18,15 @@ class PermissionUserSeeder extends Seeder
             array('user_id' => 1,'permission_id' => 1),
             array('user_id' => 1,'permission_id' => 2),
             array('user_id' => 1,'permission_id' => 3),
+            array('user_id' => 1,'permission_id' => 4),
+            array('user_id' => 1,'permission_id' => 5),
+            array('user_id' => 1,'permission_id' => 6),
+            array('user_id' => 1,'permission_id' => 7),
+            array('user_id' => 1,'permission_id' => 8),
+            array('user_id' => 1,'permission_id' => 8),
+            array('user_id' => 1,'permission_id' => 8),
+            array('user_id' => 3,'permission_id' => 8),
+            array('user_id' => 2,'permission_id' => 5),
         );
     }
 }

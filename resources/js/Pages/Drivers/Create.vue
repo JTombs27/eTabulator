@@ -2,7 +2,8 @@
     <div class="row gap-20 masonry pos-r">
          <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle}}</h3>
-            <Link @click="back()">
+            <back-button :href="'/drivers/'+Vdriver.id+'/vehicles'"></back-button>
+            <!-- <Link @click="back()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -10,7 +11,7 @@
                     <path fill-rule="evenodd"
                         d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                 </svg>
-            </Link>
+            </Link> -->
         </div>
 
         <div class="row justify-content-center">
@@ -35,12 +36,14 @@
                                             <label for="" class="col-mb-3 col-form-label">Date From</label>
                                             <input type="date" v-model="form.date_from" class="form-control" autocomplete="chrome-off" />
                                             <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
+                                            <div class="fs-6 c-red-500" v-if="form.errors.date_fromA">{{ form.errors.date_fromA }}</div>
                                         </div>
 
                                         <div class="col">
                                             <label for="" class="col-mb-3 col-form-label">Date To</label>
                                             <input type="date" v-model="form.date_to" class="form-control" autocomplete="chrome-off" />
                                             <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
+                                            <div class="fs-6 c-red-500" v-if="form.errors.date_toB">{{ form.errors.date_toB }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -58,8 +61,10 @@
 
 <script>
 import { useForm} from "@inertiajs/inertia-vue3"
+import BackButton from '../../Shared/BackButton.vue'
 
 export default {
+  components: { BackButton },
     name:"driversComponent",
     props:{
         Vdriver: Object
@@ -84,7 +89,6 @@ export default {
         this.form.vehicles_id   = this.Vdriver.id
         this.vehicles_plateno   = this.Vdriver.PLATENO
         this.pageTitle = "Create Driver Vehicle"
-        this.getVehicles()
 
         $("#emp_name").select2({
             ajax : {
@@ -118,12 +122,6 @@ export default {
     },
 
     methods: {
-      getVehicles(){
-        axios.post('/vehicles/getVehicles').then( response => {
-            this.vehicles = response.data
-        })
-      },
-
       fetch(e){
         console.log(e);
         this.form.department_code = e.department;

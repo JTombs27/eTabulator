@@ -20,25 +20,47 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       loader: false,
+      itemId: "",
       dropdownOption: "outside"
     };
   },
   methods: {
-    approvedStatus: function approvedStatus(item) {
+    approvedStatus: function approvedStatus(item, status) {
       var _this = this;
 
       //   $(`.dropdown-menu#${item.id}`).toggle();
       this.$inertia.post('/travels/set-status', {
         id: item.id,
-        status: item.status
+        status: status
       }, {
         onStart: function onStart(data) {
           _this.loader = true;
+          _this.itemId = item.id;
         },
         onFinish: function onFinish() {
           _this.loader = false;
         }
       });
+    },
+    tripTicket: function tripTicket(id) {
+      window.open("http://192.168.6.23:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftrip_ticket&standAlone=true&decorate=no&id=" + id, "_blank");
+    },
+    statusDisplay: function statusDisplay(item) {
+      if (this.loader && item.id == this.itemId) {
+        return "<span v-if=\"loader\" class=\"dropdown-item\">\n                    <div class=\"spinner-border spinner-border-sm\" role=\"status\">\n                      <span class=\"visually-hidden\"></span>\n                    </div>\n                    Processing...\n                </span>";
+      } else {
+        var classText = "";
+
+        if (item.status == "Approved") {
+          classText = "badge bg-success";
+        } else if (item.status == "Disapproved") {
+          classText = "badge bg-danger";
+        } else {
+          classText = "badge bg-secondary";
+        }
+
+        return "<span class=\"".concat(classText, "\">").concat(this.status(item.status), "</span>");
+      }
     }
   },
   mounted: function mounted() {
@@ -56,7 +78,7 @@ __webpack_require__.r(__webpack_exports__);
           return "Approved";
         } else if (!value) {
           return "Pending";
-        } else if (value == "Unapproved") {
+        } else if (value == "Disapproved") {
           return "Disapproved";
         }
       };
@@ -84,7 +106,7 @@ var _withScopeId = function _withScopeId(n) {
 };
 
 var _hoisted_1 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "Users", -1
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("title", null, "Travels", -1
   /* HOISTED */
   );
 });
@@ -158,22 +180,22 @@ var _hoisted_13 = {
 var _hoisted_14 = {
   key: 1
 };
-var _hoisted_15 = {
+var _hoisted_15 = ["innerHTML"];
+var _hoisted_16 = {
   style: {
     "text-align": "right"
   }
 };
-var _hoisted_16 = {
+var _hoisted_17 = {
   "class": "dropdown dropstart"
 };
 
-var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_18 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-secondary btn-sm action-btn",
     type: "button",
     id: "dropdownMenuButton1",
     "data-bs-toggle": "dropdown",
-    "data-bs-auto-close": "false",
     "aria-expanded": "false"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
     xmlns: "http://www.w3.org/2000/svg",
@@ -189,40 +211,52 @@ var _hoisted_17 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_18 = ["id"];
+var _hoisted_19 = ["id"];
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit");
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit");
 
-var _hoisted_20 = {
-  key: 0,
-  "class": "dropdown-item"
+var _hoisted_21 = {
+  key: 0
 };
+var _hoisted_22 = ["onClick"];
 
-var _hoisted_21 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "spinner-border spinner-border-sm",
-    role: "status"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-    "class": "visually-hidden"
-  })], -1
+var _hoisted_23 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Trip Ticket", -1
   /* HOISTED */
   );
 });
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Approving... ");
-
-var _hoisted_23 = [_hoisted_21, _hoisted_22];
-var _hoisted_24 = ["onClick"];
+var _hoisted_24 = [_hoisted_23];
 var _hoisted_25 = {
-  key: 0,
-  "class": "text-danger"
+  key: 1
 };
-var _hoisted_26 = {
-  key: 1,
-  "class": "text-success"
-};
+var _hoisted_26 = ["onClick"];
 
 var _hoisted_27 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "text-success"
+  }, "Approve", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_28 = [_hoisted_27];
+var _hoisted_29 = {
+  key: 2
+};
+var _hoisted_30 = ["onClick"];
+
+var _hoisted_31 = /*#__PURE__*/_withScopeId(function () {
+  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+    "class": "text-danger"
+  }, "Disapprove", -1
+  /* HOISTED */
+  );
+});
+
+var _hoisted_32 = [_hoisted_31];
+
+var _hoisted_33 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": "row justify-content-center"
   }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -274,9 +308,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.date_to), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.status(item.status)), 1
-    /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"user.can.edit\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      innerHTML: $options.statusDisplay(item)
+    }, null, 8
+    /* PROPS */
+    , _hoisted_15), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"user.can.edit\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
       "class": "dropdown-menu",
       id: item.id,
       "aria-labelledby": "dropdownMenuButton1"
@@ -285,28 +321,45 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       href: "/travels/".concat(item.id, "/edit")
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [_hoisted_19];
+        return [_hoisted_20];
       }),
       _: 2
       /* DYNAMIC */
 
     }, 1032
     /* PROPS, DYNAMIC_SLOTS */
-    , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/travels/set-status`\" method=\"post\" :data=\"item\" as=\"button\" v-if=\"can.canSetStatus\">Approve</Link></li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [$data.loader ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_20, _hoisted_23)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.can.canSetStatus && !$data.loader ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
-      key: 1,
+    , ["href"])]), item.status == 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       as: "button",
       "class": "dropdown-item",
       onClick: function onClick($event) {
-        return $options.approvedStatus(item);
+        return $options.tripTicket(item.id);
       }
-    }, [item.status == 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_25, "Disapprove")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_26, "Approve"))], 8
+    }, _hoisted_24, 8
     /* PROPS */
-    , _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])], 8
+    , _hoisted_22)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><Link class=\"dropdown-item\" :href=\"`/travels/set-status`\" method=\"post\" :data=\"item\" as=\"button\" v-if=\"can.canSetStatus\">Approve</Link></li> "), item.status == 'Disapproved' || item.status == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_25, [$props.can.canSetStatus && !$data.loader ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      key: 0,
+      as: "button",
+      "class": "dropdown-item",
+      onClick: function onClick($event) {
+        return $options.approvedStatus(item, 'Approved');
+      }
+    }, _hoisted_28, 8
     /* PROPS */
-    , _hoisted_18)])])]);
+    , _hoisted_26)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), item.status == 'Approved' || item.status == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_29, [$props.can.canSetStatus && !$data.loader ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+      key: 0,
+      as: "button",
+      "class": "dropdown-item",
+      onClick: function onClick($event) {
+        return $options.approvedStatus(item, 'Disapproved');
+      }
+    }, _hoisted_32, 8
+    /* PROPS */
+    , _hoisted_30)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8
+    /* PROPS */
+    , _hoisted_19)])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]), _hoisted_27])])])], 64
+  ))])]), _hoisted_33])])])], 64
   /* STABLE_FRAGMENT */
   );
 }

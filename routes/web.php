@@ -14,9 +14,11 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\DriverVehicleController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
+use App\Http\Controllers\TravelValidationController;
 use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\OfficeVehiclesController;
+use App\Http\Controllers\ChargeController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -120,6 +122,7 @@ Route::middleware('auth')->group(function() {
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
         Route::post('/', [TravelController::class, 'store']);
         Route::post('set-status', [TravelController::class, 'setStatus']);
+        Route::get('/{id}/edit', [TravelController::class, 'edit']);
     });
 
     Route::prefix('sync')->group(function() {
@@ -146,5 +149,24 @@ Route::middleware('auth')->group(function() {
     Route::prefix('offices')->group(function () {
         Route::get('fetch', [OfficeController::class, 'loadOffices']);
     });
+
+    //for Charges
+    Route::prefix('charges')->group(function () {
+        Route::get('/', [ChargeController::class, 'index']);
+        Route::get('/create', [ChargeController::class, 'create']);
+        Route::post('/store', [ChargeController::class, 'store']);
+        Route::get('/{id}/edit', [ChargeController::class, 'edit']);
+        Route::patch('/{id}', [ChargeController::class, 'update']);
+        Route::delete('/{id}', [ChargeController::class, 'destroy']);
+    });
     
+});
+
+    //for api
+Route::prefix('/reports')->group(function() {
+    Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
+});
+
+Route::prefix('/travelTicket')->group(function() {
+    Route::get('/validate-travel/{id}', [TravelValidationController::class, 'index']);
 });

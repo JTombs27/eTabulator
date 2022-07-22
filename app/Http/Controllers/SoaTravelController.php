@@ -68,7 +68,7 @@ class SoaTravelController extends Controller
     {
         $attributes = $request->validate([
             'date_from' => 'required|date',
-            'date_to' => 'required|date|after:date_from',
+            'date_to' => 'required|date|after_or_equal:date_from',
         ]);
 
         //transactions are functions that are used when you want to CRUD multiple table simultaneously

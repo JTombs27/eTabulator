@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Driver;
 use App\Models\DriverVehicle;
 use App\Models\Vehicle;
 
@@ -20,7 +19,8 @@ class DriverVehicleController extends Controller
             'driver_vehicles' => $this->model->with([
                 'vehicle',
                 'driver',
-                'office'
+                'office',
+                'travel'
             ])
 
             ->latest()
@@ -42,13 +42,33 @@ class DriverVehicleController extends Controller
     public function store(Request $request, $id)
     {
         $attributes = $request->validate([
-            'date_from' => 'required',
-            'date_to' => 'required',
-            
-        ]); 
-        $this->model->create($request->all());
+            'date_from' => "required|date",
+            'date_to' => "required|date|after_or_equal:date_from", 
+        ]);
 
-        return redirect('/drivers/'.$id.'/vehicles')->with('message', 'Added Successfully');
+        $data = $this->model->where('vehicles_id',$request->vehicles_id)
+        ->where(function ($query) use($request){
+            $query->whereBetween("date_from",[$request->date_from,$request->date_to])
+            ->orWhereBetween("date_to",[$request->date_from,$request->date_to]);
+        })->first();
+
+        if ($data) {
+            $attributes = $request->validate([
+                "date_fromA"=>"required",
+                "date_toB"=>"required"],[
+                    "date_fromA.required"=>"Date Conflict to other entry",
+                    "date_toB.required"=>"Date Conflict to other entry"
+                ]);
+        } else {
+            try {
+                $this->model->create($request->all());
+                return redirect('/drivers/'.$id.'/vehicles')->with('message', 'Added Successfully');
+            } catch(\Throwable $th) {
+                return redirect('/drivers/'.$id.'/create')->with('error', 'Please provide Valid Data');
+
+            }
+        }
+
     }
 
     public function destroy(Request $request,$id,$did)

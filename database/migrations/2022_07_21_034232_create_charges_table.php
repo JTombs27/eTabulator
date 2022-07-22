@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateSoaTravelsTable extends Migration
+class CreateChargesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,10 @@ class CreateSoaTravelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('soa_travels', function (Blueprint $table) {
+        Schema::create('charges', function (Blueprint $table) {
             $table->id();
-            $table->DATE('date_from');
-            $table->DATE('date_to');
-            $table->integer('raaoh_id')->unsigned()->nullable();
-            $table->string('cafoa_number')->nullable();
-            $table->integer('ooe_id')->unsigned()->nullable();
+            $table->integer('office_id')->nullable();
+            $table->decimal('amount', 10, 2)->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ class CreateSoaTravelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('soa_travels');
+        Schema::dropIfExists('charges');
     }
 }
