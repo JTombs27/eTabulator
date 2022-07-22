@@ -237,7 +237,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.deleteDriver(item.id);
       },
-      disabled: item,
+      disabled: item.travel.length !== 0,
       "class": "btn btn-danger btn-sm c-white"
     }, _hoisted_18, 8
     /* PROPS */

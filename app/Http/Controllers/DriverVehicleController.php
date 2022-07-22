@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Driver;
 use App\Models\DriverVehicle;
 use App\Models\Vehicle;
 
@@ -20,7 +19,8 @@ class DriverVehicleController extends Controller
             'driver_vehicles' => $this->model->with([
                 'vehicle',
                 'driver',
-                'office'
+                'office',
+                'travel'
             ])
 
             ->latest()

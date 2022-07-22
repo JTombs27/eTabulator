@@ -41,11 +41,22 @@
                                         <div class="col">
                                             <label class="col-mb-3 col-form-label">Acquisition Cost</label>
                                             <input type="text" v-model="form.FACQCOST" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.FACQCOST">{{ form.errors.FACQCOST }}</div>
                                         </div>
                                         <div class="col">
                                             <label class="col-mb-3 col-form-label">Description</label>
                                             <input type="text" v-model="form.FDESC" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.FDESC">{{ form.errors.FDESC }}</div>
+                                        </div>
+                                        <div class="col-mb-3">
+                                            <label class="col-mb-3 col-form-label">Vehicle Condition</label>
+                                            <select class="form-select md" v-model="form.condition">
+                                                <option disabled value="">Select Type</option>
+                                                <option >Good Condition</option>
+                                                <option >In Repair</option>
+                                                <option >Wasted</option>
+                                            </select>
+                                            <div class="fs-6 c-red-500" v-if="form.errors.condition">{{ form.errors.condition }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -82,7 +93,8 @@ export default ({
                 FDATEACQ: "",
                 FACQCOST: "",
                 FDESC: "",
-                checkadd: ""
+                checkadd: "",
+                condition:""
             }),
         pageTitle: "",
         // isDisabled:false

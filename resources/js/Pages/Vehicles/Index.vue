@@ -59,7 +59,8 @@
                             <td> {{vehicle.FDATEACQ}}</td>
                             <td> <div style="width: 70%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
                             <td> </td>
-                            <td></td>
+                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].driver.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].driver.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].driver.last_name}`}}</td>
+                            <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
@@ -130,6 +131,12 @@ export default ({
             filter:false
 
         }
+    },
+    computed: {
+        mi() {
+            return value => value ? `${value.charAt(0)}.` : "";
+        },
+
     },
      watch: {
         search: _.debounce(function (value) {

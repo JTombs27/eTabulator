@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
+use App\Models\VehicleStatus;
 
 class VehicleController extends Controller
 {
 
-    public function __construct(Vehicle $model)
+    public function __construct(Vehicle $model, VehicleStatus $status)
     {
         $this->model = $model;
+        $this->status = $status;
     }
 
     public function index(Request $request)
     {
         return inertia('Vehicles/Index', [
-            "vehicles" => $this->model
-            
+            "vehicles" => $this->model->with([
+                'driverassign.driver',
+            ])
+
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('PLATENO', 'like', '%'.$searchItem . '%');
             })
@@ -41,10 +45,15 @@ class VehicleController extends Controller
             'PLATENO' => "required",
             'TYPECODE' => "required",
             'FDATEACQ' => "required",
+            'FACQCOST'=> "regex:/^\d{1,13}(\.\d{1,4})?$/",
             'FDESC' => "required",
+            'condition' => "required"
             
         ]);
-        $vehicle = $this->model->create($request->except('checkadd'));
+        $vehicle = $this->model->create($request->except('checkadd','condition'));
+
+        $vehicleStatus = $this->status->create(['condition' => $request->condition,
+                                                'vehicle_id' => $vehicle->id]);
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');
