@@ -117,12 +117,14 @@ __webpack_require__.r(__webpack_exports__);
             })
           };
         },
-        minimumInputLength: 2
-      }
+        cache: true
+      },
+      minimumInputLength: 2
     }); // this.loadOffices();
   },
   methods: {
     selectName: function selectName($event) {
+      console.log($event);
       this.form.cats = $event.cats;
     },
     formatRepo: function formatRepo(repo) {
