@@ -160,7 +160,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.official_passenger += "".concat(separator).concat(e.text);
     },
     setDriverVehicle: function setDriverVehicle($event) {
-      console.log($event);
+      alert($event.dv_id);
       this.form.driver_vehicles_id = $event.dv_id;
     },
     submit: function submit() {
@@ -508,7 +508,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   , ["modelValue", "options"]), $data.form.errors.vehicles_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_22, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.vehicles_id), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_23, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
-    id: "authorizedDriver",
     "class": "js-data-example-ajax",
     modelValue: $data.form.drivers_id,
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {

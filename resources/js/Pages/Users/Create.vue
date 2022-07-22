@@ -170,6 +170,7 @@ export default {
 
     methods: {
         selectName($event) {
+            console.log($event)
             this.form.cats = $event.cats
         },
 

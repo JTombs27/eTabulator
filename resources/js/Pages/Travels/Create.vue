@@ -56,7 +56,7 @@
                 <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <label>Authorized Driver</label>
-                <Select2 id="authorizedDriver" class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
+                <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
                 <br>
@@ -247,7 +247,7 @@ export default {
         },
 
         setDriverVehicle($event) {
-            console.log($event)
+            alert($event.dv_id)
             this.form.driver_vehicles_id = $event.dv_id;
         },
         
