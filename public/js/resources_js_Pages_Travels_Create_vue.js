@@ -118,12 +118,11 @@ __webpack_require__.r(__webpack_exports__);
     getVehicleDetails: function getVehicleDetails() {
       var _this3 = this;
 
-      //var data = [];
-      this.drivers = [];
+      var data = [];
       axios.post('/travels/vehicle-details', {
         vehicles_id: this.form.vehicles_id
       }).then(function (response) {
-        _this3.drivers = response.data.map(function (obj) {
+        data = response.data.map(function (obj) {
           var _selected = false;
 
           if (_this3.editData != undefined) {
@@ -146,7 +145,7 @@ __webpack_require__.r(__webpack_exports__);
           };
         });
         $('#authorizedDriver').select2({
-          data: _this3.drivers
+          data: data
         });
       });
     },
@@ -163,11 +162,9 @@ __webpack_require__.r(__webpack_exports__);
       this.form.official_passenger += "".concat(separator).concat(e.text);
     },
     setDriverVehicle: function setDriverVehicle($event) {
-      alert(1212);
-      console.log($event); //this.form.driver_vehicles_id = this.drivers[$event];
+      this.form.driver_vehicles_id = $event.dv_id;
     },
     submit: function submit() {
-      this.form;
       this.form.post("/travels", this.form);
     }
   },
