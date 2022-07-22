@@ -16,6 +16,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TravelController;
 use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\OfficeVehiclesController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -47,6 +48,15 @@ Route::middleware('auth')->group(function() {
         Route::get('{id}', [VehicleStatusController::class, 'index']);
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
        
+    });
+
+    Route::prefix('/officeVehicles')->group(function() {
+         Route::get('/', [OfficeVehiclesController::class, 'index']);
+         Route::get('/create', [OfficeVehiclesController::class, 'create']);
+        // Route::post('/', [OfficeVehiclesController::class, 'store']);
+        // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);
+       
+       // Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
     });
 
     Route::prefix('/projects')->group(function() {

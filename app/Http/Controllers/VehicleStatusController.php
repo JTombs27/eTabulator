@@ -16,7 +16,7 @@ class VehicleStatusController extends Controller
 
     public function index($id)
     {
-      
+       
         return inertia('VehicleStatus/index',[
             'vehicle_status' =>  $this->model->with('vehicle')
                                     ->where('plate_no',$id)->latest()->simplePaginate(10),

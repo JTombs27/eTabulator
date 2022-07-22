@@ -1,46 +1,16 @@
-   <template>
+ <template>
      
 
     <div class="row gap-20 masonry pos-r">
-        <!-- <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }}</h3>
-            <Link href="/vehicles">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
-                viewBox="0 0 16 16">
-                <path fill-rule="evenodd"
-                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                <path fill-rule="evenodd"
-                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-            </svg>
-            </Link>
-        </div> -->
-
-        
-        <!-- <div class="col-md-8">
-            <form @submit.prevent="submit()">
-                <label for="">Plate number</label>
-                <input type="text" v-model="PLATENO" class="form-control" autocomplete="chrome-off" disabled readonly>
-                <label for="">Condition</label>
-                 <select class="form-select md" v-model="form.condition" :disabled="_disbled" :readonly="_disbled">
-                    <option disabled value="">Select Status</option>
-                    <option>Good Condition</option>
-                    <option>On-repair</option>
-                    <option>Wasted</option>
-                 </select>
-                <button type="button" class="btn btn-primary mt-3" @click="Edit()" :disabled="form.processing" v-if="_disbled">{{button_text}}</button>
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing" v-if="!_disbled">save</button>
-            </form>
-        </div> -->
+      
         <div class="peers fxw-nw jc-sb ai-c">
-             <h3>{{ pageTitle }}</h3>
-             
-          
+            <h3>{{ pageTitle }}</h3>
             <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer" >
-                    <Link class="btn btn-primary btn-sm" @click="gotoCreate()">Add Status</Link>
+                    <Link class="btn btn-primary btn-sm" href="/officeVehicles/create">Assign Vehicle To Office</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     &nbsp;&nbsp;
                      <Link href="/vehicles">
@@ -57,17 +27,16 @@
            
         </div>
 
-       <filtering v-if="filter" @closeFilter="filter=false">
+      <filtering v-if="filter" @closeFilter="filter=false">
             <label>Sample Inputs</label>
             <input type="text" class="form-control">
-              <button class="btn btn-sm btn-primary mT-5 text-white">Filter</button>
+            <button class="btn btn-sm btn-primary mT-5 text-white">Filter</button>
         </filtering>
  
  
         <div class="col-12">
             <div class="bgc-white p-20 bd">
-                
-                <table class="table table-hover">
+                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Plate No.</th>
@@ -77,13 +46,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                       
-                        <tr v-for="(vehicle, index) in vehicle_status.data" :key="index">
-                            <td>{{vehicle.plate_no}}</td>
-                            <td>{{vehicle.vehicle_status_date}}</td>
-                            <td>{{vehicle.condition}}</td>
+                        <tr v-for="(officevehicles, index) in officevehicle.data" :key="index">
+                            <td>{{officevehicles.plate_no}}</td>
+                            <td>{{officevehicles.department_code}}</td>
                             <td style="text-align: right">
-                                <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -92,74 +58,49 @@
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item">Edit</Link></li>
-                                    <!-- <li><a class="dropdown-item" href="#" @click="editPermissions(user.id)">Permissions</a></li>
-                                    <li><hr class="dropdown-divider action-divider"></li>
-                                    <li v-if="can.canDeleteUser">
-                                        <Link class="text-danger dropdown-item" @click="deleteUser(user.id)">Delete</Link>
-                                    </li> -->
                                   </ul>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
-                </table>
+                </table> 
 
                 <div class="row justify-content-center">
                     <div class="col-md-12">
-                        <!-- read the explanation in the Paginate.vue component -->
-                        <!-- <pagination :links="users.links" /> -->
-                        <pagination :next="vehicle_status.next_page_url" :prev="vehicle_status.prev_page_url" />
+                        <pagination :next="officevehicle.next_page_url" :prev="officevehicle.prev_page_url" />
                     </div>
                 </div>
-            </div>
-        </div>
-
-        
-     
-      
-    </div>
-    <div></div>
+           </div>
+        </div> 
+    </div> 
+    
 </template>
-<script>
 
+<script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 export default {
     components: { Pagination, Filtering },
     props: {
-        vehicle_status: Object,
-        filters: Object,
-        plate_no: Object,
+       officevehicle: Object,
     },
     data() {
         return {
-          //  search: this.$props.filters.search,
+           
+           //search: this.$props.filters.search,
             confirm: false,
             filter: false,
             showModal: false,
             _disbled:true,
             button_label:'',
-            pageTitle: "Vehicle Status",
+            pageTitle: "Office Vehicle",
             loading:false,
         };
     },
-     watch: {
-        search: _.debounce(function (value) {
-            this.$inertia.get(
-                "/VehicleStatus",
-                { search: value },
-                {
-                    preserveScroll: true,
-                    preserveState: true,
-                    replace: true,
-                }
-            );
-        }, 300),
-    },
     mounted() {
-        console.log(this.plate_no)
-        this.plateno = this.plate_no
+        // console.log(this.plate_no)
+        // this.plateno = this.plate_no
         // this.plate_no = this.vehicle_status.plate_no
         // this.form.plate_no = this.plate_no
             // if(this.vehicle.vehicle_status)
@@ -171,17 +112,8 @@ export default {
             
     },
     methods: {
-        submit() {
-            if (!!this.vehicle.vehicle_status) {
-                this.form.patch("/VehicleStatus/" + this.form.id, this.form);
-            } 
-            else {
-                this.form.post("/VehicleStatus", this.form);
-            }
-        },
-        Edit() {
-           this._disbled = false
-        },
+       
+       
         showFilter() {
             this.filter = !this.filter
         },
@@ -189,8 +121,6 @@ export default {
         gotoCreate() {
              this.$inertia.get("/VehicleStatus/" + this.plate_no+"/Create");
         },
-
-       
 
         // loadMunicipals() { 
         //     axios.post('/municipalities').then((response) => {
@@ -205,7 +135,7 @@ export default {
         //         this.puroks = []
         //     })
         // },
-    },
+    }
     // computed:{
     //     button_text(){
     //         if(!!!this.vehicle.vehicle_status)

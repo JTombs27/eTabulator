@@ -213,7 +213,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_15)], 32
   /* HYDRATE_EVENTS */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-8\">\r\n            <form @submit.prevent=\"submit()\">\r\n                <label for=\"\">Plate number</label>\r\n                <input type=\"text\" v-model=\"PLATENO\" class=\"form-control\" autocomplete=\"chrome-off\" disabled readonly>\r\n                <label for=\"\">Condition</label>\r\n                 <select class=\"form-select md\" v-model=\"form.condition\" :disabled=\"_disbled\" :readonly=\"_disbled\">\r\n                    <option disabled value=\"\">Select Status</option>\r\n                    <option>Good Condition</option>\r\n                    <option>On-repair</option>\r\n                    <option>Wasted</option>\r\n                 </select>\r\n                <button type=\"button\" class=\"btn btn-primary mt-3\" @click=\"Edit()\" :disabled=\"form.processing\" v-if=\"_disbled\">{{button_text}}</button>\r\n                <button type=\"button\" class=\"btn btn-primary mt-3\" @click=\"submit()\" :disabled=\"form.processing\" v-if=\"!_disbled\">save</button>\r\n            </form>\r\n        </div> ")]), _hoisted_16], 64
+  )])]), _hoisted_16], 64
   /* STABLE_FRAGMENT */
   );
 }

@@ -11,4 +11,9 @@ class Office extends Model
 
     protected $table = "offices";
     protected $guarded = [];
+
+    public function officeVehicle()
+    {
+        return $this->hasMany(OfficeVehicles::class,"department_code","department_code");
+    }
 }
