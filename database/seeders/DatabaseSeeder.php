@@ -21,25 +21,13 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
-<<<<<<< HEAD
-            FirstUserSeed::class,
-            PermissionUserSeeder::class,
+            // FirstUserSeed::class,
+            // PermissionUserSeeder::class,
             PermissionsSeeder::class,
-            Municipalities::class,
-=======
-            /*FirstUserSeed::class,
-            PermissionUserSeeder::class,*/
-            PermissionsSeeder::class,
-            /*Municipalities::class,
->>>>>>> 94227ed78ab3907fcf4559ceb0853f5a4511da95
-            Barangays::class,
-            VehicleSeeder::class,
+            // Municipalities::class,
+            // Barangays::class,
+            // VehicleSeeder::class,
 
         ]);
-<<<<<<< HEAD
-=======
-
-        // \App\Models\User::factory(100)->create();
->>>>>>> 94227ed78ab3907fcf4559ceb0853f5a4511da95
     }
 }
