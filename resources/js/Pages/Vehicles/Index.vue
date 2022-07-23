@@ -46,7 +46,7 @@
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col" style="text-align: center">Acquisition</th>
-                            <th scope="col">Office</th>
+                            <th scope="col" style="text-align: center">Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right"> Action</th>
@@ -55,11 +55,12 @@
                     <tbody>
                         <tr v-for="(vehicle, index) in vehicles.data" :key="index">
                             <td> {{vehicle.PLATENO}}</td>
-                            <td> {{vehicle.TYPECODE}}</td>
+                            <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> <div style="width: 70%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
-                            <td> </td>
-                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].driver.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].driver.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].driver.last_name}`}}</td>
+                            <td> <div style="width: 90%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
+                            <td v-if="vehicle.driverassign[0]!= null"> <div style="width: 90%; float: left; text-align: center;"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.office}` }}</div></td>
+                            <td v-else></td>
+                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
@@ -156,6 +157,22 @@ export default ({
     
 
     methods: {
+        code (code) {
+            switch(code) {
+                case '1':
+                    return "<span class='badge bg-info'>Motorcycle</span>"
+                    break
+                case '2':
+                    return "<span class='badge bg-danger'>Light Vehicle</span>"
+                    break
+                case '3':
+                    return "<span class='badge bg-success'>Heavy Equipment</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
         driverVehicle(driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");

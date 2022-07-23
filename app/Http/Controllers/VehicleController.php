@@ -19,7 +19,7 @@ class VehicleController extends Controller
     {
         return inertia('Vehicles/Index', [
             "vehicles" => $this->model->with([
-                'driverassign.driver',
+                'driverassign.empl.office'
             ])
 
             ->when($request->search, function ($query, $searchItem) {
@@ -34,7 +34,7 @@ class VehicleController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return inertia('Vehicles/Create');
     }

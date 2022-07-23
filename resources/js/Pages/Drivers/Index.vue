@@ -31,7 +31,7 @@
                         <tbody>
                             <tr v-for="(item,index) in driver_vehicles.data" :key="index">
                                 <td>{{item.vehicle.PLATENO}}</td>
-                                <td> {{`${item.driver.first_name} ${mi(item.driver.middle_name)} ${item.driver.last_name}`}}</td>
+                                <td> {{`${item.empl.first_name} ${mi(item.empl.middle_name)} ${item.empl.last_name}`}}</td>
                                 <td>{{item.date_from}}</td>
                                 <td>{{item.date_to}}</td>
                                 <td> {{item.office.office}}</td>

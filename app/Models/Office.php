@@ -11,4 +11,9 @@ class Office extends Model
 
     protected $table = "offices";
     protected $guarded = [];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employee::class, 'department_code', 'id');
+    }
 }
