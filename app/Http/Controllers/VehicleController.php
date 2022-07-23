@@ -54,7 +54,7 @@ class VehicleController extends Controller
         $vehicle = $this->model->create($request->except('checkadd','condition'));
 
         $vehicleStatus = $this->status->create(['condition' => $request->condition,
-                                                'vehicle_id' => $vehicle->id]);
+                                                'vehicles_id' => $vehicle->id]);
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');

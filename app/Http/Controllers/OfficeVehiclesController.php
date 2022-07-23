@@ -19,6 +19,8 @@ class OfficeVehiclesController extends Controller
 
     public function index(Request $request,$id)
     {
+
+       
        return inertia('OfficeVehicles/Index',[
            'officevehicle' => $this->officevehicles->with(['vehicle','office'])->where('vehicles_id',$id)
            ->latest()->simplePaginate(10),
@@ -46,6 +48,15 @@ class OfficeVehiclesController extends Controller
           'vehicles' => $this->vehicles->where('id',$id)->get()
        ]);
 
+    }
+
+    public function back(Request $request)
+    {
+        return inertia('OfficeVehicles/Index',[
+            'officevehicle' => $this->officevehicles->with(['vehicle','office'])->where('vehicles_id',$request->id)
+            ->latest()->simplePaginate(10),
+            'vehicles_id' => $request->id
+        ]);
     }
    
 

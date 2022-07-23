@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/Create', [VehicleStatusController::class, 'Create']);
         Route::get('{id}', [VehicleStatusController::class, 'index']);
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
+        Route::get('/{id}/edit', [VehicleStatusController::class, 'edit']);
        
     });
 
@@ -58,6 +59,7 @@ Route::middleware('auth')->group(function() {
          Route::get('/{id}/create', [OfficeVehiclesController::class, 'create']);
          Route::post('/', [OfficeVehiclesController::class, 'store']);
          Route::get('/{id}/edit', [OfficeVehiclesController::class, 'edit']);
+         Route::get('/{id}/back', [OfficeVehiclesController::class, 'back']);
          Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
         // Route::post('/', [OfficeVehiclesController::class, 'store']);
         // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);

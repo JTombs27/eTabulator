@@ -77,7 +77,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     gotoEdit: function gotoEdit(index) {
       this.id = this.vehicle_status.data[index].id;
-      this.$inertia.get("/VehicleStatus/" + this.vehicles_id + "/Edit");
+      this.$inertia.get("/VehicleStatus/" + this.id + "/edit");
     } // loadMunicipals() { 
     //     axios.post('/municipalities').then((response) => {
     //         this.municipals = response.data

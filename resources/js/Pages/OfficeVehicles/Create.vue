@@ -4,15 +4,14 @@
     <div class="row gap-20 masonry pos-r">
        <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }}</h3>
-            <Link href="/officeVehicles">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+            <back-button :href="'/officeVehicles/'+vehicleid+''"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                     d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
                 <path fill-rule="evenodd"
                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-            </svg>
-            </Link>
+            </svg></back-button>
+            
         </div> 
         <div class="col-md-8">
             <form @submit.prevent="submit()">
@@ -21,9 +20,10 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.plate_no">{{ form.errors.plate_no}}</div>
                 <label for="">Office</label>
                 <Select2 v-model="form.department_code" id="department_code" />
-                <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
+                <div class="fs-6 c-red-500" v-if="form.errors.department_code">{{ form.errors.department_code }}</div>
                 <label for="">Effective Date</label>
                 <input type="date" v-model="form.effective_date" class="form-control" autocomplete="chrome-off" >
+                <div class="fs-6 c-red-500" v-if="form.errors.effective_date">{{ form.errors.effective_date }}</div>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">save</button>
             </form>
         </div>
@@ -58,7 +58,7 @@ export default {
     },
     
     mounted() {
-       
+            this.vehicleid = this.vehicles[0].id
            this.form.vehicles_id = this.vehicles[0].id
            this.form.plate_no = this.vehicles[0].PLATENO
            
@@ -132,7 +132,10 @@ export default {
            this._disbled = false
         },
 
-       
+       back(){
+
+           this.$inertia.get("/officeVehicles/" +this.form.vehicles_id +"/create");
+       }
 
         // showFilter() {
         //     this.filter = !this.filter

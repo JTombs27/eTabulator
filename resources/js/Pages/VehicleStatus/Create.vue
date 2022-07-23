@@ -4,15 +4,13 @@
     <div class="row gap-20 masonry pos-r">
        <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }}</h3>
-            <Link href="/vehicles">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+           <back-button :href="'/VehicleStatus/'+vehicleid+''"><svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
                     d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
                 <path fill-rule="evenodd"
                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-            </svg>
-            </Link>
+            </svg></back-button>
         </div> 
         <div class="col-md-8">
             <form @submit.prevent="submit()">
@@ -74,36 +72,33 @@ export default {
     
     mounted() {
        // this.plate_no = this.id
-        this.form.plate_no = this.vehicle.PLATENO
-       
-        this.form.vehicles_id = this.vehicle.id
+  
 
-         if( !!this.editData ) {
-            this.pageTitle = "Edit Vehicles"
-            this.form.PLATENO = this.editData.PLATENO
-            this.form.TYPECODE = this.editData.TYPECODE
-            this.form.FDATEACQ = this.editData.FDATEACQ
-            this.form.FACQCOST = this.editData.FACQCOST
-            this.form.FDESC = this.editData.FDESC
-            this.form.id = this.editData.id
+         if(this.editData) {
+            this.pageTitle = "Edit Vehicle Status"
+            this.form.id = this.vehicle.id
+            this.form.vehicles_id = this.vehicle.vehicles_id
+            this.form.vehicle_status_date = this.vehicle.vehicle_status_date
+            this.form.plate_no = this.vehicle.plate_no
+            this.form.condition = this.vehicle.condition
+            this.vehicleid = this.vehicle.vehicles_id
+          
         } else {
-            this.pageTitle = "Create Vehicles"
+            this.pageTitle = "Add Vehicle Status"
+            this.form.plate_no = this.vehicle.PLATENO
+            this.form.vehicles_id = this.vehicle.id
+            this.vehicleid = this.vehicle.id
         }
             
     },
     methods: {
         submit() {
-
-            //console.log(this.form)
-            this.form.post("/VehicleStatus", this.form);
-
-           
-            // if (!!this.vehicle.vehicle_status) {
-            //     this.form.patch("/VehicleStatus/" + this.form.id, this.form);
-            // } 
-            // else {
-            //    this.form.post("/VehicleStatus", this.form);
-            // }
+             if (this.editData) {
+                 this.form.patch("/VehicleStatus/" + this.form.id, this.form);
+             } 
+             else {
+                this.form.post("/VehicleStatus", this.form);
+             }
         },
         Edit() {
            this._disbled = false

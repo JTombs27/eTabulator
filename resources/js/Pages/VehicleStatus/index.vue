@@ -163,7 +163,7 @@ export default {
 
         gotoEdit(index) {
             this.id = this.vehicle_status.data[index].id
-             this.$inertia.get("/VehicleStatus/" + this.vehicles_id +"/Edit");
+             this.$inertia.get("/VehicleStatus/" + this.id +"/edit");
         },
 
 
