@@ -62,7 +62,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item">Edit</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoEdit(index)">Edit</Link></li>
                                     <!-- <li><a class="dropdown-item" href="#" @click="editPermissions(user.id)">Permissions</a></li>
                                     <li><hr class="dropdown-divider action-divider"></li>
                                     <li v-if="can.canDeleteUser">
@@ -101,7 +101,7 @@ export default {
     props: {
         vehicle_status: Object,
         filters: Object,
-        vehicle_id: Object,
+        vehicles_id: Object,
     },
     data() {
         return {
@@ -160,6 +160,12 @@ export default {
         gotoCreate() {
              this.$inertia.get("/VehicleStatus/" + this.vehicles_id +"/Create");
         },
+
+        gotoEdit(index) {
+            this.id = this.vehicle_status.data[index].id
+             this.$inertia.get("/VehicleStatus/" + this.vehicles_id +"/Edit");
+        },
+
 
        
 
