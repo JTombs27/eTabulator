@@ -17,7 +17,7 @@ class AddPlateNoOnVehicleStatusTable extends Migration
             $table->string('plate_no')->after('vehicles_id')->nullable();
         });
     }
-
+    
     /**
      * Reverse the migrations.
      *
@@ -25,6 +25,9 @@ class AddPlateNoOnVehicleStatusTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('vehicle_status', function (Blueprint $table) {
+            //
+            $table->dropColumn('plate_no');
+        });
     }
 }

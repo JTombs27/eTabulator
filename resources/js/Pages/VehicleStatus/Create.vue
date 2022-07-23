@@ -48,6 +48,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 export default {
     props: {
       vehicle : Object,
+      editData:Object,
     },
     data() {
         return {
@@ -76,6 +77,18 @@ export default {
         this.form.plate_no = this.vehicle.PLATENO
        
         this.form.vehicles_id = this.vehicle.id
+
+         if( !!this.editData ) {
+            this.pageTitle = "Edit Vehicles"
+            this.form.PLATENO = this.editData.PLATENO
+            this.form.TYPECODE = this.editData.TYPECODE
+            this.form.FDATEACQ = this.editData.FDATEACQ
+            this.form.FACQCOST = this.editData.FACQCOST
+            this.form.FDESC = this.editData.FDESC
+            this.form.id = this.editData.id
+        } else {
+            this.pageTitle = "Create Vehicles"
+        }
             
     },
     methods: {
