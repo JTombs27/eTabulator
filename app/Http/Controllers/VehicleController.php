@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\DB;
 use App\Models\VehicleStatus;
 
 class VehicleController extends Controller
@@ -89,10 +90,17 @@ class VehicleController extends Controller
 
     public function getVehicles()
     {
-        return $this->model->get()->map(fn($item) => [
-            'id' => $item->id,
-            'text' => $item->PLATENO
-        ]);
+        return DB::table('vehicle_status')
+                ->leftJoin('vehicles', 'vehicle_status.vehicle_id', 'vehicles.id')
+                ->where('condition', 'Good Condition')
+                ->distinct('vehicles_id')
+                ->orderBy('vehicle_status.created_at', 'desc')
+                ->get()
+                ->map(fn($item) => [
+                    'id' => $item->vehicle_id,
+                    'condition' => $item->condition
+                ]);
+
     }
     public function loadVehicles(Request $request)
     {

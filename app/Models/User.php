@@ -24,7 +24,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'password',
         'citymunCode',
         'brgyCode',
-        'role'
+        'role',
+        'is_active'
     ];
 
     protected $hidden = [
@@ -50,5 +51,17 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         $this
             ->addMediaCollection('avatars')
             ->singleFile();
+    }
+    
+    public function setStatus($value)
+    {
+        echo $value;
+        try {
+            $this->is_active = $value;
+            $this->save();
+            return true;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }
