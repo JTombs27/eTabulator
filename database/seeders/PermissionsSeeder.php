@@ -15,7 +15,6 @@ class PermissionsSeeder extends Seeder
     public function data()
     {
         return array(
-           
             // array('id' => 1,'permission_name' => 'can_edit_user'),
             // array('id' => 2,'permission_name' => 'can_create_user'),
             // array('id' => 3,'permission_name' => 'can_delete_user'),
@@ -31,7 +30,10 @@ class PermissionsSeeder extends Seeder
             array('id' => 13,'permission_name' => 'can_create_project_vehicle'),
             array('id' => 14,'permission_name' => 'can_edit_project_vehicle'),
             array('id' => 15,'permission_name' => 'can_delete_project_vehicle'),
-
+            array('id' => 16,'permission_name' => 'can_create_office_vehicles'),
+            array('id' => 17,'permission_name' => 'can_edit_office_vehicles'),
+            array('id' => 18,'permission_name' => 'can_create_vehicle_status'),
+            array('id' => 19,'permission_name' => 'can_edit_vehicle_status'),
         );
     }
 }
