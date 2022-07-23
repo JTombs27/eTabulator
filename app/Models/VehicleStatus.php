@@ -12,12 +12,13 @@ class VehicleStatus extends Model
     protected $fillable = [
         'vehicle_status_date',
         'condition',
-        'plate_no'
+        'plate_no',
+        'vehicles_id'
     ];
 
     public function vehicle()
     {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(Vehicle::class,"vehicles_id","id");
     }
    
 }

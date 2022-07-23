@@ -15,7 +15,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    plate_no: Object
+    vehicle: Object
   },
   data: function data() {
     return {
@@ -27,6 +27,7 @@ __webpack_require__.r(__webpack_exports__);
       button_label: '',
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         id: '',
+        vehicles_id: '',
         vehicle_status_date: '',
         plate_no: '',
         condition: ''
@@ -37,7 +38,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // this.plate_no = this.id
-    this.form.plate_no = this.plate_no;
+    this.form.plate_no = this.vehicle.PLATENO;
+    this.form.vehicles_id = this.vehicle.id;
   },
   methods: {
     submit: function submit() {

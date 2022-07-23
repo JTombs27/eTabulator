@@ -15,15 +15,13 @@ class Vehicle extends Model
 
     public function vehicle_status()
     {
-<<<<<<< HEAD
-        return $this->hasMany(VehicleStatus::class);
-=======
+        
         return $this->hasMany(VehicleStatus::class,"plate_no","PLATENO");
->>>>>>> 4a5928c70f6bfbc2d130dc586ddd0dbcaea98d79
     }
     public function driverassign()
     {
         return $this->hasMany(DriverVehicle::class, 'vehicles_id', 'id');
     }
+
 
 }

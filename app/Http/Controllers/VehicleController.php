@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\DB;
-=======
 use App\Models\VehicleStatus;
->>>>>>> 4a5928c70f6bfbc2d130dc586ddd0dbcaea98d79
 
 class VehicleController extends Controller
 {
@@ -104,5 +101,17 @@ class VehicleController extends Controller
                     'condition' => $item->condition
                 ]);
 
+    }
+    public function loadVehicles(Request $request)
+    {
+        $query = $this->model
+                    ->where('FDESC', 'like', "%$request->filter%")
+                    ->orWhere('PLATENO', 'like', "%$request->filter%")->get()
+                    ->map(fn($item) => [
+                        'id' => $item->PLATENO,
+                        'text' => $item->FDESC
+                    ]);
+         
+        return $query;
     }
 }
