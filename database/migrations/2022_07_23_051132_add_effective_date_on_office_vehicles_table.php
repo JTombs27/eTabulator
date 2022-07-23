@@ -25,6 +25,8 @@ class AddEffectiveDateOnOfficeVehiclesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('office_vehicles', function (Blueprint $table) {
+            $table->dropColumn('effective_date');
+        });
     }
 }

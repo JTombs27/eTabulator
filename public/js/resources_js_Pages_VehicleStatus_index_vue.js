@@ -74,6 +74,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     gotoCreate: function gotoCreate() {
       this.$inertia.get("/VehicleStatus/" + this.vehicles_id + "/Create");
+    },
+    gotoEdit: function gotoEdit(index) {
+      this.id = this.vehicle_status.data[index].id;
+      this.$inertia.get("/VehicleStatus/" + this.vehicles_id + "/Edit");
     } // loadMunicipals() { 
     //     axios.post('/municipalities').then((response) => {
     //         this.municipals = response.data
@@ -338,15 +342,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.condition), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"user.can.edit\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-      "class": "dropdown-item"
+      "class": "dropdown-item",
+      onClick: function onClick($event) {
+        return $options.gotoEdit(index);
+      }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
         return [_hoisted_20];
       }),
-      _: 1
-      /* STABLE */
+      _: 2
+      /* DYNAMIC */
 
-    })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><a class=\"dropdown-item\" href=\"#\" @click=\"editPermissions(user.id)\">Permissions</a></li>\r\n                                    <li><hr class=\"dropdown-divider action-divider\"></li>\r\n                                    <li v-if=\"can.canDeleteUser\">\r\n                                        <Link class=\"text-danger dropdown-item\" @click=\"deleteUser(user.id)\">Delete</Link>\r\n                                    </li> ")])])])]);
+    }, 1032
+    /* PROPS, DYNAMIC_SLOTS */
+    , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><a class=\"dropdown-item\" href=\"#\" @click=\"editPermissions(user.id)\">Permissions</a></li>\r\n                                    <li><hr class=\"dropdown-divider action-divider\"></li>\r\n                                    <li v-if=\"can.canDeleteUser\">\r\n                                        <Link class=\"text-danger dropdown-item\" @click=\"deleteUser(user.id)\">Delete</Link>\r\n                                    </li> ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" read the explanation in the Paginate.vue component "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination :links=\"users.links\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {

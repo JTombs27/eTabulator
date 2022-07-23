@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VehicleStatus;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Constraint\IsTrue;
 
 class VehicleStatusController extends Controller
 {
@@ -42,7 +43,17 @@ class VehicleStatusController extends Controller
     {
        
         return inertia('VehicleStatus/Create',[
-            'vehicle' => $this->vehicle->findOrFail($id)
+            'vehicle' => $this->vehicle->findOrFail($id),
+            'editData' => True
+        ]);
+    }
+
+    public function edit(Request $request)
+    {
+       
+        return inertia('VehicleStatus/Create',[
+            'vehicle' => $this->model->findOrFail($request->id),
+            'editData' => True
         ]);
     }
 

@@ -15,7 +15,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    vehicle: Object
+    vehicle: Object,
+    editData: Object
   },
   data: function data() {
     return {
@@ -40,6 +41,18 @@ __webpack_require__.r(__webpack_exports__);
     // this.plate_no = this.id
     this.form.plate_no = this.vehicle.PLATENO;
     this.form.vehicles_id = this.vehicle.id;
+
+    if (!!this.editData) {
+      this.pageTitle = "Edit Vehicles";
+      this.form.PLATENO = this.editData.PLATENO;
+      this.form.TYPECODE = this.editData.TYPECODE;
+      this.form.FDATEACQ = this.editData.FDATEACQ;
+      this.form.FACQCOST = this.editData.FACQCOST;
+      this.form.FDESC = this.editData.FDESC;
+      this.form.id = this.editData.id;
+    } else {
+      this.pageTitle = "Create Vehicles";
+    }
   },
   methods: {
     submit: function submit() {
