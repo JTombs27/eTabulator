@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/settings', [UserController::class, 'settings']);
         Route::post('/change-name', [UserController::class, 'changeName']);
         Route::post('/change-photo', [UserController::class, 'changePhoto']);
+        Route::patch('/status/{id}', [UserController::class, 'setStatus']);
     });
 
     //marvin
@@ -110,6 +111,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/', [TravelController::class, 'store']);
         Route::post('set-status', [TravelController::class, 'setStatus']);
         Route::get('/{id}/edit', [TravelController::class, 'edit']);
+        Route::patch('/{id}', [TravelController::class, 'update']);
     });
 
     Route::prefix('sync')->group(function() {

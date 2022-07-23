@@ -156,6 +156,11 @@ export default {
             this.form.purpose = this.editData.purpose
             this.form.price = this.editData.price
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
+            this.form.date_from = this.editData.date_from
+            this.form.date_to = this.editData.date_to
+            if (this.editData.date_to) {
+                this.form.rangedDate = true
+            }
             this.getVehicleDetails();
         } else {
             this.pageTitle = "Create"
@@ -247,11 +252,14 @@ export default {
         },
 
         setDriverVehicle($event) {
-            alert($event.dv_id)
             this.form.driver_vehicles_id = $event.dv_id;
         },
         
         submit() {
+            if(this.editData) {
+                this.form.patch(`/travels/${this.editData.id}`, this.form);
+                return false;
+            }
             this.form.post("/travels", this.form);
         }
     },

@@ -23,7 +23,13 @@ class PermissionsSeeder extends Seeder
             // array('id' => 6,'permission_name' => 'can_set_status'), // PG-Head
             // array('id' => 7,'permission_name' => 'can_merge_travel'),
             // array('id' => 8,'permission_name' => 'can_merge_driver'), // GSO
-            array('id' => 9,'permission_name' => 'can_create_charges'), // Super user
+            // array('id' => 9,'permission_name' => 'can_create_charges'), // Super user
+            array('id' => 10,'permission_name' => 'can_create_project'),
+            array('id' => 11,'permission_name' => 'can_edit_project'),
+            array('id' => 12,'permission_name' => 'can_delete_project'),
+            array('id' => 13,'permission_name' => 'can_create_project_vehicle'),
+            array('id' => 14,'permission_name' => 'can_edit_project_vehicle'),
+            array('id' => 15,'permission_name' => 'can_delete_project_vehicle'),
         );
     }
 }

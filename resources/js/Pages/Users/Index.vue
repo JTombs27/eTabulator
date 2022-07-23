@@ -28,6 +28,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th scope="col">Active</th>
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col" style="width: 30%"></th>
@@ -36,6 +37,19 @@
                     </thead>
                     <tbody>
                         <tr v-for="(user, index) in users.data" :key="index">
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input 
+                                        type="checkbox" 
+                                        class="form-check-input" 
+                                        role="switch"
+                                        :id="user.id" 
+                                        :checked="user.is_active"
+                                        @change="setStatus($event,user.id)"
+                                    >
+                                    <label class="form-check-label" :for="user.id"></label>
+                                </div>
+                            </td>
                             <td>
                                 <div class="row g-3 align-items-center">
                                     <!-- <div class="col-12 col-lg-auto text-center text-lg-start">						        
@@ -187,6 +201,10 @@ export default {
                 this.permissions = _.groupBy(response.data, 'permission_group');
             })
         },
+
+        setStatus(e, item) {
+            this.$inertia.patch(`/users/status/${item}`, {is_check:e.target.checked})
+        }
     },
 };
 </script>

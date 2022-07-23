@@ -15,6 +15,7 @@
             </svg>
             </Link>
         </div>
+        
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <label for="">Names</label>

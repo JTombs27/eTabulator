@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
 
 class TravelController extends Controller
 {
@@ -112,6 +113,42 @@ class TravelController extends Controller
         
         return redirect('/travels')->with('message', 'Travel successfully added');
         
+    }
+
+    public function update(TravelRequest $request, $id)
+    {
+        $date_from = $request->date_from;
+        $date_to = $request->date_to;
+        // $now = Carbon::now();
+        // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
+        // $weekEndDate = Carbon::parse($date_to)->endOfWeek()->format('Y-m-d');
+        $isExistTravel = $this->model
+                            ->where('driver_vehicles_id', $request->driver_vehicles_id)
+                            ->where('id', '<>' ,$request->id)
+                            ->where(function($query) use($date_from, $date_to) {
+                                $query->whereBetween('date_from', [$date_from, $date_to])
+                                        ->OrWhereBetween('date_to', [$date_from, $date_to]);
+                            })
+                            ->exists();
+        $attributes = Validator::make($request->validated());
+       
+        $attributes->after(function ($validator) {
+            if ($this->somethingElseIsInvalid()) {
+                $validator->errors()->add(
+                    'date_froms', 'Something is wrong with this field!'
+                );
+            }
+        });
+        if ($attributes->fails()) {
+            return redirect('/travels/create')->with('error', 'The input is invalid');
+        }
+        if ($isExistTravel) {
+            return redirect('/travels/create')->with('error', 'This record already exist.');
+        }
+
+        $data = $this->model->findOrFail($id)->update($request->all());
+        return redirect('/travels')->with('message', 'The changes have been saved');
+
     }
 
     public function setStatus(Request $request)
