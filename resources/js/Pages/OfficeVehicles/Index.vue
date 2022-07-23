@@ -10,7 +10,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer" >
-                    <Link class="btn btn-primary btn-sm" href="/officeVehicles/create">Assign Vehicle To Office</Link>
+                    <Link class="btn btn-primary btn-sm" @click="gotoCreate()">Assign Vehicle To Office</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     &nbsp;&nbsp;
                      <Link href="/vehicles">
@@ -40,15 +40,18 @@
                     <thead>
                         <tr>
                             <th scope="col">Plate No.</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Status</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Office</th>
+                            <th scope="col">Effective Date</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(officevehicles, index) in officevehicle.data" :key="index">
                             <td>{{officevehicles.plate_no}}</td>
-                            <td>{{officevehicles.department_code}}</td>
+                            <td>{{officevehicles.vehicle.FDESC}}</td>
+                            <td>{{officevehicles.office.office}}</td>
+                            <td>{{officevehicles.effective_date}}</td>
                             <td style="text-align: right">
                                 <div class="dropdown dropstart">
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -57,7 +60,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item">Edit</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoUpdate(index)">Edit</Link></li>
                                   </ul>
                                 </div>
                             </td>
@@ -84,6 +87,7 @@ export default {
     components: { Pagination, Filtering },
     props: {
        officevehicle: Object,
+       vehicles_id:Object,
     },
     data() {
         return {
@@ -96,6 +100,13 @@ export default {
             button_label:'',
             pageTitle: "Office Vehicle",
             loading:false,
+            form: useForm({
+                id:"",
+                vehicles_id:'',
+                plate_no:'',
+                department_code:'',
+                effective_date:'',
+            }),
         };
     },
     mounted() {
@@ -119,9 +130,15 @@ export default {
         },
 
         gotoCreate() {
-             this.$inertia.get("/VehicleStatus/" + this.plate_no+"/Create");
+             this.$inertia.get("/officeVehicles/" + this.vehicles_id+"/create")
         },
 
+
+        gotoUpdate(index) {
+            this.id = this.officevehicle.data[index].id
+
+            this.$inertia.get("/officeVehicles/" + this.id+"/edit")
+        },
         // loadMunicipals() { 
         //     axios.post('/municipalities').then((response) => {
         //         this.municipals = response.data

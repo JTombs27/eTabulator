@@ -25,7 +25,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     vehicle_status: Object,
     filters: Object,
-    plate_no: Object
+    vehicle_id: Object
   },
   data: function data() {
     return {
@@ -50,9 +50,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     }, 300)
   },
-  mounted: function mounted() {
-    console.log(this.plate_no);
-    this.plateno = this.plate_no; // this.plate_no = this.vehicle_status.plate_no
+  mounted: function mounted() {// this.plate_no = this.vehicle_status.plate_no
     // this.form.plate_no = this.plate_no
     // if(this.vehicle.vehicle_status)
     // {
@@ -75,7 +73,7 @@ __webpack_require__.r(__webpack_exports__);
       this.filter = !this.filter;
     },
     gotoCreate: function gotoCreate() {
-      this.$inertia.get("/VehicleStatus/" + this.plate_no + "/Create");
+      this.$inertia.get("/VehicleStatus/" + this.vehicles_id + "/Create");
     } // loadMunicipals() { 
     //     axios.post('/municipalities').then((response) => {
     //         this.municipals = response.data

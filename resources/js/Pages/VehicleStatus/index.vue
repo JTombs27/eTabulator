@@ -101,7 +101,7 @@ export default {
     props: {
         vehicle_status: Object,
         filters: Object,
-        plate_no: Object,
+        vehicle_id: Object,
     },
     data() {
         return {
@@ -129,8 +129,8 @@ export default {
         }, 300),
     },
     mounted() {
-        console.log(this.plate_no)
-        this.plateno = this.plate_no
+       
+        
         // this.plate_no = this.vehicle_status.plate_no
         // this.form.plate_no = this.plate_no
             // if(this.vehicle.vehicle_status)
@@ -158,7 +158,7 @@ export default {
         },
 
         gotoCreate() {
-             this.$inertia.get("/VehicleStatus/" + this.plate_no+"/Create");
+             this.$inertia.get("/VehicleStatus/" + this.vehicles_id +"/Create");
         },
 
        

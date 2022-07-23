@@ -60,7 +60,7 @@
                         ><span class="title">Vehicles</span></Link
                     >
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <Link class="sidebar-link" href="/officeVehicles">
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
@@ -68,7 +68,7 @@
                             </svg>
                         </span>
                         <span class="title">Office Vehicles</span></Link>
-                </li>
+                </li> -->
 
                  <li class="nav-item">
                     <Link class="sidebar-link" href="/travels"

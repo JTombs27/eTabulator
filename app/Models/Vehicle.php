@@ -22,4 +22,5 @@ class Vehicle extends Model
         return $this->hasMany(DriverVehicle::class, 'vehicles_id', 'id');
     }
 
+
 }
