@@ -16,4 +16,8 @@ class Office extends Model
     {
         return $this->belongsTo(Employee::class, 'department_code', 'id');
     }
+    public function officeVehicle()
+    {
+        return $this->hasMany(OfficeVehicles::class,"department_code","department_code");
+    }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateVehicleStatusTable extends Migration
+class AddTagForCarPoolToTravelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,8 @@ class CreateVehicleStatusTable extends Migration
      */
     public function up()
     {
-        Schema::create('vehicle_status', function (Blueprint $table) {
-            $table->id();
-            $table->date('vehicle_status_date');
-            $table->string('condition')->nullable();
-            $table->string('plate_no');
-            $table->timestamps();
+        Schema::table('travels', function (Blueprint $table) {
+            $table->boolean('is_carpool')->after('ticket_number');
         });
     }
 
@@ -29,6 +25,8 @@ class CreateVehicleStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vehicle_status');
+        Schema::table('travels', function (Blueprint $table) {
+            $table->dropColumn('is_carpool');
+        });
     }
 }
