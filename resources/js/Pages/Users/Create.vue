@@ -15,6 +15,7 @@
             </svg>
             </Link>
         </div>
+        
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <label for="">Names</label>
@@ -175,9 +176,9 @@ export default {
         },
 
         formatRepo (repo) {
-          if (repo.loading) {
+        if (repo.loading) {
             return repo.text;
-          }
+        }
         var img = "";
         console.log(repo.isNull)
         if(!repo.data){

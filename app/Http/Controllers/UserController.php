@@ -38,6 +38,7 @@ class UserController extends Controller
                 ->through(fn($user) => [
                     'id' => $user->id,
                     'permissions' => $user->permissions,
+                    'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
                     'photo' => $user->user_photo,
@@ -196,5 +197,16 @@ class UserController extends Controller
         }
 
         return redirect('/users/settings')->with('message', 'User updated');
+    }
+    
+    public function setStatus(Request $request, $id)
+    {
+        $status = $request->is_check ? 'activated':'deactivated';
+        $status1 = $request->is_check ? 'activating':'deactivating';
+        $user = $this->model->findOrFail($id)->setStatus($request->is_check);
+        if (!$user) {
+            return redirect('/users')->with('error', "Error while $status1 the user account");
+        }
+        return redirect('/users')->with('message', "User account $status ");
     }
 }

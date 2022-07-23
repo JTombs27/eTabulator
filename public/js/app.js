@@ -932,7 +932,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"nav-item\">\r\n                    <Link class=\"sidebar-link\" href=\"/officeVehicles\">\r\n                        <span class=\"icon-holder\">\r\n                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-truck\" viewBox=\"0 0 16 16\">\r\n                            <path d=\"M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z\"/>\r\n                            </svg>\r\n                        </span>\r\n                        <span class=\"title\">Office Vehicles</span></Link>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": "sidebar-link",
     href: "/travels"
   }, {
@@ -1694,6 +1694,36 @@ var map = {
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
 	],
+	"./OfficeVehicles/Create": [
+		"./resources/js/Pages/OfficeVehicles/Create.vue",
+		9,
+		"resources_js_Pages_OfficeVehicles_Create_vue"
+	],
+	"./OfficeVehicles/Create.vue": [
+		"./resources/js/Pages/OfficeVehicles/Create.vue",
+		9,
+		"resources_js_Pages_OfficeVehicles_Create_vue"
+	],
+	"./OfficeVehicles/Edit": [
+		"./resources/js/Pages/OfficeVehicles/Edit.vue",
+		9,
+		"resources_js_Pages_OfficeVehicles_Edit_vue"
+	],
+	"./OfficeVehicles/Edit.vue": [
+		"./resources/js/Pages/OfficeVehicles/Edit.vue",
+		9,
+		"resources_js_Pages_OfficeVehicles_Edit_vue"
+	],
+	"./OfficeVehicles/Index": [
+		"./resources/js/Pages/OfficeVehicles/Index.vue",
+		9,
+		"resources_js_Pages_OfficeVehicles_Index_vue"
+	],
+	"./OfficeVehicles/Index.vue": [
+		"./resources/js/Pages/OfficeVehicles/Index.vue",
+		9,
+		"resources_js_Pages_OfficeVehicles_Index_vue"
+	],
 	"./Posts/Index": [
 		"./resources/js/Pages/Posts/Index.vue",
 		9,
@@ -1854,6 +1884,16 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
 	],
+	"./VehicleStatus/Create": [
+		"./resources/js/Pages/VehicleStatus/Create.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_Create_vue"
+	],
+	"./VehicleStatus/Create.vue": [
+		"./resources/js/Pages/VehicleStatus/Create.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_Create_vue"
+	],
 	"./VehicleStatus/index": [
 		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
@@ -1863,16 +1903,6 @@ var map = {
 		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
 		"resources_js_Pages_VehicleStatus_index_vue"
-	],
-	"./VehicleStatus/raymart": [
-		"./resources/js/Pages/VehicleStatus/raymart.vue",
-		9,
-		"resources_js_Pages_VehicleStatus_raymart_vue"
-	],
-	"./VehicleStatus/raymart.vue": [
-		"./resources/js/Pages/VehicleStatus/raymart.vue",
-		9,
-		"resources_js_Pages_VehicleStatus_raymart_vue"
 	],
 	"./VehicleStatus/status": [
 		"./resources/js/Pages/VehicleStatus/status.vue",

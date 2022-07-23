@@ -20,12 +20,13 @@ class Vehicle extends Model
     }
     public function vehicle_latest_status()
     {
-        //return $this->hasOne(VehicleStatus::class, 'vehicle_id', 'id')->latest();
         return $this->hasOne(VehicleStatus::class, 'vehicle_id', 'id')->latest();
     }
-    public function driver()
+    
+    public function driverassign()
     {
-        return $this->hasMany(Driver::class, 'drivers_id', 'id');
+        return $this->hasMany(DriverVehicle::class, 'vehicles_id', 'id');
     }
+
 
 }
