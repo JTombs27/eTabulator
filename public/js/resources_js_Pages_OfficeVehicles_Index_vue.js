@@ -35,7 +35,14 @@ __webpack_require__.r(__webpack_exports__);
       _disbled: true,
       button_label: '',
       pageTitle: "Office Vehicle",
-      loading: false
+      loading: false,
+      form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+        id: "",
+        vehicles_id: '',
+        plate_no: '',
+        department_code: '',
+        effective_date: ''
+      })
     };
   },
   mounted: function mounted() {// console.log(this.plate_no)
@@ -54,6 +61,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     gotoCreate: function gotoCreate() {
       this.$inertia.get("/officeVehicles/" + this.vehicles_id + "/create");
+    },
+    gotoUpdate: function gotoUpdate(index) {
+      this.id = this.officevehicle.data[index].id;
+      this.$inertia.get("/officeVehicles/" + this.id + "/edit");
     } // loadMunicipals() { 
     //     axios.post('/municipalities').then((response) => {
     //         this.municipals = response.data
@@ -195,9 +206,11 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   scope: "col"
 }, "Plate No."), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
-}, "Date"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+}, "Description"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
-}, "Status"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+}, "Office"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+  scope: "col"
+}, "Effective Date"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col",
   style: {
     "text-align": "right"
@@ -308,18 +321,27 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       key: index
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(officevehicles.plate_no), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(officevehicles.department_code), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(officevehicles.vehicle.FDESC), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(officevehicles.office.office), 1
+    /* TEXT */
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(officevehicles.effective_date), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [_hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-      "class": "dropdown-item"
+      "class": "dropdown-item",
+      onClick: function onClick($event) {
+        return $options.gotoUpdate(index);
+      }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
         return [_hoisted_20];
       }),
-      _: 1
-      /* STABLE */
+      _: 2
+      /* DYNAMIC */
 
-    })])])])])]);
+    }, 1032
+    /* PROPS, DYNAMIC_SLOTS */
+    , ["onClick"])])])])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {

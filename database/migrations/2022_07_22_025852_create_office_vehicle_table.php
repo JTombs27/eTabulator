@@ -13,7 +13,7 @@ class CreateOfficeVehicleTable extends Migration
      */
     public function up()
     {
-        Schema::create('office_vehicle', function (Blueprint $table) {
+        Schema::create('office_vehicles', function (Blueprint $table) {
             $table->id();
             $table->string("vehicles_id");
             $table->string("department_code");
@@ -31,6 +31,6 @@ class CreateOfficeVehicleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('office_vehicle');
+        Schema::dropIfExists('office_vehicles');
     }
 }

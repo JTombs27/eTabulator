@@ -24,7 +24,7 @@
                 <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
                 <label for="">Effective Date</label>
                 <input type="date" v-model="form.effective_date" class="form-control" autocomplete="chrome-off" >
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">save</button>
+                <button type="button" class="btn btn-primary mt-3" @click="edit()" :disabled="form.processing">save</button>
             </form>
         </div>
         
@@ -36,7 +36,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 
 export default {
     props: {
-         vehicles:Object,
+         officevehicle:Object,
     },
     data() {
         return {
@@ -46,21 +46,21 @@ export default {
             _disbled:true,
             button_label:'',
             form: useForm({
+                id:"",
                 vehicles_id:'',
                 plate_no:'',
                 department_code:'',
                 effective_date:'',
             }),
-           
-            pageTitle: "Assign Vehicle To Department",
+            pageTitle: "Edit Vehicle Department Assignment",
             loading:false,
         };
     },
     
     mounted() {
-       
-           this.form.vehicles_id = this.vehicles[0].id
-           this.form.plate_no = this.vehicles[0].PLATENO
+           this.form.id = this.officevehicle[0].id
+           this.form.vehicles_id = this.officevehicle[0].vehicles_id
+           this.form.plate_no = this.officevehicle[0].plate_no
            
            $('#department_code').select2({
             ajax: {
@@ -115,22 +115,11 @@ export default {
             
     },
     methods: {
-        submit() {
-
-           // console.log(this.form)
-            this.form.post("/officeVehicles", this.form);
-
+        edit() {
            
-            // if (!!this.vehicle.vehicle_status) {
-            //     this.form.patch("/VehicleStatus/" + this.form.id, this.form);
-            // } 
-            // else {
-            //    this.form.post("/VehicleStatus", this.form);
-            // }
+           this.form.patch("/officeVehicles/"+this.form.id, this.form);
         },
-        Edit() {
-           this._disbled = false
-        },
+     
 
        
 
