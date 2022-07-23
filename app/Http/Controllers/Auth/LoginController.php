@@ -45,21 +45,24 @@ class LoginController extends Controller
         return 'username';
     }
 
-    public function authenticate(Request $request)
+    public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required'],
         ]);
- 
+        $credentials['is_active'] = 1; 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->intended('/');
+            return redirect()->to('/');
         }
- 
+        $errorMessage = "The provided credentials do not match our records.";
+        if ($credentials['is_active']) {
+            $errorMessage = "The provided credentials is deactivated.";
+        }
         return back()->withErrors([
-            'email' => 'sadfsdaf',
+            'email' => $errorMessage,
         ]);
     }
 
