@@ -16,9 +16,11 @@ class VehicleStatusController extends Controller
 
     public function index($id)
     {
+       
         return inertia('VehicleStatus/index',[
-            'vehicle' =>  $this->vehicle->with('vehicle_status')
-                                    ->where('id',$id)->latest()->first()
+            'vehicle_status' =>  $this->model->with('vehicle')
+                                    ->where('plate_no',$id)->latest()->simplePaginate(10),
+            'plate_no' => $id
                                     
         ]);
 
@@ -27,17 +29,20 @@ class VehicleStatusController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
+            'vehicle_status_date' => 'required',
             'condition' => 'required',
+            'plate_no' => 'required',
+            
         ]);
-        
         $this->model->create($request->all());
-        
         return redirect('/vehicles')->with('message', 'Vehicle status added!');
     }
 
-    public function create()
+    public function Create(Request $request,$id)
     {
-        return inertia('VehicleStatus/index');
+        return inertia('VehicleStatus/Create',[
+            'plate_no' => $id
+        ]);
     }
 
     public function update(Request $request)

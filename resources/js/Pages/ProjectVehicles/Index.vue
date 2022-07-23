@@ -12,7 +12,7 @@
                 <a class="btn btn-primary btn-sm" href="#" @click="createProject()">Add Vehicle</a>
                 <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                <back-button :backToURL="'/projects'"></back-button>
+                <back-button :href="'/projects'"></back-button>
                 <!-- <Link @click="goToProjects()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg"
                         viewBox="0 0 16 16">

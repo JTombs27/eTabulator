@@ -2,7 +2,8 @@
     <div class="row gap-20 masonry pos-r">
          <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle}}</h3>
-            <Link @click="back()">
+            <back-button :href="'/drivers/'+Vdriver.id+'/vehicles'"></back-button>
+            <!-- <Link @click="back()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg"
                     viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
@@ -10,7 +11,7 @@
                     <path fill-rule="evenodd"
                         d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                 </svg>
-            </Link>
+            </Link> -->
         </div>
 
         <div class="row justify-content-center">
@@ -60,8 +61,10 @@
 
 <script>
 import { useForm} from "@inertiajs/inertia-vue3"
+import BackButton from '../../Shared/BackButton.vue'
 
 export default {
+  components: { BackButton },
     name:"driversComponent",
     props:{
         Vdriver: Object

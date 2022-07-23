@@ -175,4 +175,6 @@ class TravelController extends Controller
                             ->first();
         return $travel;
     }
+
+    
 }

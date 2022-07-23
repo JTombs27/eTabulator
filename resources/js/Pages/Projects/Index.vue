@@ -56,11 +56,12 @@
                              <tr v-if="projects.data == 0"><td class="text-center" colspan="5">No Data Found</td></tr>
                     </tbody>
                 </table>
+                <pagination :next="projects.next_page_url" :prev="projects.prev_page_url" />
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
                         <!-- <pagination :links="users.links" /> -->
-                        <pagination :next="projects.next_page_url" :prev="projects.prev_page_url" />
+                       
                     </div>
                 </div>
             </div>
@@ -82,6 +83,7 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+
 export default {
     components: { Pagination, Filtering },
     props: {
@@ -200,8 +202,7 @@ export default {
             this.$inertia.get("/projects-vehicle/" + projectId+"/vehicles");
         }
         ,
-         closeModal() 
-         {
+         closeModal() {
             $("#modal").hide();
             $('body').removeClass('modal-open');
             $('body').css("overflow","scroll");

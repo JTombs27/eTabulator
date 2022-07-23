@@ -25,4 +25,9 @@ class DriverVehicle extends Model
     {
         return $this->belongsTo(Office::class, 'department_code', 'department_code');
     }
+
+    public function travel()
+    {
+        return $this->hasMany(Travel::class, 'driver_vehicles_id', 'id');
+    }
 }
