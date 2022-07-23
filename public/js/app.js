@@ -1724,6 +1724,16 @@ var map = {
 		9,
 		"resources_js_Pages_ProjectVehicles_Index_vue"
 	],
+	"./Projects/Create": [
+		"./resources/js/Pages/Projects/Create.vue",
+		9,
+		"resources_js_Pages_Projects_Create_vue"
+	],
+	"./Projects/Create.vue": [
+		"./resources/js/Pages/Projects/Create.vue",
+		9,
+		"resources_js_Pages_Projects_Create_vue"
+	],
 	"./Projects/Index": [
 		"./resources/js/Pages/Projects/Index.vue",
 		9,

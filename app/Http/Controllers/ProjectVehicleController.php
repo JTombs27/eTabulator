@@ -24,14 +24,15 @@ class ProjectVehicleController extends Controller
                     ,[
                     'projectVehicles' => $this->model
                     ->with("Vehicles")
+                    ->where('project_id','=',$id)
                     ->when($request->search, function ($query, $searchItem) 
                     {
-                        $query->where('purpose', 'like', '%' . $searchItem . '%')
+                        $query->
+                        where('purpose', 'like', '%' . $searchItem . '%')
                         ->orWhereHas("Vehicles",function($queryx) use($searchItem){
                             $queryx->where("PLATENO",'like','%' . $searchItem . '%');
                         });
                     })
-                    ->where('project_id','=',$id)
                     ->simplePaginate(10)
                     ->withQueryString(),
                     "project"=> Project::where('id',$id)->select('id','description')->first(),
@@ -218,9 +219,13 @@ class ProjectVehicleController extends Controller
 
     public function getVehicles()
     {
-        return Vehicle::get()->map(fn($item) => [
-            'id' => $item->id,
-            'text' => $item->PLATENO
-        ]);
+        $data = Vehicle::whereHas('vehicle_latest_status')
+        ->get();
+        
+        return $data->map(fn($item) =>[
+                'id' => $item->id,
+                'text' => $item->PLATENO,
+                'condition' => $item->vehicle_latest_status
+                ]);
     }
 }
