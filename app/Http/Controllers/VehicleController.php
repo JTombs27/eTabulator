@@ -88,20 +88,30 @@ class VehicleController extends Controller
         return redirect('/vehicles')->with('message', 'Deleted Susccessfuly');
     }
 
-    public function getVehicles()
+    public function getVehicles($id)
     {
-        return DB::table('vehicle_status')
-                ->leftJoin('vehicles', 'vehicle_status.vehicle_id', 'vehicles.id')
-                ->where('condition', 'Good Condition')
-                ->distinct('vehicles_id')
+        
+        return DB::table('vehicles')
+                ->select(
+                    'vehicles.id',
+                    'vehicles.PLATENO',
+                    'vehicle_status.condition'
+                )
+                ->leftJoin('vehicle_status', 'vehicle_status.vehicles_id', 'vehicles.id')
+                ->where(function ($query) use($id){
+                    $query->where('vehicle_status.condition', 'Good Condition')
+                        ->orWhere('vehicle_status.vehicles_id', $id);
+                })
+                ->distinct('vehicle_status.vehicles_id')
                 ->orderBy('vehicle_status.created_at', 'desc')
                 ->get()
                 ->map(fn($item) => [
-                    'id' => $item->vehicle_id,
-                    'condition' => $item->condition
+                    'id' => $item->id,
+                    'text' => $item->PLATENO
                 ]);
 
     }
+
     public function loadVehicles(Request $request)
     {
         $query = $this->model

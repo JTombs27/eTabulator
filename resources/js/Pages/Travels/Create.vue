@@ -55,6 +55,16 @@
                 <label for="">Vehicle Name</label>
                 <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
+                <div class="col-md-12">
+                    <br>
+                     <div class="form-check ">
+                         <label class="form-check-label disable-select" for="carpool">
+                             Tag as carpool
+                         </label>
+                        <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
+                    </div>
+                </div>
+                <hr>
                 <label>Authorized Driver</label>
                 <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
@@ -132,7 +142,8 @@ export default {
                 showActualDriver:false,
                 vehicles_id:null,
                 purpose:"",
-                drivers_id:null
+                drivers_id:null,
+                is_carpool:null,
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -142,7 +153,7 @@ export default {
     },
 
     mounted() {
-        this.getVehicles();
+        
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
@@ -158,6 +169,7 @@ export default {
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
             this.form.date_from = this.editData.date_from
             this.form.date_to = this.editData.date_to
+            this.form.is_carpool = Boolean(this.editData.is_carpool)
             if (this.editData.date_to) {
                 this.form.rangedDate = true
             }
@@ -165,7 +177,7 @@ export default {
         } else {
             this.pageTitle = "Create"
         }
-        
+        this.getVehicles();
         $('#paseengers').select2({
             ajax: {
                 type:"GET",
@@ -204,7 +216,7 @@ export default {
 
     methods:{
         getVehicles(){
-            axios.get('/vehicles/getVehicles',{}).then( (response) => {
+            axios.get(`/vehicles/getVehicles/${this.form.vehicles_id}`).then( (response) => {
                 this.vehicles = response.data
             })
         },
@@ -222,17 +234,15 @@ export default {
                     this.drivers =  response.data.map(obj => {
                         let _selected = false;
                         if (this.editData != undefined) {
-                            _selected = obj.driver.empl_id === this.editData.driver_vehicle.drivers_id
-                            console.log(_selected)
+                            _selected = obj.empl.empl_id === this.editData.driver_vehicle.drivers_id
                         }
-                            console.log(_selected)
                         let mi = "";
-                        if (obj.driver.middle_name) {
-                            mi = obj.driver.middle_name.charAt(0);
+                        if (obj.empl.middle_name) {
+                            mi = obj.empl.middle_name.charAt(0);
                         }
                         return {
-                            id: obj.driver.empl_id,
-                            text: `${obj.driver.first_name} ${mi}. ${obj.driver.last_name}`,
+                            id: obj.empl.empl_id,
+                            text: `${obj.empl.first_name} ${mi}. ${obj.empl.last_name}`,
                             dv_id: obj.id,
                             "selected": _selected
                         }

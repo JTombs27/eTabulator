@@ -61,7 +61,7 @@ class TravelController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $editData = $this->model->with('driverVehicle', 'driverVehicle.driver')->where('id',$id)->first();
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData
         ]);
@@ -72,7 +72,7 @@ class TravelController extends Controller
     {
         $mi = "";
         $driverVehicle = $this->driverVehicle
-                            ->with('driver')
+                            ->with('empl')
                             ->where('vehicles_id', $request->vehicles_id)
                             ->get();
 
