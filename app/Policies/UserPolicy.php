@@ -38,4 +38,30 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_create_charges')->exists();
     }
+
+    public function canCreateProject(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_project')->exists();
+    }
+    public function canEditProject(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_edit_project')->exists();
+    }
+    public function canDeleteProject(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_delete_project')->exists();
+    }
+
+    public function canCreateProjectVehicle(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_project_vehicle')->exists();
+    }
+    public function canEditProjectVehicle(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_edit_project_vehicle')->exists();
+    }
+    public function canDeleteProjectVehicle(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_delete_project_vehicle')->exists();
+    }
 }

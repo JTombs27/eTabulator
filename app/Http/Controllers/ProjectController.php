@@ -16,8 +16,10 @@ class ProjectController extends Controller
         $this->projectVehicle = $projectVehicle;
     }
 
-    public function index(Request $request){
-        return inertia('Projects/Index',[
+    public function index(Request $request)
+    {
+        return inertia('Projects/Index',
+        [
             'projects' => $this->model
             ->with("ProjectVehicles")
             ->when($request->search, function ($query, $searchItem) {
@@ -27,8 +29,9 @@ class ProjectController extends Controller
             ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
-                'createUser' => auth()->user()->can('create', User::class),
-                'canDeleteUser' => auth()->user()->can('canDeleteUser', User::class),
+                'canCreateProject' => auth()->user()->can('canCreateProject',User::class),
+                'canEditProject' => auth()->user()->can('canEditProject',User::class),
+                'canDeleteProject' => auth()->user()->can('canDeleteProject',User::class)
             ]
         ]);
     }
@@ -143,6 +146,10 @@ class ProjectController extends Controller
                         'purpose'   => $vehicle["purpose"],
                         'date_from' => $vehicle["date_from"],
                         'date_to'   => $vehicle["date_to"],
+                        'external_borrow_flag' =>false,
+                        'rental_flag'=>false,
+                        'municipality_id' =>0,
+                        'barangay_id'=>0,
                         'project_id'=> $newProject->id,
                         'vehicle_id'=> $vehicle["vehicle_id"]
                     ]); 
@@ -201,7 +208,7 @@ class ProjectController extends Controller
             $data = $this->model->findOrFail($request->id);
             $data->delete();
     
-            return "success";
+            return redirect("/projects")->with('message', 'Deleted Successfully');
         } catch (\Exception $th) {
             //throw $th;
             return $th;

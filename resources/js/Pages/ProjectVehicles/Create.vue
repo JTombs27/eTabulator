@@ -1,3 +1,13 @@
+<style scoped>
+    .form-check >.form-check-input{
+        float: right;
+        margin-right: 0px;
+        margin-left: 5px;
+    }
+    .form-check{
+        padding-left: 0px;
+    }
+</style>
 <template>
 
     <div class="row gap-20 masonry pos-r">
@@ -54,6 +64,52 @@
                                     <div class="fs-6 c-red-500" v-if="form.errors['vehiclesGroup.'+index+'.date_toX']">{{ form.errors['vehiclesGroup.'+index+'.date_toX'] }}</div>
                                 </div>
                             </div>
+                            <div class="row" style="margin-top:5px;">
+                                <div class="col-12 border-top border-bottom" style="padding-top:5px;padding-bottom:6px;">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check form-check-inline">
+                                                            <label class="form-check-label" for="borrow_checkbox">Check if vehicle is for borrow: </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline"> 
+                                                            <label class="form-check-label" ></label>
+                                                            <input class="form-check-input" type="checkbox" id="borrow_checkbox" v-model="vehicle.external_borrow_flag" :checked="vehicle.external_borrow_flag">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                            <div class="form-check form-check-inline">
+                                                            <label class="form-check-label" for="rental_checkbox">Check if borrow includes rental:</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-check-inline"> 
+                                                            <label class="form-check-label" for="rental_checkbox"></label>
+                                                            <input class="form-check-input" type="checkbox" id="rental_checkbox" v-model="vehicle.rental_flag" :disabled="!vehicle.external_borrow_flag" :checked="vehicle.rental_flag">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="">Municipality Selection</label>
+                                            <Select2 v-model="vehicle.municipality_id" :options="municipalities" :disabled="!vehicle.external_borrow_flag" @select="loadBarangays(vehicle.municipality_id,index)"  /> 
+                                            <div class="fs-6 c-red-500" v-if="form.errors['vehiclesGroup.'+index+'.municipality_id']">{{form.errors['vehiclesGroup.'+index+'.municipality_id']}}</div>
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="">Barangay Selection</label>
+                                            <Select2 v-model="vehicle.barangay_id" :options="barangayGroups[index]" :disabled="!vehicle.external_borrow_flag"   /> 
+                                            <div class="fs-6 c-red-500" v-if="form.errors['vehiclesGroup.'+index+'.barangay_id']">{{form.errors['vehiclesGroup.'+index+'.barangay_id']}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-12">
                                     <label for="">Purpose</label>
@@ -86,14 +142,20 @@ export default {
         return {
             form: useForm(),
             vehiclesGroup:[{
-                 vehicle_id: "",
-                 date_from: "",
-                 date_to:"",
-                 purpose:"",
-                 project_id:this.project.id,
-                 id: null
+                 vehicle_id             : "",
+                 date_from              : "",
+                 date_to                :"",
+                 purpose                :"",
+                 external_borrow_flag   :false,
+                 rental_flag            :false,
+                 municipality_id        :0,
+                 barangay_id            :0,
+                 project_id             :this.project.id,
+                 id                     : null
             }],
             vehicles:[],
+            municipalities:[],
+            barangayGroups:[[]],
             testValue:"",
             pageTitle: "",
             loading:false,
@@ -102,7 +164,8 @@ export default {
         };
     },
     mounted() {
-
+        this.loadVehicles();
+        this.loadMunicipality();
         if (this.editData !== undefined) 
         {
             this.loading            = true;
@@ -112,6 +175,13 @@ export default {
             this.vehiclesGroup[0].date_to       = this.editData.date_to;
             this.vehiclesGroup[0].purpose       = this.editData.purpose;
             this.vehiclesGroup[0].project_id    = this.editData.project_id;
+
+            this.vehiclesGroup[0].external_borrow_flag    = this.editData.external_borrow_flag;
+            this.vehiclesGroup[0].rental_flag    = this.editData.rental_flag;
+            this.vehiclesGroup[0].municipality_id    = this.editData.municipality_id;
+            this.loadBarangays(this.editData.municipality_id,0);
+            this.vehiclesGroup[0].barangay_id    = this.editData.barangay_id;
+            this.loa
             this.vehiclesGroup[0].id            = this.editData.id;
             this.disableVehicle     = true;
 
@@ -120,7 +190,8 @@ export default {
             this.disableVehicle = false;
         }
 
-        this.loadVehicles()
+       
+       
     },
 
     methods: {
@@ -145,19 +216,25 @@ export default {
             }
 
         },
-        addNew(){
+        addNew()
+        {
                 this.vehiclesGroup.push(useForm({
-                    vehicle_id  : "",
-                    date_from   : "",
-                    date_to     :"",
-                    purpose     :"",
-                    project_id  :this.project.id,
-                    id          : null
+                 vehicle_id             : "",
+                 date_from              : "",
+                 date_to                :"",
+                 purpose                :"",
+                 external_borrow_flag   :false,
+                 rental_flag            :false,
+                 municipality_id        :0,
+                 barangay_id            :0,
+                 project_id             :this.project.id,
+                 id                     : null
                 }));
-
+            this.barangayGroups.push([]);
         },
         removeNode(index){
             this.vehiclesGroup.splice(index,1);
+            this.barangayGroups.splice(index,1);
         }
         ,
         loadVehicles() 
@@ -177,6 +254,19 @@ export default {
                 
                 this.vehicles = data;
             })
+        },
+       loadMunicipality()
+        {
+            axios.post('/municipalities').then((response) => {
+                this.municipalities = response.data;
+            });
+        },
+        loadBarangays(citymunCode,index)
+        {
+            axios.post('/barangays',{citymunCode:citymunCode}).then((response) => {
+                console.log(response.data);
+                 this.barangayGroups[index] = response.data;
+            });
         },
         backToMain()
         {
