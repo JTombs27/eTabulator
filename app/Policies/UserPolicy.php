@@ -38,4 +38,9 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_create_charges')->exists();
     }
+
+    public function canCreatePrice(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_prices')->exists();
+    }
 }

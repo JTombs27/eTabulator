@@ -18,6 +18,7 @@ use App\Http\Controllers\TravelValidationController;
 use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\PriceController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -146,6 +147,16 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [ChargeController::class, 'edit']);
         Route::patch('/{id}', [ChargeController::class, 'update']);
         Route::delete('/{id}', [ChargeController::class, 'destroy']);
+    });
+
+     //for Price
+    Route::prefix('prices')->group(function () {
+        Route::get('/', [PriceController::class, 'index']);
+        Route::get('/create', [PriceController::class, 'create']);
+        Route::post('/store', [PriceController::class, 'store']);
+        /*Route::get('/{id}/edit', [ChargeController::class, 'edit']);
+        Route::patch('/{id}', [ChargeController::class, 'update']);
+        Route::delete('/{id}', [ChargeController::class, 'destroy']);*/
     });
     
 });
