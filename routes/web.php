@@ -176,9 +176,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [PriceController::class, 'index']);
         Route::get('/create', [PriceController::class, 'create']);
         Route::post('/store', [PriceController::class, 'store']);
-        /*Route::get('/{id}/edit', [ChargeController::class, 'edit']);
-        Route::patch('/{id}', [ChargeController::class, 'update']);
-        Route::delete('/{id}', [ChargeController::class, 'destroy']);*/
+        Route::get('/{id}/edit', [PriceController::class, 'edit']);
+        Route::patch('/{id}', [PriceController::class, 'update']);
+        Route::delete('/{id}', [PriceController::class, 'destroy']);
     });
     
 });
