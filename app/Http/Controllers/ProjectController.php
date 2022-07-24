@@ -208,7 +208,7 @@ class ProjectController extends Controller
             $data = $this->model->findOrFail($request->id);
             $data->delete();
     
-            return redirect("/projects")->with('message', 'Deleted Successfully');
+            return "success";
         } catch (\Exception $th) {
             //throw $th;
             return $th;
