@@ -42,36 +42,115 @@ class PriceController extends Controller
     {
 
         $attributes = $request->validate([
-        	'data.date_from' => 'required|date',
-            'data.date_to' => 'required|date|after_or_equal:data.date_from',
+        	'data.date' => 'required|date',
+        	"gasTypeGroup.*.gas_type" =>"required",
         	"gasTypeGroup.*.price" =>"required|regex:/^\d{1,13}(\.\d{1,4})?$/",
     	],[
-        	"gasTypeGroup.*.price.required"    =>"Amount is Required",
-        	"gasTypeGroup.*.price.regex"    =>"Provide number only",
-        	"data.date_from.required"    =>"Date is Required",
-        	"data.date_to.required"    =>"Date is Required",
-        	"data.date_to.after_or_equal"    =>"Date must be a date after or equal to Date from",
+    		"gasTypeGroup.*.gas_type.required"    =>"Gas Type is Required",
+        	"gasTypeGroup.*.price.required"    =>"Price is Required",
+        	"gasTypeGroup.*.price.regex"    =>"Provide Currency only",
+        	"data.date.required"    =>"Date is Required",
     	]);
-    	
+
+
         foreach ($request->gasTypeGroup as $index => $value) 
         {
-        	$attributes = $request->validate(
+
+        	foreach ($request->gasTypeGroup as $index2 => $value2) 
+            {
+            	$find = $this->model->where("gas_type", $value2['gas_type'])->where('date',$request['data.date'])->first();
+
+        		if(!!$find){
+        			$attributes = $request->validate(
                         [  
-                            "gasTypeGroup.$index.price"=>"required",     
+                            "gasTypeGroup.$index2.gas_typeX"=>"required",                            
                         ],
                         [  
-                            "officeGroup.$index.price.required"=>"Office conflict with the same office.",
+                            "gasTypeGroup.$index2.gas_typeX.required"=>"Gas Type already used on this date.",
                         ] );
+        		}
+
+                if($index !== $index2)
+                {
+                    //VALIDATE IF SAME VEHICLE is used for the same period or Not Same Period but
+                    //but same purpose
+                    if($value["gas_type"] === $value2["gas_type"])
+                    {
+
+                        $attributes = $request->validate(
+                        [  
+                            "gasTypeGroup.$index.gas_typeX"=>"required",
+                            "gasTypeGroup.$index2.gas_typeX"=>"required",
+                        ],
+                        [  
+                            "gasTypeGroup.$index.gas_typeX.required"=>"Gas Type conflict with the same Type.",
+                            "gasTypeGroup.$index2.gas_typeX.required"=>"Gas Type conflict with the same Type.",
+                        ] );
+                    }
+                }
+            }
         
         }
-       /* foreach($request->officeGroup as $key=>$office) 
+        foreach($request->gasTypeGroup as $key=>$gasType) 
         { 
             $this->model->create([
-                'office_id'   => $office["office_id"],
-                'amount' => $office["amount"],
+                'gas_type'   => $gasType["gas_type"],
+                'price' => $gasType["price"],
+                'date' => $request["data.date"],
             ]); 
-        }*/
+        }
 
         return redirect("/prices")->with('message', 'Added Successfully');
+    }
+
+    public function edit(Request $request,$id)
+    {
+        return inertia('Prices/Create'
+                    ,[
+                        "editData"  => $this->model->where('id',$id)->first()
+                    ]
+                );
+    }
+
+    public function update(Request $request,$id)
+    {
+        $attributes = $request->validate(["gasTypeGroup.*.price" =>"required||regex:/^\d{1,13}(\.\d{1,4})?$/",
+                              			],
+                                        [ "gasTypeGroup.*.price.required"    =>"Amount is Required",
+        								  "gasTypeGroup.*.price.regex"    =>"Provide Currency only",
+        								] );
+        try {
+            //code...
+            $data = $this->model->findOrFail($id);
+            $data->update([
+                'price' => $request->gasTypeGroup[0]["price"],
+            ]);
+            //$data->update([
+            //                "purpose"=>$request->purpose,
+            //                "date_from"=>$request->date_from,
+            //                "date_to"=>$request->date_to
+            //              ]);
+            return redirect('/prices')->with('message', 'Successfully Updated!');
+        } catch (\Exception $th) 
+        {
+            //throw $th;
+            return redirect('/prices')->with('error', 'Please provide required data');
+        } 
+    }
+
+    public function destroy(Request $request)
+    {
+        try 
+        {
+            $data = $this->model->findOrFail($request->id);
+            $data->delete();
+            //$request->session()->put("message","Successfully Deleted");
+           return redirect('/prices')->with('message', 'Successfully Deleted!');
+        } catch (\Exception $th) 
+        {
+            //throw $th;
+            return   ["message"=>"error"];
+        }
+       
     }
 }

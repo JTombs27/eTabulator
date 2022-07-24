@@ -7,11 +7,16 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-md-8 p-20 bd">
+                <div class="row">
+                    <div class="col-12" style="margin-top:-15px;">
+                            <button type="button" @click="addNew()" v-if="editData === undefined" class="btn btn-sm btn-secondary pull-right">+</button>
+                    </div>
+                </div>
                 <form @submit.prevent="submit()" id="mainForm">
-                        <div class="col-12">
+                        <div class="col-12" style="margin-top:10px;">
                             <div class="input-group">
                                 <span class="input-group-text">Date</span>
-                                <input type="date" v-model="dates.date" class="form-control">
+                                <input type="date" v-model="dates.date" class="form-control" :disabled="disablegasType">
                             </div>   
                             <div class="fs-6 c-red-500" v-if="form.errors['data.date']">{{ form.errors['data.date'] }}</div>
                                 
@@ -20,9 +25,16 @@
                         <div class="col-12 bgc-white p-10 bd" style="margin-top: 5px;">
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="peers fxw-nw jc-sb ai-c">
+                                   
                                         <label for="">Gas Type</label>
-                                           <span  @click="removeNode(index)" v-if="(editData === undefined) && (gasTypeGroup.length !== 1)" style="margin-top:-10px;">
+                                           
+                                        <Select2 v-model="price.gas_type" :options="gases" :disabled="disablegasType"   /> 
+                                        <div class="fs-6 c-red-500" v-if="(form.errors['gasTypeGroup.'+index+'.gas_type'] || form.errors['gasTypeGroup.'+index+'.gas_typeX'])">{{ (form.errors['gasTypeGroup.'+index+'.gas_type'] || form.errors['gasTypeGroup.'+index+'.gas_typeX'])}}</div>
+                                   
+                                </div>
+                                <div class="col-6">
+                                    <label for="">Price</label>
+                                        <span  @click="removeNode(index)" v-if="(editData === undefined) && (gasTypeGroup.length !== 1)" style="margin-top:-10px; float: right;">
                                             
                                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="font-size: 18px; font-weight: bolder; color:red;" fill="currentColor" class="bi bi-x-lg"
                                                 viewBox="0 0 16 16">
@@ -32,13 +44,6 @@
                                                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
                                             </svg>
                                         </span>
-                                        <Select2 v-model="office.office_id" :options="offices" :disabled="disableOffice"   /> 
-                                        <div class="fs-6 c-red-500" v-if="(form.errors['officeGroup.'+index+'.office_id'] || form.errors['officeGroup.'+index+'.office_idX'])">{{ (form.errors['officeGroup.'+index+'.office_id'] || form.errors['officeGroup.'+index+'.office_idX'])}}</div>
-                                        <!-- <div class="fs-6 c-red-500" v-if="form.errors['vehiclesGroup.'+index+'.vehicle_idX']">{{ form.errors["vehiclesGroup."+index+".vehicle_idX"]}}</div> -->
-                                        </div>
-                                </div>
-                                <div class="col-6">
-                                    <label for="">Price</label>
                                     <input type="text" v-model="price.price" class="form-control" placeholder="0.00" autocomplete="chrome-off">
                                     <div class="fs-6 c-red-500" v-if="form.errors['gasTypeGroup.'+index+'.price']">{{ form.errors['gasTypeGroup.'+index+'.price'] }}</div>
                                 </div>
@@ -73,10 +78,27 @@ export default {
             gasTypeGroup:[{
                  gas_type: "",
                  price: "",
-                 date:"",
                  id: null
             }],
-            vehicles:[],
+            gases:[{
+                id:"Gasoline(Regular)",
+                text:"Gasoline(Regular)"
+            },{
+                id:"Gasoline(Premium)",
+                text:"Gasoline(Premium)"
+            },{
+                id:"Diesoline",
+                text:"Diesoline"
+            },{
+                id:"Engine Oil",
+                text:"Engine Oil"
+            },{
+                id:"Brake Oil",
+                text:"Brake Oil"
+            },{
+                id:"Greases",
+                text:"Greases"
+            }],
             testValue:"",
             pageTitle: "",
             loading:false,
@@ -108,12 +130,11 @@ export default {
 
             if (this.editData !== undefined) 
             {
-                 /*this.form.project_id = this.editData.project_id;
                  this.form.transform((data) =>({
                     data,
-                    vehiclesGroup: this.vehiclesGroup
+                    gasTypeGroup: this.gasTypeGroup
                  }))
-                 this.form.post("/projects-vehicle/"+this.project.id+"/update/"+this.editData.id, this.form);*/
+                 this.form.patch("/prices/"+this.editData.id, this.form);
             } else 
             {
                 this.form.transform((data)=>({
@@ -128,13 +149,16 @@ export default {
                 this.gasTypeGroup.push(useForm({
                     gas_type  : "",
                     price   : "",
-                    date     :"",
                     id          : null
                 }));
 
         },
         removeNode(index){
             this.gasTypeGroup.splice(index,1);
+        },
+        backToMain()
+        {
+             this.$inertia.get("/prices");
         }
     },
 };
