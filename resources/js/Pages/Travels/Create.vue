@@ -70,17 +70,26 @@
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
                 <br>
-                <div class="form-check ">
-                    <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver">
-                    <label class="form-check-label disable-select" for="actualDriverBox">
-                        Check to set substitute driver
-                    </label>
-                </div>
+                
                 <label v-if="form.showActualDriver">Actual Driver</label>
-                <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver">
+                <Select2 
+                    v-if="form.showActualDriver"
+                    v-model="form.actual_driver" 
+                    id="actualDriver" 
+                    @select="setActualDriver($event)" 
+                />
                 <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
+                <div class="col-md-12">
+                    <div class="form-check ">
+                        <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
+                        <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
+                            Check to set substitute driver
+                        </label>
+                    </div>
+                </div>
+                <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
+                
                 <hr>
-                <Select2 id="paseengers" @select="appendPassenger($event)" />
                 <label for="">Name of Authorized Passenger/s</label>
                 <textarea class="form-control" cols="3" v-model="form.official_passenger"></textarea>
                 <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
@@ -144,15 +153,18 @@ export default {
                 purpose:"",
                 drivers_id:null,
                 is_carpool:null,
+                actual_driver_id:null,
+                office_id:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
             employees:[],
             drivers:[],
+           
         }
     },
 
-    mounted() {
+    async mounted() {
         
         if (this.editData !== undefined) {
             this.loading = true
@@ -169,44 +181,25 @@ export default {
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
             this.form.date_from = this.editData.date_from
             this.form.date_to = this.editData.date_to
+            this.form.office_id = this.editData.office_id
             this.form.is_carpool = Boolean(this.editData.is_carpool)
+            this.form.showActualDriver = this.editData.actual_driver ? true : false
+            this.form.actual_driver = this.editData.actual_driver
             if (this.editData.date_to) {
                 this.form.rangedDate = true
             }
+            // $('#labelActual').click();
             this.getVehicleDetails();
+            // $('#labelActual').click()
+            setTimeout(() => {
+                this.showActualDriver();
+            }, 0);
+            
         } else {
             this.pageTitle = "Create"
         }
         this.getVehicles();
-        $('#paseengers').select2({
-            ajax: {
-                type:"GET",
-                dataType:"json",
-                url: "/employees/getEmployees",
-                delay:400,
-                data:function(data) {
-                    return{ search:data.term }
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-
-                    return {
-                        results: $.map(data, (obj) => {
-                            return {
-                                id:obj.text,
-                                text:obj.text
-                            }
-                        })
-                    }
-                },
-                cache: true,
-            },
-            placeholder: 'Search or Add  Passenger',
-            // multiple:true,
-            tags:true,
-            data:[{"text": "", "id":"", "selected": true}]
-            
-        })
+       
 
        
         // $("#actualDriver").select2({
@@ -228,7 +221,6 @@ export default {
         },
 
         getVehicleDetails() {
-           
             axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
                 .then((response) => {
                     this.drivers =  response.data.map(obj => {
@@ -244,25 +236,67 @@ export default {
                             id: obj.empl.empl_id,
                             text: `${obj.empl.first_name} ${mi}. ${obj.empl.last_name}`,
                             dv_id: obj.id,
+                            office_id: obj.empl.department_code,
                             "selected": _selected
                         }
                     })                   
                 })
+           
         },
 
-        appendPassenger(e) {
-            // console.log("test")
-            let separator = "";
-            if (this.form.official_passenger != "") {
-                separator = ", ";
-                this.form.official_passenger += `${separator}${e.text}`
-                return false;
+        showActualDriver(e) {
+            // console.log(e)
+            if (true){
+
+                $('#actualDriver').select2({
+                    ajax: {
+                        type:"GET",
+                        dataType:"json",
+                        url: "/employees/getEmployees",
+                        delay:400,
+                        data:function(data) {
+                            return{ search:data.term }
+                        },
+                        processResults: function(data, params) {
+                            params.page = params.page || 1;
+    
+                            return {
+                                results: $.map(data, (obj) => {
+                                    return {
+                                        id:obj.text,
+                                        text:obj.text,
+                                        cats: obj.cats
+                                    }
+                                })
+                            }
+                        },
+                        cache: true,
+                    },
+                    data:[{text: this.form.actual_driver, id:this.form.actual_driver, selected: true}],
+                    placeholder: 'Search to add actual driver',
+                    minimumInputLength: 3,
+               
+               })
             }
-            this.form.official_passenger += `${separator}${e.text}`
+             
+        },
+
+        setActualDriver(e) {
+            console.log(e)
+            // let separator = "";
+            // if (this.form.official_passenger != "") {
+            //     separator = ", ";
+            //     this.form.official_passenger += `${separator}${e.text}`
+            //     return false;
+            // }
+            // this.form.official_passenger += `${separator}${e.text}`
         },
 
         setDriverVehicle($event) {
             this.form.driver_vehicles_id = $event.dv_id;
+            if (this.editData === undefined) {
+                this.form.office_id = $event.office_id;
+            }
         },
         
         submit() {

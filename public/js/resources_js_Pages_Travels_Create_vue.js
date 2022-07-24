@@ -11,7 +11,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @inertiajs/inertia-vue3 */ "./node_modules/@inertiajs/inertia-vue3/dist/index.js");
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
@@ -21,7 +29,7 @@ __webpack_require__.r(__webpack_exports__);
     return {
       vehicles: [],
       driverName: "",
-      form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
+      form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_1__.useForm)({
         place_to_visit: '',
         gas_type: '',
         time_arrival: '',
@@ -38,7 +46,9 @@ __webpack_require__.r(__webpack_exports__);
         vehicles_id: null,
         purpose: "",
         drivers_id: null,
-        is_carpool: null
+        is_carpool: null,
+        actual_driver_id: null,
+        office_id: null
       }),
       pageTitle: "Create",
       columnFrom: "col-md-12",
@@ -47,95 +57,87 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    if (this.editData !== undefined) {
-      this.loading = true;
-      this.pageTitle = "Edit";
-      this.form.place_to_visit = this.editData.place_to_visit;
-      this.form.gas_type = this.editData.gas_type;
-      this.form.time_arrival = this.editData.time_arrival;
-      this.form.time_departure = this.editData.time_departure;
-      this.form.total_liters = this.editData.total_liters;
-      this.form.vehicles_id = String(this.editData.driver_vehicle.vehicles_id);
-      this.form.driver_vehicles_id = this.editData.driver_vehicle.id;
-      this.form.purpose = this.editData.purpose;
-      this.form.price = this.editData.price;
-      this.form.drivers_id = this.editData.driver_vehicle.drivers_id;
-      this.form.date_from = this.editData.date_from;
-      this.form.date_to = this.editData.date_to;
-      this.form.is_carpool = Boolean(this.editData.is_carpool);
+    var _this = this;
 
-      if (this.editData.date_to) {
-        this.form.rangedDate = true;
-      }
+    return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              if (_this.editData !== undefined) {
+                _this.loading = true;
+                _this.pageTitle = "Edit";
+                _this.form.place_to_visit = _this.editData.place_to_visit;
+                _this.form.gas_type = _this.editData.gas_type;
+                _this.form.time_arrival = _this.editData.time_arrival;
+                _this.form.time_departure = _this.editData.time_departure;
+                _this.form.total_liters = _this.editData.total_liters;
+                _this.form.vehicles_id = String(_this.editData.driver_vehicle.vehicles_id);
+                _this.form.driver_vehicles_id = _this.editData.driver_vehicle.id;
+                _this.form.purpose = _this.editData.purpose;
+                _this.form.price = _this.editData.price;
+                _this.form.drivers_id = _this.editData.driver_vehicle.drivers_id;
+                _this.form.date_from = _this.editData.date_from;
+                _this.form.date_to = _this.editData.date_to;
+                _this.form.office_id = _this.editData.office_id;
+                _this.form.is_carpool = Boolean(_this.editData.is_carpool);
+                _this.form.showActualDriver = _this.editData.actual_driver ? true : false;
+                _this.form.actual_driver = _this.editData.actual_driver;
 
-      this.getVehicleDetails();
-    } else {
-      this.pageTitle = "Create";
-    }
+                if (_this.editData.date_to) {
+                  _this.form.rangedDate = true;
+                } // $('#labelActual').click();
 
-    this.getVehicles();
-    $('#paseengers').select2({
-      ajax: {
-        type: "GET",
-        dataType: "json",
-        url: "/employees/getEmployees",
-        delay: 400,
-        data: function data(_data) {
-          return {
-            search: _data.term
-          };
-        },
-        processResults: function processResults(data, params) {
-          params.page = params.page || 1;
-          return {
-            results: $.map(data, function (obj) {
-              return {
-                id: obj.text,
-                text: obj.text
-              };
-            })
-          };
-        },
-        cache: true
-      },
-      placeholder: 'Search or Add  Passenger',
-      // multiple:true,
-      tags: true,
-      data: [{
-        "text": "",
-        "id": "",
-        "selected": true
-      }]
-    }); // $("#actualDriver").select2({
-    //   tags: true
-    // });
+
+                _this.getVehicleDetails(); // $('#labelActual').click()
+
+
+                setTimeout(function () {
+                  _this.showActualDriver();
+                }, 0);
+              } else {
+                _this.pageTitle = "Create";
+              }
+
+              _this.getVehicles(); // $("#actualDriver").select2({
+              //   tags: true
+              // });
+
+
+            case 2:
+            case "end":
+              return _context.stop();
+          }
+        }
+      }, _callee);
+    }))();
   },
   methods: {
     getVehicles: function getVehicles() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get("/vehicles/getVehicles/".concat(this.form.vehicles_id)).then(function (response) {
-        _this.vehicles = response.data;
+        _this2.vehicles = response.data;
       });
     },
     getEmployees: function getEmployees() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('/employees/getEmployees').then(function (response) {
-        _this2.employees = response.data;
+        _this3.employees = response.data;
       });
     },
     getVehicleDetails: function getVehicleDetails() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.post('/travels/vehicle-details', {
         vehicles_id: this.form.vehicles_id
       }).then(function (response) {
-        _this3.drivers = response.data.map(function (obj) {
+        _this4.drivers = response.data.map(function (obj) {
           var _selected = false;
 
-          if (_this3.editData != undefined) {
-            _selected = obj.empl.empl_id === _this3.editData.driver_vehicle.drivers_id;
+          if (_this4.editData != undefined) {
+            _selected = obj.empl.empl_id === _this4.editData.driver_vehicle.drivers_id;
           }
 
           var mi = "";
@@ -148,25 +150,65 @@ __webpack_require__.r(__webpack_exports__);
             id: obj.empl.empl_id,
             text: "".concat(obj.empl.first_name, " ").concat(mi, ". ").concat(obj.empl.last_name),
             dv_id: obj.id,
+            office_id: obj.empl.department_code,
             "selected": _selected
           };
         });
       });
     },
-    appendPassenger: function appendPassenger(e) {
-      // console.log("test")
-      var separator = "";
-
-      if (this.form.official_passenger != "") {
-        separator = ", ";
-        this.form.official_passenger += "".concat(separator).concat(e.text);
-        return false;
+    showActualDriver: function showActualDriver(e) {
+      // console.log(e)
+      if (true) {
+        $('#actualDriver').select2({
+          ajax: {
+            type: "GET",
+            dataType: "json",
+            url: "/employees/getEmployees",
+            delay: 400,
+            data: function data(_data) {
+              return {
+                search: _data.term
+              };
+            },
+            processResults: function processResults(data, params) {
+              params.page = params.page || 1;
+              return {
+                results: $.map(data, function (obj) {
+                  return {
+                    id: obj.text,
+                    text: obj.text,
+                    cats: obj.cats
+                  };
+                })
+              };
+            },
+            cache: true
+          },
+          data: [{
+            text: this.form.actual_driver,
+            id: this.form.actual_driver,
+            selected: true
+          }],
+          placeholder: 'Search to add actual driver',
+          minimumInputLength: 3
+        });
       }
-
-      this.form.official_passenger += "".concat(separator).concat(e.text);
+    },
+    setActualDriver: function setActualDriver(e) {
+      console.log(e); // let separator = "";
+      // if (this.form.official_passenger != "") {
+      //     separator = ", ";
+      //     this.form.official_passenger += `${separator}${e.text}`
+      //     return false;
+      // }
+      // this.form.official_passenger += `${separator}${e.text}`
     },
     setDriverVehicle: function setDriverVehicle($event) {
       this.form.driver_vehicles_id = $event.dv_id;
+
+      if (this.editData === undefined) {
+        this.form.office_id = $event.office_id;
+      }
     },
     submit: function submit() {
       if (this.editData) {
@@ -179,13 +221,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     'form.rangedDate': function formRangedDate(value) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (value) {
         this.columnFrom = 'col-md-6';
       } else {
         setTimeout(function () {
-          _this4.columnFrom = 'col-md-12';
+          _this5.columnFrom = 'col-md-12';
         }, 100);
       }
     }
@@ -355,82 +397,85 @@ var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 var _hoisted_31 = {
+  key: 2
+};
+var _hoisted_32 = {
+  key: 4,
+  "class": "fs-6 c-red-500"
+};
+var _hoisted_33 = {
+  "class": "col-md-12"
+};
+var _hoisted_34 = {
   "class": "form-check"
 };
 
-var _hoisted_32 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "form-check-label disable-select",
-  "for": "actualDriverBox"
+  "for": "actualDriverBox",
+  id: "labelActual"
 }, " Check to set substitute driver ", -1
 /* HOISTED */
 );
 
-var _hoisted_33 = {
-  key: 2
-};
-var _hoisted_34 = {
-  key: 4,
-  "class": "fs-6 c-red-500"
-};
-
-var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
-/* HOISTED */
-);
-
-var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "for": ""
-}, "Name of Authorized Passenger/s", -1
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
 /* HOISTED */
 );
 
 var _hoisted_37 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Place to visit", -1
+}, "Name of Authorized Passenger/s", -1
 /* HOISTED */
 );
 
 var _hoisted_38 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Purpose of Travel", -1
+}, "Place to visit", -1
 /* HOISTED */
 );
 
 var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
+}, "Purpose of Travel", -1
+/* HOISTED */
+);
+
+var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "for": ""
 }, "Gas Type", -1
 /* HOISTED */
 );
 
-var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"GASOLINE\">GASOLINE</option><option value=\"DIESOLINE\">DIESOLINE</option><option value=\"ENGINE OIL\">ENGINE OIL</option><option value=\"BRAKE OIL\">BRAKE OIL</option><option value=\"GREASES\">GREASES</option>", 5);
+var _hoisted_41 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<option value=\"GASOLINE\">GASOLINE</option><option value=\"DIESOLINE\">DIESOLINE</option><option value=\"ENGINE OIL\">ENGINE OIL</option><option value=\"BRAKE OIL\">BRAKE OIL</option><option value=\"GREASES\">GREASES</option>", 5);
 
-var _hoisted_45 = [_hoisted_40];
-var _hoisted_46 = {
+var _hoisted_46 = [_hoisted_41];
+var _hoisted_47 = {
   key: 5,
   "class": "fs-6 c-red-500"
 };
 
-var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
 }, "Liter/s", -1
 /* HOISTED */
 );
 
-var _hoisted_48 = {
+var _hoisted_49 = {
   key: 6,
   "class": "fs-6 c-red-500"
 };
 
-var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_50 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
 }, "Price", -1
 /* HOISTED */
 );
 
-var _hoisted_50 = {
+var _hoisted_51 = {
   key: 7,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_51 = ["disabled"];
+var _hoisted_52 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -459,7 +504,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[20] || (_cache[20] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[21] || (_cache[21] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
@@ -563,95 +608,96 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" class=\"form-control\" v-model=\"driverName\"> "), $data.form.errors.driver_vehicles_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.driver_vehicles_id), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_30, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_30, $data.form.showActualDriver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_31, "Actual Driver")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.showActualDriver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Select2, {
+    key: 3,
+    modelValue: $data.form.actual_driver,
+    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+      return $data.form.actual_driver = $event;
+    }),
+    id: "actualDriver",
+    onSelect: _cache[11] || (_cache[11] = function ($event) {
+      return $options.setActualDriver($event);
+    })
+  }, null, 8
+  /* PROPS */
+  , ["modelValue"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.errors.actual_driver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.actual_driver), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "form-check-input",
     type: "checkbox",
     value: "",
     id: "actualDriverBox",
-    "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+    "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
       return $data.form.showActualDriver = $event;
-    })
-  }, null, 512
-  /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.showActualDriver]]), _hoisted_32]), $data.form.showActualDriver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_33, "Actual Driver")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.showActualDriver ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
-    key: 3,
-    type: "text",
-    "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
-      return $data.form.actual_driver = $event;
     }),
-    "class": "form-control"
-  }, null, 512
-  /* NEED_PATCH */
-  )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.actual_driver]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.errors.actual_driver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.actual_driver), 1
-  /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
-    id: "paseengers",
-    onSelect: _cache[12] || (_cache[12] = function ($event) {
-      return $options.appendPassenger($event);
+    onChange: _cache[13] || (_cache[13] = function ($event) {
+      return $options.showActualDriver($event);
     })
-  }), _hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+  }, null, 544
+  /* HYDRATE_EVENTS, NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.showActualDriver]]), _hoisted_35])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" v-model=\"form.actual_driver\" class=\"form-control\" v-if=\"form.showActualDriver\"> "), _hoisted_36, _hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     "class": "form-control",
     cols: "3",
-    "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
       return $data.form.official_passenger = $event;
     })
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.official_passenger]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" v-model=\"form.official_passenger\" class=\"form-control\"> "), _hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.official_passenger]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" v-model=\"form.official_passenger\" class=\"form-control\"> "), _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
       return $data.form.place_to_visit = $event;
     }),
     "class": "form-control"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.place_to_visit]]), _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.place_to_visit]]), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
       return $data.form.purpose = $event;
     }),
     "class": "form-control"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.purpose]]), _hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.purpose]]), _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-control",
-    "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
+    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
       return $data.form.gas_type = $event;
     })
-  }, _hoisted_45, 512
+  }, _hoisted_46, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gas_type]]), $data.form.errors.gas_type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gas_type), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gas_type]]), $data.form.errors.gas_type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gas_type), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
+    "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
       return $data.form.total_liters = $event;
     }),
     "class": "form-control"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.total_liters]]), $data.form.errors.total_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.total_liters), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.total_liters]]), $data.form.errors.total_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.total_liters), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
+    "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
       return $data.form.price = $event;
     }),
     "class": "form-control"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.price]]), $data.form.errors.price ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.price), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.price]]), $data.form.errors.price ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.price), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
-    onClick: _cache[19] || (_cache[19] = function ($event) {
+    onClick: _cache[20] || (_cache[20] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
   }, "Save changes", 8
   /* PROPS */
-  , _hoisted_51)], 32
+  , _hoisted_52)], 32
   /* HYDRATE_EVENTS */
   )])])], 64
   /* STABLE_FRAGMENT */
