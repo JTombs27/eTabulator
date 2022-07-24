@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RenamePriceToTravelsTable extends Migration
+class AddPriceIdToTravelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class RenamePriceToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->renameColumn('price', 'price_id')->change();
+            $table->integer('price_id')->after('gas_type')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class RenamePriceToTravelsTable extends Migration
     public function down()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->renameColumn('price_id', 'price')->change();
+            $table->dropColumn('price_id');
         });
     }
 }
