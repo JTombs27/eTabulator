@@ -4,20 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vehicle;
+use Illuminate\Support\Facades\DB;
+use App\Models\VehicleStatus;
 
 class VehicleController extends Controller
 {
 
-    public function __construct(Vehicle $model)
+    public function __construct(Vehicle $model, VehicleStatus $status)
     {
         $this->model = $model;
+        $this->status = $status;
     }
 
     public function index(Request $request)
     {
         return inertia('Vehicles/Index', [
-            "vehicles" => $this->model
-            
+            "vehicles" => $this->model->with([
+                'driverassign.empl.office'
+            ])
+
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('PLATENO', 'like', '%'.$searchItem . '%');
             })
@@ -30,7 +35,7 @@ class VehicleController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return inertia('Vehicles/Create');
     }
@@ -41,10 +46,15 @@ class VehicleController extends Controller
             'PLATENO' => "required",
             'TYPECODE' => "required",
             'FDATEACQ' => "required",
+            'FACQCOST'=> "regex:/^\d{1,13}(\.\d{1,4})?$/",
             'FDESC' => "required",
+            'condition' => "required"
             
         ]);
-        $vehicle = $this->model->create($request->except('checkadd'));
+        $vehicle = $this->model->create($request->except('checkadd','condition'));
+
+        $vehicleStatus = $this->status->create(['condition' => $request->condition,
+                                                'vehicles_id' => $vehicle->id]);
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');
@@ -80,9 +90,28 @@ class VehicleController extends Controller
 
     public function getVehicles()
     {
-        return $this->model->get()->map(fn($item) => [
-            'id' => $item->id,
-            'text' => $item->PLATENO
-        ]);
+        return DB::table('vehicle_status')
+                ->leftJoin('vehicles', 'vehicle_status.vehicle_id', 'vehicles.id')
+                ->where('condition', 'Good Condition')
+                ->distinct('vehicles_id')
+                ->orderBy('vehicle_status.created_at', 'desc')
+                ->get()
+                ->map(fn($item) => [
+                    'id' => $item->vehicle_id,
+                    'condition' => $item->condition
+                ]);
+
+    }
+    public function loadVehicles(Request $request)
+    {
+        $query = $this->model
+                    ->where('FDESC', 'like', "%$request->filter%")
+                    ->orWhere('PLATENO', 'like', "%$request->filter%")->get()
+                    ->map(fn($item) => [
+                        'id' => $item->PLATENO,
+                        'text' => $item->FDESC
+                    ]);
+         
+        return $query;
     }
 }

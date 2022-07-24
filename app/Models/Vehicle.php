@@ -15,11 +15,12 @@ class Vehicle extends Model
 
     public function vehicle_status()
     {
-        return $this->hasOne(VehicleStatus::class);
+        return $this->hasMany(VehicleStatus::class,"plate_no","PLATENO");
     }
-    public function driver()
+    public function driverassign()
     {
-        return $this->hasMany(Driver::class, 'drivers_id', 'id');
+        return $this->hasMany(DriverVehicle::class, 'vehicles_id', 'id');
     }
+
 
 }

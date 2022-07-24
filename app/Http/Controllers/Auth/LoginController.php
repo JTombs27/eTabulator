@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -41,6 +43,27 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'username' => ['required'],
+            'password' => ['required'],
+        ]);
+        $credentials['is_active'] = 1; 
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+ 
+            return redirect()->to('/');
+        }
+        $errorMessage = "The provided credentials do not match our records.";
+        if ($credentials['is_active']) {
+            $errorMessage = "The provided credentials is deactivated.";
+        }
+        return back()->withErrors([
+            'email' => $errorMessage,
+        ]);
     }
 
 }

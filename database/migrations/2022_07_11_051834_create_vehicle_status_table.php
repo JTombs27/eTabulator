@@ -15,8 +15,9 @@ class CreateVehicleStatusTable extends Migration
     {
         Schema::create('vehicle_status', function (Blueprint $table) {
             $table->id();
+            $table->date('vehicle_status_date');
             $table->string('condition')->nullable();
-            $table->integer('vehicle_id')->nullable();
+            $table->integer('vehicles_id');
             $table->timestamps();
         });
     }

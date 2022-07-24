@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Driver;
 use App\Models\DriverVehicle;
 use App\Models\Vehicle;
 
@@ -19,8 +18,9 @@ class DriverVehicleController extends Controller
         return inertia('Drivers/Index', [
             'driver_vehicles' => $this->model->with([
                 'vehicle',
-                'driver',
-                'office'
+                'empl',
+                'office',
+                'travel'
             ])
 
             ->latest()

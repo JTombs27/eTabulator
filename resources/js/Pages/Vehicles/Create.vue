@@ -26,11 +26,8 @@
                                         </div>
                                         <div class="col-mb-3">
                                             <label class="col-mb-3 col-form-label">Vehicle Type</label>
-                                            <select class="form-select md" v-model="form.TYPECODE">
-                                                <option disabled value="">Select Type</option>
-                                                <option value="1">Motorcycle</option>
-                                                <option value="2">Light Vehicle</option>
-                                                <option value="3">Heavy Equipment</option>
+                                            <select class="form-select md" v-model="form.TYPECODE">  
+                                            <option v-for="(items,index) in code" :value="items.value" :key="index"> {{items.name}}</option>
                                             </select>
                                             <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div>
                                         </div>
@@ -42,11 +39,22 @@
                                         <div class="col">
                                             <label class="col-mb-3 col-form-label">Acquisition Cost</label>
                                             <input type="text" v-model="form.FACQCOST" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.FACQCOST">{{ form.errors.FACQCOST }}</div>
                                         </div>
                                         <div class="col">
                                             <label class="col-mb-3 col-form-label">Description</label>
                                             <input type="text" v-model="form.FDESC" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.FDESC">{{ form.errors.FDESC }}</div>
+                                        </div>
+                                        <div class="col-mb-3">
+                                            <label class="col-mb-3 col-form-label">Vehicle Condition</label>
+                                            <select class="form-select md" v-model="form.condition">
+                                                <option disabled value="">Select Type</option>
+                                                <option >Good Condition</option>
+                                                <option >In Repair</option>
+                                                <option >Wasted</option>
+                                            </select>
+                                            <div class="fs-6 c-red-500" v-if="form.errors.condition">{{ form.errors.condition }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -77,13 +85,19 @@ export default ({
 
     data() {
         return {
+            code: [
+                {value:1, name:"Motorcycle"},
+                {value:2, name:"Light Vehicle"},
+                {value:3, name:"Heavy Equipment"},
+            ],
             form: useForm ({
                 PLATENO: "",
                 TYPECODE: "",
                 FDATEACQ: "",
                 FACQCOST: "",
                 FDESC: "",
-                checkadd: ""
+                checkadd: "",
+                condition:""
             }),
         pageTitle: "",
         // isDisabled:false
@@ -103,6 +117,12 @@ export default ({
             this.pageTitle = "Create Vehicles"
         }
     },
+    // watch:{
+    //     'form.TYPECODE': function (value){
+    //         this.editData.TYPECODE == value;
+
+    //     }
+    // },
 
     methods: {
         submit() {

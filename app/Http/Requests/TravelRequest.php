@@ -25,7 +25,7 @@ class TravelRequest extends FormRequest
     {
         return [
             'date_from' => 'required|date',
-            'date_to' => 'required_if:rangedDate,true',
+            'date_to' => 'required_if:rangedDate,true|after:date_from',
             'total_liters' => 'numeric|max:14',
             'gas_type' => 'required',
             'driver_vehicles_id' => 'required',

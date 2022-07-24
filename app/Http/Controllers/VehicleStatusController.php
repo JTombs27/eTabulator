@@ -6,6 +6,7 @@ use App\Models\VehicleStatus;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 
+
 class VehicleStatusController extends Controller
 {
     public function __construct(VehicleStatus $model, Vehicle $vehicle)
@@ -16,9 +17,11 @@ class VehicleStatusController extends Controller
 
     public function index($id)
     {
+      
         return inertia('VehicleStatus/index',[
-            'vehicle' =>  $this->vehicle->with('vehicle_status')
-                                    ->where('id',$id)->latest()->first()
+            'vehicle_status' =>  $this->model->with('vehicle')
+                                    ->where('vehicles_id',$id)->latest()->simplePaginate(10),
+            'vehicles_id' => $id
                                     
         ]);
 
@@ -27,23 +30,37 @@ class VehicleStatusController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
+            'vehicle_status_date' => 'required',
             'condition' => 'required',
+            'plate_no' => 'required',
+            
         ]);
-        
         $this->model->create($request->all());
-        
         return redirect('/vehicles')->with('message', 'Vehicle status added!');
     }
 
-    public function create()
+    public function Create(Request $request,$id)
     {
-        return inertia('VehicleStatus/index');
+       
+        return inertia('VehicleStatus/Create',[
+            'vehicle' => $this->vehicle->findOrFail($id),
+            'editData' => false
+        ]);
+    }
+
+    public function edit(Request $request)
+    {
+        return inertia('VehicleStatus/Create',[
+            'vehicle' => $this->model->findOrFail($request->id),
+            'editData' => True
+        ]);
     }
 
     public function update(Request $request)
     {
         $attributes = $request->validate([
             'condition' => 'required',
+            'vehicle_status_date' => 'required',
         ]);
        $status = $this->model->findOrFail($request->id);
        $status->update([

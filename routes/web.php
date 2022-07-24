@@ -17,6 +17,7 @@ use App\Http\Controllers\TravelController;
 use App\Http\Controllers\TravelValidationController;
 use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
+use App\Http\Controllers\OfficeVehiclesController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\PriceController;
 use Illuminate\Support\Facades\Auth;
@@ -40,14 +41,31 @@ Route::middleware('auth')->group(function() {
         Route::get('/settings', [UserController::class, 'settings']);
         Route::post('/change-name', [UserController::class, 'changeName']);
         Route::post('/change-photo', [UserController::class, 'changePhoto']);
+        Route::patch('/status/{id}', [UserController::class, 'setStatus']);
     });
 
     //marvin
     Route::prefix('/VehicleStatus')->group(function() {
         //return inertia('VehicleStatus');
         Route::post('/', [VehicleStatusController::class, 'store']);
+        Route::get('/{id}/Create', [VehicleStatusController::class, 'Create']);
         Route::get('{id}', [VehicleStatusController::class, 'index']);
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
+        Route::get('/{id}/edit', [VehicleStatusController::class, 'edit']);
+       
+    });
+
+    Route::prefix('/officeVehicles')->group(function() {
+         Route::get('/{id}', [OfficeVehiclesController::class, 'index']);
+         Route::get('/{id}/create', [OfficeVehiclesController::class, 'create']);
+         Route::post('/', [OfficeVehiclesController::class, 'store']);
+         Route::get('/{id}/edit', [OfficeVehiclesController::class, 'edit']);
+         Route::get('/{id}/back', [OfficeVehiclesController::class, 'back']);
+         Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
+        // Route::post('/', [OfficeVehiclesController::class, 'store']);
+        // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);
+       
+       // Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
     });
 
     Route::prefix('/projects')->group(function() {
@@ -95,6 +113,7 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::post('/{id}', [VehicleController::class, 'destroy']);
         Route::get('/getVehicles', [VehicleController::class, 'getVehicles']);
+        Route::get('fetch', [OfficeController::class, 'loadVehicles']);
     });
 
     // Driver Vehicles
@@ -112,10 +131,12 @@ Route::middleware('auth')->group(function() {
         Route::post('/', [TravelController::class, 'store']);
         Route::post('set-status', [TravelController::class, 'setStatus']);
         Route::get('/{id}/edit', [TravelController::class, 'edit']);
+        Route::patch('/{id}', [TravelController::class, 'update']);
     });
 
     Route::prefix('sync')->group(function() {
         Route::post('employees', [EmployeeController::class, '_sync']);
+        Route::post('offices', [OfficeController::class, '_sync']);
         Route::post('offices', [OfficeController::class, '_sync']);
     });
 
@@ -138,6 +159,7 @@ Route::middleware('auth')->group(function() {
     Route::prefix('offices')->group(function () {
         Route::get('fetch', [OfficeController::class, 'loadOffices']);
     });
+    
 
     //for Charges
     Route::prefix('charges')->group(function () {

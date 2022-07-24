@@ -11,7 +11,7 @@ class DriverVehicle extends Model
     protected $table = "driver_vehicles";
     protected $guarded = [];
 
-    public function driver()
+    public function empl()
     {
         return $this->belongsTo(Employee::class, 'drivers_id', 'empl_id');
     }
@@ -24,5 +24,10 @@ class DriverVehicle extends Model
     public function office()
     {
         return $this->belongsTo(Office::class, 'department_code', 'department_code');
+    }
+
+    public function travel()
+    {
+        return $this->hasMany(Travel::class, 'driver_vehicles_id', 'id');
     }
 }

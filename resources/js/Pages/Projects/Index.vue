@@ -83,6 +83,7 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+
 export default {
     components: { Pagination, Filtering },
     props: {
@@ -201,8 +202,7 @@ export default {
             this.$inertia.get("/projects-vehicle/" + projectId+"/vehicles");
         }
         ,
-         closeModal() 
-         {
+         closeModal() {
             $("#modal").hide();
             $('body').removeClass('modal-open');
             $('body').css("overflow","scroll");
