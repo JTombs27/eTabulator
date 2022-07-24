@@ -86,11 +86,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 if (_this.editData.date_to) {
                   _this.form.rangedDate = true;
-                } // $('#labelActual').click();
+                }
 
-
-                _this.getVehicleDetails(); // $('#labelActual').click()
-
+                _this.getVehicleDetails();
 
                 setTimeout(function () {
                   _this.showActualDriver();

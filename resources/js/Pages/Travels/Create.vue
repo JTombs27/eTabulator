@@ -188,9 +188,7 @@ export default {
             if (this.editData.date_to) {
                 this.form.rangedDate = true
             }
-            // $('#labelActual').click();
             this.getVehicleDetails();
-            // $('#labelActual').click()
             setTimeout(() => {
                 this.showActualDriver();
             }, 0);
