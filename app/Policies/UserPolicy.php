@@ -64,4 +64,8 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_delete_project_vehicle')->exists();
     }
+    public function canCreatePrice(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_prices')->exists();
+    }
 }

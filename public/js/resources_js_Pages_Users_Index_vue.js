@@ -124,6 +124,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$inertia.patch("/users/status/".concat(item), {
         is_check: e.target.checked
       });
+    },
+    selectOption: function selectOption(e) {
+      if (e.target.checked) {
+        var selected = this.permissions["null"].map(function (obj) {
+          return obj.id;
+        });
+        this.selectedPermissions = selected;
+      } else {
+        this.selectedPermissions = [];
+      }
     }
   }
 });
@@ -316,11 +326,25 @@ var _hoisted_31 = {
 var _hoisted_32 = {
   "class": "col-md-12"
 };
-var _hoisted_33 = ["value", "id"];
+var _hoisted_33 = {
+  "class": "pb-3"
+};
+var _hoisted_34 = {
+  "class": "form-check"
+};
 
-var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)();
+var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "flexCheckDefault"
+}, " Select all ", -1
+/* HOISTED */
+);
 
-var _hoisted_35 = ["for"];
+var _hoisted_36 = {
+  "class": "form-check checkbox-list"
+};
+var _hoisted_37 = ["value", "id"];
+var _hoisted_38 = ["for"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -455,22 +479,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onSaveModal: $options.updatePermissions
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.permissions, function (permission, index) {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        onChange: _cache[4] || (_cache[4] = function ($event) {
+          return $options.selectOption($event);
+        }),
+        id: "flexCheckDefault"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_35])]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.permissions, function (permission, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(permission, function (item) {
-          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
             type: "checkbox",
-            "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
+            "class": "form-check-input specific",
+            "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
               return $data.selectedPermissions = $event;
             }),
             value: item.id,
-            id: item.id
+            id: "permission".concat(item.id)
           }, null, 8
           /* PROPS */
-          , _hoisted_33), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.selectedPermissions]]), _hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-            "for": item.id
+          , _hoisted_37), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.selectedPermissions]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+            "class": "form-check-label disable-select",
+            "for": "permission".concat(item.id)
           }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.permission_name), 9
           /* TEXT, PROPS */
-          , _hoisted_35)]);
+          , _hoisted_38)]);
         }), 256
         /* UNKEYED_FRAGMENT */
         ))]);

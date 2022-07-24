@@ -39,30 +39,28 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // this.plate_no = this.id
-    this.form.plate_no = this.vehicle.PLATENO;
-    this.form.vehicles_id = this.vehicle.id;
-
-    if (!!this.editData) {
-      this.pageTitle = "Edit Vehicles";
-      this.form.PLATENO = this.editData.PLATENO;
-      this.form.TYPECODE = this.editData.TYPECODE;
-      this.form.FDATEACQ = this.editData.FDATEACQ;
-      this.form.FACQCOST = this.editData.FACQCOST;
-      this.form.FDESC = this.editData.FDESC;
-      this.form.id = this.editData.id;
+    if (this.editData) {
+      this.pageTitle = "Edit Vehicle Status";
+      this.form.id = this.vehicle.id;
+      this.form.vehicles_id = this.vehicle.vehicles_id;
+      this.form.vehicle_status_date = this.vehicle.vehicle_status_date;
+      this.form.plate_no = this.vehicle.plate_no;
+      this.form.condition = this.vehicle.condition;
+      this.vehicleid = this.vehicle.vehicles_id;
     } else {
-      this.pageTitle = "Create Vehicles";
+      this.pageTitle = "Add Vehicle Status";
+      this.form.plate_no = this.vehicle.PLATENO;
+      this.form.vehicles_id = this.vehicle.id;
+      this.vehicleid = this.vehicle.id;
     }
   },
   methods: {
     submit: function submit() {
-      //console.log(this.form)
-      this.form.post("/VehicleStatus", this.form); // if (!!this.vehicle.vehicle_status) {
-      //     this.form.patch("/VehicleStatus/" + this.form.id, this.form);
-      // } 
-      // else {
-      //    this.form.post("/VehicleStatus", this.form);
-      // }
+      if (this.editData) {
+        this.form.patch("/VehicleStatus/" + this.form.id, this.form);
+      } else {
+        this.form.post("/VehicleStatus", this.form);
+      }
     },
     Edit: function Edit() {
       this._disbled = false;
@@ -169,12 +167,12 @@ var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
+  var _component_back_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("back-button");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle), 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    href: "/vehicles"
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_back_button, {
+    href: '/VehicleStatus/' + _ctx.vehicleid + ''
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3];
@@ -182,7 +180,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
+  }, 8
+  /* PROPS */
+  , ["href"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
     onSubmit: _cache[4] || (_cache[4] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))

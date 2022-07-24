@@ -19,6 +19,7 @@ use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\OfficeVehiclesController;
 use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\PriceController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/Create', [VehicleStatusController::class, 'Create']);
         Route::get('{id}', [VehicleStatusController::class, 'index']);
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
+        Route::get('/{id}/edit', [VehicleStatusController::class, 'edit']);
        
     });
 
@@ -58,6 +60,7 @@ Route::middleware('auth')->group(function() {
          Route::get('/{id}/create', [OfficeVehiclesController::class, 'create']);
          Route::post('/', [OfficeVehiclesController::class, 'store']);
          Route::get('/{id}/edit', [OfficeVehiclesController::class, 'edit']);
+         Route::get('/{id}/back', [OfficeVehiclesController::class, 'back']);
          Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
         // Route::post('/', [OfficeVehiclesController::class, 'store']);
         // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);
@@ -111,7 +114,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::post('/{id}', [VehicleController::class, 'destroy']);
-        Route::get('/getVehicles', [VehicleController::class, 'getVehicles']);
+        Route::get('/getVehicles/{id}', [VehicleController::class, 'getVehicles']);
         Route::get('fetch', [OfficeController::class, 'loadVehicles']);
     });
 
@@ -168,6 +171,16 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [ChargeController::class, 'edit']);
         Route::patch('/{id}', [ChargeController::class, 'update']);
         Route::delete('/{id}', [ChargeController::class, 'destroy']);
+    });
+
+     //for Price
+    Route::prefix('prices')->group(function () {
+        Route::get('/', [PriceController::class, 'index']);
+        Route::get('/create', [PriceController::class, 'create']);
+        Route::post('/store', [PriceController::class, 'store']);
+        Route::get('/{id}/edit', [PriceController::class, 'edit']);
+        Route::patch('/{id}', [PriceController::class, 'update']);
+        Route::delete('/{id}', [PriceController::class, 'destroy']);
     });
     
 });

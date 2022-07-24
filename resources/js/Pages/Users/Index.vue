@@ -110,9 +110,18 @@
         :modalTitle="'Permissions'" 
         @closeModal="closeModal"
         @saveModal="updatePermissions">
+        <div class="pb-3">
+            <div class="form-check">
+              <input class="form-check-input " type="checkbox" @change="selectOption($event)" id="flexCheckDefault">
+              <label class="form-check-label disable-select" for="flexCheckDefault">
+                Select all
+              </label>
+            </div>
+        </div>
         <div v-for="permission, index in permissions">
-            <div v-for="item in permission">
-                <input type="checkbox" v-model="selectedPermissions" :value="item.id" :id="item.id"> <label :for="item.id">{{ item.permission_name }}</label>
+            <div v-for="item in permission" class="form-check checkbox-list">
+                <input type="checkbox" class="form-check-input specific" v-model="selectedPermissions" :value="item.id" :id="`permission${item.id}`"> 
+                <label class="form-check-label disable-select" :for="`permission${item.id}`">{{ item.permission_name }}</label>
             </div>
         </div>
     </Modal>
@@ -203,6 +212,15 @@ export default {
 
         setStatus(e, item) {
             this.$inertia.patch(`/users/status/${item}`, {is_check:e.target.checked})
+        },
+
+        selectOption(e) {
+            if (e.target.checked) {
+                const selected = this.permissions.null.map((obj) => obj.id);
+                this.selectedPermissions = selected;
+            } else {
+                this.selectedPermissions = [];
+            }
         }
     },
 };

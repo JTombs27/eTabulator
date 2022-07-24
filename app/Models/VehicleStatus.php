@@ -13,12 +13,12 @@ class VehicleStatus extends Model
         'vehicle_status_date',
         'condition',
         'plate_no',
-        'vehicles_id'
+        'vehicle_id'
     ];
 
     public function vehicle()
     {
-        return $this->belongsTo(Vehicle::class,"vehicles_id","id");
+        return $this->belongsTo(Vehicle::class,"vehicle_id","id");
     }
    
 }

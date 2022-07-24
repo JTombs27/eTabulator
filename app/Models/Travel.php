@@ -26,6 +26,7 @@ class Travel extends Model
         'user_id',
         'price',
         'status',
+        'is_carpool'
         
 
     ];

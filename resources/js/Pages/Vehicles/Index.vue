@@ -46,7 +46,7 @@
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col" style="text-align: center">Acquisition</th>
-                            <th scope="col">Office</th>
+                            <th scope="col" style="text-align: center">Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right"> Action</th>
@@ -55,11 +55,12 @@
                     <tbody>
                         <tr v-for="(vehicle, index) in vehicles.data" :key="index">
                             <td> {{vehicle.PLATENO}}</td>
-                            <td> {{vehicle.TYPECODE}}</td>
+                            <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> <div style="width: 70%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
-                            <td> </td>
-                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].driver.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].driver.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].driver.last_name}`}}</td>
+                            <td> <div style="width: 90%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
+                            <td v-if="vehicle.driverassign[0]!= null"> <div style="width: 90%; float: left; text-align: center;"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.office}` }}</div></td>
+                            <td v-else></td>
+                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right">
@@ -82,10 +83,10 @@
                                             <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
                                         </svg> Status</Link></li>
                                         <li><Link class="dropdown-item" :href="`/officeVehicles/${vehicle.id}`">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-diamond" viewBox="0 0 16 16">
-                                            <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
-                                            <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-                                        </svg>Department</Link></li>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+                                            <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+                                        </svg>&nbsp;Department</Link></li>
 
                                         <li><Link class="dropdown-item" @click="driverVehicle(vehicle.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
@@ -161,6 +162,22 @@ export default ({
     
 
     methods: {
+        code (code) {
+            switch(code) {
+                case '1':
+                    return "<span class='badge bg-info'>Motorcycle</span>"
+                    break
+                case '2':
+                    return "<span class='badge bg-danger'>Light Vehicle</span>"
+                    break
+                case '3':
+                    return "<span class='badge bg-success'>Heavy Equipment</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
         driverVehicle(driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");

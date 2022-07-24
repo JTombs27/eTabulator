@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTagForCarPoolToTravelsTable extends Migration
+class RenamePriceToTravelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddTagForCarPoolToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->boolean('is_carpool')->nullable()->after('ticket_number');
+            $table->renameColumn('price', 'price_id')->change();
         });
     }
 
@@ -26,7 +26,7 @@ class AddTagForCarPoolToTravelsTable extends Migration
     public function down()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->dropColumn('is_carpool');
+            $table->renameColumn('price_id', 'price')->change();
         });
     }
 }

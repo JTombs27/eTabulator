@@ -20,4 +20,15 @@ class Employee extends Model
         }
         return "{$this->first_name} {$mi}. {$this->last_name}";
     }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'department_code', 'id');
+    }
+
+    public function driverV()
+    {
+        return $this->hasOne(DriverVehicle::class, 'deparment_code', 'department_code');
+    }
+
 }
