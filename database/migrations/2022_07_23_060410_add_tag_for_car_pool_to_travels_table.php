@@ -14,7 +14,7 @@ class AddTagForCarPoolToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->boolean('is_carpool')->after('ticket_number');
+            $table->boolean('is_carpool')->nullable()->after('ticket_number');
         });
     }
 
