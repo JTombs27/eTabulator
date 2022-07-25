@@ -56,6 +56,11 @@
                                             </select>
                                             <div class="fs-6 c-red-500" v-if="form.errors.condition">{{ form.errors.condition }}</div>
                                         </div>
+                                        <div class="col">
+                                            <label class="col-mb-3 col-form-label">Date of Vehicle Condition Status</label>
+                                            <input type="date" v-model="form.vehicle_status_date" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.vehicle_status_date">{{ form.errors.vehicle_status_date }}</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -97,7 +102,8 @@ export default ({
                 FACQCOST: "",
                 FDESC: "",
                 checkadd: "",
-                condition:""
+                condition:"",
+                vehicle_status_date: ""
             }),
         pageTitle: "",
         // isDisabled:false
