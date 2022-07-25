@@ -24,7 +24,7 @@ class HandleInertiaRequests extends Middleware
             $photo = null;
             $UsrPhotoExst = User::where("cats",$UsrCats)->whereNotNull('user_photo')->exists();
             if (!$UsrPhotoExst) {
-                $UserPhoto =  Http::get("http://192.168.9.101:91//api/PGDDOEmployeePhoto?empl_id=".$UsrCats)->collect();
+                $UserPhoto =  Http::get("http://122.54.19.172:91//api/PGDDOEmployeePhoto?empl_id=".$UsrCats)->collect();
                 $cats = $UserPhoto[0]['empl_id'];
                 $photo = $UserPhoto[0]['empl_photo_img'];
                 User::where("cats",$UsrCats)->update(["user_photo"=>"data:image/png;base64,".$photo["data"]]);

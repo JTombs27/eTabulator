@@ -42,6 +42,7 @@ class SoaTravelController extends Controller
             //returns an array of users with name field only
             "travel" => $this->model
             	->where('office_id', auth()->user()->office_id)
+                ->where('status','Aprroved')
             	->orderBy('date_from', 'asc')
             	->get(),
         ]);
