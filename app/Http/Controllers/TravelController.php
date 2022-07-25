@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TravelRequest;
 use App\Models\Charge;
 use App\Models\DriverVehicle;
+use App\Models\Price;
 use App\Models\Travel;
 use App\Models\User;
 use Carbon\Carbon;
@@ -15,11 +16,12 @@ use Illuminate\Support\Facades\Validator;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
         $this->charges = $charges;
+        $this->prices = $prices;
     }    
 
     public function index()
@@ -59,8 +61,9 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
+        $amount = $this->charges->where('office_id', auth()->user()->office_id)->first();
         return inertia('Travels/Create',[
-            'charges' => $this->charges->where('office_id', auth()->user()->office_id)->first()->amount
+            'charges' => $amount ? $amount->amout : "0.00"
         ]);
     }
 
@@ -197,5 +200,15 @@ class TravelController extends Controller
         return $travel;
     }
 
-    
+    public function getPrice(Request $request)
+    {
+        $gases = $this->prices->where('gas_type', $request->gasType);
+        if ($gases->whereDate('date',$request->datefilter)->exists()) {
+            $gases = $gases->whereDate('date',$request->datefilter);
+        } else {
+            $gases = $gases->latest();
+        }
+        $gases = $gases->first();
+        return $gases;
+    }
 }

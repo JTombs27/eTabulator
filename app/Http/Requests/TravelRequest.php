@@ -31,7 +31,8 @@ class TravelRequest extends FormRequest
             'gas_type' => 'required',
             'driver_vehicles_id' => 'required',
             'vehicles_id' => 'required',
-            'actual_driver' => 'required_if:showActualDriver,true'
+            'actual_driver' => 'required_if:showActualDriver,true',
+            'price' => 'lt:charges'
         ];
     }
 
