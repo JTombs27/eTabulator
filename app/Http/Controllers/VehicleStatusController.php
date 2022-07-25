@@ -22,7 +22,6 @@ class VehicleStatusController extends Controller
             'vehicle_status' =>  $this->model->with('vehicle')
                                     ->where('vehicles_id',$id)->latest()->simplePaginate(10),
             'vehicles_id' => $id
-                                    
         ]);
 
     }

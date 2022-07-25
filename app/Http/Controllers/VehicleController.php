@@ -43,18 +43,20 @@ class VehicleController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
-            'PLATENO' => "required",
-            'TYPECODE' => "required",
-            'FDATEACQ' => "required",
-            'FACQCOST'=> "regex:/^\d{1,13}(\.\d{1,4})?$/",
-            'FDESC' => "required",
-            'condition' => "required"
+            'PLATENO' => 'required',
+            'TYPECODE' => 'required',
+            'FDATEACQ' => 'required',
+            'FACQCOST'=> 'regex:/^\d{1,13}(\.\d{1,4})?$/',
+            'FDESC' => 'required',
+            'condition' => 'required',
+            'vehicle_status_date' => 'required'
             
         ]);
-        $vehicle = $this->model->create($request->except('checkadd','condition'));
+        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date'));
 
         $vehicleStatus = $this->status->create(['condition' => $request->condition,
-                                                'vehicles_id' => $vehicle->id]);
+                                                'vehicles_id' => $vehicle->id,
+                                                'vehicle_status_date' => $request->vehicle_status_date]);
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');
