@@ -39,6 +39,38 @@
         </filtering>
 
         <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h7>Select Vehicle Status</h7>
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="from-check">
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="checkbox" >
+                                <label class="form-check-label" for="checkbox" > Good Conditon</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="from-check">
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="checkbox" >
+                                <label class="form-check-label" for="checkbox" > In Repair</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="from-check">
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="checkbox" >
+                                <label class="form-check-label" for="checkbox" > Wasted</label>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <!-- <label class="col-form-label">Status Date</label> -->
+                            <input type="date" class="form-control" autocomplete="chrome-off">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <table class="table table-hover">
                     <thead>
