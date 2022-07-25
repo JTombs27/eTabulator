@@ -11,7 +11,6 @@
                 <path fill-rule="evenodd"
                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
             </svg></back-button>
-            
         </div> 
         <div class="col-md-8">
             <form @submit.prevent="submit()">

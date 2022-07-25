@@ -39,6 +39,32 @@
         </filtering>
 
         <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h7>Select Vehicle Status</h7>
+                    <div class="row">
+                        <div class="col-4">
+                            <label>Vehicle Type</label>
+                            <select class="form-select">
+                                <option disabled value=""></option>
+                                <option value="Good Condition">Good Condition</option>
+                                <option value="In Repair">In Repair</option>
+                                <option value="Wasted">Wasted</option>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <label>Status Date</label>
+                            <input type="date" class="form-control" autocomplete="chrome-off">
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-primary mt-4" @click="submit()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
             <div class="bgc-white p-20 bd">
                 <table class="table table-hover">
                     <thead>
@@ -46,8 +72,8 @@
                             <th scope="col">Plate Number</th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
-                            <th scope="col" style="text-align: center">Acquisition</th>
-                            <th scope="col" style="text-align: center">Office</th>
+                            <th scope="col">Acquisition</th>
+                            <th scope="col" >Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right"> Action</th>
@@ -58,8 +84,8 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> <div style="width: 90%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
-                            <td v-if="vehicle.driverassign[0]!= null"> <div style="width: 90%; float: left; text-align: center;"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.office}` }}</div></td>
+                            <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
+                            <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
                             <td v-else></td>
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
@@ -96,7 +122,7 @@
                                         </svg> Drivers Assignment</Link></li>
 
                                         <li> <hr class="dropdown-divider action-divider"></li>
-                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicles.driver_vehicles != 0">
+                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicle.driver_vehicles !== 0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                         </svg> Delete </Link></li>

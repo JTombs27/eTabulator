@@ -18,7 +18,7 @@ class VehicleStatusController extends Controller
     public function index($id)
     {
       
-        return inertia('VehicleStatus/index',[
+        return inertia('VehicleStatus/Index',[
             'vehicle_status' =>  $this->model->with('vehicle')
                                     ->where('vehicles_id',$id)->latest()->simplePaginate(10),
             'vehicles_id' => $id
@@ -64,7 +64,7 @@ class VehicleStatusController extends Controller
        $status = $this->model->findOrFail($request->id);
        $status->update([
         'condition' => $request->condition
-    ]);
+        ]);
        return redirect('/vehicles')->with('message', 'Vehicle status updated!');
     }
 
