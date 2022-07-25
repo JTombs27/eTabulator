@@ -58,7 +58,8 @@
                             <td> {{vehicle.PLATENO}}</td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.FDATEACQ}}</td>
-                            <td> <div style="width: 90%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div></td>
+                            <td style="text-align:right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td> 
+                            <!-- <div style="width: 100%; float: left; text-align: right;"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</div> -->
                             <td v-if="vehicle.driverassign[0]!= null"> <div style="width: 90%; float: left; text-align: center;"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.office}` }}</div></td>
                             <td v-else></td>
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
