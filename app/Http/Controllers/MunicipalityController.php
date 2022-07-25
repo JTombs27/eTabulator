@@ -14,7 +14,7 @@ class MunicipalityController extends Controller
 
     public function index()
     {
-        return $this->model->where('regDesc','11')->get()->map(fn($row) => [
+        return $this->model->where('provCode','1182')->get()->map(fn($row) => [
             'id' => $row->citymunCode,
             'text' => $row->citymunDesc
         ]);

@@ -21,12 +21,13 @@
 </template>
 
 <script>
+
 export default {
     props: {
         modalTitle: String,
     },
     mounted() {
-        var myModal = new window.bootstrap.Modal(document.getElementById('modal'))
+        let myModal = new window.bootstrap.Modal(document.getElementById('modal'))
         myModal.show()
     },
     methods: {
