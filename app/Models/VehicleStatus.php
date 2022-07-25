@@ -13,7 +13,7 @@ class VehicleStatus extends Model
         'vehicle_status_date',
         'condition',
         'plate_no',
-        'vehicle_id'
+        'vehicles_id'
     ];
 
     public function vehicle()

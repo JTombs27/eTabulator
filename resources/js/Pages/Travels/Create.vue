@@ -4,7 +4,8 @@
     </Head>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Travel</h3>
+            <h3>{{ pageTitle }} Travel</h3> 
+            <h3>Total Charges: <u>{{charges}}</u></h3>
             <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -70,6 +71,15 @@
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
                 <br>
+
+                <div class="col-md-12">
+                    <div class="form-check ">
+                        <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
+                        <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
+                            Check to set substitute driver
+                        </label>
+                    </div>
+                </div>
                 
                 <label v-if="form.showActualDriver">Actual Driver</label>
                 <Select2 
@@ -79,14 +89,7 @@
                     @select="setActualDriver($event)" 
                 />
                 <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
-                <div class="col-md-12">
-                    <div class="form-check ">
-                        <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
-                        <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
-                            Check to set substitute driver
-                        </label>
-                    </div>
-                </div>
+                
                 <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
                 
                 <hr>
@@ -98,16 +101,12 @@
                 <label for="">Purpose of Travel</label>
                 <input type="text" v-model="form.purpose" class="form-control">
                 <label for="">Gas Type</label>
-                <select class="form-control" v-model="form.gas_type">
-                        <option value="GASOLINE">GASOLINE</option>
-                        <option value="DIESOLINE">DIESOLINE</option>
-                        <option value="ENGINE OIL">ENGINE OIL</option>
-                        <option value="BRAKE OIL">BRAKE OIL</option>
-                        <option value="GREASES">GREASES</option>
+                <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
+                        <option  v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
                 <label for="">Liter/s</label>
-                <input type="text" v-model="form.total_liters" class="form-control">
+                <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                 <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
                 <label for="">Price</label>
                 <input type="text" v-model="form.price" class="form-control">
@@ -129,6 +128,7 @@ export default {
 
     props: {
         editData: Object,
+        charges:String
     },
 
     data() {
@@ -147,25 +147,44 @@ export default {
                 date_from:'',
                 date_to:'',
                 rangedDate:null,
-                price:null,
+                price:0.00,
                 showActualDriver:false,
                 vehicles_id:null,
                 purpose:"",
                 drivers_id:null,
                 is_carpool:null,
                 actual_driver_id:null,
-                office_id:null
+                charges:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
             employees:[],
             drivers:[],
+            gases:[{
+                id:"Gasoline(Regular)",
+                text:"Gasoline(Regular)"
+            },{
+                id:"Gasoline(Premium)",
+                text:"Gasoline(Premium)"
+            },{
+                id:"Diesoline",
+                text:"Diesoline"
+            },{
+                id:"Engine Oil",
+                text:"Engine Oil"
+            },{
+                id:"Brake Oil",
+                text:"Brake Oil"
+            },{
+                id:"Greases",
+                text:"Greases"
+            }],
            
         }
     },
 
     async mounted() {
-        
+        this.form.charges = this.charges
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
@@ -188,10 +207,10 @@ export default {
             if (this.editData.date_to) {
                 this.form.rangedDate = true
             }
-            this.getVehicleDetails();
-            setTimeout(() => {
-                this.showActualDriver();
-            }, 0);
+            await this.getVehicleDetails();
+            await this.showActualDriver();
+            // setTimeout(() => {
+            // }, 0);
             
         } else {
             this.pageTitle = "Create"
@@ -206,6 +225,16 @@ export default {
     },
 
     methods:{
+        fetchPrice() {
+            axios.post('/travels/get-price', 
+                {datefilter:this.form.date_from, gasType:this.form.gas_type}
+            ).then((response) => {
+                console.log(response.data.price)
+                this.form.price =  Number(response.data.price) * Number(this.form.total_liters);
+            })
+        },
+
+
         getVehicles(){
             axios.get(`/vehicles/getVehicles/${this.form.vehicles_id}`).then( (response) => {
                 this.vehicles = response.data
@@ -314,6 +343,11 @@ export default {
                 setTimeout(() => {
                     this.columnFrom = 'col-md-12'
                 },100)
+            }
+        },
+        form:{
+            handler(val) {
+                console.log("test")
             }
         }
     }

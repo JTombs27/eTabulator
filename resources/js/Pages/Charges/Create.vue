@@ -3,7 +3,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Charges </h3>
-            <back-button :backToURL="backToMyUrl"></back-button>
+            <back-button :href="backToMyUrl"></back-button>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-6 p-20 bd">

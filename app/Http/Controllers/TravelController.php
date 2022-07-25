@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TravelRequest;
+use App\Models\Charge;
 use App\Models\DriverVehicle;
+use App\Models\Price;
 use App\Models\Travel;
 use App\Models\User;
 use Carbon\Carbon;
@@ -14,10 +16,12 @@ use Illuminate\Support\Facades\Validator;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
+        $this->charges = $charges;
+        $this->prices = $prices;
     }    
 
     public function index()
@@ -35,7 +39,8 @@ class TravelController extends Controller
                                 'travels.date_to',
                                 'travels.actual_driver',
                                 'travels.id',
-                                'travels.status'
+                                'travels.status',
+                                'travels.office_id'
                             )
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
@@ -56,7 +61,10 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
-        return inertia('Travels/Create');
+        $amount = $this->charges->where('office_id', auth()->user()->office_id)->first();
+        return inertia('Travels/Create',[
+            'charges' => $amount ? $amount->amout : "0.00"
+        ]);
     }
 
     public function edit(Request $request, $id)
@@ -81,6 +89,7 @@ class TravelController extends Controller
 
     public function store(TravelRequest $request)
     {
+        
         $date_from = $request->date_from;
         $date_to = $request->date_to;
         // $now = Carbon::now();
@@ -98,7 +107,7 @@ class TravelController extends Controller
             return redirect('/travels/create')->with('error', 'This record already exist.');
         }
 
-        $attributes = $request->validated();
+        // $attributes = $request->validated();
         
         // $travel = User::latest()->first();
         // $secondDigit = $travel->id+1;
@@ -108,8 +117,29 @@ class TravelController extends Controller
         $request['user_id'] = auth()->user()->id;
         $request['office_id'] = auth()->user()->office_id;
 
-        $travel = Travel::create($request->all());
-        $travel->updateTicket();
+        DB::beginTransaction();
+        try {
+            $travel = Travel::create($request->all());
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect('/travels/create')->with('error', '1');
+        }
+        
+        try {
+            $travel->updateTicket();
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect('/travels/create')->with('error', '2');
+        }
+        
+        try {
+            $data1 = $this->charges->where('office_id', auth()->user()->office_id)->first();
+            $data1->deductCharge($request->price);
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect('/travels/create')->with('error', $e);
+        }
+        DB::commit();
         
         return redirect('/travels')->with('message', 'Travel successfully added');
         
@@ -130,23 +160,17 @@ class TravelController extends Controller
                                         ->OrWhereBetween('date_to', [$date_from, $date_to]);
                             })
                             ->exists();
-        $attributes = Validator::make($request->validated());
+
+        $attributes = $request->validated();
        
-        $attributes->after(function ($validator) {
-            if ($this->somethingElseIsInvalid()) {
-                $validator->errors()->add(
-                    'date_froms', 'Something is wrong with this field!'
-                );
-            }
-        });
-        if ($attributes->fails()) {
-            return redirect('/travels/create')->with('error', 'The input is invalid');
-        }
         if ($isExistTravel) {
             return redirect('/travels/create')->with('error', 'This record already exist.');
         }
 
-        $data = $this->model->findOrFail($id)->update($request->all());
+        $request['office_id'] = auth()->user()->office_id;
+        $data = $this->model->findOrFail($id);
+        $data->update($request->all());
+
         return redirect('/travels')->with('message', 'The changes have been saved');
 
     }
@@ -176,5 +200,15 @@ class TravelController extends Controller
         return $travel;
     }
 
-    
+    public function getPrice(Request $request)
+    {
+        $gases = $this->prices->where('gas_type', $request->gasType);
+        if ($gases->whereDate('date',$request->datefilter)->exists()) {
+            $gases = $gases->whereDate('date',$request->datefilter);
+        } else {
+            $gases = $gases->latest();
+        }
+        $gases = $gases->first();
+        return $gases;
+    }
 }

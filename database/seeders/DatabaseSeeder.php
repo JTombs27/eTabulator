@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
             FirstUserSeed::class,
             PermissionUserSeeder::class,
             PermissionsSeeder::class,
-           Municipalities::class,
-           Barangays::class,
-           VehicleSeeder::class,
+            Municipalities::class,
+            Barangays::class,
+            VehicleSeeder::class,
 
         ]);
 
