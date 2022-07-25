@@ -23,6 +23,7 @@
                                             <label >Plate Number</label>
                                             <input type="text" v-model="form.PLATENO" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.PLATENO">{{ form.errors.PLATENO }}</div>
+                                            <div class="fs-6 c-red-500" v-if="form.errors.PLATENOA">{{ form.errors.PLATENOA }}</div>
                                         </div>
                                         <div class="col-mb-3">
                                             <label class="col-mb-3 col-form-label">Vehicle Type</label>

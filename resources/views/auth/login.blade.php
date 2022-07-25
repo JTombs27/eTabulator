@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="row" style="color:white">
-                    <h3>FUEL MONITORING SYSTEM</h3>
+                    <h3>EQUIPMENT MANAGEMENT SYSTEM</h3>
                 </div>
             </div>
         </div>
