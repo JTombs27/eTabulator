@@ -16,4 +16,15 @@ class Charge extends Model
     {
         return $this->belongsTo(Office::class, 'office_id', 'department_code');
     }
+
+    public function deductCharge($value)
+    {
+        // Ako ni Jade. -Raymart
+        try {
+            $this->amount -=  $value;
+            $this->save();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }

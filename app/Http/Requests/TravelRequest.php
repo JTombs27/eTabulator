@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class TravelRequest extends FormRequest
 {
@@ -25,12 +26,11 @@ class TravelRequest extends FormRequest
     {
         return [
             'date_from' => 'required|date',
-            'date_to' => 'required_if:rangedDate,true|after:date_from',
+            'date_to' => 'required_if:rangedDate,true'.($this->rangedDate ? '|after:date_from':''),
             'total_liters' => 'numeric|max:14',
             'gas_type' => 'required',
             'driver_vehicles_id' => 'required',
             'vehicles_id' => 'required',
-            'price' => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'actual_driver' => 'required_if:showActualDriver,true'
         ];
     }
