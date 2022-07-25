@@ -188,10 +188,10 @@ export default {
             if (this.editData.date_to) {
                 this.form.rangedDate = true
             }
-            this.getVehicleDetails();
-            setTimeout(() => {
-                this.showActualDriver();
-            }, 0);
+            await this.getVehicleDetails();
+            await this.showActualDriver();
+            // setTimeout(() => {
+            // }, 0);
             
         } else {
             this.pageTitle = "Create"
