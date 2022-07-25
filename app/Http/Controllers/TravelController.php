@@ -61,9 +61,8 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
-        $amount = $this->charges->where('office_id', auth()->user()->office_id)->first();
         return inertia('Travels/Create',[
-            'charges' => $amount ? $amount->amout : "0.00"
+            'charges' => $this->charges->where('office_id', auth()->user()->office_id)->first()->amount
         ]);
     }
 
