@@ -1,6 +1,6 @@
 <template>
     <div class="modal" tabindex="-1" id="modal" data-bs-backdrop="static" data-bs-keyboard="false">
-      <div class="modal-dialog">
+      <div class="modal-dialog" :class="addional_class">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ modalTitle }}</h5>
@@ -25,6 +25,7 @@
 export default {
     props: {
         modalTitle: String,
+        addional_class: String
     },
     mounted() {
         let myModal = new window.bootstrap.Modal(document.getElementById('modal'))

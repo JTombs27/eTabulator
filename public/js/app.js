@@ -74,7 +74,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    modalTitle: String
+    modalTitle: String,
+    addional_class: String
   },
   mounted: function mounted() {
     var myModal = new window.bootstrap.Modal(document.getElementById('modal'));
@@ -357,28 +358,27 @@ var _hoisted_1 = {
   "data-bs-keyboard": "false"
 };
 var _hoisted_2 = {
-  "class": "modal-dialog"
-};
-var _hoisted_3 = {
   "class": "modal-content"
 };
-var _hoisted_4 = {
+var _hoisted_3 = {
   "class": "modal-header"
 };
-var _hoisted_5 = {
+var _hoisted_4 = {
   "class": "modal-title"
 };
-var _hoisted_6 = {
+var _hoisted_5 = {
   "class": "modal-body"
 };
-var _hoisted_7 = {
+var _hoisted_6 = {
   "class": "row"
 };
-var _hoisted_8 = {
+var _hoisted_7 = {
   "class": "modal-footer"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modalTitle), 1
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["modal-dialog", $props.addional_class])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.modalTitle), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
@@ -388,7 +388,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.closeModal && $options.closeModal.apply($options, arguments);
     })
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-secondary",
     "data-bs-dismiss": "modal",
@@ -402,7 +402,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.saveModal && $options.saveModal.apply($options, arguments);
     })
-  }, "Save changes")])])])]);
+  }, "Save changes")])])], 2
+  /* CLASS */
+  )]);
 }
 
 /***/ }),
@@ -1986,16 +1988,6 @@ var map = {
 		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
-	"./VehicleStatus": [
-		"./resources/js/Pages/VehicleStatus/index.vue",
-		9,
-		"resources_js_Pages_VehicleStatus_index_vue"
-	],
-	"./VehicleStatus/": [
-		"./resources/js/Pages/VehicleStatus/index.vue",
-		9,
-		"resources_js_Pages_VehicleStatus_index_vue"
-	],
 	"./VehicleStatus/Create": [
 		"./resources/js/Pages/VehicleStatus/Create.vue",
 		9,
@@ -2006,15 +1998,15 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_Create_vue"
 	],
-	"./VehicleStatus/index": [
-		"./resources/js/Pages/VehicleStatus/index.vue",
+	"./VehicleStatus/Index": [
+		"./resources/js/Pages/VehicleStatus/Index.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_index_vue"
+		"resources_js_Pages_VehicleStatus_Index_vue"
 	],
-	"./VehicleStatus/index.vue": [
-		"./resources/js/Pages/VehicleStatus/index.vue",
+	"./VehicleStatus/Index.vue": [
+		"./resources/js/Pages/VehicleStatus/Index.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_index_vue"
+		"resources_js_Pages_VehicleStatus_Index_vue"
 	],
 	"./VehicleStatus/status": [
 		"./resources/js/Pages/VehicleStatus/status.vue",

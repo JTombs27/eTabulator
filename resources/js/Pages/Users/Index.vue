@@ -108,21 +108,61 @@
     <Modal 
         v-if="showModal" 
         :modalTitle="'Permissions'" 
+        :addional_class="'modal-lg'"
         @closeModal="closeModal"
         @saveModal="updatePermissions">
-        <div class="pb-3">
-            <div class="form-check">
-              <input class="form-check-input " type="checkbox" @change="selectOption($event)" id="flexCheckDefault">
-              <label class="form-check-label disable-select" for="flexCheckDefault">
-                Select all
-              </label>
+        <div class="row pb-3">
+            <div class="col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input " type="checkbox" @change="selectOption($event, 'all')" id="flexCheckDefault">
+                  <label class="form-check-label disable-select" for="flexCheckDefault">
+                    Select all
+                  </label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" @change="selectOption($event,'pghead')" id="pgheadPermission">
+                    <label class="form-check-label disable-select" for="pgheadPermission">
+                        PG-Head 
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox"  @change="selectOption($event,'pgo')" id="pgoPermission">
+                    <label class="form-check-label disable-select" for="pgoPermission">
+                        PGO 
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'ro')" id="roPermission">
+                    <label class="form-check-label disable-select" for="roPermission">
+                        RO 
+                    </label>
+                </div>
+            </div>
+            
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'pgso')" id="pgsoPermission">
+                    <label class="form-check-label disable-select" for="pgsoPermission">
+                        PGSO 
+                    </label>
+                </div>
             </div>
         </div>
-        <div v-for="permission, index in permissions">
-        
-            <div v-for="item in permission" class="form-check checkbox-list">
-                <input type="checkbox" class="form-check-input specific" v-model="selectedPermissions" :value="item.id" :id="`permission${item.id}`"> 
-                <label class="form-check-label disable-select" :for="`permission${item.id}`">{{ item.permission_name }}</label>
+        <div class="row">
+            <div v-for="permission, index in permissions" class="col-md-4 mb-3">
+                <h4> {{ index }} </h4>
+                <div v-for="item in permission" class="form-check checkbox-list">
+                    <input type="checkbox" class="form-check-input specific" v-model="selectedPermissions" :value="item.id" :id="`permission${item.id}`"> 
+                    <label class="form-check-label disable-select" :for="`permission${item.id}`">{{ item.permission_name }}</label>
+                </div>
             </div>
         </div>
     </Modal>
@@ -215,10 +255,38 @@ export default {
             this.$inertia.patch(`/users/status/${item}`, {is_check:e.target.checked})
         },
 
-        selectOption(e) {
+        selectOption(e, Permission_type) {
+             console.log(Permission_type)
             if (e.target.checked) {
-                const selected = this.permissions.null.map((obj) => obj.id);
-                this.selectedPermissions = selected;
+                if (Permission_type == 'all') {
+                    const newArr = [];
+                    const selected = _.flatMapDepth(this.permissions, function (e) {
+                        // return e.id;
+                        _.forEach(e, function(value) {
+                            // return value.id
+                            var final_id = _.map(value);
+                            newArr.push(final_id[0]) 
+                        })
+                    });
+                    this.selectedPermissions = newArr;
+                } else if (Permission_type == 'pgo') {
+
+                    this.selectedPermissions = [5,6,7,8,10,11,12,13,14,15,16,17,18,19];
+
+                } else if (Permission_type == 'ro') {
+
+                    this.selectedPermissions = [5,7,10,11,12,13,14,15];
+
+                } else if (Permission_type == 'pghead') {
+
+                    this.selectedPermissions = [6];
+
+                } else if (Permission_type == 'pgso') {
+
+                    this.selectedPermissions = [4,8,16,17,18,19,20,21,22];
+
+                }
+
             } else {
                 this.selectedPermissions = [];
             }

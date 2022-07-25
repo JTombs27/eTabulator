@@ -14,17 +14,23 @@ class FirstUserSeed extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'id' => 1,
-            'name' => 'Administrator',
-            'cats' => '0828',
-            'is_active' => true,
-            'email' => 'admin@admin.com',
-            'role' => 'Admin',
-            'username'=> 'admin',
-            'password' => bcrypt('12345678'),
-        ],
-        [
+        DB::table('users')->insert($this->data());
+    }
+
+    public function data()
+    {
+        return array(
+         array(
+        'id' => 1,
+        'name' => 'Administrator',
+        'cats' => '0828',
+        'is_active' => true,
+        'email' => 'admin@admin.com',
+        'role' => 'Admin',
+        'username'=> 'admin',
+        'password' => bcrypt('12345678')),
+        
+        array(
             'id' => 2,
             'name' => 'RO',
             'cats' => '0828',
@@ -32,9 +38,9 @@ class FirstUserSeed extends Seeder
             'role' => 'RO',
             'is_active' => true,
             'username'=> 'ro',
-            'password' => bcrypt('12345678'),
-        ],
-        [
+            'password' => bcrypt('12345678')
+        ),
+        array(
             'id' => 3,
             'name' => 'PG-HEAD',
             'cats' => '0828',
@@ -42,9 +48,9 @@ class FirstUserSeed extends Seeder
             'email' => 'PG-HEAD@admin.com',
             'role' => 'PG-Head',
             'username'=> 'pghead',
-            'password' => bcrypt('12345678'),
-        ],
-        [
+            'password' => bcrypt('12345678')
+        ),
+        array(
             'id' => 4,
             'name' => 'PGO-Admn',
             'cats' => '0828',
@@ -52,10 +58,18 @@ class FirstUserSeed extends Seeder
             'email' => 'pgoAdmin@admin.com',
             'role' => 'PGO',
             'username'=> 'pgoadmin',
-            'password' => bcrypt('12345678'),
-        ]);
-
-        
-        
+            'password' => bcrypt('12345678')
+        ),
+        array(
+            'id' => 5,
+            'name' => 'PGSO',
+            'cats' => '0828',
+            'is_active' => true,
+            'email' => 'pgsoAdmin@admin.com',
+            'role' => 'PGSO',
+            'username'=> 'pgsoadmin',
+            'password' => bcrypt('12345678')
+        )
+        );
     }
 }
