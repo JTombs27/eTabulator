@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TravelRequest;
+use App\Models\Charge;
 use App\Models\DriverVehicle;
 use App\Models\Travel;
 use App\Models\User;
@@ -14,10 +15,11 @@ use Illuminate\Support\Facades\Validator;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
+        $this->charges = $charges;
     }    
 
     public function index()
@@ -57,7 +59,9 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
-        return inertia('Travels/Create');
+        return inertia('Travels/Create',[
+            'charges' => $this->charges->where('office_id', auth()->user()->office_id)->first()->amount
+        ]);
     }
 
     public function edit(Request $request, $id)
@@ -100,7 +104,7 @@ class TravelController extends Controller
             return redirect('/travels/create')->with('error', 'This record already exist.');
         }
 
-        $attributes = $request->validated();
+        // $attributes = $request->validated();
         
         // $travel = User::latest()->first();
         // $secondDigit = $travel->id+1;
@@ -110,8 +114,29 @@ class TravelController extends Controller
         $request['user_id'] = auth()->user()->id;
         $request['office_id'] = auth()->user()->office_id;
 
-        $travel = Travel::create($request->all());
-        $travel->updateTicket();
+        DB::beginTransaction();
+        try {
+            $travel = Travel::create($request->all());
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect('/travels/create')->with('error', '1');
+        }
+        
+        try {
+            $travel->updateTicket();
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect('/travels/create')->with('error', '2');
+        }
+        
+        try {
+            $data1 = $this->charges->where('office_id', auth()->user()->office_id)->first();
+            $data1->deductCharge($request->price);
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return redirect('/travels/create')->with('error', $e);
+        }
+        DB::commit();
         
         return redirect('/travels')->with('message', 'Travel successfully added');
         

@@ -88,7 +88,8 @@
 </template>
 
 <script>
-export default {
+
+export default{
     props: {
         can: Object,
         travels:Object,

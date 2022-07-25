@@ -127,6 +127,7 @@ export default {
 
     props: {
         editData: Object,
+        charges:String
     },
 
     data() {

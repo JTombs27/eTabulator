@@ -25,7 +25,8 @@ class Travel extends Model
         'soa_travel',
         'user_id',
         'status',
-        'is_carpool'
+        'is_carpool',
+        'office_id'
         
 
     ];
@@ -66,5 +67,7 @@ class Travel extends Model
     {
         return $this->belongsTo(DriverVehicle::class, 'driver_vehicles_id', 'id');
     }
+
+    
 
 }
