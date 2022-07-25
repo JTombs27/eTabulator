@@ -24,21 +24,23 @@ class ProjectVehicleController extends Controller
                     ,[
                     'projectVehicles' => $this->model
                     ->with("Vehicles")
+                    ->where('project_id','=',$id)
                     ->when($request->search, function ($query, $searchItem) 
                     {
-                        $query->where('purpose', 'like', '%' . $searchItem . '%')
+                        $query->
+                        where('purpose', 'like', '%' . $searchItem . '%')
                         ->orWhereHas("Vehicles",function($queryx) use($searchItem){
                             $queryx->where("PLATENO",'like','%' . $searchItem . '%');
                         });
                     })
-                    ->where('project_id','=',$id)
                     ->simplePaginate(10)
                     ->withQueryString(),
                     "project"=> Project::where('id',$id)->select('id','description')->first(),
                         "filters" => $request->only(['search']),
                         "can" => [
-                            'createUser' => auth()->user()->can('create', User::class),
-                            'canDeleteUser' => auth()->user()->can('canDeleteUser', User::class),
+                            'canCreateProjectVehicle' => auth()->user()->can('canCreateProjectVehicle',User::class),
+                            'canEditProjectVehicle' => auth()->user()->can('canEditProjectVehicle',User::class),
+                            'canDeleteProjectVehicle' => auth()->user()->can('canDeleteProjectVehicle',User::class)
                         ]
                     ]
                 );
@@ -140,7 +142,11 @@ class ProjectVehicleController extends Controller
                 'date_from' => $vehicle["date_from"],
                 'date_to'   => $vehicle["date_to"],
                 'project_id'=> $vehicle["project_id"],
-                'vehicle_id'=> $vehicle["vehicle_id"]
+                'vehicle_id'=> $vehicle["vehicle_id"],
+                'external_borrow_flag'=> $vehicle["external_borrow_flag"],
+                'rental_flag'=> $vehicle["rental_flag"],
+                'municipality_id'=> $vehicle["municipality_id"],
+                'barangay_id'=> $vehicle["barangay_id"],
             ]); 
         }
         return redirect("/projects-vehicle/$id/vehicles")->with('message', 'Added Successfully');
@@ -172,8 +178,8 @@ class ProjectVehicleController extends Controller
         if($data)
         {
             $attributes = $request->validate([
-            "vehiclesGroup.*.ate_fromX"=>"required",
-            "vehiclesGroup.*.ate_toX"=>"required"],[
+            "vehiclesGroup.*.date_fromX"=>"required",
+            "vehiclesGroup.*.date_toX"=>"required"],[
                 "vehiclesGroup.*.date_fromX.required"=>"Date Conflic to other entry",
                 "vehiclesGroup.*.date_toX.required"=>"Date Conflic to other entry"
             ]);
@@ -184,7 +190,11 @@ class ProjectVehicleController extends Controller
             $data->update([
                 'purpose' => $request->vehiclesGroup[0]["purpose"],
                 'date_from' => $request->vehiclesGroup[0]["date_from"],
-                'date_to' => $request->vehiclesGroup[0]["date_to"]
+                'date_to' => $request->vehiclesGroup[0]["date_to"],
+                'external_borrow_flag' => $request->vehiclesGroup[0]["external_borrow_flag"],
+                'rental_flag' => $request->vehiclesGroup[0]["rental_flag"],
+                'municipality_id' => $request->vehiclesGroup[0]["municipality_id"],
+                'barangay_id' => $request->vehiclesGroup[0]["barangay_id"],
             ]);
             //$data->update([
             //                "purpose"=>$request->purpose,
@@ -218,9 +228,13 @@ class ProjectVehicleController extends Controller
 
     public function getVehicles()
     {
-        return Vehicle::get()->map(fn($item) => [
-            'id' => $item->id,
-            'text' => $item->PLATENO
-        ]);
+        $data = Vehicle::whereHas('vehicle_latest_status')
+        ->get();
+        
+        return $data->map(fn($item) =>[
+                'id' => $item->id,
+                'text' => $item->PLATENO,
+                'condition' => $item->vehicle_latest_status
+                ]);
     }
 }

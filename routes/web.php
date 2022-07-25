@@ -70,6 +70,8 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/projects')->group(function() {
         Route::get('/', [ProjectController::class, 'index']);
+        Route::get('/create', [ProjectController::class, 'create']);
+        Route::get('/create/{id}', [ProjectController::class, 'create']);
         Route::post('/create-project',[ProjectController::class, 'store']);
         Route::post('/delete-project', [ProjectController::class, 'destroy']);
         Route::post('/update-project', [ProjectController::class, 'update']);

@@ -70,6 +70,15 @@
                 <!-- <input type="text" class="form-control" v-model="driverName"> -->
                 <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
                 <br>
+
+                <div class="col-md-12">
+                    <div class="form-check ">
+                        <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
+                        <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
+                            Check to set substitute driver
+                        </label>
+                    </div>
+                </div>
                 
                 <label v-if="form.showActualDriver">Actual Driver</label>
                 <Select2 
@@ -79,14 +88,7 @@
                     @select="setActualDriver($event)" 
                 />
                 <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
-                <div class="col-md-12">
-                    <div class="form-check ">
-                        <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
-                        <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
-                            Check to set substitute driver
-                        </label>
-                    </div>
-                </div>
+                
                 <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
                 
                 <hr>
@@ -98,12 +100,8 @@
                 <label for="">Purpose of Travel</label>
                 <input type="text" v-model="form.purpose" class="form-control">
                 <label for="">Gas Type</label>
-                <select class="form-control" v-model="form.gas_type">
-                        <option value="GASOLINE">GASOLINE</option>
-                        <option value="DIESOLINE">DIESOLINE</option>
-                        <option value="ENGINE OIL">ENGINE OIL</option>
-                        <option value="BRAKE OIL">BRAKE OIL</option>
-                        <option value="GREASES">GREASES</option>
+                <select class="form-select" v-model="form.gas_type">
+                        <option  v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
                 <label for="">Liter/s</label>
@@ -160,6 +158,25 @@ export default {
             columnFrom:"col-md-12",
             employees:[],
             drivers:[],
+            gases:[{
+                id:"Gasoline(Regular)",
+                text:"Gasoline(Regular)"
+            },{
+                id:"Gasoline(Premium)",
+                text:"Gasoline(Premium)"
+            },{
+                id:"Diesoline",
+                text:"Diesoline"
+            },{
+                id:"Engine Oil",
+                text:"Engine Oil"
+            },{
+                id:"Brake Oil",
+                text:"Brake Oil"
+            },{
+                id:"Greases",
+                text:"Greases"
+            }],
            
         }
     },

@@ -15,10 +15,6 @@ class PermissionsSeeder extends Seeder
     public function data()
     {
         return array(
-<<<<<<< HEAD
-=======
-
->>>>>>> 9d1c3913505b6d15126bd28e6e897c968ad9aa26
             array('id' => 1,'permission_name' => 'can_edit_user'),
             array('id' => 2,'permission_name' => 'can_create_user'),
             array('id' => 3,'permission_name' => 'can_delete_user'),
@@ -38,12 +34,7 @@ class PermissionsSeeder extends Seeder
             array('id' => 17,'permission_name' => 'can_edit_office_vehicles'),
             array('id' => 18,'permission_name' => 'can_create_vehicle_status'),
             array('id' => 19,'permission_name' => 'can_edit_vehicle_status'),
-<<<<<<< HEAD
-=======
             array('id' => 20,'permission_name' => 'can_create_prices'), //GSO
-
-
->>>>>>> 9d1c3913505b6d15126bd28e6e897c968ad9aa26
         );
     }
 }
