@@ -10,13 +10,12 @@
                 <div class="peer">
                     <Link class="btn btn-success btn-sm" @click="createDriver()">Add Drivers</Link>
                 </div>
+                <back-button :href="'/vehicles'"></back-button>
             </div>
+
         </div>
             <div class="col-12">
                 <div class="bgc-white p-20 bd">
-                    <div class="peer">
-                    <Link class="btn btn-danger btn-sm pull-right" href="/vehicles">Return to Vehicles</Link>
-                </div>
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -51,14 +50,14 @@
                     </table>
 
                     <div class="row justify-content-center">
-                    <div class="col-md-12">
-                        <!-- read the explanation in the Paginate.vue component -->
-                        <!-- <pagination :links="drivers.links" /> -->
-                        <pagination :next="driver_vehicles.next_page_url" :prev="driver_vehicles.prev_page_url" />
+                        <div class="col-md-12">
+                            <!-- read the explanation in the Paginate.vue component -->
+                            <!-- <pagination :links="drivers.links" /> -->
+                            <pagination :next="driver_vehicles.next_page_url" :prev="driver_vehicles.prev_page_url" />
+                        </div>
                     </div>
                 </div>
-                </div>
-            </div>
+            </div>   
     </div>
 
 </template>

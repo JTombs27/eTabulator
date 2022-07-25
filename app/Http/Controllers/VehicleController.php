@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Vehicle;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use App\Models\VehicleStatus;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\VehicleValidation;
 
 class VehicleController extends Controller
 {
@@ -40,23 +41,16 @@ class VehicleController extends Controller
         return inertia('Vehicles/Create');
     }
 
-    public function store(Request $request)
+    public function store(VehicleValidation $request)
     {
-        $attributes = $request->validate([
-            'PLATENO' => 'required',
-            'TYPECODE' => 'required',
-            'FDATEACQ' => 'required',
-            'FACQCOST'=> 'regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'FDESC' => 'required',
-            'condition' => 'required',
-            'vehicle_status_date' => 'required'
-            
-        ]);
-        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date'));
+        $validated = $request->validated();
+
+        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date','plate_no'));
 
         $vehicleStatus = $this->status->create(['condition' => $request->condition,
                                                 'vehicles_id' => $vehicle->id,
-                                                'vehicle_status_date' => $request->vehicle_status_date]);
+                                                'vehicle_status_date' => $request->vehicle_status_date,
+                                                'plate_no' => $request->plate_no]);
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');

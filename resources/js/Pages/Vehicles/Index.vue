@@ -169,10 +169,10 @@ export default ({
                     return "<span class='badge bg-info'>Motorcycle</span>"
                     break
                 case '2':
-                    return "<span class='badge bg-danger'>Light Vehicle</span>"
+                    return "<span class='badge bg-success'>Light Vehicle</span>"
                     break
                 case '3':
-                    return "<span class='badge bg-success'>Heavy Equipment</span>"
+                    return "<span class='badge bg-danger'>Heavy Equipment</span>"
                     break
                 default:
                     return ""
