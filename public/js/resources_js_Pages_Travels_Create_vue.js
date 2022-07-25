@@ -83,45 +83,55 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              if (_this.editData !== undefined) {
-                _this.loading = true;
-                _this.pageTitle = "Edit";
-                _this.form.place_to_visit = _this.editData.place_to_visit;
-                _this.form.gas_type = _this.editData.gas_type;
-                _this.form.time_arrival = _this.editData.time_arrival;
-                _this.form.time_departure = _this.editData.time_departure;
-                _this.form.total_liters = _this.editData.total_liters;
-                _this.form.vehicles_id = String(_this.editData.driver_vehicle.vehicles_id);
-                _this.form.driver_vehicles_id = _this.editData.driver_vehicle.id;
-                _this.form.purpose = _this.editData.purpose;
-                _this.form.price = _this.editData.price;
-                _this.form.drivers_id = _this.editData.driver_vehicle.drivers_id;
-                _this.form.date_from = _this.editData.date_from;
-                _this.form.date_to = _this.editData.date_to;
-                _this.form.office_id = _this.editData.office_id;
-                _this.form.is_carpool = Boolean(_this.editData.is_carpool);
-                _this.form.showActualDriver = _this.editData.actual_driver ? true : false;
-                _this.form.actual_driver = _this.editData.actual_driver;
-
-                if (_this.editData.date_to) {
-                  _this.form.rangedDate = true;
-                }
-
-                _this.getVehicleDetails();
-
-                setTimeout(function () {
-                  _this.showActualDriver();
-                }, 0);
-              } else {
-                _this.pageTitle = "Create";
+              if (!(_this.editData !== undefined)) {
+                _context.next = 26;
+                break;
               }
 
+              _this.loading = true;
+              _this.pageTitle = "Edit";
+              _this.form.place_to_visit = _this.editData.place_to_visit;
+              _this.form.gas_type = _this.editData.gas_type;
+              _this.form.time_arrival = _this.editData.time_arrival;
+              _this.form.time_departure = _this.editData.time_departure;
+              _this.form.total_liters = _this.editData.total_liters;
+              _this.form.vehicles_id = String(_this.editData.driver_vehicle.vehicles_id);
+              _this.form.driver_vehicles_id = _this.editData.driver_vehicle.id;
+              _this.form.purpose = _this.editData.purpose;
+              _this.form.price = _this.editData.price;
+              _this.form.drivers_id = _this.editData.driver_vehicle.drivers_id;
+              _this.form.date_from = _this.editData.date_from;
+              _this.form.date_to = _this.editData.date_to;
+              _this.form.office_id = _this.editData.office_id;
+              _this.form.is_carpool = Boolean(_this.editData.is_carpool);
+              _this.form.showActualDriver = _this.editData.actual_driver ? true : false;
+              _this.form.actual_driver = _this.editData.actual_driver;
+
+              if (_this.editData.date_to) {
+                _this.form.rangedDate = true;
+              }
+
+              _context.next = 22;
+              return _this.getVehicleDetails();
+
+            case 22:
+              _context.next = 24;
+              return _this.showActualDriver();
+
+            case 24:
+              _context.next = 27;
+              break;
+
+            case 26:
+              _this.pageTitle = "Create";
+
+            case 27:
               _this.getVehicles(); // $("#actualDriver").select2({
               //   tags: true
               // });
 
 
-            case 2:
+            case 28:
             case "end":
               return _context.stop();
           }
