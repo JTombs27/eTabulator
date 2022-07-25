@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VehicleStatus;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\Constraint\IsTrue;
+
 
 class VehicleStatusController extends Controller
 {
@@ -22,7 +22,6 @@ class VehicleStatusController extends Controller
             'vehicle_status' =>  $this->model->with('vehicle')
                                     ->where('vehicles_id',$id)->latest()->simplePaginate(10),
             'vehicles_id' => $id
-                                    
         ]);
 
     }

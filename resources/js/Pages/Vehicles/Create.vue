@@ -26,11 +26,8 @@
                                         </div>
                                         <div class="col-mb-3">
                                             <label class="col-mb-3 col-form-label">Vehicle Type</label>
-                                            <select class="form-select md" v-model="form.TYPECODE">
-                                                <option disabled value="">Select Type</option>
-                                                <option >Motorcycle</option>
-                                                <option >Light Vehicle</option>
-                                                <option >Heavy Equipment</option>
+                                            <select class="form-select md" v-model="form.TYPECODE">  
+                                            <option v-for="(items,index) in code" :value="items.value" :key="index"> {{items.name}}</option>
                                             </select>
                                             <div class="fs-6 c-red-500" v-if="form.errors.TYPECODE">{{ form.errors.TYPECODE }}</div>
                                         </div>
@@ -58,6 +55,11 @@
                                                 <option >Wasted</option>
                                             </select>
                                             <div class="fs-6 c-red-500" v-if="form.errors.condition">{{ form.errors.condition }}</div>
+                                        </div>
+                                        <div class="col">
+                                            <label class="col-mb-3 col-form-label">Date of Vehicle Condition Status</label>
+                                            <input type="date" v-model="form.vehicle_status_date" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.vehicle_status_date">{{ form.errors.vehicle_status_date }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -88,6 +90,11 @@ export default ({
 
     data() {
         return {
+            code: [
+                {value:1, name:"Motorcycle"},
+                {value:2, name:"Light Vehicle"},
+                {value:3, name:"Heavy Equipment"},
+            ],
             form: useForm ({
                 PLATENO: "",
                 TYPECODE: "",
@@ -95,7 +102,8 @@ export default ({
                 FACQCOST: "",
                 FDESC: "",
                 checkadd: "",
-                condition:""
+                condition:"",
+                vehicle_status_date: ""
             }),
         pageTitle: "",
         // isDisabled:false
@@ -115,6 +123,12 @@ export default ({
             this.pageTitle = "Create Vehicles"
         }
     },
+    // watch:{
+    //     'form.TYPECODE': function (value){
+    //         this.editData.TYPECODE == value;
+
+    //     }
+    // },
 
     methods: {
         submit() {

@@ -11,7 +11,7 @@ class DriverVehicle extends Model
     protected $table = "driver_vehicles";
     protected $guarded = [];
 
-    public function driver()
+    public function empl()
     {
         return $this->belongsTo(Employee::class, 'drivers_id', 'empl_id');
     }

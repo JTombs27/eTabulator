@@ -18,7 +18,7 @@ class DriverVehicleController extends Controller
         return inertia('Drivers/Index', [
             'driver_vehicles' => $this->model->with([
                 'vehicle',
-                'driver',
+                'empl',
                 'office',
                 'travel'
             ])

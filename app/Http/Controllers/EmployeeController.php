@@ -58,7 +58,8 @@ class EmployeeController extends Controller
                     ->orWhere('last_name', 'like', "%{$request->search}%");
             return $data->get()->map(fn($item) => [
                 'id' => $item->full_name,
-                'text' => $item->full_name
+                'text' => $item->full_name,
+                'cats' => $item->empl_id
             ]);
         }
     }

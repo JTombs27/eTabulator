@@ -21,7 +21,6 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
-<<<<<<< HEAD
             // FirstUserSeed::class,
             // PermissionUserSeeder::class,
             PermissionsSeeder::class,
@@ -30,17 +29,7 @@ class DatabaseSeeder extends Seeder
             // VehicleSeeder::class,
 
         ]);
-=======
-            //FirstUserSeed::class,
-            //PermissionUserSeeder::class,
-            //PermissionsSeeder::class,
-           //Municipalities::class,
-           //Barangays::class,
-           VehicleSeeder::class,
-
-        ]);
 
         // \App\Models\User::factory(100)->create();
->>>>>>> e91a54d502f6bc70145a30c347a87a29e068821d
     }
 }

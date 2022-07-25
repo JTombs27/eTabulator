@@ -9,7 +9,7 @@
                 <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
             </div>
             <div class="peer" >
-                <a class="btn btn-primary btn-sm" href="#" @click="createProject()">Add Vehicle</a>
+                <button class="btn btn-primary btn-sm" :disabled="!can.canCreateProjectVehicle" href="#" @click="createProject()">Add Vehicle</button>
                 <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
                 <back-button :href="'/projects'"></back-button>
@@ -27,7 +27,7 @@
     </div>
     <div class="col-12 bgc-white p-20 bd">
         <div class="row">
-                <div class="col-12">  <b >PROJECT DESCRIPTION: </b> {{ project.description }}</div>
+            <div class="col-12">  <b >PROJECT DESCRIPTION: </b> {{ project.description }}</div>
         </div> 
     </div>
    
@@ -58,20 +58,20 @@
                                         </button>
                                         <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <Link class="dropdown-item" title="Edit Project Description!" @click="editProjects(projectVehicle.id)"> 
+                                                <button class="dropdown-item" :disabled="!can.canEditProjectVehicle" title="Edit Project Description!" @click="editProjects(projectVehicle.id)"> 
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
                                                         <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
                                                     </svg> Edit
-                                                </Link>
+                                                </button>
                                             </li>
                                             <li><hr class="dropdown-divider action-divider"></li>
-                                            <li class="bg-danger ">
-                                                <Link class="dropdown-item c-white ch-back"  title="Delete Project" @click="deleteProject(projectVehicle.id)"> 
+                                            <li title="Delete Project"  :class="can.canDeleteProjectVehicle ===false ? '':'bg-danger'" >
+                                                <button class="dropdown-item ch-back" :disabled="can.canDeleteProjectVehicle ===false"  title="Delete Project" @click="deleteProject(projectVehicle.id)"> 
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                         <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                         <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                                                     </svg> Delete
-                                                </Link>
+                                                </button>
                                             </li>
                                             
                                         </ul>

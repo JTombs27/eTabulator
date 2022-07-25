@@ -11,7 +11,7 @@
 
 <body class="app" >
     @if ($data !== null)
-    <div class="col-12 text-center" style="margin-top: 10px;padding-left:20px;padding-right:20px">
+    <div class="col-12 text-center" style="margin-top: 30px !important;padding-left:20px;padding-right:20px">
         <b><h1>TRAVEL TICKET 
             VALIDATION 
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-truck-front-fill" viewBox="0 0 16 16">
