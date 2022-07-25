@@ -76,6 +76,7 @@ class ProjectVehicleController extends Controller
 
     public function store(Request $request,$id)
     {
+        //Common validation
         $attributes = $request->validate([  "vehiclesGroup.*.vehicle_id"=>"required",
         "vehiclesGroup.*.purpose"       =>"required",
         "vehiclesGroup.*.date_from"     =>"required|date",
@@ -85,6 +86,7 @@ class ProjectVehicleController extends Controller
         "vehiclesGroup.*.date_from.required"  =>"Date From is Required",
         "vehiclesGroup.*.date_to.required"    =>"Date To is Required",
         "vehiclesGroup.*.date_to.after_or_equal" =>"Date To must be a date after date From"] );
+
         foreach ($request->vehiclesGroup as $index => $value) 
         {
             foreach ($request->vehiclesGroup as $index2 => $value2) 
@@ -135,6 +137,13 @@ class ProjectVehicleController extends Controller
                 }
             }
         }
+
+        //Validate Backend for adding a vehicle conflic and exist to other project
+        //with same or within the period
+        foreach ($request->vehiclesGroup as $key => $value) {
+            # code...
+        }
+
         foreach($request->vehiclesGroup as $key=>$vehicle) 
         { 
             $this->model->create([

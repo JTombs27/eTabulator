@@ -111,6 +111,19 @@ __webpack_require__.r(__webpack_exports__);
       this.vehiclesGroup.splice(index, 1);
       this.barangayGroups.splice(index, 1);
     },
+    clearAdditionalDetails: function clearAdditionalDetails(index) {
+      if (this.vehiclesGroup[index]['external_borrow_flag'] === false) {
+        this.vehiclesGroup[index]['rental_flag'] = false;
+        this.vehiclesGroup[index]['municipality_id'] = "";
+        this.vehiclesGroup[index]['barangay_id'] = "";
+        this.barangayGroups.splice(index, 1);
+      } else if (this.vehiclesGroup[index]['external_borrow_flag'] === true && this.editData !== undefined) {
+        this.vehiclesGroup[index]['rental_flag'] = this.editData.rental_flag;
+        this.vehiclesGroup[index]['municipality_id'] = this.editData.municipality_id;
+        this.vehiclesGroup[index]['barangay_id'] = this.editData.barangay_id;
+        this.loadBarangays(this.editData.municipality_id, index);
+      }
+    },
     loadVehicles: function loadVehicles() {
       var _this2 = this;
 
@@ -328,23 +341,15 @@ var _hoisted_32 = {
 var _hoisted_33 = {
   "class": "col-3"
 };
-
-var _hoisted_34 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "form-check form-check-inline"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "form-check-label",
-    "for": "borrow_checkbox"
-  }, "Check if vehicle is for borrow: ")])], -1
-  /* HOISTED */
-  );
-});
-
-var _hoisted_35 = {
+var _hoisted_34 = {
+  "class": "form-check form-check-inline"
+};
+var _hoisted_35 = ["for"];
+var _hoisted_36 = {
   "class": "form-check form-check-inline"
 };
 
-var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_37 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "form-check-label"
   }, null, -1
@@ -352,24 +357,16 @@ var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_37 = ["onUpdate:modelValue", "checked"];
-
-var _hoisted_38 = /*#__PURE__*/_withScopeId(function () {
-  return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "form-check form-check-inline"
-  }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-    "class": "form-check-label",
-    "for": "rental_checkbox"
-  }, "Check if borrow includes rental:")])], -1
-  /* HOISTED */
-  );
-});
-
+var _hoisted_38 = ["id", "onChange", "onUpdate:modelValue", "checked"];
 var _hoisted_39 = {
   "class": "form-check form-check-inline"
 };
+var _hoisted_40 = ["for"];
+var _hoisted_41 = {
+  "class": "form-check form-check-inline"
+};
 
-var _hoisted_40 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_42 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "class": "form-check-label",
     "for": "rental_checkbox"
@@ -378,12 +375,12 @@ var _hoisted_40 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_41 = ["onUpdate:modelValue", "disabled", "checked"];
-var _hoisted_42 = {
+var _hoisted_43 = ["id", "onUpdate:modelValue", "disabled", "checked"];
+var _hoisted_44 = {
   "class": "col-6"
 };
 
-var _hoisted_43 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_45 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, "Municipality Selection", -1
@@ -391,15 +388,15 @@ var _hoisted_43 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_44 = {
+var _hoisted_46 = {
   key: 0,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_45 = {
+var _hoisted_47 = {
   "class": "col-3"
 };
 
-var _hoisted_46 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_48 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, "Barangay Selection", -1
@@ -407,18 +404,18 @@ var _hoisted_46 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_47 = {
+var _hoisted_49 = {
   key: 0,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_48 = {
+var _hoisted_50 = {
   "class": "row"
 };
-var _hoisted_49 = {
+var _hoisted_51 = {
   "class": "col-12"
 };
 
-var _hoisted_50 = /*#__PURE__*/_withScopeId(function () {
+var _hoisted_52 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
     "for": ""
   }, "Purpose", -1
@@ -426,18 +423,18 @@ var _hoisted_50 = /*#__PURE__*/_withScopeId(function () {
   );
 });
 
-var _hoisted_51 = ["onUpdate:modelValue"];
-var _hoisted_52 = {
+var _hoisted_53 = ["onUpdate:modelValue"];
+var _hoisted_54 = {
   key: 0,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_53 = {
+var _hoisted_55 = {
   "class": "row"
 };
-var _hoisted_54 = {
+var _hoisted_56 = {
   "class": "col-12"
 };
-var _hoisted_55 = ["disabled"];
+var _hoisted_57 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_back_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("back-button");
 
@@ -514,20 +511,33 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.errors['vehiclesGroup.' + index + '.date_toX'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors['vehiclesGroup.' + index + '.date_toX']), 1
     /* TEXT */
-    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_34, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_32, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+      "class": "form-check-label",
+      "for": 'borrow_checkbox' + index
+    }, "Check if vehicle is for borrow: ", 8
+    /* PROPS */
+    , _hoisted_35)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [_hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": "form-check-input",
       type: "checkbox",
-      id: "borrow_checkbox",
+      id: 'borrow_checkbox' + index,
+      onChange: function onChange($event) {
+        return $options.clearAdditionalDetails(index);
+      },
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return vehicle.external_borrow_flag = $event;
       },
       checked: vehicle.external_borrow_flag
-    }, null, 8
+    }, null, 40
+    /* PROPS, HYDRATE_EVENTS */
+    , _hoisted_38), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, vehicle.external_borrow_flag]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+      "class": "form-check-label",
+      "for": 'rental_checkbox' + index
+    }, "Check if borrow includes rental:", 8
     /* PROPS */
-    , _hoisted_37), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, vehicle.external_borrow_flag]])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [_hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    , _hoisted_40)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [_hoisted_42, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
       "class": "form-check-input",
       type: "checkbox",
-      id: "rental_checkbox",
+      id: 'rental_checkbox' + index,
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return vehicle.rental_flag = $event;
       },
@@ -535,7 +545,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       checked: vehicle.rental_flag
     }, null, 8
     /* PROPS */
-    , _hoisted_41), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, vehicle.rental_flag]])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [_hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
+    , _hoisted_43), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, vehicle.rental_flag]])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [_hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
       modelValue: vehicle.municipality_id,
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return vehicle.municipality_id = $event;
@@ -547,9 +557,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, null, 8
     /* PROPS */
-    , ["modelValue", "onUpdate:modelValue", "options", "disabled", "onSelect"]), $data.form.errors['vehiclesGroup.' + index + '.municipality_id'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors['vehiclesGroup.' + index + '.municipality_id']), 1
+    , ["modelValue", "onUpdate:modelValue", "options", "disabled", "onSelect"]), $data.form.errors['vehiclesGroup.' + index + '.municipality_id'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors['vehiclesGroup.' + index + '.municipality_id']), 1
     /* TEXT */
-    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [_hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
       modelValue: vehicle.barangay_id,
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return vehicle.barangay_id = $event;
@@ -558,9 +568,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       disabled: !vehicle.external_borrow_flag
     }, null, 8
     /* PROPS */
-    , ["modelValue", "onUpdate:modelValue", "options", "disabled"]), $data.form.errors['vehiclesGroup.' + index + '.barangay_id'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors['vehiclesGroup.' + index + '.barangay_id']), 1
+    , ["modelValue", "onUpdate:modelValue", "options", "disabled"]), $data.form.errors['vehiclesGroup.' + index + '.barangay_id'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors['vehiclesGroup.' + index + '.barangay_id']), 1
     /* TEXT */
-    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [_hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
+    )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [_hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
       type: "text",
       "onUpdate:modelValue": function onUpdateModelValue($event) {
         return vehicle.purpose = $event;
@@ -569,12 +579,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       autocomplete: "chrome-off"
     }, null, 8
     /* PROPS */
-    , _hoisted_51), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, vehicle.purpose]]), $data.form.errors['vehiclesGroup.' + index + '.purpose'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors['vehiclesGroup.' + index + '.purpose']), 1
+    , _hoisted_53), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, vehicle.purpose]]), $data.form.errors['vehiclesGroup.' + index + '.purpose'] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors['vehiclesGroup.' + index + '.purpose']), 1
     /* TEXT */
     )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary pull-right mt-3",
     onClick: _cache[1] || (_cache[1] = function ($event) {
@@ -583,7 +593,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle == "Add" ? "Save/Create" : "Save Changes"), 9
   /* TEXT, PROPS */
-  , _hoisted_55)])])], 32
+  , _hoisted_57)])])], 32
   /* HYDRATE_EVENTS */
   )])]);
 }

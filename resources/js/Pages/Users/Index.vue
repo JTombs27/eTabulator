@@ -119,6 +119,7 @@
             </div>
         </div>
         <div v-for="permission, index in permissions">
+        
             <div v-for="item in permission" class="form-check checkbox-list">
                 <input type="checkbox" class="form-check-input specific" v-model="selectedPermissions" :value="item.id" :id="`permission${item.id}`"> 
                 <label class="form-check-label disable-select" :for="`permission${item.id}`">{{ item.permission_name }}</label>
