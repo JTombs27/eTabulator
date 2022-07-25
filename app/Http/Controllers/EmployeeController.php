@@ -19,7 +19,7 @@ class EmployeeController extends Controller
             //code...
             DB::table('employees')->truncate();
             $url = env('MIX_API_URL');
-            $employees = Http::post("http://mis1ddo.dvodeoro.ph:91//api/ListOfEmployees")->collect();
+            $employees = Http::post("http://192.168.9.101:91//api/ListOfEmployees")->collect();
             $arrayOfEmployees = [];
             foreach ($employees as $value) {
                 // if ($value['empl_id']) {
