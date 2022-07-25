@@ -230,7 +230,7 @@ var _hoisted_20 = {
 
 var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Select Vehicle Status");
 
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row\"><div class=\"col-3\"><div class=\"from-check\"><input class=\"form-check-input\" type=\"checkbox\" name=\"checkbox\" id=\"checkbox\"><label class=\"form-check-label\" for=\"checkbox\"> Good Conditon</label></div></div><div class=\"col-3\"><div class=\"from-check\"><input class=\"form-check-input\" type=\"checkbox\" name=\"checkbox\" id=\"checkbox\"><label class=\"form-check-label\" for=\"checkbox\"> In Repair</label></div></div><div class=\"col-3\"><div class=\"from-check\"><input class=\"form-check-input\" type=\"checkbox\" name=\"checkbox\" id=\"checkbox\"><label class=\"form-check-label\" for=\"checkbox\"> Wasted</label></div></div><div class=\"col-3\"><!-- &lt;label class=&quot;col-form-label&quot;&gt;Status Date&lt;/label&gt; --><input type=\"date\" class=\"form-control\" autocomplete=\"chrome-off\"></div></div>", 1);
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"row\"><div class=\"col\"><label>Vehicle Type</label><select class=\"form-select\"><option disabled value=\"\"></option><option value=\"Good Condition\">Good Condition</option><option value=\"In Repair\">In Repair</option><option value=\"Wasted\">Wasted</option></select></div><div class=\"col\"><label>Status Date</label><input type=\"date\" class=\"form-control\" autocomplete=\"chrome-off\"></div></div>", 1);
 
 var _hoisted_23 = {
   "class": "col-12"
