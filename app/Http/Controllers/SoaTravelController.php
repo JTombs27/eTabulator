@@ -25,6 +25,7 @@ class SoaTravelController extends Controller
                     $query->where('cafoa_number', 'like', '%' . $searchItem . '%');
                 })
                 ->where('office_id',auth()->user()->office_id)
+                ->where('status','Aprroved')
                 ->latest()
                 ->simplePaginate(10)
                 ->withQueryString()
