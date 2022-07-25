@@ -542,7 +542,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       onClick: function onClick($event) {
         return $options.deleteVehicle(vehicle);
       },
-      disabled: $props.vehicles.driver_vehicles != 0
+      disabled: vehicle.driver_vehicles !== 0
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
         return [_hoisted_42, _hoisted_43];
