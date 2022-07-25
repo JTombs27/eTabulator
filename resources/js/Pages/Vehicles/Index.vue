@@ -43,27 +43,21 @@
                 <div class="card-body">
                     <h7>Select Vehicle Status</h7>
                     <div class="row">
-                        <div class="col-3">
-                            <div class="from-check">
-                                <input class="form-check-input" type="checkbox" name="checkbox" id="checkbox" >
-                                <label class="form-check-label" for="checkbox" > Good Conditon</label>
-                            </div>
+                        <div class="col-4">
+                            <label>Vehicle Type</label>
+                            <select class="form-select">
+                                <option disabled value=""></option>
+                                <option value="Good Condition">Good Condition</option>
+                                <option value="In Repair">In Repair</option>
+                                <option value="Wasted">Wasted</option>
+                            </select>
                         </div>
-                        <div class="col-3">
-                            <div class="from-check">
-                                <input class="form-check-input" type="checkbox" name="checkbox" id="checkbox" >
-                                <label class="form-check-label" for="checkbox" > In Repair</label>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <div class="from-check">
-                                <input class="form-check-input" type="checkbox" name="checkbox" id="checkbox" >
-                                <label class="form-check-label" for="checkbox" > Wasted</label>
-                            </div>
-                        </div>
-                        <div class="col-3">
-                            <!-- <label class="col-form-label">Status Date</label> -->
+                        <div class="col-4">
+                            <label>Status Date</label>
                             <input type="date" class="form-control" autocomplete="chrome-off">
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-primary mt-4" @click="submit()">Save</button>
                         </div>
                     </div>
                 </div>
