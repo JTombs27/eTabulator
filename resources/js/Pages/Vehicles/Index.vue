@@ -43,7 +43,7 @@
                 <div class="card-body">
                     <h7>Select Vehicle Status</h7>
                     <div class="row">
-                        <div class="col">
+                        <div class="col-4">
                             <label>Vehicle Type</label>
                             <select class="form-select">
                                 <option disabled value=""></option>
@@ -52,9 +52,12 @@
                                 <option value="Wasted">Wasted</option>
                             </select>
                         </div>
-                        <div class="col">
+                        <div class="col-4">
                             <label>Status Date</label>
                             <input type="date" class="form-control" autocomplete="chrome-off">
+                        </div>
+                        <div class="col-4">
+                            <button type="button" class="btn btn-primary mt-4" @click="submit()">Save</button>
                         </div>
                     </div>
                 </div>
