@@ -4,7 +4,8 @@
     </Head>
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
-            <h3>{{ pageTitle }} Travel</h3>
+            <h3>{{ pageTitle }} Travel</h3> 
+            <h3>Total Charges: <u>{{charges}}</u></h3>
             <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -100,12 +101,12 @@
                 <label for="">Purpose of Travel</label>
                 <input type="text" v-model="form.purpose" class="form-control">
                 <label for="">Gas Type</label>
-                <select class="form-select" v-model="form.gas_type">
+                <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
                         <option  v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
                 <label for="">Liter/s</label>
-                <input type="text" v-model="form.total_liters" class="form-control">
+                <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                 <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
                 <label for="">Price</label>
                 <input type="text" v-model="form.price" class="form-control">
@@ -127,6 +128,7 @@ export default {
 
     props: {
         editData: Object,
+        charges:String
     },
 
     data() {
@@ -145,14 +147,14 @@ export default {
                 date_from:'',
                 date_to:'',
                 rangedDate:null,
-                price:null,
+                price:0.00,
                 showActualDriver:false,
                 vehicles_id:null,
                 purpose:"",
                 drivers_id:null,
                 is_carpool:null,
                 actual_driver_id:null,
-                office_id:null
+                charges:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -182,7 +184,7 @@ export default {
     },
 
     async mounted() {
-        
+        this.form.charges = this.charges
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
@@ -223,6 +225,16 @@ export default {
     },
 
     methods:{
+        fetchPrice() {
+            axios.post('/travels/get-price', 
+                {datefilter:this.form.date_from, gasType:this.form.gas_type}
+            ).then((response) => {
+                console.log(response.data.price)
+                this.form.price =  Number(response.data.price) * Number(this.form.total_liters);
+            })
+        },
+
+
         getVehicles(){
             axios.get(`/vehicles/getVehicles/${this.form.vehicles_id}`).then( (response) => {
                 this.vehicles = response.data
@@ -331,6 +343,11 @@ export default {
                 setTimeout(() => {
                     this.columnFrom = 'col-md-12'
                 },100)
+            }
+        },
+        form:{
+            handler(val) {
+                console.log("test")
             }
         }
     }

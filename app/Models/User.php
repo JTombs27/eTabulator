@@ -25,7 +25,8 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         'citymunCode',
         'brgyCode',
         'role',
-        'is_active'
+        'is_active',
+        'office_id'
     ];
 
     protected $hidden = [

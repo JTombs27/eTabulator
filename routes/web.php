@@ -144,6 +144,7 @@ Route::middleware('auth')->group(function() {
         Route::post('set-status', [TravelController::class, 'setStatus']);
         Route::get('/{id}/edit', [TravelController::class, 'edit']);
         Route::patch('/{id}', [TravelController::class, 'update']);
+        Route::post('get-price', [TravelController::class, 'getPrice']);
     });
 
     Route::prefix('sync')->group(function() {
