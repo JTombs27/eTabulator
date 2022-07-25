@@ -72,26 +72,26 @@
                                                 <tr>
                                                     <td>
                                                         <div class="form-check form-check-inline">
-                                                            <label class="form-check-label" for="borrow_checkbox">Check if vehicle is for borrow: </label>
+                                                            <label class="form-check-label" :for="'borrow_checkbox'+index">Check if vehicle is for borrow: </label>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-check form-check-inline"> 
                                                             <label class="form-check-label" ></label>
-                                                            <input class="form-check-input" type="checkbox" id="borrow_checkbox" v-model="vehicle.external_borrow_flag" :checked="vehicle.external_borrow_flag">
+                                                            <input class="form-check-input" type="checkbox" :id="'borrow_checkbox'+index" @change="clearAdditionalDetails(index)" v-model="vehicle.external_borrow_flag" :checked="vehicle.external_borrow_flag">
                                                         </div>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                             <div class="form-check form-check-inline">
-                                                            <label class="form-check-label" for="rental_checkbox">Check if borrow includes rental:</label>
+                                                            <label class="form-check-label" :for="'rental_checkbox'+index">Check if borrow includes rental:</label>
                                                         </div>
                                                     </td>
                                                     <td>
                                                         <div class="form-check form-check-inline"> 
                                                             <label class="form-check-label" for="rental_checkbox"></label>
-                                                            <input class="form-check-input" type="checkbox" id="rental_checkbox" v-model="vehicle.rental_flag" :disabled="!vehicle.external_borrow_flag" :checked="vehicle.rental_flag">
+                                                            <input class="form-check-input" type="checkbox" :id="'rental_checkbox'+index" v-model="vehicle.rental_flag" :disabled="!vehicle.external_borrow_flag" :checked="vehicle.rental_flag">
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -235,6 +235,25 @@ export default {
         removeNode(index){
             this.vehiclesGroup.splice(index,1);
             this.barangayGroups.splice(index,1);
+        },
+        clearAdditionalDetails(index)
+        {
+            if(this.vehiclesGroup[index]['external_borrow_flag'] === false)
+            {
+                this.vehiclesGroup[index]['rental_flag']            =false;
+                this.vehiclesGroup[index]['municipality_id']        ="";
+                this.vehiclesGroup[index]['barangay_id']            ="";
+                this.barangayGroups.splice(index,1);
+            }
+            else if(this.vehiclesGroup[index]['external_borrow_flag'] === true
+                    && this.editData !== undefined
+            ){
+                this.vehiclesGroup[index]['rental_flag']            =this.editData.rental_flag;
+                this.vehiclesGroup[index]['municipality_id']        =this.editData.municipality_id;
+                this.vehiclesGroup[index]['barangay_id']            =this.editData.barangay_id;
+                this.loadBarangays(this.editData.municipality_id,index);
+            }
+           
         }
         ,
         loadVehicles() 
