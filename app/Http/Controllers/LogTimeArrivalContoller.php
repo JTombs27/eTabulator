@@ -38,4 +38,34 @@ class LogTimeArrivalContoller extends Controller
             'editData' => true
         ]);
     }
+    public function store(Request $request)
+    {
+        dd($request->travel_id);
+        $attributes = $request->validate([
+            'travel_id' => 'required',
+            'time_arrival' => 'required',
+            'time_arrival' => 'required',
+            
+        ]);
+      
+        $this->model->create($request->all());
+        return redirect('/logTimeArrival')->with('message', 'Vehicle status added!');
+    }
+
+    public function update(Request $request)
+    {
+        dd($request->travel_id);
+        $attributes = $request->validate([
+            'travel_id' => 'required',
+            'ticket_number' => 'required',
+            'time_arrival' => 'required',
+        ]);
+      
+       $log = $this->model->findOrFail($request->id);
+       $log->update([
+        'time_arrival' => $request->time_arrival
+        ]);
+       return redirect('/logTimeArrival')->with('message', 'Vehicle status updated!');
+    }
+
 }

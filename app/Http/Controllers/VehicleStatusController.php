@@ -64,7 +64,7 @@ class VehicleStatusController extends Controller
        $status = $this->model->findOrFail($request->id);
        $status->update([
         'condition' => $request->condition
-    ]);
+        ]);
        return redirect('/vehicles')->with('message', 'Vehicle status updated!');
     }
 

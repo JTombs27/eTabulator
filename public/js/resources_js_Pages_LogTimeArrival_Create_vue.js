@@ -15,7 +15,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
-    _logTimeArrival: Object
+    _logTimeArrival: Object,
+    editData: Object
   },
   data: function data() {
     return {
@@ -26,6 +27,7 @@ __webpack_require__.r(__webpack_exports__);
       button_label: '',
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         travel_id: '',
+        ticket_number: '',
         time_arrival: ''
       }),
       pageTitle: "Log Arrival",
@@ -33,17 +35,27 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.form.travel_id = this._logTimeArrival.ticket_number;
+    console.log(this.editData);
+
+    if (this.editData) {
+      this.form.travel_id = this._logTimeArrival.travel_id;
+      this.form.ticket_number = this._logTimeArrival.ticket_number;
+      this.form.time_arrival = this._logTimeArrival.time_arrival;
+    } else {
+      this.form.travel_id = this._logTimeArrival.travel_id;
+      this.form.ticket_number = this._logTimeArrival.ticket_number;
+    }
   },
   methods: {
     submit: function submit() {
-      // console.log(this.form)
-      this.form.post("/officeVehicles", this.form); // if (!!this.vehicle.vehicle_status) {
-      //     this.form.patch("/VehicleStatus/" + this.form.id, this.form);
-      // } 
-      // else {
-      //    this.form.post("/VehicleStatus", this.form);
-      // }
+      console.log(this._logTimeArrival.travel_id);
+      console.log(this.form.travel_id);
+
+      if (this.editData) {
+        this.form.patch("/logTimeArrival/" + this.form.travel_id, this.form);
+      } else {
+        this.form.post("/logTimeArrival", this.form);
+      }
     },
     Edit: function Edit() {
       this._disbled = false;
@@ -149,7 +161,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.form.travel_id = $event;
+      return $data.form.ticket_number = $event;
     }),
     "class": "form-control",
     autocomplete: "chrome-off",
@@ -157,7 +169,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     readonly: ""
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.travel_id]]), $data.form.errors.travel_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.travel_id), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.ticket_number]]), $data.form.errors.ticket_number ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.ticket_number), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "datetime-local",

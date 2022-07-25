@@ -73,6 +73,8 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [LogTimeArrivalContoller::class, 'index']);
         Route::get('/{id}/create', [LogTimeArrivalContoller::class, 'create']);
         Route::get('/{id}/edit', [LogTimeArrivalContoller::class, 'edit']);
+        Route::post('/', [LogTimeArrivalContoller::class, 'store']);
+        Route::patch('/{id}', [LogTimeArrivalContoller::class, 'update']);
        
     });
 

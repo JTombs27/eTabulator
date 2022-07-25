@@ -16,8 +16,8 @@
             <form @submit.prevent="submit()">
                
                 <label for="">Ticket number</label>
-                <input type="text" v-model="form.travel_id" class="form-control" autocomplete="chrome-off" disabled readonly>
-                <div class="fs-6 c-red-500" v-if="form.errors.travel_id">{{ form.errors.travel_id }}</div>
+                <input type="text" v-model="form.ticket_number" class="form-control" autocomplete="chrome-off" disabled readonly>
+                <div class="fs-6 c-red-500" v-if="form.errors.ticket_number">{{ form.errors.ticket_number }}</div>
                 <label for="">Time Of Arrival</label>
                 <input type="datetime-local" v-model="form.time_arrival" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.time_arrival">{{ form.errors.time_arrival }}</div>
@@ -57,6 +57,8 @@ export default {
     },
     
     mounted() {
+
+          console.log(this.editData)
             if(this.editData)
             {
                 this.form.travel_id = this._logTimeArrival.travel_id
@@ -71,17 +73,14 @@ export default {
     },
     methods: {
         submit() {
-
-           // console.log(this.form)
-            this.form.post("/officeVehicles", this.form);
-
-           
-            // if (!!this.vehicle.vehicle_status) {
-            //     this.form.patch("/VehicleStatus/" + this.form.id, this.form);
-            // } 
-            // else {
-            //    this.form.post("/VehicleStatus", this.form);
-            // }
+             console.log(this._logTimeArrival.travel_id)
+            console.log(this.form.travel_id)
+            if (this.editData) {
+                this.form.patch("/logTimeArrival/" + this.form.travel_id, this.form);
+            } 
+            else {
+               this.form.post("/logTimeArrival", this.form);
+            }
         },
         Edit() {
            this._disbled = false
