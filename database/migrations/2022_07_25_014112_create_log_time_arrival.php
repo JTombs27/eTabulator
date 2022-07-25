@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLogTimeArrivalTable extends Migration
+class CreateLogTimeArrival extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,8 @@ class CreateLogTimeArrivalTable extends Migration
     {
         Schema::create('log_time_arrival', function (Blueprint $table) {
             $table->id();
-            $table->timestamps('time_of_arrrival');
-            $table->trip_ticket_id('time_of_arrrival');
+            $table->dateTime('time_arrival');
+            $table->integer('travel_id');
             $table->timestamps();
         });
     }

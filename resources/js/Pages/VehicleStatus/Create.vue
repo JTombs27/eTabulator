@@ -31,7 +31,7 @@
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">save</button>
             </form>
         </div>
-        
+    
         
 
         

@@ -20,6 +20,7 @@ use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\OfficeVehiclesController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\PriceController;
+use App\Http\Controllers\LogTimeArrivalContoller;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -66,6 +67,13 @@ Route::middleware('auth')->group(function() {
         // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);
        
        // Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
+    });
+
+    Route::prefix('/logTimeArrival')->group(function() {
+        Route::get('/', [LogTimeArrivalContoller::class, 'index']);
+        Route::get('/{id}/create', [LogTimeArrivalContoller::class, 'create']);
+        Route::get('/{id}/edit', [LogTimeArrivalContoller::class, 'edit']);
+       
     });
 
     Route::prefix('/projects')->group(function() {
