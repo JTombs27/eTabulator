@@ -25,9 +25,9 @@
                         <tr>
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
-                            <th scope="col">Date From</th>
-                            <th scope="col">Date To</th>
+                            <th scope="col">Date</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Office id</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
@@ -36,9 +36,10 @@
                             <td>{{item.FDESC}} <strong>({{ item.PLATENO}})</strong></td>
                             <td v-if="item.actual_driver">{{item.actual_driver}}</td>
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
-                            <td>{{item.date_from}}</td>
-                            <td>{{item.date_to}}</td>
+                            <td v-if="!item.date_to">{{item.date_from}}</td>
+                            <td v-else>{{item.date_from}} to {{item.date_to}}</td>
                             <td v-html="statusDisplay(item)"></td>
+                            <td >{{ item.office_id }}</td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">

@@ -71,6 +71,8 @@ class UserController extends Controller
             $attributes['password'] = bcrypt($request->password);
             $attributes['cats'] = $request->cats;
             $attributes['role'] = $request->permission;
+            $attributes['office_id'] = $request->office_id;
+            $attributes['is_active'] = true;
             $newUser = $this->model->create($attributes);
             $user = User::find($newUser->id);
 
@@ -90,7 +92,7 @@ class UserController extends Controller
 
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect('/users')->with('message', $e);
+            return redirect('/users')->with('error', $e);
         }
 
         return redirect('/users')->with('message', 'User created');

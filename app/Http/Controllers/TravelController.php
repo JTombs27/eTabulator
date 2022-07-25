@@ -35,7 +35,8 @@ class TravelController extends Controller
                                 'travels.date_to',
                                 'travels.actual_driver',
                                 'travels.id',
-                                'travels.status'
+                                'travels.status',
+                                'travels.office_id'
                             )
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
@@ -81,6 +82,7 @@ class TravelController extends Controller
 
     public function store(TravelRequest $request)
     {
+        
         $date_from = $request->date_from;
         $date_to = $request->date_to;
         // $now = Carbon::now();
@@ -130,23 +132,17 @@ class TravelController extends Controller
                                         ->OrWhereBetween('date_to', [$date_from, $date_to]);
                             })
                             ->exists();
-        $attributes = Validator::make($request->validated());
+
+        $attributes = $request->validated();
        
-        $attributes->after(function ($validator) {
-            if ($this->somethingElseIsInvalid()) {
-                $validator->errors()->add(
-                    'date_froms', 'Something is wrong with this field!'
-                );
-            }
-        });
-        if ($attributes->fails()) {
-            return redirect('/travels/create')->with('error', 'The input is invalid');
-        }
         if ($isExistTravel) {
             return redirect('/travels/create')->with('error', 'This record already exist.');
         }
 
-        $data = $this->model->findOrFail($id)->update($request->all());
+        $request['office_id'] = auth()->user()->office_id;
+        $data = $this->model->findOrFail($id);
+        $data->update($request->all());
+
         return redirect('/travels')->with('message', 'The changes have been saved');
 
     }

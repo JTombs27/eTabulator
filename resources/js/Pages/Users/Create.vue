@@ -128,7 +128,7 @@ export default {
                                 text: obj.employee_name, 
                                 cats:obj.empl_id, 
                                 data:obj.empl_photo_img.data,
-                                position:obj.position_long_title
+                                position:obj.position_long_title,
                             }
                         })
                     };

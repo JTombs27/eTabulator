@@ -151,8 +151,7 @@ export default {
                 purpose:"",
                 drivers_id:null,
                 is_carpool:null,
-                actual_driver_id:null,
-                office_id:null
+                actual_driver_id:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
