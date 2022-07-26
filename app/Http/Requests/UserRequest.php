@@ -27,9 +27,9 @@ class UserRequest extends FormRequest
         return [
             'name' => 'required',
             'username' => ['required','alpha','min:6',Rule::unique('users')->ignore($this->id)],
-            'password' => [Rule::required('users')->ignore($this->id), 'alpha_num', 'min:8', 'confirmed'],
+            'password' => ['required', 'alpha_num', 'min:8', 'confirmed'],
             'permission' => ['required'],
-            'password' => 'required'
+            'password' => Rule::requiredIf(!$this->id)
         ];
     }
 
