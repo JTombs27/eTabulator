@@ -30,23 +30,25 @@
                         <tr>
                             <th scope="col">Office</th>
                             <th scope="col" style="text-align: right">Amount</th>
-                            <th scope="col" style="text-align: right">Action</th>
+                            <th scope="col" >Created On</th>
+                            <th scope="col" style="text-align: right" v-if="can.canEditCharge || can.canCreateCharge">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(charges, index) in charge.data" :key="index">
                             <td>{{ charges.office.office }}</td>
                             <td class="text-end">{{ Number(charges.amount).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
-                            <td style="text-align: right">
+                            <td>{{ new Date(charges.created_at).toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric' }) }}</td>
+                            <td style="text-align: right" v-if="can.canEditCharge || can.canCreateCharge">
                                 <!-- v-if="user.can.edit" -->
-                                <div class="dropdown dropstart">
+                                <div class="dropdown dropstart" v-if="can.canEditCharge || can.canCreateCharge">
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                       <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li>
+                                    <li v-if="can.canEditCharge">
                                         <Link class="dropdown-item" title="Edit Charge!" @click="editOffices(charges.id)"> 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-pencil me-2" viewBox="0 0 16 16">
                                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -54,7 +56,7 @@
                                         </Link>
                                     </li>
                                     <li><hr class="dropdown-divider action-divider"></li>
-                                    <li>
+                                    <li v-if="can.canDeleteCharge">
                                         <Link class="dropdown-item" title="Delete" @click="deletecharge(charges.id)">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-trash me-2 text-danger" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -68,7 +70,6 @@
                         </tr>
                     </tbody>
                 </table>
-
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
@@ -101,7 +102,7 @@ export default {
             showModal: false,
             permissions: [],
             selectedPermissions: [],
-            selectedUser: ""
+            selectedUser: "",
         };
     },
     watch: {

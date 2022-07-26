@@ -2,35 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Charge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ChargeController extends Controller
 {
-    public function __construct(Charge $model)
+    public function __construct(Charge $model, User $user)
     {
         $this->model = $model;
+        $this->user = $user;
     }
 
     public function index(Request $request)
     {
+        $isAdmin = $this->user
+            ->where('id', auth()->user()->id)
+            ->where('role','Admin')
+            ->first();
+
+        $charge =  $this->model;
+                                
+
+        if(!$isAdmin){
+            $charge = $this->model->where('office_id', auth()->user()->office_id);
+        }
+
         return inertia('Charges/Index', [
             //returns an array of users with name field only
-            "charge" => $this->model
-            	->with('office')
-            	->when($request->search, function ($query, $searchItem) {
+
+            "charge" => $charge->with('office')
+                ->when($request->search, function ($query, $searchItem) {
                     $query->whereHas('office', function($q) use ($searchItem){
-                    	$q->where('office', 'like', '%' . $searchItem . '%');
+                        $q->where('office', 'like', '%' . $searchItem . '%');
                     });
                 })
-                ->latest()
                 ->simplePaginate(10)
-                ->withQueryString()
-                ,
+                ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
-                'canCreateCharge' => auth()->user()->can('canCreateCharge', User::class)
+                'canCreateCharge' => auth()->user()->can('canCreateCharge', User::class),
+                'canEditCharge' => auth()->user()->can('canEditCharge', User::class),
+                'canDeleteCharge' => auth()->user()->can('canDeleteCharge', User::class),
             ]
         ]);
     }
@@ -50,7 +64,7 @@ class ChargeController extends Controller
         	"officeGroup.*.amount.required"    =>"Amount is Required",
         	"officeGroup.*.amount.regex"    =>"Provide number only",
     	]);
-        foreach ($request->officeGroup as $index => $value) 
+        /*foreach ($request->officeGroup as $index => $value) 
         {
             foreach ($request->officeGroup as $index2 => $value2) 
             {
@@ -73,7 +87,7 @@ class ChargeController extends Controller
                     }
                 }
             }
-        }
+        }*/
         foreach($request->officeGroup as $key=>$office) 
         { 
             $this->model->create([
