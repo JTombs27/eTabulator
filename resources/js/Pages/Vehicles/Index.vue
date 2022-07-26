@@ -41,7 +41,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h7>Select Vehicle Status</h7>
+                    <h6 style="color:brown">Select Vehicle Status</h6>
                     <div class="row">
                         <div class="col-4">
                             <label>Vehicle Type</label>
@@ -81,9 +81,9 @@
                     </thead>
                     <tbody>
                         <tr v-for="(vehicle, index) in vehicles.data" :key="index">
-                            <td> {{vehicle.PLATENO}}</td>
+                            <td class="from-check"><input class="form-check-input" type="checkbox"  name="checkbox" id="checkbox" /> {{vehicle.PLATENO}}</td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
-                            <td> {{vehicle.FDATEACQ}}</td>
+                            <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
                             <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
                             <td v-else></td>
