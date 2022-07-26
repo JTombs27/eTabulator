@@ -100,16 +100,17 @@ class UserController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $data = $this->model->where('id', $id)->first([
-            'name', 'id', 'email', 'cats', 'role', 'username'
-        ]);
+        // $data = DB::table('users')>where('id', $id)->first();
 
         return inertia('Users/Create', [
-            "editData" => $data,
+            "editData" => $this->model
+                        ->with('office')
+                        ->first(),
+            
         ]);
     }
 
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
         $data = $this->model->findOrFail($request->id);
         if ($request->username != $data->username) {
@@ -118,19 +119,16 @@ class UserController extends Controller
             ]);
         }
         if ($request->password) {
-            $request->validate([
-                'password' => ['required', 'confirmed'],
-            ]);
-            $password = bcrypt($request->password);
-        } else {
-            $password = $data->password;
+            $request['password'] = bcrypt($request->password);
         }
-        $data->update([
-            'name' => $request->name,
-            'permission' => $request->permission,
-            'username' => $request->username,
-            'password' => $password
-        ]);
+        // $data->update([
+        //     'name' => $request->name,
+        //     'permission' => $request->permission,
+        //     'username' => $request->username,
+        //     'password' => $password,
+        //     'office' => 
+        // ]);
+        $data->update($request->all());
 
         return redirect('/users')->with('message', 'User updated');
     }
