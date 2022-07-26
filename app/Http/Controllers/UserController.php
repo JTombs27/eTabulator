@@ -116,10 +116,10 @@ class UserController extends Controller
         $validated = $request->safe()->only(['password']);
         $validated['office_id'] = $request->office_id;
         if ($request->password) {
-            $request['password'] = bcrypt($request->password);
+            $validated['password'] = bcrypt($request->password);
         } else {
             
-            $request['password'] = bcrypt($data->password);
+            $validated['password'] = bcrypt($data->password);
         }
         // $data->update([
         //     'name' => $request->name,

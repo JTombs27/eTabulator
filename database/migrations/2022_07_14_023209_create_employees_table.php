@@ -19,7 +19,7 @@ class CreateEmployeesTable extends Migration
             $table->string('first_name');
             $table->string('middle_name')->nullable();
             $table->string('last_name');
-            $table->integer('department_code');
+            $table->string('department_code');
             $table->string('gender',10);
             $table->string('position_code',20);
             $table->string('position_title_long');

@@ -29,7 +29,7 @@ class UserRequest extends FormRequest
             'username' => ['required','alpha','min:6',Rule::unique('users')->ignore($this->id)],
             'password' => ['required', 'alpha_num', 'min:8', 'confirmed'],
             'permission' => ['required'],
-            'password' => 'required'
+            'password' => Rule::requiredIf(!$this->id)
         ];
     }
 
