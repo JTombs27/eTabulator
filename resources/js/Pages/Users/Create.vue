@@ -85,6 +85,7 @@ export default {
                 id: null,
                 office_id:null,
             }),
+            
             municipals:[],
             barangays:[],
             offices:[],
@@ -164,6 +165,8 @@ export default {
                 },
                 cache: true
             },
+            placeholder: 'Search for an office',
+            data:[{"text": this.officess.office, "id":this.offices.department_code, "selected": true}],
             minimumInputLength: 2,
         })
         // this.loadOffices();

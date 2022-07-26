@@ -33,6 +33,7 @@ class EmployeeController extends Controller
                     'last_name' => $value['last_name'],
                     'department_code' => $value['department_code'],
                     'gender' => $value['gender'],
+                    'is_pghead' => $value['is_pghead'],
                     'position_code' => $value['position_code'],
                     'position_title_long' => $value['position_long_title'],
                     'position_title_short' => $value['position_short_title'],
