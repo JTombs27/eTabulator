@@ -25,7 +25,8 @@ class VehicleController extends Controller
     {
        
         return inertia('Vehicles/Index', [
-            "vehicles" => $this->model->with([
+            "vehicles" => $this->model
+            ->with([
                 'driverassign.empl.office'
             ])
             ->when($request->search, function ($query, $searchItem) {
@@ -122,14 +123,17 @@ class VehicleController extends Controller
         return $query;
     }
 
-    // public function getWhereAboutsTravel(Request $request,$id)
-    // {
+    public function getWhereAboutsTravel(Request $request,$id)
+    {
 
-    //     $driverVehiclesId = $this->driverVehicle->where('vehicles_id',$id)->first();
-    
-    //     $travel_info = $this->travel->where('driver_vehicles_id', $driverVehiclesId->id)->get();
-        
-         
-    //     return  $travel_info;
-    // }
+        $driverVehiclesId = $this->driverVehicle->where('vehicles_id',$id)->first();
+
+        $travel_info = $this->travel
+                       ->with(['driverVehicle.vehicle.vehicle_status','driverVehicle.office'])
+                       ->where('driver_vehicles_id', $driverVehiclesId->id)
+                       ->get();
+     
+      
+        return  $travel_info;
+    }
 }

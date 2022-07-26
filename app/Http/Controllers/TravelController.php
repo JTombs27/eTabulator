@@ -116,6 +116,8 @@ class TravelController extends Controller
         $request['user_id'] = auth()->user()->id;
         $request['office_id'] = auth()->user()->office_id;
 
+        
+        $travel = Travel::create($request->all());
         DB::beginTransaction();
         try {
             $travel = Travel::create($request->all());

@@ -148,55 +148,66 @@
     </div>
   <Modal 
         v-if="showModal" 
-        :modalTitle="'Permissions'" 
+        :modalTitle="'Vehicle Where Abouts'" 
         :addional_class="'modal-lg'"
         @closeModal="closeModal"
         @saveModal="updatePermissions">
-        <div class="row pb-3">
-            <div class="col-md-3">
-                <div class="form-check">
-                  <input class="form-check-input " type="checkbox" @change="selectOption($event, 'all')" id="flexCheckDefault">
-                  <label class="form-check-label disable-select" for="flexCheckDefault">
-                    Select all
-                  </label>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" @change="selectOption($event,'pghead')" id="pgheadPermission">
-                    <label class="form-check-label disable-select" for="pgheadPermission">
-                        PG-Head 
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-md-2">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox"  @change="selectOption($event,'pgo')" id="pgoPermission">
-                    <label class="form-check-label disable-select" for="pgoPermission">
-                        PGO 
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'ro')" id="roPermission">
-                    <label class="form-check-label disable-select" for="roPermission">
-                        RO 
-                    </label>
-                </div>
-            </div>
-            
-            <div class="col-md-2">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'pgso')" id="pgsoPermission">
-                    <label class="form-check-label disable-select" for="pgsoPermission">
-                        PGSO 
-                    </label>
-                </div>
-            </div>
-        </div>
+       <table class="table table-hover table-responsive">
+                    <thead>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Office</td>
+                            <td>:</td>
+                            <td>{{travel_info.driver_vehicle.office.office}}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>:</td>
+                            <td>{{travel_info.driver_vehicle.vehicle.FDESC}}</td>
+                        </tr>
+                         <tr>
+                            <td>Plate Number</td>
+                            <td>:</td>
+                            <td>{{travel_info.driver_vehicle.vehicle.PLATENO}}</td>
+                        </tr>
+                         <tr>
+                            <td>Fuel Type</td>
+                            <td>:</td>
+                            <td>{{travel_info.gas_type}}</td>
+                        </tr>
+                         <tr>
+                            <td>Vehicle Condition</td>
+                            <td>:</td>
+                            <td>{{travel_info.driver_vehicle.vehicle.vehicle_status.condition}}</td>
+                        </tr>
+                        <tr>
+                            <td>Travel Date</td>
+                            <td>:</td>
+                            <td>{{travel_info.travelDate}}</td>
+                        </tr>
+                        <tr>
+                            <td>Place To Visit</td>
+                            <td>:</td>
+                            <td>{{travel_info.place_to_visit}}</td>
+                        </tr>
+                        <tr>
+                            <td>Purpose</td>
+                            <td>:</td>
+                            <td>{{travel_info.purpose}}</td>
+                        </tr>
+                        <tr>
+                            <td>Travel Ticket Number</td>
+                            <td>:</td>
+                            <td>{{travel_info.ticket_number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td v-html="statusDisplay(travel_info.status)"></td>
+                        </tr>
+                    </tbody>
+                </table>
        
     </Modal>
 
@@ -218,7 +229,11 @@ export default ({
             search: this.$props.filters.search,
             filter:false,
             showModal: false,
-            travel_info:{},
+            travel_info:{
+               
+
+            },
+            travelDate:""
 
         }
     },
@@ -279,11 +294,36 @@ export default ({
         showInfo(id)
         {
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
-                this.travel_info = response.data
+                this.travel_info = response.data[0]
+                
+                this.showModal = true
+                console.log(this.travel_info)
             });
            
-              //this.showModal = true
-        }
+              
+        },
+       
+
+        statusDisplay (code) {
+            switch(code) {
+                case 'Approved':
+                    return "<span class='badge bg-success'>Approved</span>"
+                    break
+                case 'Disapproved':
+                    return "<span class='badge bg-danger'>Disapproved</span>"
+                    break
+                case null:
+                    return "<span class='badge bg-warning'>Pending</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
+        closeModal() {
+            
+            this.showModal = false
+        },
         
     },
 

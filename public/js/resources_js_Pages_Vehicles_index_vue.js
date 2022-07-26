@@ -30,7 +30,8 @@ __webpack_require__.r(__webpack_exports__);
       search: this.$props.filters.search,
       filter: false,
       showModal: false,
-      travel_info: {}
+      travel_info: {},
+      travelDate: ""
     };
   },
   computed: {
@@ -88,8 +89,32 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.post('/vehicles/getWhereAboutsTravel/' + id).then(function (response) {
-        _this.travel_info = response.data;
-      }); //this.showModal = true
+        _this.travel_info = response.data[0];
+        _this.showModal = true;
+        console.log(_this.travel_info);
+      });
+    },
+    statusDisplay: function statusDisplay(code) {
+      switch (code) {
+        case 'Approved':
+          return "<span class='badge bg-success'>Approved</span>";
+          break;
+
+        case 'Disapproved':
+          return "<span class='badge bg-danger'>Disapproved</span>";
+          break;
+
+        case null:
+          return "<span class='badge bg-warning'>Pending</span>";
+          break;
+
+        default:
+          return "";
+          break;
+      }
+    },
+    closeModal: function closeModal() {
+      this.showModal = false;
     }
   }
 });
@@ -433,78 +458,94 @@ var _hoisted_53 = {
   "class": "col-md-12"
 };
 var _hoisted_54 = {
-  "class": "row pb-3"
-};
-var _hoisted_55 = {
-  "class": "col-md-3"
-};
-var _hoisted_56 = {
-  "class": "form-check"
+  "class": "table table-hover table-responsive"
 };
 
-var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "form-check-label disable-select",
-  "for": "flexCheckDefault"
-}, " Select all ", -1
+var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_58 = {
-  "class": "col-md-3"
-};
-var _hoisted_59 = {
-  "class": "form-check"
-};
-
-var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "form-check-label disable-select",
-  "for": "pgheadPermission"
-}, " PG-Head ", -1
+var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Office", -1
 /* HOISTED */
 );
 
-var _hoisted_61 = {
-  "class": "col-md-2"
-};
-var _hoisted_62 = {
-  "class": "form-check"
-};
-
-var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "form-check-label disable-select",
-  "for": "pgoPermission"
-}, " PGO ", -1
+var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
 /* HOISTED */
 );
 
-var _hoisted_64 = {
-  "class": "col-md-2"
-};
-var _hoisted_65 = {
-  "class": "form-check"
-};
-
-var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "form-check-label disable-select",
-  "for": "roPermission"
-}, " RO ", -1
+var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Description", -1
 /* HOISTED */
 );
 
-var _hoisted_67 = {
-  "class": "col-md-2"
-};
-var _hoisted_68 = {
-  "class": "form-check"
-};
-
-var _hoisted_69 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
-  "class": "form-check-label disable-select",
-  "for": "pgsoPermission"
-}, " PGSO ", -1
+var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
 /* HOISTED */
 );
 
+var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Plate Number", -1
+/* HOISTED */
+);
+
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Fuel Type", -1
+/* HOISTED */
+);
+
+var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Vehicle Condition", -1
+/* HOISTED */
+);
+
+var _hoisted_65 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Travel Date", -1
+/* HOISTED */
+);
+
+var _hoisted_67 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_68 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Place To Visit", -1
+/* HOISTED */
+);
+
+var _hoisted_69 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_70 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Purpose", -1
+/* HOISTED */
+);
+
+var _hoisted_71 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Travel Ticket Number", -1
+/* HOISTED */
+);
+
+var _hoisted_73 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_74 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, "Status", -1
+/* HOISTED */
+);
+
+var _hoisted_75 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, ":", -1
+/* HOISTED */
+);
+
+var _hoisted_76 = ["innerHTML"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -677,60 +718,35 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["next", "prev"])])])])])]), $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
     key: 0,
-    modalTitle: 'Permissions',
+    modalTitle: 'Vehicle Where Abouts',
     addional_class: 'modal-lg',
-    onCloseModal: _ctx.closeModal,
+    onCloseModal: $options.closeModal,
     onSaveModal: _ctx.updatePermissions
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-        "class": "form-check-input",
-        type: "checkbox",
-        onChange: _cache[4] || (_cache[4] = function ($event) {
-          return _ctx.selectOption($event, 'all');
-        }),
-        id: "flexCheckDefault"
-      }, null, 32
-      /* HYDRATE_EVENTS */
-      ), _hoisted_57])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_59, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-        "class": "form-check-input",
-        type: "checkbox",
-        onChange: _cache[5] || (_cache[5] = function ($event) {
-          return _ctx.selectOption($event, 'pghead');
-        }),
-        id: "pgheadPermission"
-      }, null, 32
-      /* HYDRATE_EVENTS */
-      ), _hoisted_60])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-        "class": "form-check-input",
-        type: "checkbox",
-        onChange: _cache[6] || (_cache[6] = function ($event) {
-          return _ctx.selectOption($event, 'pgo');
-        }),
-        id: "pgoPermission"
-      }, null, 32
-      /* HYDRATE_EVENTS */
-      ), _hoisted_63])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_65, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-        "class": "form-check-input",
-        type: "checkbox",
-        name: "flexRadioDefault",
-        onChange: _cache[7] || (_cache[7] = function ($event) {
-          return _ctx.selectOption($event, 'ro');
-        }),
-        id: "roPermission"
-      }, null, 32
-      /* HYDRATE_EVENTS */
-      ), _hoisted_66])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-        "class": "form-check-input",
-        type: "checkbox",
-        name: "flexRadioDefault",
-        onChange: _cache[8] || (_cache[8] = function ($event) {
-          return _ctx.selectOption($event, 'pgso');
-        }),
-        id: "pgsoPermission"
-      }, null, 32
-      /* HYDRATE_EVENTS */
-      ), _hoisted_69])])])];
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_54, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_56, _hoisted_57, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.driver_vehicle.office.office), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_58, _hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.driver_vehicle.vehicle.FDESC), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_60, _hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.driver_vehicle.vehicle.PLATENO), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_62, _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.gas_type), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_64, _hoisted_65, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.driver_vehicle.vehicle.vehicle_status.condition), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_66, _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.travelDate), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_68, _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.place_to_visit), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_70, _hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.purpose), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_72, _hoisted_73, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.travel_info.ticket_number), 1
+      /* TEXT */
+      )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_74, _hoisted_75, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+        innerHTML: $options.statusDisplay($data.travel_info.status)
+      }, null, 8
+      /* PROPS */
+      , _hoisted_76)])])])];
     }),
     _: 1
     /* STABLE */
