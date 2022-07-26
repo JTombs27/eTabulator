@@ -28,18 +28,27 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Gas Type</th>
-                            <th scope="col" style="text-align: center">Total Price</th>
                             <th scope="col">Date</th>
-                            <th scope="col" style="text-align: right">Action</th>
+                            <th scope="col" style="text-align: right">Gasoline(Regular)</th>
+                            <th scope="col" style="text-align: right">Gasoline(Premium)</th>
+                            <th scope="col" style="text-align: right">Diesoline</th>
+                            <th scope="col" style="text-align: right">Engine Oil</th>
+                            <th scope="col" style="text-align: right">Brake Oil</th>
+                            <th scope="col" style="text-align: right">Greases</th>
+                            <th scope="col" style="text-align: right" v-if="can.canEditPrice || can.canDeletePrice">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(prices, index) in price.data" :key="index">
-                            <td>{{ prices.gas_type }}</td>
-                            <td class="text-end">{{ Number(prices.price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td>{{ new Date(prices.date).toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric' }) }}</td>
-                            <td style="text-align: right">
+                            <td class="text-end">{{ Number(prices.regular_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td class="text-end">{{ Number(prices.premium_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td class="text-end">{{ Number(prices.deisoline_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td class="text-end">{{ Number(prices.engine_oil_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td class="text-end">{{ Number(prices.brake_oil_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td class="text-end">{{ Number(prices.greases_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td></td>
+                            <td style="text-align: right" v-if="can.canEditPrice || can.canDeletePrice">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -48,7 +57,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li>
+                                    <li v-if="can.canEditPrice">
                                         <Link class="dropdown-item" title="Edit Price!" @click="editprice(prices.id)"> 
                                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-pencil me-2" viewBox="0 0 16 16">
                                             <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
@@ -56,7 +65,7 @@
                                         </Link>
                                     </li>
                                     <li><hr class="dropdown-divider action-divider"></li>
-                                    <li>
+                                    <li v-if="can.canDeletePrice">
                                         <Link class="dropdown-item" title="Delete" @click="deleteprice(prices.id)">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-trash me-2 text-danger" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
