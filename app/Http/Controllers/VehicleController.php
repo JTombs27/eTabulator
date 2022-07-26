@@ -45,12 +45,11 @@ class VehicleController extends Controller
     {
         $validated = $request->validated();
 
-        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date','plate_no'));
+        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date'));
 
         $vehicleStatus = $this->status->create(['condition' => $request->condition,
                                                 'vehicles_id' => $vehicle->id,
-                                                'vehicle_status_date' => $request->vehicle_status_date,
-                                                'plate_no' => $request->plate_no]);
+                                                'vehicle_status_date' => $request->vehicle_status_date]);
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');

@@ -30,26 +30,26 @@ __webpack_require__.r(__webpack_exports__);
         id: '',
         vehicles_id: '',
         vehicle_status_date: '',
-        plate_no: '',
         condition: ''
       }),
+      plate_no: "",
       pageTitle: "Add Vehicle Status",
       loading: false
     };
   },
   mounted: function mounted() {
     // this.plate_no = this.id
+    this.plate_no = this.vehicle.PLATENO;
+
     if (this.editData) {
       this.pageTitle = "Edit Vehicle Status";
       this.form.id = this.vehicle.id;
       this.form.vehicles_id = this.vehicle.vehicles_id;
       this.form.vehicle_status_date = this.vehicle.vehicle_status_date;
-      this.form.plate_no = this.vehicle.plate_no;
       this.form.condition = this.vehicle.condition;
       this.vehicleid = this.vehicle.vehicles_id;
     } else {
       this.pageTitle = "Add Vehicle Status";
-      this.form.plate_no = this.vehicle.PLATENO;
       this.form.vehicles_id = this.vehicle.id;
       this.vehicleid = this.vehicle.id;
     }
@@ -189,7 +189,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [_hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
-      return $data.form.plate_no = $event;
+      return $data.plate_no = $event;
     }),
     "class": "form-control",
     autocomplete: "chrome-off",
@@ -197,7 +197,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     readonly: ""
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.plate_no]]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.plate_no]]), _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.vehicle_status_date = $event;

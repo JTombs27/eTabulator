@@ -4,7 +4,7 @@
     <div class="row gap-20 masonry pos-r">
         
         <div class="peers fxw-nw jc-sb ai-c">
-             <h3>{{ pageTitle }}</h3>
+             <h3>{{ pageTitle}} - <span style="color:#2196f3"><u>{{plate_no}}</u></span></h3>
              
             <div class="peers">
                 <div class="peer mR-10">
@@ -27,6 +27,7 @@
             </div>
            
         </div>
+        
 
        <filtering v-if="filter" @closeFilter="filter=false">
             <label>Sample Inputs</label>
@@ -41,7 +42,6 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Plate No.</th>
                             <th scope="col">Date</th>
                             <th scope="col">Status</th>
                             <th scope="col" style="text-align: right">Action</th>
@@ -50,11 +50,9 @@
                     <tbody>
                        
                         <tr v-for="(vehicle, index) in vehicle_status.data" :key="index">
-                            <td>{{vehicle.plate_no}}</td>
                             <td>{{vehicle.vehicle_status_date}}</td>
-                            <td>{{vehicle.condition}}</td>
+                            <td v-html="code(vehicle.condition)"></td>
                             <td style="text-align: right">
-                                <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -102,6 +100,7 @@ export default {
         vehicle_status: Object,
         filters: Object,
         vehicles_id: Object,
+        PLATENO:Object,
     },
     data() {
         return {
@@ -113,6 +112,7 @@ export default {
             button_label:'',
             pageTitle: "Vehicle Status",
             loading:false,
+            plate_no:"",
         };
     },
      watch: {
@@ -129,7 +129,7 @@ export default {
         }, 300),
     },
     mounted() {
-       
+       this.plate_no = this.PLATENO
         
         // this.plate_no = this.vehicle_status.plate_no
         // this.form.plate_no = this.plate_no
@@ -165,9 +165,24 @@ export default {
             this.id = this.vehicle_status.data[index].id
              this.$inertia.get("/VehicleStatus/" + this.id +"/edit");
         },
+        
+        code (code) {
+            switch(code) {
+                case 'Good Condition':
+                    return "<span class='badge bg-success'>Good Condition</span>"
+                    break
+                case 'On-repair':
+                    return "<span class='badge bg-warning'>On-repair</span>"
+                    break
+                case 'Wasted':
+                    return "<span class='badge bg-danger'>Wasted</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
 
-
-       
 
         // loadMunicipals() { 
         //     axios.post('/municipalities').then((response) => {
