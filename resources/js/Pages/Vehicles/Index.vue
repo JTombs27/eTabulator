@@ -76,6 +76,7 @@
                             <th scope="col" >Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
+                            <th scope="col"></th>
                             <th scope="col" style="text-align: right"> Action</th>
                         </tr>
                     </thead>
@@ -90,7 +91,7 @@
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
-                            <td><span class="badge bg-info" @click="showInfo()">Where Abouts</span></td>
+                            <td><span class="badge bg-info" @click="showInfo(vehicle.id)">Where Abouts</span></td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -277,10 +278,10 @@ export default ({
         {
             this.filter = !this.filter
         },
-        showInfo()
+        showInfo(id)
         {
-            
-              this.showModal = true
+            alert(id)
+              //this.showModal = true
         }
         
     },

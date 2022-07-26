@@ -21,12 +21,21 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
+<<<<<<< HEAD
              FirstUserSeed::class,
             PermissionUserSeeder::class,
              PermissionsSeeder::class,
              Municipalities::class,
              Barangays::class,
              VehicleSeeder::class,
+=======
+            FirstUserSeed::class,
+            PermissionUserSeeder::class,
+            PermissionsSeeder::class,
+            Municipalities::class,
+            Barangays::class,
+            VehicleSeeder::class,
+>>>>>>> 0dfef4068dd3279be5cd1101ef98576d6ae6533c
 
         ]);
 
