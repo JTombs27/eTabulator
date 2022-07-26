@@ -119,4 +119,11 @@ class VehicleController extends Controller
          
         return $query;
     }
+
+    public function getWhereAbouts(Request $request)
+    {
+        // $query = 
+         
+        // return $query;
+    }
 }

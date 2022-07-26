@@ -90,6 +90,7 @@
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
+                            <td><span class="badge bg-info" @click="showInfo()">Where Abouts</span></td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -144,6 +145,59 @@
             </div>
         </div>
     </div>
+  <Modal 
+        v-if="showModal" 
+        :modalTitle="'Permissions'" 
+        :addional_class="'modal-lg'"
+        @closeModal="closeModal"
+        @saveModal="updatePermissions">
+        <div class="row pb-3">
+            <div class="col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input " type="checkbox" @change="selectOption($event, 'all')" id="flexCheckDefault">
+                  <label class="form-check-label disable-select" for="flexCheckDefault">
+                    Select all
+                  </label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" @change="selectOption($event,'pghead')" id="pgheadPermission">
+                    <label class="form-check-label disable-select" for="pgheadPermission">
+                        PG-Head 
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox"  @change="selectOption($event,'pgo')" id="pgoPermission">
+                    <label class="form-check-label disable-select" for="pgoPermission">
+                        PGO 
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'ro')" id="roPermission">
+                    <label class="form-check-label disable-select" for="roPermission">
+                        RO 
+                    </label>
+                </div>
+            </div>
+            
+            <div class="col-md-2">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'pgso')" id="pgsoPermission">
+                    <label class="form-check-label disable-select" for="pgsoPermission">
+                        PGSO 
+                    </label>
+                </div>
+            </div>
+        </div>
+       
+    </Modal>
 
 </template>
 
@@ -161,7 +215,8 @@ export default ({
         return {
             driverid: "",
             search: this.$props.filters.search,
-            filter:false
+            filter:false,
+            showModal: false
 
         }
     },
@@ -221,7 +276,13 @@ export default ({
         showFilter()
         {
             this.filter = !this.filter
+        },
+        showInfo()
+        {
+            
+              this.showModal = true
         }
+        
     },
 
 

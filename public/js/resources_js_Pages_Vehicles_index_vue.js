@@ -28,7 +28,8 @@ __webpack_require__.r(__webpack_exports__);
     return {
       driverid: "",
       search: this.$props.filters.search,
-      filter: false
+      filter: false,
+      showModal: false
     };
   },
   computed: {
@@ -81,6 +82,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     showFilter: function showFilter() {
       this.filter = !this.filter;
+    },
+    showInfo: function showInfo() {
+      this.showModal = true;
     }
   }
 });
@@ -420,6 +424,79 @@ var _hoisted_51 = {
 var _hoisted_52 = {
   "class": "col-md-12"
 };
+var _hoisted_53 = {
+  "class": "row pb-3"
+};
+var _hoisted_54 = {
+  "class": "col-md-3"
+};
+var _hoisted_55 = {
+  "class": "form-check"
+};
+
+var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "flexCheckDefault"
+}, " Select all ", -1
+/* HOISTED */
+);
+
+var _hoisted_57 = {
+  "class": "col-md-3"
+};
+var _hoisted_58 = {
+  "class": "form-check"
+};
+
+var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "pgheadPermission"
+}, " PG-Head ", -1
+/* HOISTED */
+);
+
+var _hoisted_60 = {
+  "class": "col-md-2"
+};
+var _hoisted_61 = {
+  "class": "form-check"
+};
+
+var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "pgoPermission"
+}, " PGO ", -1
+/* HOISTED */
+);
+
+var _hoisted_63 = {
+  "class": "col-md-2"
+};
+var _hoisted_64 = {
+  "class": "form-check"
+};
+
+var _hoisted_65 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "roPermission"
+}, " RO ", -1
+/* HOISTED */
+);
+
+var _hoisted_66 = {
+  "class": "col-md-2"
+};
+var _hoisted_67 = {
+  "class": "form-check"
+};
+
+var _hoisted_68 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "pgsoPermission"
+}, " PGSO ", -1
+/* HOISTED */
+);
+
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -430,6 +507,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_h7 = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("h7");
 
   var _component_pagination = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("pagination");
+
+  var _component_Modal = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Modal");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -508,7 +587,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_35)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.FDESC), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+      "class": "badge bg-info",
+      onClick: _cache[4] || (_cache[4] = function ($event) {
+        return $options.showInfo();
+      })
+    }, "Where Abouts")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [_hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
       href: "/vehicles/".concat(vehicle.id, "/edit")
     }, {
@@ -581,7 +665,69 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     prev: $props.vehicles.prev_page_url
   }, null, 8
   /* PROPS */
-  , ["next", "prev"])])])])])])], 64
+  , ["next", "prev"])])])])])]), $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
+    key: 0,
+    modalTitle: 'Permissions',
+    addional_class: 'modal-lg',
+    onCloseModal: _ctx.closeModal,
+    onSaveModal: _ctx.updatePermissions
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        onChange: _cache[5] || (_cache[5] = function ($event) {
+          return _ctx.selectOption($event, 'all');
+        }),
+        id: "flexCheckDefault"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_56])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_58, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        onChange: _cache[6] || (_cache[6] = function ($event) {
+          return _ctx.selectOption($event, 'pghead');
+        }),
+        id: "pgheadPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_59])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        onChange: _cache[7] || (_cache[7] = function ($event) {
+          return _ctx.selectOption($event, 'pgo');
+        }),
+        id: "pgoPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_62])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_64, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        name: "flexRadioDefault",
+        onChange: _cache[8] || (_cache[8] = function ($event) {
+          return _ctx.selectOption($event, 'ro');
+        }),
+        id: "roPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_65])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_66, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_67, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        name: "flexRadioDefault",
+        onChange: _cache[9] || (_cache[9] = function ($event) {
+          return _ctx.selectOption($event, 'pgso');
+        }),
+        id: "pgsoPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_68])])])];
+    }),
+    _: 1
+    /* STABLE */
+
+  }, 8
+  /* PROPS */
+  , ["onCloseModal", "onSaveModal"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 64
   /* STABLE_FRAGMENT */
   );
 }
