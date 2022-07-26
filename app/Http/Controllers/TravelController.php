@@ -45,6 +45,7 @@ class TravelController extends Controller
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
+                            ->orderBy('travels.id', 'desc')
                             ->get(),
             "can" => [
                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
