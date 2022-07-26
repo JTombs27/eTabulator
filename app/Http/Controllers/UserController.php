@@ -105,7 +105,7 @@ class UserController extends Controller
         return inertia('Users/Create', [
             "editData" => $this->model
                         ->with('office')
-                        ->first(),
+                        ->findOrFail($id),
             
         ]);
     }
@@ -113,13 +113,13 @@ class UserController extends Controller
     public function update(UserRequest $request)
     {
         $data = $this->model->findOrFail($request->id);
-        if ($request->username != $data->username) {
-            $request->validate([
-                'username' => 'required|unique:users'
-            ]);
-        }
+        $validated = $request->safe()->only(['password']);
+        $validated['office_id'] = $request->office_id;
         if ($request->password) {
             $request['password'] = bcrypt($request->password);
+        } else {
+            
+            $request['password'] = bcrypt($data->password);
         }
         // $data->update([
         //     'name' => $request->name,
@@ -128,7 +128,7 @@ class UserController extends Controller
         //     'password' => $password,
         //     'office' => 
         // ]);
-        $data->update($request->all());
+        $data->update($validated);
 
         return redirect('/users')->with('message', 'User updated');
     }
