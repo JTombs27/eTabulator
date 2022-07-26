@@ -128,7 +128,7 @@ class TravelController extends Controller
             $travel->updateTicket();
         } catch (\Throwable $e) {
             DB::rollback();
-            return redirect('/travels/create')->with('error', $e);
+            return redirect('/travels/create')->with('error', '2'.$e);
         }
         
         try {
@@ -136,7 +136,7 @@ class TravelController extends Controller
             $data1->deductCharge($request->price);
         } catch (\Throwable $e) {
             DB::rollback();
-            return redirect('/travels/create')->with('error', $e);
+            return redirect('/travels/create')->with('error', '3'.$e);
         }
         DB::commit();
         
