@@ -128,7 +128,7 @@ class TravelController extends Controller
             $travel->updateTicket();
         } catch (\Throwable $e) {
             DB::rollback();
-            return redirect('/travels/create')->with('error', '2'.$e);
+            return redirect('/travels/create')->with('error', $e);
         }
         
         try {
@@ -136,7 +136,7 @@ class TravelController extends Controller
             $data1->deductCharge($request->price);
         } catch (\Throwable $e) {
             DB::rollback();
-            return redirect('/travels/create')->with('error', '3'.$e);
+            return redirect('/travels/create')->with('error', $e);
         }
         DB::commit();
         
@@ -201,13 +201,12 @@ class TravelController extends Controller
 
     public function getPrice(Request $request)
     {
-        $gases = $this->prices->where('gas_type', $request->gasType);
-        if ($gases->whereDate('date',$request->datefilter)->exists()) {
-            $gases = $gases->whereDate('date',$request->datefilter);
+        $gases = $this->prices->where('gas_type', $request->gasType)->whereDate('date',$request->datefilter);
+        if ($gases->exists()) {
+            $gases = $gases->first();
         } else {
-            $gases = $gases->latest();
+            return $this->prices->latest()->distinct('gas_type')->first();
         }
-        $gases = $gases->first();
         return $gases;
     }
 }
