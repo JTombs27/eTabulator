@@ -68,6 +68,9 @@ class Travel extends Model
         return $this->belongsTo(DriverVehicle::class, 'driver_vehicles_id', 'id');
     }
 
-    
+    public function charge()
+    {
+        return $this->belongsToMany(Charge::class, 'office_id', 'office_id');                                                                                                                                                                                                                                                                                                                                                                                    
+    }
 
 }
