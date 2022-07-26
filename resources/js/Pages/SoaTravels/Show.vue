@@ -1,8 +1,8 @@
 <template>
-    <div class="row gap-10 masonry pos-r">
+    <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Merge Travels</h3>
-            <div class="peers">
+            <div class="peers fxw-nw jc-sb ai-c">
                 <div class="peer mR-5">
                     <div class="input-group">
                         <span class="input-group-text">From</span>
@@ -17,18 +17,15 @@
                     </div>
                     <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
                 </div>
-                <div class="peer">
+                <div class="peer mR-2">
                     <button class="btn btn-primary text-white" @click="submit()" :disabled="form.travels == 0">Merge</button>
                 </div>
                 <div class="peer">
-                    <Link class="btn btn-danger text-white" href="/soatravels">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-x-lg"
-                    viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                    d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
-                    <path fill-rule="evenodd"
-                    d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
-                    </svg>
+                   <Link href="/" @click="back">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                        <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                        </svg>
                     </Link>
                 </div>
             </div>
@@ -131,10 +128,10 @@ export default {
                     const travelDateFrom = item.date_from
                     const travelDateTo = item.date_to
                 if ( startDate && endDate ) {
-                    if(!!travelDateTo) {
-                        return startDate <= travelDateFrom && travelDateTo <= endDate;
+                    if (!!travelDateTo) {
+                        return startDate <= travelDateFrom && endDate <= travelDateTo;
                     } else {
-                        return startDate <= travelDateFrom && travelDateFrom <= endDate;
+                        return startDate == travelDateFrom && endDate == travelDateFrom;
                     }
                 }
                 /*if ( startDate && !endDate ) {
@@ -167,6 +164,9 @@ export default {
         this.getData();
     },
     methods:{
+        back() {
+            window.history.back();
+        },
         async getData(){
             this.Travels = this.travel;
             this.myLength = this.Travels.length;

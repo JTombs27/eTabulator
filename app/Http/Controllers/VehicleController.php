@@ -23,19 +23,17 @@ class VehicleController extends Controller
 
     public function index(Request $request)
     {
+       
         return inertia('Vehicles/Index', [
             "vehicles" => $this->model->with([
                 'driverassign.empl.office'
             ])
-
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('PLATENO', 'like', '%'.$searchItem . '%');
             })
-            
             ->latest()
             ->simplePaginate(10)
             ->withQueryString(),
-            
             "filters" => $request->only(['search']),
         ]);
     }
@@ -124,14 +122,14 @@ class VehicleController extends Controller
         return $query;
     }
 
-    public function getWhereAboutsTravel(Request $request,$id)
-    {
+    // public function getWhereAboutsTravel(Request $request,$id)
+    // {
 
-        $driverVehiclesId = $this->driverVehicle->where('vehicles_id',$id)->first();
+    //     $driverVehiclesId = $this->driverVehicle->where('vehicles_id',$id)->first();
     
-        $travel_info = $this->travel->where('driver_vehicles_id', $driverVehiclesId->id)->get();
+    //     $travel_info = $this->travel->where('driver_vehicles_id', $driverVehiclesId->id)->get();
         
          
-        return  $travel_info;
-    }
+    //     return  $travel_info;
+    // }
 }

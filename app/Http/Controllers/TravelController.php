@@ -121,14 +121,14 @@ class TravelController extends Controller
             $travel = Travel::create($request->all());
         } catch (\Throwable $e) {
             DB::rollback();
-            return redirect('/travels/create')->with('error', $e);
+            return redirect('/travels/create')->with('error', '1');
         }
         
         try {
             $travel->updateTicket();
         } catch (\Throwable $e) {
             DB::rollback();
-            return redirect('/travels/create')->with('error', $e);
+            return redirect('/travels/create')->with('error', '2');
         }
         
         try {
@@ -187,13 +187,24 @@ class TravelController extends Controller
         $travel = DB::table('travels')
                             ->select(DB::raw('vehicles.PLATENO,
                                 vehicles.FDESC,
-                                employees.first_name,
-                                employees.middle_name,
-                                employees.last_name,
-                                travels.*, TIME_FORMAT(travels.time_departure, "%p") as departure, TIME_FORMAT(travels.time_arrival, "%p") as arrival'))
+                                driver.first_name,
+                                driver.middle_name,
+                                driver.last_name,
+                                travels.*, TIME_FORMAT(travels.time_departure, "%p") as departure, TIME_FORMAT(travels.time_arrival, "%p") as arrival,
+                                head.first_name as head_first_name,
+                                head.middle_name as head_middle_name,
+                                head.last_name as head_last_name,
+                                head.position_title_short as position_short,
+                                offices.short_name'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
-                            ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
+                            ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
+                            ->leftJoin('employees as head', function($join)
+                                 {
+                                     $join->on('travels.office_id', '=', 'head.department_code')
+                                          ->where('head.is_pghead','=', 1);
+                                 })
+                            ->leftJoin('offices', 'head.department_code', 'offices.department_code')
                             ->where('travels.id', $request->id)
                             ->first();
         return $travel;
@@ -201,12 +212,13 @@ class TravelController extends Controller
 
     public function getPrice(Request $request)
     {
-        $gases = $this->prices->where('gas_type', $request->gasType)->whereDate('date',$request->datefilter);
-        if ($gases->exists()) {
-            $gases = $gases->first();
+        $gases = $this->prices->where('gas_type', $request->gasType);
+        if ($gases->whereDate('date',$request->datefilter)->exists()) {
+            $gases = $gases->whereDate('date',$request->datefilter);
         } else {
-            return $this->prices->latest()->distinct('gas_type')->first();
+            $gases = $gases->latest();
         }
+        $gases = $gases->first();
         return $gases;
     }
 }
