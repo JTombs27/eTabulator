@@ -29,7 +29,8 @@ __webpack_require__.r(__webpack_exports__);
       driverid: "",
       search: this.$props.filters.search,
       filter: false,
-      showModal: false
+      showModal: false,
+      travel_info: {}
     };
   },
   computed: {
@@ -77,14 +78,18 @@ __webpack_require__.r(__webpack_exports__);
       var text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
       if (confirm(text) == true) {
-        this.$inertia.post("/vehicles/" + vehicle.id);
+        this.$inertia["delete"]("/vehicles/" + vehicle.id);
       }
     },
     showFilter: function showFilter() {
       this.filter = !this.filter;
     },
     showInfo: function showInfo(id) {
-      alert(id); //this.showModal = true
+      var _this = this;
+
+      axios.post('/vehicles/getWhereAboutsTravel/' + id).then(function (response) {
+        _this.travel_info = response.data;
+      }); //this.showModal = true
     }
   }
 });

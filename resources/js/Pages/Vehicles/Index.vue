@@ -217,7 +217,8 @@ export default ({
             driverid: "",
             search: this.$props.filters.search,
             filter:false,
-            showModal: false
+            showModal: false,
+            travel_info:{},
 
         }
     },
@@ -241,9 +242,6 @@ export default ({
         }, 300),
 
     },
-
-    
-
     methods: {
         code (code) {
             switch(code) {
@@ -271,7 +269,7 @@ export default ({
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
             if(confirm(text) == true) {
-                this.$inertia.post("/vehicles/" + vehicle.id);
+                this.$inertia.delete("/vehicles/" + vehicle.id);
             }
         },
         showFilter()
@@ -280,7 +278,10 @@ export default ({
         },
         showInfo(id)
         {
-            alert(id)
+            axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
+                this.travel_info = response.data
+            });
+           
               //this.showModal = true
         }
         

@@ -7,14 +7,18 @@ use Illuminate\Http\Request;
 use App\Models\VehicleStatus;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\VehicleValidation;
+use App\Models\DriverVehicle;
+use App\Models\Travel;
 
 class VehicleController extends Controller
 {
 
-    public function __construct(Vehicle $model, VehicleStatus $status)
+    public function __construct(Vehicle $model, VehicleStatus $status,Travel $travel,DriverVehicle $driverVehicle)
     {
         $this->model = $model;
         $this->status = $status;
+        $this->travel = $travel;
+        $this->driverVehicle = $driverVehicle;
     }
 
     public function index(Request $request)
@@ -120,10 +124,14 @@ class VehicleController extends Controller
         return $query;
     }
 
-    public function getWhereAbouts(Request $request)
+    public function getWhereAboutsTravel(Request $request,$id)
     {
-        // $query = 
+
+        $driverVehiclesId = $this->driverVehicle->where('vehicles_id',$id)->first();
+    
+        $travel_info = $this->travel->where('driver_vehicles_id', $driverVehiclesId->id)->get();
+        
          
-        // return $query;
+        return  $travel_info;
     }
 }
