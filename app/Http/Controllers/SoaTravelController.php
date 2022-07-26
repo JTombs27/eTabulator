@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Travel;
 use App\Models\SoaTravel;
 use Illuminate\Http\Request;
@@ -9,22 +10,37 @@ use Illuminate\Support\Facades\DB;
 
 class SoaTravelController extends Controller
 {
-    public function __construct(Travel $model, SoaTravel $soatravel)
+    public function __construct(Travel $model, SoaTravel $soatravel, User $user)
     {
         $this->model = $model;
         $this->soatravel = $soatravel;
+        $this->user = $user;
     }
 
     public function index(Request $request)
     {
+        $isAdmin = $this->user
+            ->where('id', auth()->user()->id)
+            ->where(function($query){
+                $query->where('role', 'Admin')
+                     ->orWhere('role', 'PGO');
+            })
+            ->first();
+
+        $soatravel =  $this->soatravel;
+                                
+
+        if(!$isAdmin){
+            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id);
+        }
+
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
-            "soaTravel" => $this->soatravel
-            	->withSum('travels', 'price')
+            "soaTravel" => $soatravel
+            	->withsum('travels','price')
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('cafoa_number', 'like', '%' . $searchItem . '%');
                 })
-                ->where('office_id',auth()->user()->office_id)
                 ->latest()
                 ->simplePaginate(10)
                 ->withQueryString()
@@ -42,7 +58,7 @@ class SoaTravelController extends Controller
             //returns an array of users with name field only
             "travel" => $this->model
             	->where('office_id', auth()->user()->office_id)
-                ->where('status','Aprroved')
+                ->where('status','Approved')
             	->orderBy('date_from', 'asc')
             	->get(),
         ]);
@@ -50,14 +66,29 @@ class SoaTravelController extends Controller
 
     public function details(Request $request, $id)
     {
+        $isAdmin = $this->user
+            ->where('id', auth()->user()->id)
+            ->where(function($query){
+                $query->where('role', 'Admin')
+                     ->orWhere('role', 'PGO');
+            })
+            ->first();
+
+        $travels =  $this->model;
+                                
+
+        if(!$isAdmin){
+            $travels = $this->model->where('office_id', auth()->user()->office_id);
+        }
+
+
         return inertia('SoaTravels/Details', [
             //returns an array of users with name field only
-            "travels" => $this->model
+            "travels" => $travels
             	->latest()
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_number', 'like', '%' . $searchItem . '%');
                 })
-                ->where('office_id', auth()->user()->office_id)
             	->where('soa_travel', $id)
             	->simplePaginate(10),
             "filters" => $request->only(['search']),
