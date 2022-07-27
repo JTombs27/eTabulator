@@ -78,11 +78,15 @@ class UserController extends Controller
 
             if ($request->permission == 'PGO') {
                 //1,2,3 are all available permissions for the admin
-                $user->permissions()->sync([4,5,6,7,8]);
+                $user->permissions()->sync([5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26]);
             } elseif ($request->permission == 'RO') {
-                $user->permissions()->sync([5]);
+                $user->permissions()->sync([5,7,10,11,12,13,14,15,25]);
             } elseif ($request->permission == 'PGSO') {
-                $user->permissions()->sync([4,8]);
+                $user->permissions()->sync([4,8,16,17,18,19,20,21,22,23,24,27,28,29,30]);
+            } elseif ($request->permission == 'PG-Head') {
+                $user->permissions()->sync([6,25,26]);
+            } elseif ($request->permission == 'Admin') {
+                $user->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]);
             } else {
                 //specify an Array of permissions id here manually
                 $user->permissions()->sync([]);

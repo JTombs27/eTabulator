@@ -24,7 +24,7 @@ class VehicleValidation extends FormRequest
     public function rules()
     {
         return [
-            'PLATENO' => 'required',
+            'PLATENO' => 'required|unique:vehicles',
             'TYPECODE' => 'required',
             'FDATEACQ' => 'required',
             'FACQCOST'=> 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
@@ -39,6 +39,7 @@ class VehicleValidation extends FormRequest
     {
         return [
             'PLATENO.required' => 'Plate Number is required!',
+            'PLATENO.unique' => 'Plate Number already exists!',
             'TYPECODE.required' => 'Vehicle Type is required!',
             'FDATEACQ.required' => 'Date of Acquisition is required!',
             'FACQCOST.required' => 'Acquisition Cost is required!',

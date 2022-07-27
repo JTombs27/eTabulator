@@ -48,7 +48,8 @@ class OfficeController extends Controller
                     ->orWhere('short_name', 'like', "%$request->filter%")->get()
                     ->map(fn($item) => [
                         'id' => $item->department_code,
-                        'text' => $item->office ." (".$item->short_name.")"
+                        'text' => $item->office ." (".$item->short_name.")",
+                        'office' => $item->office
                     ]);
 
         return $query;

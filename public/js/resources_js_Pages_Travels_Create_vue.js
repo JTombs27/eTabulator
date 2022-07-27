@@ -24,7 +24,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     editData: Object,
-    charges: Number
+    balance: Number
   },
   data: function data() {
     return {
@@ -49,7 +49,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         drivers_id: null,
         is_carpool: null,
         actual_driver_id: null,
-        charges: null,
+        balance: null,
         type_code: null,
         is_borrowed_vehicle: null,
         is_borrowed_fuel: null,
@@ -90,7 +90,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              _this.form.charges = _this.charges;
+              _this.form.balance = _this.balance;
 
               if (!(_this.editData !== undefined)) {
                 _context.next = 29;
@@ -153,6 +153,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }))();
   },
   methods: {
+    formatOffice: function formatOffice(repo) {
+      return repo.text;
+    },
+    formatOfficeSelection: function formatOfficeSelection(repo) {
+      if (repo.loading) {
+        return "Searching...";
+      }
+
+      var img = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-building\" viewBox=\"0 0 16 16\">\n            <path fill-rule=\"evenodd\" d=\"M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z\"/>\n            <path d=\"M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z\"/>\n            </svg>";
+      var $container = $("<div class=\"d-flex pt-3\">\n               ".concat(img, " <strong style=\"margin-left:5px\">").concat(repo.office, "</strong>\n            </div>\n           "));
+      return $container;
+    },
     formatRepo: function formatRepo(repo) {
       return "<div class=\"text-success\">asaas</div>";
     },
@@ -289,7 +301,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 results: $.map(data, function (obj) {
                   return {
                     id: obj.id,
-                    text: obj.text
+                    text: obj.text,
+                    office: obj.office
                   };
                 })
               };
@@ -297,7 +310,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             cache: true
           },
           placeholder: 'Search for an office',
-          minimumInputLength: 2
+          minimumInputLength: 2,
+          templateResult: this.formatOfficeSelection,
+          templateSelection: this.formatOffice
         });
       }
     },
@@ -653,7 +668,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Travel", 1
   /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("\u20B1".concat(Number($props.charges).toLocaleString(undefined, {
+  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("\u20B1".concat(Number($props.balance).toLocaleString(undefined, {
     minimumFractionDigits: 2
   }))), 1
   /* TEXT */
