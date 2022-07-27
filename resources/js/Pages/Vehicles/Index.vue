@@ -10,7 +10,7 @@
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
-                <div class="peer">
+                <div class="peer" v-if="can.canCreateVehicle">
                     <Link class="btn btn-success btn-sm" href="/vehicles/create">Add Vehicles</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
@@ -155,7 +155,8 @@ export default ({
     components: { Pagination, Filtering},
     props: {
         vehicles: Object,
-        filters: Object
+        filters: Object,
+        can: Object
     },
     data() {
         return {

@@ -72,7 +72,7 @@ export default {
     data() {
         return {
             vehicles: [],
-            vehicles_id: "",
+            vehicles_id: "",    
             vehicles_plateno:"",
             form: useForm({
                 vehicles_id: "",

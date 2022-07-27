@@ -33,6 +33,9 @@ class VehicleController extends Controller
             ->withQueryString(),
             
             "filters" => $request->only(['search']),
+            "can" => [
+                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class)
+            ]
         ]);
     }
 
