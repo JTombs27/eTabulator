@@ -19,10 +19,10 @@
 
         <filtering v-if="filter" @closeFilter="filter=false">
             <label>Plate No</label>
-            <input type="text" v-model="filter.PLATENO" class="form-control">
+            <input type="text" v-model="filter1.PLATENO" class="form-control">
 
             <label>Vehicle Type</label>
-            <select class="form-select" v-model="filter.TYPECODE">
+            <select class="form-select" v-model="filter1.TYPECODE">
                 <option disabled value="">Select Type</option>
                 <option value="1">Motorcycle</option>
                 <option value="2">Light Vehicle</option>
@@ -30,20 +30,23 @@
             </select>
 
             <label>Date Acquired</label>
-            <input type="date" v-model="filter.FDATEACQ" class="form-control">
+            <input type="date" v-model="filter1.FDATEACQ" class="form-control">
 
             <label>Description</label>
-            <input type="text" v-model="filter.FDESC" class="form-control">
+            <input type="text" v-model="filter1.FDESC" class="form-control">
             
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">Find</button>
-            <button class="form control btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh Filter" @click="reset()"> 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                    </svg>
-                </button>
-        </filtering>
+            <div class="col pt-2 mt-2"></div>
+            <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg> Find</button> &nbsp;
+            <button class="btn btn-sm btn-danger mT-5 text-white" @click="reset()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                </svg> Reset</button>
 
+        </filtering>
         <div class="col-12" v-if="vehiclesGroup.length > 0">
             <div class="card">
                 <div class="card-body">
@@ -80,6 +83,7 @@
                         <tr>
                             <th></th>
                             <th scope="col">Plate Number</th>
+                            <th></th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col">Acquisition</th>
@@ -98,6 +102,8 @@
                                 </div>
                             </th>
                             <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
+                            <td v-if="vehicle.vehicle_status"><span style="color:brown">{{vehicle.vehicle_status.condition}} </span></td>
+                            <td v-else></td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
@@ -314,8 +320,6 @@ export default ({
             travel_info:{
 
             },
-            travel_info:{},
-            project_info:{},
             office:"",
             vehicle_desc:"",
             plate_no:"",
@@ -328,7 +332,7 @@ export default ({
             vehicle_status:"",
             noTravel:false,
 
-            filter: useForm({
+            filter1: useForm({
                 PLATENO:"",
                 TYPECODE:"",
                 FDATEACQ:"",
@@ -356,7 +360,7 @@ export default ({
                 { search: value },
                 {
                     preserveScroll: true,
-                    preserveState: true,
+                    preserveState: false,
                     replace: true,
                 }
             );
@@ -366,13 +370,13 @@ export default ({
         code (code) {
             switch(code) {
                 case '1':
-                    return "<span class='badge bg-info'>Motorcycle</span>"
+                    return "<span>Motorcycle</span>"
                     break
                 case '2':
-                    return "<span class='badge bg-success'>Light Vehicle</span>"
+                    return "<span>Light Vehicle</span>"
                     break
                 case '3':
-                    return "<span class='badge bg-danger'>Heavy Equipment</span>"
+                    return "<span>Heavy Equipment</span>"
                     break
                 default:
                     return ""
@@ -393,6 +397,7 @@ export default ({
                     break
             }
         },
+        
         driverVehicle(driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");
@@ -411,12 +416,14 @@ export default ({
             this.filter = !this.filter
         },
         runFilter() {
-            this.$inertia.get('/vehicles', this.filter,{preserveState:true})
+            
+            this.$inertia.get('/vehicles', this.filter1,{preserveState:true})
         },
-        // reset() {
-        //     this.filter = {}
+        reset() {
+            this.filter = {}
+            this.$inertia.get('/vehicles')
 
-        // },
+        },
         setStatus(){
             axios.post('/vehicles/set-status', {
                 "condition":this.form.condition,

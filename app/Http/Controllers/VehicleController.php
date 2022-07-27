@@ -49,11 +49,12 @@ class VehicleController extends Controller
     public function getFilter($request)
     {
         $index = $this->model->with([
-            'driverassign.empl.office'
+            'vehicle_status',
+            'driverassign.empl.office',
         ]);
         
         if ($request->PLATENO) {
-            $index = $index->where('PLATENO', $request->PLATENO);
+            $index = $index->where('PLATENO', 'like' , '%' .$request->PLATENO. '%');
         }
         
         if ($request->TYPECODE) {
@@ -67,9 +68,7 @@ class VehicleController extends Controller
         if ($request->FDESC) {
             $index = $index->where('FDATEACQ', 'like' , '%'.$request->FDESC.'%');
         }
-        
-        
-        
+
         return $index;
     }
 

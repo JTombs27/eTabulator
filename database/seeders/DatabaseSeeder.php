@@ -21,21 +21,12 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call([
-<<<<<<< HEAD
-            // FirstUserSeed::class,
-             PermissionUserSeeder::class,
-            // PermissionsSeeder::class,
-            // Municipalities::class,
-            // Barangays::class,
-            // VehicleSeeder::class,
-=======
             FirstUserSeed::class,
             PermissionUserSeeder::class,
             PermissionsSeeder::class,
             Municipalities::class,
             Barangays::class,
             VehicleSeeder::class,
->>>>>>> 6ab3f6b60ab292d132451c317bd49d18d2c3a373
 
         ]);
 

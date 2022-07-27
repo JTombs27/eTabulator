@@ -140,7 +140,7 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "mb-2"
 }, "Gas Type"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
-  readonly: "",
+  disabled: "",
   "class": "form-control",
   value: "Gasoline(Premium)",
   autocomplete: "chrome-off"
@@ -171,7 +171,7 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "col-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
-  readonly: "",
+  disabled: "",
   "class": "form-control",
   value: "Gasoline(Regular)",
   autocomplete: "chrome-off"
@@ -194,7 +194,7 @@ var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "col-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
-  readonly: "",
+  disabled: "",
   "class": "form-control",
   value: "Diesoline",
   autocomplete: "chrome-off"
@@ -217,7 +217,7 @@ var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "col-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
-  readonly: "",
+  disabled: "",
   "class": "form-control",
   value: "Engine Oil",
   autocomplete: "chrome-off"
@@ -240,7 +240,7 @@ var _hoisted_30 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "col-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
-  readonly: "",
+  disabled: "",
   "class": "form-control",
   value: "Braek Oil",
   autocomplete: "chrome-off"
@@ -263,7 +263,7 @@ var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   "class": "col-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
   type: "text",
-  readonly: "",
+  disabled: "",
   "class": "form-control",
   value: "Greases",
   autocomplete: "chrome-off"
