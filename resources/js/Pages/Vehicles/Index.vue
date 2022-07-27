@@ -34,7 +34,7 @@
 
             <label>Description</label>
             <input type="text" class="form-control">
-            
+
             <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
         </filtering>
 
@@ -138,7 +138,7 @@
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                         </svg> Delete </Link></li>
                                     </ul>
-                                
+
                                 </div>
                             </td>
                         </tr>
@@ -155,74 +155,128 @@
             </div>
         </div>
     </div>
-  <Modal 
-        v-if="showModal" 
-        :modalTitle="'Vehicle Where Abouts'" 
+  <Modal
+        v-if="showModal"
+        :modalTitle="'Vehicle Where Abouts'"
         :addional_class="'modal-lg'"
-        @closeModal="closeModal"
-        @saveModal="updatePermissions">
+        @closeModal="closeModal">
        <table class="table table-hover table-responsive">
                     <thead>
-                          <tr v-if="noTravel">
-                            <th scope="col"><button class="btn btn-info">Create Travel</button></th>
-                            <th scope="col"> | </th>
-                            <th scope="col">No Latest Travel Data </th>
-                        </tr>
+                          <tr>
+                            <th scope="col"><h3>Travels</h3></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr v-if="!!noTravel">
+                            <td scope="col"><Link class="btn btn-info" @click="createTravel()">Create Travel</Link></td>
+                            <td scope="col"> | </td>
+                            <td scope="col">No Latest Travel Data </td>
+                         </tr>
+                          <tr v-if="!noTravel">
+                            <td scope="col"><Link class="btn btn-info" @click="goToTravel()">Go to Travel</Link></td>
+                            <td scope="col"></td>
+                            <td scope="col"></td>
+                         </tr>
+                        <tr v-if="!noTravel">
                             <td>Office</td>
                             <td>:</td>
                             <td>{{office}}</td>
                         </tr>
-                        <tr>
+                        <tr  v-if="!noTravel">
                             <td>Description</td>
                             <td>:</td>
                             <td>{{vehicle_desc}}</td>
                         </tr>
-                         <tr>
+                         <tr v-if="!noTravel">
                             <td>Plate Number</td>
                             <td>:</td>
                             <td>{{plate_no}}</td>
                         </tr>
-                         <tr>
+                         <tr v-if="!noTravel">
                             <td>Fuel Type</td>
                             <td>:</td>
                             <td>{{fuel_type}}</td>
                         </tr>
-                         <tr>
+                         <tr v-if="!noTravel">
                             <td>Vehicle Condition</td>
                             <td>:</td>
                             <td>{{vehicle_condition}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Travel Date</td>
                             <td>:</td>
                             <td>{{travel_date}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Place To Visit</td>
                             <td>:</td>
                             <td>{{place_to_visit}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Purpose</td>
                             <td>:</td>
                             <td>{{purpose}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Travel Ticket Number</td>
                             <td>:</td>
                             <td>{{ticket_number}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Status</td>
                             <td>:</td>
                             <td v-html="statusDisplay(vehicle_status)"></td>
                         </tr>
                     </tbody>
                 </table>
-       
+               <table class="table table-hover table-responsive">
+                    <thead>
+                          <tr>
+                            <th scope="col"><h3>Project</h3></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="!!noProject">
+                            <td scope="col"><Link class="btn btn-info" @click="createProject()" >Create Project</Link></td>
+                            <td scope="col"> | </td>
+                            <td scope="col">No Latest Project Data </td>
+                         </tr>
+                          <tr v-if="!noProject">
+                            <td scope="col"><Link class="btn btn-info" @click="goToProject()">Go to Project</Link></td>
+                            <td scope="col"></td>
+                            <td scope="col"></td>
+                         </tr>
+                        <tr v-if="!noProject">
+                            <td>Project Description</td>
+                            <td>:</td>
+                            <td>{{projectDescription}}</td>
+                        </tr>
+                        <tr  v-if="!noProject">
+                            <td>Purpose</td>
+                            <td>:</td>
+                            <td>{{projectPurpose}}</td>
+                        </tr>
+                         <tr v-if="!noProject">
+                            <td>Borrowed</td>
+                            <td>:</td>
+                            <td v-html="borrowdisplay(externalBorrow)"></td>
+                        </tr>
+                         <tr v-if="!!externalBorrow">
+                            <td>Munincipality</td>
+                            <td>:</td>
+                            <td>{{borrowMun}}</td>
+                        </tr>
+                        <tr v-if="!!externalBorrow">
+                            <td>Barangay</td>
+                            <td>:</td>
+                            <td>{{borrowBrgy}}</td>
+                        </tr>
+                    </tbody>
+                </table>
     </Modal>
 
 </template>
@@ -248,10 +302,8 @@ export default ({
                 vehicle_status_date:""
             }),
             showModal: false,
-            travel_info:{
-               
-
-            },
+            travel_info:{},
+            project_info:{},
             office:"",
             vehicle_desc:"",
             plate_no:"",
@@ -262,7 +314,13 @@ export default ({
             purpose:"",
             ticket_number:"",
             vehicle_status:"",
-            noTravel:false
+            noTravel:false,
+            noProject:false,
+            externalBorrow:false,
+            projectDescription:"",
+            projectPurpose:"",
+            borrowMun:"",
+            borrowBrgy:""
         }
     },
     computed: {
@@ -301,11 +359,25 @@ export default ({
                     break
             }
         },
+
+        borrowdisplay (code) {
+            switch(code) {
+                case false:
+                    return "<span> No </span>"
+                    break
+                case true:
+                    return "<span> Yes </span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
         driverVehicle(driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");
         },
-        
+
         deleteVehicle(vehicle)
         {
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
@@ -320,18 +392,12 @@ export default ({
         },
 
         setStatus(){
-            
-            // this.form.transform((data)=>({
-            //     data,
-            //     vehiclesGroup:this.vehiclesGroup
-            // }))
-            // console.log(this.form.post('/vehicles/set-status', this.form));
             axios.post('/vehicles/set-status', {
                 "condition":this.form.condition,
                 "vehicle_status_date":this.form.vehicle_status_date,
                 "vehiclesGroup":this.vehiclesGroup
             }).then(response=>{
-                                
+
                 if(response.data != null)
                 {
                     if(response.data == "success")
@@ -349,9 +415,9 @@ export default ({
         },
         showInfo(id)
         {
-            console.log(id)
+
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
-               
+
                 this.travel_info = response.data[0]
                 if(response.data != "Error")
                 {
@@ -379,15 +445,49 @@ export default ({
                       this.purpose="",
                       this.ticket_number="",
                       this.vehicle_status=""
+
                 }
-               
-                this.showModal = true
-                
+                 this.showModal = true
+
+
             });
-           
-              
+            this.noProject = true
+
+             axios.post('/vehicles/getWhereAboutsProject/'+id).then((response) => {
+                  this.project_info = response.data[0]
+                 if(response.data[0][0] == "Error" || response.data[0][0] == undefined)
+                 {
+                       this.noProject = true
+                       this.externalBorrow = false
+                       this.projectDescription = ""
+                       this.projectPurpose = ""
+                       this.borrowMun  = ""
+                       this.borrowBrgy = ""
+                 }
+                 else{
+                       this.noProject = false
+                       if(response.data[1] == 1)
+                       {
+                              this.externalBorrow = true
+
+                              this.borrowMun  =  response.data[0][0].project_vehicles[0].municipality.citymunDesc
+                              this.borrowBrgy = response.data[0][0].project_vehicles[0].barangay.brgyDesc
+                       }
+                       else{
+                            this.externalBorrow = false
+                       }
+                       this.projectDescription = response.data[0][0].description
+                       this.projectPurpose =    response.data[0][0].project_vehicles[0].purpose
+
+
+
+                 }
+                  this.showModal = true
+             });
+
+
         },
-       
+
 
         statusDisplay (code) {
             switch(code) {
@@ -405,14 +505,49 @@ export default ({
                     break
             }
         },
+        createProject(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/projects/create/");
+           this.showModal = false
+
+       },
+
+       goToProject(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/projects");
+           this.showModal = false
+
+       },
+       createTravel(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/travels/create/");
+           this.showModal = false
+
+       },
+       goToTravel(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/travels");
+           this.showModal = false
+
+       },
+
         closeModal() {
-            
+
             this.showModal = false
+
         },
-        
+
     },
 
 
 })
 </script>
- 
+

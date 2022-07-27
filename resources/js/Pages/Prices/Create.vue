@@ -21,7 +21,7 @@
                             <div class="row">
                                 <div class="col-6">
                                         <label for="" class="mb-2">Gas Type</label>  
-                                        <input type="text" readonly class="form-control" value="Gasoline(Premium)" autocomplete="chrome-off">
+                                        <input type="text" disabled class="form-control" value="Gasoline(Premium)" autocomplete="chrome-off">
                                 </div>
                                 <div class="col-6">
                                     <label for=""  class="mb-2">Price</label>
@@ -31,7 +31,7 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-6">                      
-                                        <input type="text" readonly class="form-control" value="Gasoline(Regular)" autocomplete="chrome-off">
+                                        <input type="text" disabled class="form-control" value="Gasoline(Regular)" autocomplete="chrome-off">
                                 </div>
                                 <div class="col-6">
                                     <input type="text" v-model="form.regular_price" class="form-control" placeholder="0.00" autocomplete="chrome-off">
@@ -40,7 +40,7 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-6">                      
-                                        <input type="text" readonly class="form-control" value="Diesoline" autocomplete="chrome-off">
+                                        <input type="text" disabled class="form-control" value="Diesoline" autocomplete="chrome-off">
                                 </div>
                                 <div class="col-6">
                                     <input type="text" v-model="form.deisoline_price" class="form-control" placeholder="0.00" autocomplete="chrome-off">
@@ -49,7 +49,7 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-6">                      
-                                        <input type="text" readonly class="form-control" value="Engine Oil" autocomplete="chrome-off">
+                                        <input type="text" disabled class="form-control" value="Engine Oil" autocomplete="chrome-off">
                                 </div>
                                 <div class="col-6">
                                     <input type="text" v-model="form.engine_oil_price" class="form-control" placeholder="0.00" autocomplete="chrome-off">
@@ -58,7 +58,7 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-6">                      
-                                        <input type="text" readonly class="form-control" value="Braek Oil" autocomplete="chrome-off">
+                                        <input type="text" disabled class="form-control" value="Braek Oil" autocomplete="chrome-off">
                                 </div>
                                 <div class="col-6">
                                     <input type="text" v-model="form.brake_oil_price" class="form-control" placeholder="0.00" autocomplete="chrome-off">
@@ -67,7 +67,7 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-6">                      
-                                        <input type="text" readonly class="form-control" value="Greases" autocomplete="chrome-off">
+                                        <input type="text" disabled class="form-control" value="Greases" autocomplete="chrome-off">
                                 </div>
                                 <div class="col-6">
                                     <input type="text" v-model="form.greases_price" class="form-control" placeholder="0.00" autocomplete="chrome-off">
