@@ -26,27 +26,28 @@ class TravelController extends Controller
 
     public function index()
     {
-        
         return inertia('Travels/Index',[
-            "travels" => DB::table('travels')
-                            ->select(
-                                'vehicles.PLATENO',
-                                'vehicles.FDESC',
-                                'employees.first_name',
-                                'employees.middle_name',
-                                'employees.last_name',
-                                'travels.date_from',
-                                'travels.date_to',
-                                'travels.actual_driver',
-                                'travels.id',
-                                'travels.status',
-                                'travels.office_id'
-                            )
-                            ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
-                            ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
-                            ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
-                            ->orderBy('travels.id', 'desc')
-                            ->get(),
+            "travels" => $this->model
+                            ->with('driverVehicle.empl', 'driverVehicle.vehicle')
+                            ->where(function($q) {
+                                $q->where('office_id', auth()->user()->office_id);
+                            })
+                            ->latest()
+                            ->simplePaginate(10)
+                            ->through(fn($item) => [
+                                'first_name' => $item->driverVehicle->empl->first_name,
+                                'middle_name' => $item->driverVehicle->empl->middle_name,
+                                'last_name' => $item->driverVehicle->empl->last_name,
+                                'PLATENO' => $item->driverVehicle->vehicle->PLATENO,
+                                'FDESC' => $item->driverVehicle->vehicle->FDESC,
+                                'date_from' => $item->date_from,
+                                'date_to' => $item->date_to,
+                                'actual_driver' => $item->actual_driver,
+                                'ticket_number' => $item->ticket_number,
+                                'id' => $item->id,
+                                'status' => $item->status,
+                                'office_id' => $item->office_id,
+                            ]),
             "can" => [
                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
                 'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
@@ -62,18 +63,41 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
-        $amount = $this->charges->where('office_id', auth()->user()->office_id)->get();
+        $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+        
+        if(!$amount) {
+            $amount = 0.00;
+        } else {
+           $amount = $amount->sum('amount');
+        //    $amount = number_format($amount->sum('amount'), 2);
+        }
+
+        $travels = $this->model
+                        ->whereYear('date_from', date("Y"))
+                        ->where('office_id', auth()->user()->office_id)
+                        ->get();
+
+        // dd($amount);
         #
         return inertia('Travels/Create',[
-           'charges' => number_format($amount->sum('amount'), 2)
+           'charges' => $amount
         ]);
     }
 
     public function edit(Request $request, $id)
     {
+        $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+        
+        if(!$amount) {
+            $amount = 0.00;
+        } else {
+           $amount = $amount->sum('amount');
+        //    $amount = number_format($amount->sum('amount'), 2);
+        }
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
         return inertia('Travels/Create', [
-            'editData' => $editData
+            'editData' => $editData,
+            'charges' => $amount
         ]);
         
     }
@@ -82,7 +106,7 @@ class TravelController extends Controller
     {
         $mi = "";
         $driverVehicle = $this->driverVehicle
-                            ->with('empl')
+                            ->with('empl','vehicle.vehicle_status')
                             ->where('vehicles_id', $request->vehicles_id)
                             ->get();
 
@@ -120,13 +144,12 @@ class TravelController extends Controller
         $request['office_id'] = auth()->user()->office_id;
 
         
-        $travel = Travel::create($request->all());
         DB::beginTransaction();
         try {
             $travel = Travel::create($request->all());
         } catch (\Throwable $e) {
             DB::rollback();
-            return redirect('/travels/create')->with('error', '1');
+            return redirect('/travels/create')->with('error', $e);
         }
         
         try {
@@ -138,7 +161,6 @@ class TravelController extends Controller
         
         try {
             $data1 = $this->charges->where('office_id', auth()->user()->office_id)->first();
-            $data1->deductCharge($request->price);
         } catch (\Throwable $e) {
             DB::rollback();
             return redirect('/travels/create')->with('error', $e);
@@ -220,6 +242,7 @@ class TravelController extends Controller
     {
         try {
             $is_exist = $this->prices->whereDate('date',$request->datefilter)->exists();
+            
             $query = $this->prices->query();
 
             $query->when($is_exist, function ($q) {
@@ -228,7 +251,7 @@ class TravelController extends Controller
             $query = $query->latest()->first($request->gasType);
             return array_values($query->toArray())[0];
         } catch (\Throwable $th) {
-           return $th;
+           return 0.00;
         }
     }
 }

@@ -121,6 +121,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [VehicleController::class, 'index']);
         Route::get('/create', [VehicleController::class, 'create']);
         Route::post('/', [VehicleController::class, 'store']);
+        Route::post('/set-status', [VehicleController::class, 'setStatus']);
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::delete('/{id}', [VehicleController::class, 'destroy']);
