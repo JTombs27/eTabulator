@@ -53,7 +53,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         type_code: null,
         is_borrowed_vehicle: null,
         is_borrowed_fuel: null,
-        office_borrowing: null
+        borrowing_office: null
       }),
       pageTitle: "Create",
       columnFrom: "col-md-12",
@@ -777,13 +777,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.is_borrowed_vehicle]])]), $data.form.is_borrowed_vehicle || $data.form.is_borrowed_fuel ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_35, [_hoisted_36, _hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
     "class": "js-data-example-ajax",
     id: "office",
-    modelValue: $data.form.office_borrowing,
+    modelValue: $data.form.borrowing_office,
     "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
-      return $data.form.office_borrowing = $event;
+      return $data.form.borrowing_office = $event;
     })
   }, null, 8
   /* PROPS */
-  , ["modelValue"]), $data.form.errors.office_borrowing ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.office_borrowing), 1
+  , ["modelValue"]), $data.form.errors.borrowing_office ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.borrowing_office), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_39, _hoisted_40, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
     "class": "js-data-example-ajax",
