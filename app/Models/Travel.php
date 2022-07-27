@@ -74,6 +74,9 @@ class Travel extends Model
 
     
 
-    
+    public function charge()
+    {
+        return $this->belongsToMany(Charge::class, 'office_id', 'office_id');                                                                                                                                                                                                                                                                                                                                                                                    
+    }
 
 }

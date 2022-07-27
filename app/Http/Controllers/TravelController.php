@@ -45,6 +45,7 @@ class TravelController extends Controller
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
+                            ->orderBy('travels.id', 'desc')
                             ->get(),
             "can" => [
                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
@@ -61,8 +62,10 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
+        $amount = $this->charges->where('office_id', auth()->user()->office_id)->get();
+        #
         return inertia('Travels/Create',[
-            'charges' => $this->charges->where('office_id', auth()->user()->office_id)->first()->amount
+           'charges' => number_format($amount->sum('amount'), 2)
         ]);
     }
 
@@ -197,7 +200,8 @@ class TravelController extends Controller
                                 head.middle_name as head_middle_name,
                                 head.last_name as head_last_name,
                                 head.position_title_short as position_short,
-                                offices.short_name'))
+                                offices.short_name,
+                                offices.office'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
@@ -214,13 +218,17 @@ class TravelController extends Controller
 
     public function getPrice(Request $request)
     {
-        $gases = $this->prices->where('gas_type', $request->gasType);
-        if ($gases->whereDate('date',$request->datefilter)->exists()) {
-            $gases = $gases->whereDate('date',$request->datefilter);
-        } else {
-            $gases = $gases->latest();
+        try {
+            $is_exist = $this->prices->whereDate('date',$request->datefilter)->exists();
+            $query = $this->prices->query();
+
+            $query->when($is_exist, function ($q) {
+                return $q->whereDate('date',request('datefilter'));
+            });
+            $query = $query->latest()->first($request->gasType);
+            return array_values($query->toArray())[0];
+        } catch (\Throwable $th) {
+           return $th;
         }
-        $gases = $gases->first();
-        return $gases;
     }
 }
