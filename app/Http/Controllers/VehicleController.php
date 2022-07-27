@@ -124,8 +124,7 @@ class VehicleController extends Controller
         {
            $this->status->create(['condition' => $request->condition,
            'vehicles_id' => $value,
-           'vehicle_status_date' => $request->vehicle_status_date,
-           'plate_no' => '']);
+           'vehicle_status_date' => $request->vehicle_status_date]);
         }
         return 'success';
     }

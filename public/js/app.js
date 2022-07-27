@@ -109,9 +109,8 @@ __webpack_require__.r(__webpack_exports__);
     auth: Object
   },
   methods: {
-    logout: function logout() {
-      this.$inertia.post('/logout');
-      location.href = '/';
+    logout: function logout() {// this.$inertia.post('/logout')
+      // location.href = '/'
     }
   },
   mounted: function mounted() {
@@ -535,7 +534,6 @@ var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_20 = [_hoisted_18, _hoisted_19];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -567,13 +565,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-    onClick: _cache[0] || (_cache[0] = function ($event) {
-      return $options.logout();
-    }),
-    href: "",
+  })]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    method: "POST",
+    href: "/logout",
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
-  }, _hoisted_20)])])])])])]);
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_18, _hoisted_19];
+    }),
+    _: 1
+    /* STABLE */
+
+  })])])])])])]);
 }
 
 /***/ }),
