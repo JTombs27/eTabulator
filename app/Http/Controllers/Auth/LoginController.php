@@ -87,5 +87,4 @@ class LoginController extends Controller
             'email' => $errorMessage,
         ]);
     }
-
 }

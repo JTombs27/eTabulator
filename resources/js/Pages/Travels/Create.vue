@@ -73,14 +73,14 @@
                          <label class="form-check-label disable-select" for="is_borrowed_fuel">
                             Check if borrow fuel
                          </label>
-                        <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel">
+                        <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
                     </div>
 
                      <div class="form-check ">
                          <label class="form-check-label disable-select" for="is_borrowed_vehicle">
                             Check if borrow vehicle
                          </label>
-                        <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle">
+                        <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
                     </div>
                     <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
                         <br>
@@ -391,6 +391,13 @@ export default {
             this.form.driver_vehicles_id = $event.dv_id;
             if (this.editData === undefined) {
                 this.form.office_id = $event.office_id;
+            }
+        },
+
+        getOffice(e) {
+            console.log(e.target)
+            if (e.target.cheked) {
+                
             }
         },
         
