@@ -26,9 +26,9 @@ class TravelRequest extends FormRequest
     public function rules()
     {
         $valid = auth()->user()->office_id != '01' && $this->type_code != 3;
-        // dd($this);
+        // dd($valid);
         return [
-            'date_from' =>[ Rule::when($valid, ['required','date'])],
+            'date_from' =>['required','date'],
             'date_to' => ['required_if:rangedDate,true', Rule::when($this->rangedDate,['after:date_from'])], 
             'total_liters' => Rule::when($valid,['numeric','max:14']),
             'gas_type' => 'required',

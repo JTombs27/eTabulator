@@ -58,7 +58,7 @@
                     <label class="col-md-3" for="">Vehicle Name</label>
                     <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                 </div>
-                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)"/>
+                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <div class="col-md-12">
                     <br>
@@ -68,6 +68,26 @@
                          </label>
                         <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
                     </div>
+
+                     <div class="form-check">
+                         <label class="form-check-label disable-select" for="is_borrowed_fuel">
+                            Check if borrow fuel
+                         </label>
+                        <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel">
+                    </div>
+
+                     <div class="form-check ">
+                         <label class="form-check-label disable-select" for="is_borrowed_vehicle">
+                            Check if borrow vehicle
+                         </label>
+                        <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle">
+                    </div>
+                    <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
+                        <br>
+                        <label >Borrowed by</label>
+                        <Select2 class="js-data-example-ajax" id="office" v-model="form.office_borrowing"/>
+                        <div class="fs-6 c-red-500" v-if="form.errors.office_borrowing">{{ form.errors.office_borrowing }}</div>
+                    </span>
                 </div>
                 <hr>
                 <label>Authorized Driver</label>
@@ -135,7 +155,7 @@ export default {
 
     props: {
         editData: Object,
-        charges:String
+        charges:Number
     },
 
     data() {
@@ -162,7 +182,10 @@ export default {
                 is_carpool:null,
                 actual_driver_id:null,
                 charges:null,
-                type_code:null
+                type_code:null,
+                is_borrowed_vehicle:null,
+                is_borrowed_fuel:null,
+                office_borrowing:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -227,7 +250,31 @@ export default {
             this.pageTitle = "Create"
         }
         this.getVehicles();
-       
+        $('#office').select2({
+            ajax: {
+                url: '/offices/fetch',
+                dataType:'json',
+                delay:500,
+                data: function(filter) {
+                    return {filter:filter.term};
+                },
+                processResults: function(data, params) {
+                    params.page = params.page || 1;
+
+                    return{
+                        results: $.map(data, function(obj) {
+                            return {
+                                id: obj.id,
+                                text: obj.text
+                            }
+                        })
+                    };
+                },
+                cache: true
+            },
+            placeholder: 'Search for an office',
+            minimumInputLength: 2,
+        })
 
        
         // $("#actualDriver").select2({
