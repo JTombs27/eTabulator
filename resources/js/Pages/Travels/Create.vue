@@ -5,7 +5,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3> 
-            <h3>Total Charges: <u>{{charges}}</u></h3>
+            <h3>Balance: <u>{{`\u20B1${charges}`}}</u></h3>
             <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -100,7 +100,10 @@
                 <input type="text" v-model="form.place_to_visit" class="form-control">
                 <label for="">Purpose of Travel</label>
                 <input type="text" v-model="form.purpose" class="form-control">
-                <label for="">Gas Type</label>
+                <div class="position-relative">
+                    <label class="col-md-3" for="">Gas Type</label>
+                    <label class="position-absolute top-0 end-0" for=""><strong>{{ gasPrice }}</strong></label>
+                </div>
                 <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
                         <option  v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
                 </select>
@@ -160,23 +163,24 @@ export default {
             columnFrom:"col-md-12",
             employees:[],
             drivers:[],
+            gasPrice:"",
             gases:[{
-                id:"Gasoline(Regular)",
+                id:"regular_price",
                 text:"Gasoline(Regular)"
             },{
-                id:"Gasoline(Premium)",
+                id:"premium_price",
                 text:"Gasoline(Premium)"
             },{
-                id:"Diesoline",
+                id:"deisoline_price",
                 text:"Diesoline"
             },{
-                id:"Engine Oil",
+                id:"engine_oil_price",
                 text:"Engine Oil"
             },{
-                id:"Brake Oil",
+                id:"brake_oil_price",
                 text:"Brake Oil"
             },{
-                id:"Greases",
+                id:"greases_price",
                 text:"Greases"
             }],
            
@@ -229,8 +233,8 @@ export default {
             axios.post('/travels/get-price', 
                 {datefilter:this.form.date_from, gasType:this.form.gas_type}
             ).then((response) => {
-                console.log(response.data.price)
-                this.form.price =  Number(response.data.price) * Number(this.form.total_liters);
+                this.gasPrice = `Price: \u20B1${parseFloat(response.data).toFixed(2)}`;
+                this.form.price =  Number(response.data) * Number(this.form.total_liters);
             })
         },
 

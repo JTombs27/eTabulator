@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VehicleStatus;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 
 class VehicleStatusController extends Controller
 {
@@ -17,12 +17,15 @@ class VehicleStatusController extends Controller
 
     public function index($id)
     {
-      
+
         return inertia('VehicleStatus/Index',[
             'vehicle_status' =>  $this->model->with('vehicle')
-                                    ->where('vehicles_id',$id)->latest()->simplePaginate(10),
-            'vehicles_id' => $id
+                                    ->where('vehicles_id',$id)
+                                    ->latest()->simplePaginate(10),
+            'vehicles_id' => $id,
+            'PLATENO' =>  $this->vehicle->where('id',$id)->first()->PLATENO
         ]);
+      
 
     }
 
@@ -31,7 +34,7 @@ class VehicleStatusController extends Controller
         $attributes = $request->validate([
             'vehicle_status_date' => 'required',
             'condition' => 'required',
-            'plate_no' => 'required',
+           
             
         ]);
         $this->model->create($request->all());

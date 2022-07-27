@@ -72,9 +72,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
           if (startDate && endDate) {
             if (!!travelDateTo) {
-              return startDate <= travelDateFrom && travelDateTo <= endDate;
+              return startDate <= travelDateFrom && endDate <= travelDateTo;
             } else {
-              return startDate <= travelDateFrom && travelDateFrom <= endDate;
+              return startDate == travelDateFrom && endDate == travelDateFrom;
             }
           }
           /*if ( startDate && !endDate ) {
@@ -110,6 +110,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getData();
   },
   methods: {
+    back: function back() {
+      window.history.back();
+    },
     getData: function getData() {
       var _this2 = this;
 
@@ -223,7 +226,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "row gap-10 masonry pos-r"
+  "class": "row gap-20 masonry pos-r"
 };
 var _hoisted_2 = {
   "class": "peers fxw-nw jc-sb ai-c"
@@ -234,7 +237,7 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_4 = {
-  "class": "peers"
+  "class": "peers fxw-nw jc-sb ai-c"
 };
 var _hoisted_5 = {
   "class": "peer mR-5"
@@ -271,7 +274,7 @@ var _hoisted_12 = {
   "class": "fs-6 c-red-500"
 };
 var _hoisted_13 = {
-  "class": "peer"
+  "class": "peer mR-2"
 };
 var _hoisted_14 = ["disabled"];
 var _hoisted_15 = {
@@ -280,8 +283,8 @@ var _hoisted_15 = {
 
 var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
-  width: "15",
-  height: "15",
+  width: "25",
+  height: "25",
   fill: "currentColor",
   "class": "bi bi-x-lg",
   viewBox: "0 0 16 16"
@@ -380,8 +383,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Merge", 8
   /* PROPS */
   , _hoisted_14)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": "btn btn-danger text-white",
-    href: "/soatravels"
+    href: "/",
+    onClick: $options.back
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_16];
@@ -389,7 +392,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.sortedEmp, function (soa_travel) {
+  }, 8
+  /* PROPS */
+  , ["onClick"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.sortedEmp, function (soa_travel) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soa_travel.ticket_number), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soa_travel.travelDate), 1

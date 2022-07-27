@@ -56,6 +56,16 @@ __webpack_require__.r(__webpack_exports__);
       this.form.email = this.editData.email;
       this.form.id = this.editData.id;
       this.form.permission = this.editData.role;
+
+      if (this.editData.office_id) {
+        $('#office').select2({
+          data: [{
+            "text": this.editData.office.office,
+            "id": this.editData.office.department_code,
+            "selected": true
+          }]
+        });
+      }
     } else {
       this.pageTitle = "Create";
     }
@@ -119,6 +129,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         cache: true
       },
+      placeholder: 'Search for an office',
       minimumInputLength: 2
     }); // this.loadOffices();
   },

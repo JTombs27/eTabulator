@@ -4,17 +4,19 @@
     </Head>
 
     <div class="row gap-10 masonry pos-r">
-            <div class="col-3">
-                  <h3>Drivers Assignment: </h3>
-            </div> 
-            <div class="col-6">
-                <h4 style="color:brown"> {{ this.form.plate_no}}</h4>
+        <div class="peers fxw-nw jc-sb ai-c">
+            <h3>Drivers Assignment:  <span style="color:brown"> {{ this.form.plate_no}}</span></h3>
+            <div class="peers">
+                <div class="peer mR-10">
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
+                </div>
+                <div class="peer">
+                     <Link class="btn btn-success btn-sm" @click="createDriver()">Add Drivers</Link>
+                    <back-button class="pull-right" :href="'/vehicles'"></back-button>&nbsp;&nbsp;
+                </div>
             </div>
-            <div class="col-3">
-                <back-button class="pull-right" :href="'/vehicles'"></back-button> 
-                <Link class="btn btn-success btn-sm pull-right " style="margin-right:10px " @click="createDriver()">Add Drivers</Link>
-            </div>
-   
+        </div>
+
             <div class="col-12">
                 <div class="bgc-white p-20 bd">
                     <table class="table table-hover">
