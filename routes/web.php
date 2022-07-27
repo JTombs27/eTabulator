@@ -127,6 +127,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/getVehicles/{id}', [VehicleController::class, 'getVehicles']);
         Route::get('fetch', [OfficeController::class, 'loadVehicles']);
         Route::post('/getWhereAboutsTravel/{id}', [VehicleController::class, 'getWhereAboutsTravel']);
+        Route::post('/getWhereAboutsProject/{id}', [VehicleController::class, 'getWhereAboutsProject']);
     });
 
     // Driver Vehicles
