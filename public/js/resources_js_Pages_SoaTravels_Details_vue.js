@@ -329,7 +329,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "btn-close",
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return _ctx.$emit('closeFilter');
-    })
+    }),
+    "preserve-state": ""
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")])])])]);
 }
 
@@ -369,7 +370,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     "class": "page-link",
     href: $props.prev,
-    "preserve-scroll": ""
+    "preserve-scroll": "",
+    "preserve-state": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3];
@@ -390,7 +392,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     "class": "page-link",
     href: $props.next,
-    "preserve-scroll": ""
+    "preserve-scroll": "",
+    "preserve-state": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_5];

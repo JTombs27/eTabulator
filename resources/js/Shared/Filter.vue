@@ -7,7 +7,7 @@
             <div class="bgc-white">  
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLiveLabel">Advanced Filtering</h5>
-                    <button type="button" class="btn-close" @click="$emit('closeFilter')"></button>
+                    <button type="button" class="btn-close" @click="$emit('closeFilter')" preserve-state></button>
                 </div>
                 <div class="modal-body">
                     <slot></slot>

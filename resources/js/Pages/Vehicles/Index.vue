@@ -36,28 +36,37 @@
             <input type="text" v-model="filter.FDESC" class="form-control">
             
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">Find</button>
+            <button class="form control btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Refresh Filter" @click="reset()"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                </button>
         </filtering>
 
-        <div class="col-12">
+        <div class="col-12" v-if="vehiclesGroup.length > 0">
             <div class="card">
                 <div class="card-body">
-                    <h6 style="color:brown">Select Vehicle Status</h6>
                     <div class="row">
-                        <div class="col-4">
-                            <label>Vehicle Type</label>
-                            <select class="form-select">
+                        <div class="col-2" >
+                             <label style="padding-top:auto;padding-bottom:auto;height:100%;">Select Vehicle Status</label>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select form-sm" v-model="form.condition">
                                 <option disabled value=""></option>
                                 <option value="Good Condition">Good Condition</option>
                                 <option value="In Repair">In Repair</option>
                                 <option value="Wasted">Wasted</option>
                             </select>
                         </div>
-                        <div class="col-4">
+                        <div class="col-1">
                             <label>Status Date</label>
-                            <input type="date" class="form-control" autocomplete="chrome-off">
                         </div>
-                        <div class="col-4">
-                            <button type="button" class="btn btn-primary mt-4" @click="submit()">Save</button>
+                        <div class="col-3">
+                            <input type="date" class="form-control" v-model="form.vehicle_status_date" autocomplete="chrome-off"/>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-primary" @click="setStatus()">Save</button>
                         </div>
                     </div>
                 </div>
@@ -69,6 +78,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th></th>
                             <th scope="col">Plate Number</th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
@@ -82,7 +92,12 @@
                     </thead>
                     <tbody>
                         <tr v-for="(vehicle, index) in vehicles.data" :key="index">
-                            <td> {{vehicle.PLATENO}}</td>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" :value="vehicle.id"  :id="vehicle.id" v-model="vehiclesGroup">
+                                </div>
+                            </th>
+                            <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
@@ -235,6 +250,11 @@ export default ({
             driverid: "",
             search: this.$props.filters.search,
             filter:false,
+            vehiclesGroup:[],
+            form:useForm({
+                condition:"",
+                vehicle_status_date:""
+            }),
             showModal: false,
             travel_info:{
 
@@ -277,8 +297,7 @@ export default ({
                     replace: true,
                 }
             );
-        }, 300),
-
+        }, 300)
     },
     methods: {
         code (code) {
@@ -315,9 +334,39 @@ export default ({
             this.filter = !this.filter
         },
         runFilter() {
-            axios.get('/vehicles', this.filter).then(response =>{
-                
+            this.$inertia.get('/vehicles', this.filter,{preserveState:true})
+        },
+        reset() {
+            this.filter = {}
+
+        },
+        setStatus(){
+            
+            // this.form.transform((data)=>({
+            //     data,
+            //     vehiclesGroup:this.vehiclesGroup
+            // }))
+            // console.log(this.form.post('/vehicles/set-status', this.form));
+            axios.post('/vehicles/set-status', {
+                "condition":this.form.condition,
+                "vehicle_status_date":this.form.vehicle_status_date,
+                "vehiclesGroup":this.vehiclesGroup
+            }).then(response=>{
+                                
+                if(response.data != null)
+                {
+                    if(response.data == "success")
+                    {
+                        alert("Status Successfully Set");
+                        this.vehiclesGroup = [];
+                        this.$inertia.reload({only:['vehicles']});
+                    }
+                    else{
+                        this.saveMessage = response.data;
+                    }
+                }
             })
+
         },
         showInfo(id)
         {

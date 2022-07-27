@@ -57,19 +57,25 @@ class LoginController extends Controller
                 
         $errorMessage = "The provided credentials do not match our records.";
 
-        if (Hash::check($request->password, $user->password)) {
+        try {
+            if (Hash::check($request->password, $user->password)) {
 
-            if (!$user->is_active) {
+                if (!$user->is_active) {
                 
-                $errorMessage = "The provided credentials is deactivated.";
+                    $errorMessage = "The provided credentials is deactivated.";
 
-            } else if (Auth::attempt($credentials)){
+                } else if (Auth::attempt($credentials)){
                  
-                $request->session()->regenerate();
+                    $request->session()->regenerate();
 
-                return redirect()->to('/');
+                    return redirect()->to('/');
                 
+                }
             }
+        } catch (\Throwable $th) {
+            return back()->withErrors([
+                'email' => $errorMessage,
+            ]);
         }
         
         
