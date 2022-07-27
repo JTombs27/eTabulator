@@ -108,6 +108,18 @@ class VehicleController extends Controller
 
     }
 
+    public function setStatus(Request $request)
+    {
+        foreach ($request->vehiclesGroup as $index => $value) 
+        {
+           $this->status->create(['condition' => $request->condition,
+           'vehicles_id' => $value,
+           'vehicle_status_date' => $request->vehicle_status_date,
+           'plate_no' => '']);
+        }
+        return 'success';
+    }
+
     public function loadVehicles(Request $request)
     {
         $query = $this->model
