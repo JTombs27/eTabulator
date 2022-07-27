@@ -94,7 +94,7 @@ class TravelController extends Controller
            $amount = $amount->sum('amount');
         //    $amount = number_format($amount->sum('amount'), 2);
         }
-        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
             'charges' => $amount
@@ -106,7 +106,7 @@ class TravelController extends Controller
     {
         $mi = "";
         $driverVehicle = $this->driverVehicle
-                            ->with('empl')
+                            ->with('empl','vehicle.vehicle_status')
                             ->where('vehicles_id', $request->vehicles_id)
                             ->get();
 

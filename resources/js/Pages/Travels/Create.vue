@@ -53,9 +53,10 @@
                         <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
                     </div>
                 </div>
+                <br>
                 <div class="position-relative">
                     <label class="col-md-3" for="">Vehicle Name</label>
-                    <label class="position-absolute top-0 end-0" for=""><strong>{{ gasPrice }}</strong></label>
+                    <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                 </div>
                 <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
@@ -115,7 +116,7 @@
                 <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                 <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
                 <label for="">Price</label>
-                <input type="text" v-model="form.price" class="form-control">
+                <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
                 <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
@@ -165,6 +166,7 @@ export default {
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
+            vehicle_status:"",
             employees:[],
             drivers:[],
             gasPrice:"",
@@ -217,6 +219,7 @@ export default {
             }
             await this.getVehicleDetails();
             await this.showActualDriver();
+            await this.fetchPrice();
             // setTimeout(() => {
             // }, 0);
             
@@ -283,7 +286,8 @@ export default {
                             office_id: obj.empl.department_code,
                             "selected": _selected
                         }
-                    })                   
+                    })   
+                    this.vehicle_status = response.data ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
                 })
            
         },
