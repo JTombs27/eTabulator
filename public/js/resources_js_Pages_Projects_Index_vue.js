@@ -58,6 +58,9 @@ __webpack_require__.r(__webpack_exports__);
     }, 300)
   },
   mounted: function mounted() {
+    // $('body').removeClass('modal-open');
+    // $('body').css("overflow","scroll");
+    // $('.modal-backdrop').remove();
     if (this.editData !== undefined) {
       this.loading = true;
       this.pageTitle = "Edit";
