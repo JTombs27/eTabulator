@@ -7,31 +7,34 @@ use Illuminate\Http\Request;
 use App\Models\VehicleStatus;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\VehicleValidation;
+use App\Models\DriverVehicle;
+use App\Models\Travel;
 
 class VehicleController extends Controller
 {
 
-    public function __construct(Vehicle $model, VehicleStatus $status)
+    public function __construct(Vehicle $model, VehicleStatus $status,Travel $travel,DriverVehicle $driverVehicle)
     {
         $this->model = $model;
         $this->status = $status;
+        $this->travel = $travel;
+        $this->driverVehicle = $driverVehicle;
     }
 
     public function index(Request $request)
     {
+       
         return inertia('Vehicles/Index', [
-            "vehicles" => $this->model->with([
+            "vehicles" => $this->model
+            ->with([
                 'driverassign.empl.office'
             ])
-
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('PLATENO', 'like', '%'.$searchItem . '%');
             })
-            
             ->latest()
             ->simplePaginate(10)
             ->withQueryString(),
-            
             "filters" => $request->only(['search']),
         ]);
     }
@@ -45,12 +48,11 @@ class VehicleController extends Controller
     {
         $validated = $request->validated();
 
-        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date','plate_no'));
+        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date'));
 
         $vehicleStatus = $this->status->create(['condition' => $request->condition,
                                                 'vehicles_id' => $vehicle->id,
-                                                'vehicle_status_date' => $request->vehicle_status_date,
-                                                'plate_no' => $request->plate_no]);
+                                                'vehicle_status_date' => $request->vehicle_status_date]);
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');
@@ -120,7 +122,25 @@ class VehicleController extends Controller
                         'id' => $item->PLATENO,
                         'text' => $item->FDESC
                     ]);
-         
         return $query;
+    }
+
+    public function getWhereAboutsTravel(Request $request,$id)
+    {
+        
+        $driverVehiclesId = $this->driverVehicle->where('vehicles_id',$id)->first();
+        try{
+            $travel_info = $this->travel
+            ->with(['driverVehicle.vehicle.vehicle_status','driverVehicle.office'])
+            ->where('driver_vehicles_id', $driverVehiclesId->id)
+            ->get();
+            
+            return  $travel_info;
+        }catch(\Throwable $e ){
+            return  "Error";
+        }
+        
+      
+        
     }
 }

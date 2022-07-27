@@ -76,6 +76,7 @@
                             <th scope="col" >Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
+                            <th scope="col"></th>
                             <th scope="col" style="text-align: right"> Action</th>
                         </tr>
                     </thead>
@@ -90,6 +91,7 @@
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
+                            <td><span class="badge bg-info" @click="showInfo(vehicle.id)">Where Abouts</span></td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -144,6 +146,75 @@
             </div>
         </div>
     </div>
+  <Modal 
+        v-if="showModal" 
+        :modalTitle="'Vehicle Where Abouts'" 
+        :addional_class="'modal-lg'"
+        @closeModal="closeModal"
+        @saveModal="updatePermissions">
+       <table class="table table-hover table-responsive">
+                    <thead>
+                          <tr v-if="noTravel">
+                            <th scope="col"><button class="btn btn-info">Create Travel</button></th>
+                            <th scope="col"> | </th>
+                            <th scope="col">No Latest Travel Data </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Office</td>
+                            <td>:</td>
+                            <td>{{office}}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>:</td>
+                            <td>{{vehicle_desc}}</td>
+                        </tr>
+                         <tr>
+                            <td>Plate Number</td>
+                            <td>:</td>
+                            <td>{{plate_no}}</td>
+                        </tr>
+                         <tr>
+                            <td>Fuel Type</td>
+                            <td>:</td>
+                            <td>{{fuel_type}}</td>
+                        </tr>
+                         <tr>
+                            <td>Vehicle Condition</td>
+                            <td>:</td>
+                            <td>{{vehicle_condition}}</td>
+                        </tr>
+                        <tr>
+                            <td>Travel Date</td>
+                            <td>:</td>
+                            <td>{{travel_date}}</td>
+                        </tr>
+                        <tr>
+                            <td>Place To Visit</td>
+                            <td>:</td>
+                            <td>{{place_to_visit}}</td>
+                        </tr>
+                        <tr>
+                            <td>Purpose</td>
+                            <td>:</td>
+                            <td>{{purpose}}</td>
+                        </tr>
+                        <tr>
+                            <td>Travel Ticket Number</td>
+                            <td>:</td>
+                            <td>{{ticket_number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>:</td>
+                            <td v-html="statusDisplay(vehicle_status)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+       
+    </Modal>
 
 </template>
 
@@ -161,8 +232,23 @@ export default ({
         return {
             driverid: "",
             search: this.$props.filters.search,
-            filter:false
+            filter:false,
+            showModal: false,
+            travel_info:{
+               
 
+            },
+            office:"",
+            vehicle_desc:"",
+            plate_no:"",
+            fuel_type:"",
+            vehicle_condition:"",
+            travel_date:"",
+            place_to_visit:"",
+            purpose:"",
+            ticket_number:"",
+            vehicle_status:"",
+            noTravel:false
         }
     },
     computed: {
@@ -185,9 +271,6 @@ export default ({
         }, 300),
 
     },
-
-    
-
     methods: {
         code (code) {
             switch(code) {
@@ -215,13 +298,76 @@ export default ({
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
             if(confirm(text) == true) {
-                this.$inertia.post("/vehicles/" + vehicle.id);
+                this.$inertia.delete("/vehicles/" + vehicle.id);
             }
         },
         showFilter()
         {
             this.filter = !this.filter
-        }
+        },
+        showInfo(id)
+        {
+            console.log(id)
+            axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
+               
+                this.travel_info = response.data[0]
+                if(response.data != "Error")
+                {
+                      this.noTravel = false
+                      this.office = response.data[0].driver_vehicle.office.office
+                      this.vehicle_desc =response.data[0].driver_vehicle.vehicle.FDESC
+                      this.plate_no =response.data[0].driver_vehicle.vehicle.PLATENO
+                      this.fuel_type =response.data[0].gas_type
+                      this.vehicle_condition=response.data[0].driver_vehicle.vehicle.vehicle_status.condition
+                      this.travel_date=response.data[0].travelDate
+                      this.place_to_visit=response.data[0].place_to_visit
+                      this.purpose=response.data[0].purpose
+                      this.ticket_number=response.data[0].ticket_number
+                      this.vehicle_status=response.data[0].status
+                }
+                else{
+                      this.noTravel = true
+                      this.office ="",
+                      this.vehicle_desc ="",
+                      this.plate_no ="",
+                      this.fuel_type ="",
+                      this.vehicle_condition="",
+                      this.travel_date="",
+                      this.place_to_visit="",
+                      this.purpose="",
+                      this.ticket_number="",
+                      this.vehicle_status=""
+                }
+               
+                this.showModal = true
+                
+            });
+           
+              
+        },
+       
+
+        statusDisplay (code) {
+            switch(code) {
+                case 'Approved':
+                    return "<span class='badge bg-success'>Approved</span>"
+                    break
+                case 'Disapproved':
+                    return "<span class='badge bg-danger'>Disapproved</span>"
+                    break
+                case null:
+                    return "<span class='badge bg-warning'>Pending</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
+        closeModal() {
+            
+            this.showModal = false
+        },
+        
     },
 
 

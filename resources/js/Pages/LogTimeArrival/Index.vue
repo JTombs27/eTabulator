@@ -54,7 +54,7 @@
                             <td>{{log.ticket_number}}</td>
                             <td>{{log.date_from}}</td>
                             <td>{{log.date_to}}</td>
-                            <td>{{log.time_arrival}}</td>
+                            <td>{{ifnull(log.log_time_arrival)}}</td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
@@ -64,8 +64,8 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item" @click="gotoLogArrival(index)">Log Arrival</Link></li>
-                                    <li><Link class="dropdown-item" @click="gotoEditLog(index)">Edit Log</Link></li>
+                                    <li v-if="Showlog(log.log_time_arrival)"><Link class="dropdown-item" @click="gotoLogArrival(index)">Log Arrival</Link></li>
+                                    <li v-if="ShowEdit(log.log_time_arrival)"><Link class="dropdown-item" @click="gotoEditLog(index)">Edit Log</Link></li>
                                   </ul>
                                 </div>
                             </td>
@@ -96,7 +96,6 @@ export default {
     components: { Pagination, Filtering },
     props: {
        _logTimeArrival : Object,
-  
     },
     data() {
         return {
@@ -113,7 +112,7 @@ export default {
      watch: {
         search: _.debounce(function (value) {
             this.$inertia.get(
-                "/VehicleStatus",
+                "/LogTimeArrival",
                 { search: value },
                 {
                     preserveScroll: true,
@@ -125,7 +124,7 @@ export default {
     },
     mounted() {
        
-        
+        console.log(this._logTimeArrival)
         // this.plate_no = this.vehicle_status.plate_no
         // this.form.plate_no = this.plate_no
             // if(this.vehicle.vehicle_status)
@@ -137,17 +136,8 @@ export default {
             
     },
     methods: {
-        submit() {
-            if (!!this.vehicle.vehicle_status) {
-                this.form.patch("/VehicleStatus/" + this.form.id, this.form);
-            } 
-            else {
-                this.form.post("/VehicleStatus", this.form);
-            }
-        },
-        Edit() {
-           this._disbled = false
-        },
+       
+       
         showFilter() {
             this.filter = !this.filter
         },
@@ -160,6 +150,38 @@ export default {
         gotoEditLog(index) {
              this.travel_id = this._logTimeArrival.data[index].id
              this.$inertia.get("/logTimeArrival/" + this.travel_id +"/edit");
+        },
+
+        ifnull(data) {
+           if(!!data)
+           {
+                return data.time_arrival
+           }
+           else
+           {
+               return ""
+           }
+        },
+
+        ShowEdit(data) {
+           if(!!data)
+           {
+                return true
+           }
+           else
+           {
+               return false
+           }
+        },
+         Showlog(data) {
+           if(!!data)
+           {
+                return false
+           }
+           else
+           {
+               return true
+           }
         },
 
     },

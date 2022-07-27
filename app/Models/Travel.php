@@ -67,6 +67,12 @@ class Travel extends Model
     {
         return $this->belongsTo(DriverVehicle::class, 'driver_vehicles_id', 'id');
     }
+    public function logTimeArrival()
+    {
+        return $this->belongsTo(LogTimeArrival::class, 'id', 'travel_id');
+    }
+
+    
 
     public function charge()
     {
