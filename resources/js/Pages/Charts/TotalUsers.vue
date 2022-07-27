@@ -52,6 +52,10 @@ export default defineComponent({
         chartData: {
             type: Array,
             default: () => []
+        },
+        chartLabel:{
+            type: Array,
+            default: () => []
         }
     },
 

@@ -55,6 +55,12 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    chartLabel: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
     }
   },
   setup: function setup(props) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models;
 
 class HomeController extends Controller
 {
@@ -16,6 +17,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        
     }
 
     /**
@@ -25,6 +27,39 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return inertia('Home');
+        $isAdmin = User::
+        where('id', auth()->user()->id)
+        ->where('role','Admin')
+        ->first();
+
+        $chargeAmount  =  Models\Charge::select('amount')
+                                        ->get()
+                                        ->map(fn($item) => [
+                                                $item->amount
+                                            ]);
+        $chargeLabel   =  Models\Charge::with(['office'=>function($query){
+            $query->select('short_name','department_code');
+        }])->get()
+        ->map(fn($item) => [
+            $item->office->short_name
+        ]);
+
+        if(!$isAdmin)
+        {
+            $chargeAmount = Models\Charge::where('office_id', auth()->user()->office_id)->select('amount')->get()->map(fn($item) => [
+                $item->amount
+            ]);
+
+            $chargeLabel  =  Models\Charge::with(['office'=>function($query){
+                $query->select('short_name','department_code');
+            }])->where('office_id', auth()->user()->office_id)->get()->map(fn($item) => [
+                $item->office->short_name
+            ]);
+        }
+        //dd($chargeLabel);
+        return inertia('Home',[
+            'chargesAmount'=>$chargeAmount,
+            'chargesLabel'=>$chargeLabel
+        ]);
     }
 }

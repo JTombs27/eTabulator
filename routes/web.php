@@ -27,8 +27,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 Route::middleware('auth')->group(function() {
     Route::get('/', [HomeController::class, 'index']);
-
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    //Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('/users')->group(function() {
         Route::get('/', [UserController::class, 'index']);
