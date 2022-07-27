@@ -85,8 +85,8 @@
                     <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
                         <br>
                         <label >Borrowed by</label>
-                        <Select2 class="js-data-example-ajax" id="office" v-model="form.office_borrowing"/>
-                        <div class="fs-6 c-red-500" v-if="form.errors.office_borrowing">{{ form.errors.office_borrowing }}</div>
+                        <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
+                        <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
                     </span>
                 </div>
                 <hr>
@@ -185,7 +185,7 @@ export default {
                 type_code:null,
                 is_borrowed_vehicle:null,
                 is_borrowed_fuel:null,
-                office_borrowing:null
+                borrowing_office:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",

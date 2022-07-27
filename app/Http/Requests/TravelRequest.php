@@ -35,7 +35,8 @@ class TravelRequest extends FormRequest
             'driver_vehicles_id' => 'required',
             'vehicles_id' => 'required',
             'actual_driver' => 'required_if:showActualDriver,true',
-            'price' => 'lt:charges'
+            'price' => 'lt:charges',
+            'borrowing_office' => Rule::requiredIf($this->is_borrowed_fuel || $this->is_borrowed_vehicle)
         ];
     }
 
@@ -46,7 +47,8 @@ class TravelRequest extends FormRequest
             'date_from.required' => 'This field is required',
             'driver_vehicles_id.required' => 'This field is required',
             'vehicles_id.required' => 'This field is required',
-            'actual_driver.required_if' => 'Actual Driver is Required if the above option is checked'
+            'actual_driver.required_if' => 'Actual Driver is Required if the above option is checked',
+            'borrowing_office.required' => 'Please select a borrowing office'
         ];
     }
 }

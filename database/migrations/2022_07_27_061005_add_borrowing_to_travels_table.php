@@ -14,7 +14,9 @@ class AddBorrowingToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            //
+            $table->boolean('is_borrowed_fuel')->after('is_carpool')->nullable();
+            $table->boolean('is_borrowed_vehicle')->after('is_borrowed_fuel')->nullable();
+            $table->string('borrowing_office')->after('is_borrowed_vehicle')->nullable();
         });
     }
 
@@ -26,7 +28,9 @@ class AddBorrowingToTravelsTable extends Migration
     public function down()
     {
         Schema::table('travels', function (Blueprint $table) {
-            //
+            $table->dropColumn('is_borrowed_fuel');
+            $table->dropColumn('is_borrowed_vehicle');
+            $table->dropColumn('borrowing_office');
         });
     }
 }
