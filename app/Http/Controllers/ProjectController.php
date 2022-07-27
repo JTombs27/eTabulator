@@ -42,8 +42,8 @@ class ProjectController extends Controller
         {
             return inertia('Projects/Create',[
                 "can" => [
-                            'canCreateProject' => auth()->user()->can('create', User::class),
-                            'canEditProject' => auth()->user()->can('canDeleteUser', User::class),
+                            'canCreateProject' => auth()->user()->can('canCreateProject', User::class),
+                            'canEditProject' => auth()->user()->can('canDeleteProject', User::class),
                 ],
                'editData'=>$this->model
                 ->with("ProjectVehicles.Vehicles")
@@ -52,8 +52,8 @@ class ProjectController extends Controller
         }
         else{
             return inertia('Projects/Create',["can" => [
-                    'canCreateProject' => auth()->user()->can('create', User::class),
-                    'canEditProject' => auth()->user()->can('canDeleteUser', User::class),
+                    'canCreateProject' => auth()->user()->can('canCreateProject', User::class),
+                    'canEditProject' => auth()->user()->can('canDeleteProject', User::class),
                 ]
             ]);
         }

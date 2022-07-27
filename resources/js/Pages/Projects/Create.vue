@@ -46,6 +46,19 @@
                 <textarea type="text" class="form-control" v-model="form.description" id="description" ></textarea>
                 <div class="form-text text-danger">{{form.errors["data.description"]}}</div>
             </div>
+            <div class="col-12 mb-1">
+                <div class="row">
+                    <div class="col-7">
+                        <label for="">Municipality Selection</label>
+                        <Select2 v-model="form.municipality_code" :options="municipalities" @select="loadBarangays(form.municipality_code)"  /> 
+                    </div>
+                    <div class="col-5">
+                        <label for="">Barangay Selection</label>
+                        <Select2 v-model="form.barangay_code" :options="barangayGroups"    /> 
+                       
+                    </div>
+                </div>
+            </div>
             
             <div class="col-12" v-if="editData === undefined">
                 <div class="row" v-for="(vehicle, index) in vehiclesGroup" :key="index">
@@ -117,11 +130,15 @@ export default {
         return{
             form: useForm({
                 description:"",
+                municipality_code:"",
+                barangay_code:"",
                 id:null
             }),
             vehiclesGroup:[],
             vehicles:[],
-            pageTitle:"Add"
+            pageTitle:"Add",
+            municipalities:[],
+            barangayGroups:[],
         }
     },
     mounted() 
@@ -129,17 +146,21 @@ export default {
         
         if(this.editData !== undefined)
         {
-            this.pageTitle = "Edit"
-            this.form.description = this.editData.description;
-            this.form.id = this.editData.id;
-            this.vehiclesGroup = this.editData.project_vehicles;
+            this.pageTitle          = "Edit"
+            this.form.description   = this.editData.description;
+            this.form.id            = this.editData.id;
+            this.form.municipality_code  = this.editData.municipality_code;
+            this.form.barangay_code  = this.editData.barangay_code;
+            this.vehiclesGroup      = this.editData.project_vehicles;
+             this.loadBarangays(this.editData.municipality_code);
         }
         else{
             this.pageTitle = "Add"
         }
 
-         this.loadVehicles()
-        
+        this.loadVehicles();
+        this.loadMunicipality();
+       
     },
      methods:{
         addNew()
@@ -195,7 +216,19 @@ export default {
                 
                 this.vehicles = data;
             })
-        }
+        },
+        loadMunicipality()
+        {
+            axios.post('/municipalities').then((response) => {
+                this.municipalities = response.data;
+            });
+        },
+        loadBarangays(citymunCode)
+        {
+            axios.post('/barangays',{citymunCode:citymunCode}).then((response) => {
+                 this.barangayGroups = response.data;
+            });
+        },
      }
 }
 </script>
