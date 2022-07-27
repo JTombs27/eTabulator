@@ -72,7 +72,7 @@ __webpack_require__.r(__webpack_exports__);
 
     $("#emp_name").select2({
       ajax: {
-        url: "http://192.168.9.101:91//api/PGDDO_Employees",
+        url: "http://122.54.19.172:91//api/PGDDO_Employees",
         dataType: 'json',
         delay: 700,
         data: function data(params) {
