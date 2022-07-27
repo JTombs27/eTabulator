@@ -105,11 +105,6 @@ __webpack_require__.r(__webpack_exports__);
     setStatus: function setStatus() {
       var _this = this;
 
-      // this.form.transform((data)=>({
-      //     data,
-      //     vehiclesGroup:this.vehiclesGroup
-      // }))
-      // console.log(this.form.post('/vehicles/set-status', this.form));
       axios.post('/vehicles/set-status', {
         "condition": this.form.condition,
         "vehicle_status_date": this.form.vehicle_status_date,
