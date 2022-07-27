@@ -51,14 +51,22 @@ export default defineComponent({
         chartData: {
             type: Array,
             default: () => []
+        },
+        chartLabel:{
+            type:String,
+            default: () => []
+        },
+        piColor:{
+            type:String,
+            default: () => []
         }
     },
     setup(props) {
         const chartData = {
-            labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+            labels: props.chartLabel,
             datasets: [
                 {
-                    backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+                    backgroundColor: props.piColor,
                     data: props.chartData
                 }
             ]

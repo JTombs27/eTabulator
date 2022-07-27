@@ -119,7 +119,7 @@ class UserController extends Controller
             $validated['password'] = bcrypt($request->password);
         } else {
             
-            $validated['password'] = bcrypt($data->password);
+            $validated['password'] = $data->password;
         }
         // $data->update([
         //     'name' => $request->name,
