@@ -91,19 +91,22 @@ class VehicleController extends Controller
                 ->select(
                     'vehicles.id',
                     'vehicles.PLATENO',
+                    'vehicles.TYPECODE',
                     'vehicle_status.condition'
                 )
                 ->leftJoin('vehicle_status', 'vehicle_status.vehicles_id', 'vehicles.id')
-                ->where(function ($query) use($id){
-                    $query->where('vehicle_status.condition', 'Good Condition')
-                        ->orWhere('vehicle_status.vehicles_id', $id);
-                })
+                // ->where(function ($query) use($id){
+                //     $query->where('vehicle_status.condition', 'Good Condition')
+                //         ->orWhere('vehicle_status.vehicles_id', $id);
+                // })
                 ->distinct('vehicle_status.vehicles_id')
                 ->orderBy('vehicle_status.created_at', 'desc')
                 ->get()
                 ->map(fn($item) => [
                     'id' => $item->id,
-                    'text' => $item->PLATENO
+                    'text' => $item->PLATENO,
+                    'condition' => $item->condition,
+                    'typeCode' => $item->TYPECODE
                 ]);
 
     }

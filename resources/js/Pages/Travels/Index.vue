@@ -23,23 +23,23 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th scope="col">Trip Ticket</th>
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Date</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Office id</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in travels" :key="index">
+                        <tr v-for="(item, index) in travels.data" :key="index">
+                            <td>{{item.ticket_number}}</td>
                             <td>{{item.FDESC}} <strong>({{ item.PLATENO}})</strong></td>
                             <td v-if="item.actual_driver">{{item.actual_driver}}</td>
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
                             <td v-if="!item.date_to">{{item.date_from}}</td>
                             <td v-else>{{item.date_from}} to {{item.date_to}}</td>
                             <td v-html="statusDisplay(item)"></td>
-                            <td >{{ item.office_id }}</td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
@@ -78,8 +78,8 @@
                 <div class="row justify-content-center">
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
-                        <!-- <pagination :links="users.links" /> -->
-                        <!-- <pagination :next="users.next_page_url" :prev="users.prev_page_url" /> -->
+                        <!-- <pagination :links="travels.links" /> -->
+                        <pagination :next="travels.next_page_url" :prev="travels.prev_page_url" />
                     </div>
                 </div>
             </div>
@@ -88,8 +88,10 @@
 </template>
 
 <script>
-
+import Filtering from "@/Shared/Filter";
+import Pagination from "@/Shared/Pagination";
 export default{
+    components: { Pagination, Filtering },
     props: {
         can: Object,
         travels:Object,
