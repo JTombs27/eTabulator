@@ -33,7 +33,7 @@ class UserController extends Controller
                     $query->where('name', 'like', '%' . $searchItem . '%');
                 })
                 ->orderBy('name', 'asc')
-                ->paginate(10)
+                ->simplePaginate(10)
                 ->withQueryString()
                 ->through(fn($user) => [
                     'id' => $user->id,
@@ -100,37 +100,35 @@ class UserController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $data = $this->model->where('id', $id)->first([
-            'name', 'id', 'email', 'cats', 'role', 'username'
-        ]);
+        // $data = DB::table('users')>where('id', $id)->first();
 
         return inertia('Users/Create', [
-            "editData" => $data,
+            "editData" => $this->model
+                        ->with('office')
+                        ->findOrFail($id),
+            
         ]);
     }
 
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
         $data = $this->model->findOrFail($request->id);
-        if ($request->username != $data->username) {
-            $request->validate([
-                'username' => 'required|unique:users'
-            ]);
-        }
+        $validated = $request->safe()->only(['password']);
+        $validated['office_id'] = $request->office_id;
         if ($request->password) {
-            $request->validate([
-                'password' => ['required', 'confirmed'],
-            ]);
-            $password = bcrypt($request->password);
+            $validated['password'] = bcrypt($request->password);
         } else {
-            $password = $data->password;
+            
+            $validated['password'] = bcrypt($data->password);
         }
-        $data->update([
-            'name' => $request->name,
-            'permission' => $request->permission,
-            'username' => $request->username,
-            'password' => $password
-        ]);
+        // $data->update([
+        //     'name' => $request->name,
+        //     'permission' => $request->permission,
+        //     'username' => $request->username,
+        //     'password' => $password,
+        //     'office' => 
+        // ]);
+        $data->update($validated);
 
         return redirect('/users')->with('message', 'User updated');
     }

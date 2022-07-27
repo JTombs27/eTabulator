@@ -125,12 +125,33 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         is_check: e.target.checked
       });
     },
-    selectOption: function selectOption(e) {
+    selectOption: function selectOption(e, Permission_type) {
+      console.log(Permission_type);
+
       if (e.target.checked) {
-        var selected = this.permissions["null"].map(function (obj) {
-          return obj.id;
-        });
-        this.selectedPermissions = selected;
+        if (Permission_type == 'all') {
+          var newArr = [];
+
+          var selected = _.flatMapDepth(this.permissions, function (e) {
+            // return e.id;
+            _.forEach(e, function (value) {
+              // return value.id
+              var final_id = _.map(value);
+
+              newArr.push(final_id[0]);
+            });
+          });
+
+          this.selectedPermissions = newArr;
+        } else if (Permission_type == 'pgo') {
+          this.selectedPermissions = [5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19];
+        } else if (Permission_type == 'ro') {
+          this.selectedPermissions = [5, 7, 10, 11, 12, 13, 14, 15];
+        } else if (Permission_type == 'pghead') {
+          this.selectedPermissions = [6];
+        } else if (Permission_type == 'pgso') {
+          this.selectedPermissions = [4, 8, 16, 17, 18, 19, 20, 21, 22];
+        }
       } else {
         this.selectedPermissions = [];
       }
@@ -327,24 +348,89 @@ var _hoisted_32 = {
   "class": "col-md-12"
 };
 var _hoisted_33 = {
-  "class": "pb-3"
+  "class": "row pb-3"
 };
 var _hoisted_34 = {
+  "class": "col-md-3"
+};
+var _hoisted_35 = {
   "class": "form-check"
 };
 
-var _hoisted_35 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_36 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "form-check-label disable-select",
   "for": "flexCheckDefault"
 }, " Select all ", -1
 /* HOISTED */
 );
 
-var _hoisted_36 = {
+var _hoisted_37 = {
+  "class": "col-md-3"
+};
+var _hoisted_38 = {
+  "class": "form-check"
+};
+
+var _hoisted_39 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "pgheadPermission"
+}, " PG-Head ", -1
+/* HOISTED */
+);
+
+var _hoisted_40 = {
+  "class": "col-md-2"
+};
+var _hoisted_41 = {
+  "class": "form-check"
+};
+
+var _hoisted_42 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "pgoPermission"
+}, " PGO ", -1
+/* HOISTED */
+);
+
+var _hoisted_43 = {
+  "class": "col-md-2"
+};
+var _hoisted_44 = {
+  "class": "form-check"
+};
+
+var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "roPermission"
+}, " RO ", -1
+/* HOISTED */
+);
+
+var _hoisted_46 = {
+  "class": "col-md-2"
+};
+var _hoisted_47 = {
+  "class": "form-check"
+};
+
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "form-check-label disable-select",
+  "for": "pgsoPermission"
+}, " PGSO ", -1
+/* HOISTED */
+);
+
+var _hoisted_49 = {
+  "class": "row"
+};
+var _hoisted_50 = {
+  "class": "col-md-4 mb-3"
+};
+var _hoisted_51 = {
   "class": "form-check checkbox-list"
 };
-var _hoisted_37 = ["value", "id"];
-var _hoisted_38 = ["for"];
+var _hoisted_52 = ["value", "id"];
+var _hoisted_53 = ["for"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -475,43 +561,84 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   , ["links"])])])])])]), $data.showModal ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Modal, {
     key: 0,
     modalTitle: 'Permissions',
+    addional_class: 'modal-lg',
     onCloseModal: $options.closeModal,
     onSaveModal: $options.updatePermissions
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_35, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
         "class": "form-check-input",
         type: "checkbox",
         onChange: _cache[4] || (_cache[4] = function ($event) {
-          return $options.selectOption($event);
+          return $options.selectOption($event, 'all');
         }),
         id: "flexCheckDefault"
       }, null, 32
       /* HYDRATE_EVENTS */
-      ), _hoisted_35])]), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.permissions, function (permission, index) {
-        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(permission, function (item) {
-          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_36, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+      ), _hoisted_36])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_38, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        onChange: _cache[5] || (_cache[5] = function ($event) {
+          return $options.selectOption($event, 'pghead');
+        }),
+        id: "pgheadPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_39])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        onChange: _cache[6] || (_cache[6] = function ($event) {
+          return $options.selectOption($event, 'pgo');
+        }),
+        id: "pgoPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_42])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_43, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        name: "flexRadioDefault",
+        onChange: _cache[7] || (_cache[7] = function ($event) {
+          return $options.selectOption($event, 'ro');
+        }),
+        id: "roPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_45])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        "class": "form-check-input",
+        type: "checkbox",
+        name: "flexRadioDefault",
+        onChange: _cache[8] || (_cache[8] = function ($event) {
+          return $options.selectOption($event, 'pgso');
+        }),
+        id: "pgsoPermission"
+      }, null, 32
+      /* HYDRATE_EVENTS */
+      ), _hoisted_48])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.permissions, function (permission, index) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_50, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(index), 1
+        /* TEXT */
+        ), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(permission, function (item) {
+          return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
             type: "checkbox",
             "class": "form-check-input specific",
-            "onUpdate:modelValue": _cache[5] || (_cache[5] = function ($event) {
+            "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
               return $data.selectedPermissions = $event;
             }),
             value: item.id,
             id: "permission".concat(item.id)
           }, null, 8
           /* PROPS */
-          , _hoisted_37), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.selectedPermissions]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+          , _hoisted_52), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.selectedPermissions]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
             "class": "form-check-label disable-select",
             "for": "permission".concat(item.id)
           }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.permission_name), 9
           /* TEXT, PROPS */
-          , _hoisted_38)]);
+          , _hoisted_53)]);
         }), 256
         /* UNKEYED_FRAGMENT */
         ))]);
       }), 256
       /* UNKEYED_FRAGMENT */
-      ))];
+      ))])];
     }),
     _: 1
     /* STABLE */

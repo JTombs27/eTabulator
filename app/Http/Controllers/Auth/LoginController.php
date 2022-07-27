@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -51,16 +53,36 @@ class LoginController extends Controller
             'username' => ['required'],
             'password' => ['required'],
         ]);
-        $credentials['is_active'] = 1; 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
- 
-            return redirect()->to('/');
-        }
+        $user= User::where('username', $request->username)->first();
+                
         $errorMessage = "The provided credentials do not match our records.";
-        if ($credentials['is_active']) {
-            $errorMessage = "The provided credentials is deactivated.";
+
+        try {
+            if (Hash::check($request->password, $user->password)) {
+
+                if (!$user->is_active) {
+                
+                    $errorMessage = "The provided credentials is deactivated.";
+
+                } else if (Auth::attempt($credentials)){
+                 
+                    $request->session()->regenerate();
+
+                    return redirect()->to('/');
+                
+                }
+            }
+        } catch (\Throwable $th) {
+            return back()->withErrors([
+                'email' => $errorMessage,
+            ]);
         }
+        
+        
+        
+        // if ($user) {
+        //     $errorMessage = "The provided credentials is deactivated.";
+        // }
         return back()->withErrors([
             'email' => $errorMessage,
         ]);

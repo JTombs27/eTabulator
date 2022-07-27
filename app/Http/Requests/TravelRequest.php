@@ -14,6 +14,7 @@ class TravelRequest extends FormRequest
      */
     public function authorize()
     {
+        // return auth()->user()->role != 'PGO' && $this->type_code != 3;
         return true;
     }
     
@@ -24,10 +25,12 @@ class TravelRequest extends FormRequest
      */
     public function rules()
     {
+        $valid = auth()->user()->office_id != '01' && $this->type_code != 3;
+        // dd($this);
         return [
-            'date_from' => 'required|date',
-            'date_to' => 'required_if:rangedDate,true'.($this->rangedDate ? '|after:date_from':''),
-            'total_liters' => 'numeric|max:14',
+            'date_from' =>[ Rule::when($valid, ['required','date'])],
+            'date_to' => ['required_if:rangedDate,true', Rule::when($this->rangedDate,['after:date_from'])], 
+            'total_liters' => Rule::when($valid,['numeric','max:14']),
             'gas_type' => 'required',
             'driver_vehicles_id' => 'required',
             'vehicles_id' => 'required',
