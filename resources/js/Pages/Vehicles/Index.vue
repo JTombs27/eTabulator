@@ -163,66 +163,121 @@
         @saveModal="updatePermissions">
        <table class="table table-hover table-responsive">
                     <thead>
-                          <tr v-if="noTravel">
-                            <th scope="col"><button class="btn btn-info">Create Travel</button></th>
-                            <th scope="col"> | </th>
-                            <th scope="col">No Latest Travel Data </th>
-                        </tr>
+                          <tr>
+                            <th scope="col"><h3>Travels</h3></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <tr v-if="!!noTravel">
+                            <td scope="col"><Link class="btn btn-info" href="/travels/create">Create Travel</Link></td>
+                            <td scope="col"> | </td>
+                            <td scope="col">No Latest Travel Data </td>
+                         </tr>
+                          <tr v-if="!noTravel">
+                            <td scope="col"><Link class="btn btn-info" href="/travels">Go to Travel</Link></td>
+                            <td scope="col"></td>
+                            <td scope="col"></td>
+                         </tr>
+                        <tr v-if="!noTravel">
                             <td>Office</td>
                             <td>:</td>
                             <td>{{office}}</td>
                         </tr>
-                        <tr>
+                        <tr  v-if="!noTravel">
                             <td>Description</td>
                             <td>:</td>
                             <td>{{vehicle_desc}}</td>
                         </tr>
-                         <tr>
+                         <tr v-if="!noTravel">
                             <td>Plate Number</td>
                             <td>:</td>
                             <td>{{plate_no}}</td>
                         </tr>
-                         <tr>
+                         <tr v-if="!noTravel">
                             <td>Fuel Type</td>
                             <td>:</td>
                             <td>{{fuel_type}}</td>
                         </tr>
-                         <tr>
+                         <tr v-if="!noTravel">
                             <td>Vehicle Condition</td>
                             <td>:</td>
                             <td>{{vehicle_condition}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Travel Date</td>
                             <td>:</td>
                             <td>{{travel_date}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Place To Visit</td>
                             <td>:</td>
                             <td>{{place_to_visit}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Purpose</td>
                             <td>:</td>
                             <td>{{purpose}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Travel Ticket Number</td>
                             <td>:</td>
                             <td>{{ticket_number}}</td>
                         </tr>
-                        <tr>
+                        <tr v-if="!noTravel">
                             <td>Status</td>
                             <td>:</td>
                             <td v-html="statusDisplay(vehicle_status)"></td>
                         </tr>
                     </tbody>
                 </table>
-       
+               <table class="table table-hover table-responsive">
+                    <thead>
+                          <tr>
+                            <th scope="col"><h3>Project</h3></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="!!noProject">
+                            <td scope="col"><Link class="btn btn-info" href="/projects/create">Create Project</Link></td>
+                            <td scope="col"> | </td>
+                            <td scope="col">No Latest Project Data </td>
+                         </tr>
+                          <tr v-if="!noProject">
+                            <td scope="col"><Link class="btn btn-info" href="/projects">Go to Project</Link></td>
+                            <td scope="col"></td>
+                            <td scope="col"></td>
+                         </tr>
+                        <tr v-if="!noProject">
+                            <td>Project Description</td>
+                            <td>:</td>
+                            <td>{{projectDescription}}</td>
+                        </tr>
+                        <tr  v-if="!noProject">
+                            <td>Purpose</td>
+                            <td>:</td>
+                            <td>{{projectPurpose}}</td>
+                        </tr>
+                         <tr v-if="!noProject">
+                            <td>Borrowed</td>
+                            <td>:</td>
+                            <td v-html="borrowdisplay(externalBorrow)"></td>
+                        </tr>
+                         <tr v-if="!!externalBorrow">
+                            <td>Munincipality</td>
+                            <td>:</td>
+                            <td>{{borrowMun}}</td>
+                        </tr>
+                        <tr v-if="!!externalBorrow">
+                            <td>Barangay</td>
+                            <td>:</td>
+                            <td>{{borrowBrgy}}</td>
+                        </tr>
+                    </tbody>
+                </table>
     </Modal>
 
 </template>
@@ -248,10 +303,8 @@ export default ({
                 vehicle_status_date:""
             }),
             showModal: false,
-            travel_info:{
-               
-
-            },
+            travel_info:{},
+            project_info:{},
             office:"",
             vehicle_desc:"",
             plate_no:"",
@@ -262,7 +315,13 @@ export default ({
             purpose:"",
             ticket_number:"",
             vehicle_status:"",
-            noTravel:false
+            noTravel:false,
+            noProject:false,
+            externalBorrow:false,
+            projectDescription:"",
+            projectPurpose:"",
+            borrowMun:"",
+            borrowBrgy:""
         }
     },
     computed: {
@@ -295,6 +354,20 @@ export default ({
                     break
                 case '3':
                     return "<span class='badge bg-danger'>Heavy Equipment</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
+
+        borrowdisplay (code) {
+            switch(code) {
+                case false:
+                    return "<span> No </span>"
+                    break
+                case true:
+                    return "<span> Yes </span>"
                     break
                 default:
                     return ""
@@ -343,7 +416,7 @@ export default ({
         },
         showInfo(id)
         {
-            console.log(id)
+           
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
                
                 this.travel_info = response.data[0]
@@ -373,12 +446,46 @@ export default ({
                       this.purpose="",
                       this.ticket_number="",
                       this.vehicle_status=""
+                      
                 }
-               
-                this.showModal = true
+                 this.showModal = true
+             
                 
             });
-           
+            this.noProject = true
+
+             axios.post('/vehicles/getWhereAboutsProject/'+id).then((response) => {
+                  this.project_info = response.data[0]
+                 if(response.data[0][0] == "Error" || response.data[0][0] == undefined)
+                 {
+                       this.noProject = true
+                       this.externalBorrow = false
+                       this.projectDescription = ""
+                       this.projectPurpose = ""
+                       this.borrowMun  = ""
+                       this.borrowBrgy = ""
+                 }
+                 else{
+                       this.noProject = false
+                       if(response.data[1] == 1)
+                       {
+                              this.externalBorrow = true
+                            
+                              this.borrowMun  =  response.data[0][0].project_vehicles[0].municipality.citymunDesc
+                              this.borrowBrgy = response.data[0][0].project_vehicles[0].barangay.brgyDesc
+                       }
+                       else{
+                            this.externalBorrow = false
+                       }
+                       this.projectDescription = response.data[0][0].description
+                       this.projectPurpose =    response.data[0][0].project_vehicles[0].purpose         
+                       
+
+                       
+                 }
+                  this.showModal = true
+             });
+            
               
         },
        
@@ -399,9 +506,12 @@ export default ({
                     break
             }
         },
+        
         closeModal() {
-            
             this.showModal = false
+            $('body').removeClass('modal-open');
+            $('body').css("overflow","scroll");
+            $('.modal-backdrop').remove();
         },
         
     },
