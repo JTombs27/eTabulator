@@ -44,7 +44,7 @@ __webpack_require__.r(__webpack_exports__);
     this.pageTitle = "Create Driver Vehicle";
     $("#emp_name").select2({
       ajax: {
-        url: "http://122.54.19.172:91//api/ListOfEmployees",
+        url: "http://122.54.19.172:91//api/PGDDO_Employees",
         dataType: 'json',
         delay: 700,
         data: function data(params) {
