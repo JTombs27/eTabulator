@@ -38,26 +38,29 @@
             <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
         </filtering>
 
-        <div class="col-12">
+        <div class="col-12" v-if="vehiclesGroup.length > 0">
             <div class="card">
                 <div class="card-body">
-                    <h7>Select Vehicle Status</h7>
                     <div class="row">
-                        <div class="col-4">
-                            <label>Vehicle Type</label>
-                            <select class="form-select">
+                        <div class="col-2" >
+                             <label style="padding-top:auto;padding-bottom:auto;height:100%;">Select Vehicle Status</label>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select form-sm" v-model="form.condition">
                                 <option disabled value=""></option>
                                 <option value="Good Condition">Good Condition</option>
                                 <option value="In Repair">In Repair</option>
                                 <option value="Wasted">Wasted</option>
                             </select>
                         </div>
-                        <div class="col-4">
+                        <div class="col-1">
                             <label>Status Date</label>
-                            <input type="date" class="form-control" autocomplete="chrome-off">
                         </div>
-                        <div class="col-4">
-                            <button type="button" class="btn btn-primary mt-4" @click="submit()">Save</button>
+                        <div class="col-3">
+                            <input type="date" class="form-control" v-model="form.vehicle_status_date" autocomplete="chrome-off"/>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-primary" @click="setStatus()">Save</button>
                         </div>
                     </div>
                 </div>
@@ -69,6 +72,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th></th>
                             <th scope="col">Plate Number</th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
@@ -82,7 +86,12 @@
                     </thead>
                     <tbody>
                         <tr v-for="(vehicle, index) in vehicles.data" :key="index">
-                            <td> {{vehicle.PLATENO}}</td>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" :value="vehicle.id"  :id="vehicle.id" v-model="vehiclesGroup">
+                                </div>
+                            </th>
+                            <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.FDATEACQ}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
@@ -221,7 +230,7 @@
 <script>
 import Pagination from "@/Shared/Pagination";
 import Filtering from "@/Shared/Filter";
-
+import { useForm } from "@inertiajs/inertia-vue3";
 export default ({
     components: { Pagination, Filtering},
     props: {
@@ -233,6 +242,11 @@ export default ({
             driverid: "",
             search: this.$props.filters.search,
             filter:false,
+            vehiclesGroup:[],
+            form:useForm({
+                condition:"",
+                vehicle_status_date:""
+            }),
             showModal: false,
             travel_info:{
                
@@ -268,8 +282,7 @@ export default ({
                     replace: true,
                 }
             );
-        }, 300),
-
+        }, 300)
     },
     methods: {
         code (code) {
@@ -304,6 +317,35 @@ export default ({
         showFilter()
         {
             this.filter = !this.filter
+        },
+
+        setStatus(){
+            
+            // this.form.transform((data)=>({
+            //     data,
+            //     vehiclesGroup:this.vehiclesGroup
+            // }))
+            // console.log(this.form.post('/vehicles/set-status', this.form));
+            axios.post('/vehicles/set-status', {
+                "condition":this.form.condition,
+                "vehicle_status_date":this.form.vehicle_status_date,
+                "vehiclesGroup":this.vehiclesGroup
+            }).then(response=>{
+                                
+                if(response.data != null)
+                {
+                    if(response.data == "success")
+                    {
+                        alert("Status Successfully Set");
+                        this.vehiclesGroup = [];
+                        this.$inertia.reload({only:['vehicles']});
+                    }
+                    else{
+                        this.saveMessage = response.data;
+                    }
+                }
+            })
+
         },
         showInfo(id)
         {

@@ -241,8 +241,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
-  width: "20",
-  height: "20",
+  width: "25",
+  height: "25",
   fill: "currentColor",
   "class": "bi bi-x-lg",
   viewBox: "0 0 16 16"

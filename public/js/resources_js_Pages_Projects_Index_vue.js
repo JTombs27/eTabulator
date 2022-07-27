@@ -388,7 +388,7 @@ var _hoisted_27 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Vehicle Equepments ");
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Vehicle Equipments ");
 
 var _hoisted_29 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", {
   "class": "dropdown-divider action-divider"
@@ -616,7 +616,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* PROPS */
     , _hoisted_20)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
-      title: "View Vehicle Equepments",
+      title: "View Vehicle Equipments",
       onClick: function onClick($event) {
         return $options.gotToProjectVehicle(project.id);
       }
@@ -832,7 +832,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     "class": "page-link",
     href: $props.prev,
-    "preserve-scroll": ""
+    "preserve-scroll": "",
+    "preserve-state": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3];
@@ -853,7 +854,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     "class": "page-link",
     href: $props.next,
-    "preserve-scroll": ""
+    "preserve-scroll": "",
+    "preserve-state": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_5];
