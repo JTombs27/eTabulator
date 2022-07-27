@@ -196,6 +196,9 @@ export default {
         }, 300),
     },
     mounted() {
+        // $('body').removeClass('modal-open');
+        // $('body').css("overflow","scroll");
+        // $('.modal-backdrop').remove();
         if (this.editData !== undefined) 
         {
            this.loading            = true;

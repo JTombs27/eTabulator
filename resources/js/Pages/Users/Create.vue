@@ -29,7 +29,8 @@
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
 
-                    <option value="PGO">Admin</option>
+                    <option value="Admin">Admin</option>
+                    <option value="PGO">PGO-Admin</option>
                     <option value="RO">Requestioning Office</option>
                     <option value="PGSO">PGSO</option>
                     <option value="PG-Head">PG-Head</option>
@@ -118,7 +119,7 @@ export default {
 
         $("#emp_name").select2({
             ajax : {
-                url: `http://192.168.9.101:91//api/PGDDO_Employees`,
+                url: `http://122.54.19.172:91//api/PGDDO_Employees`,
                 dataType:'json',
                 delay:700,
                 data: function(params) {
