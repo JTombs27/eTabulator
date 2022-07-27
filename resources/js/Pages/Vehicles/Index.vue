@@ -154,57 +154,62 @@
         @saveModal="updatePermissions">
        <table class="table table-hover table-responsive">
                     <thead>
+                          <tr v-if="noTravel">
+                            <th scope="col"><button class="btn btn-info">Create Travel</button></th>
+                            <th scope="col"> | </th>
+                            <th scope="col">No Latest Travel Data </th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Office</td>
                             <td>:</td>
-                            <td>{{travel_info.driver_vehicle.office.office}}</td>
+                            <td>{{office}}</td>
                         </tr>
                         <tr>
                             <td>Description</td>
                             <td>:</td>
-                            <td>{{travel_info.driver_vehicle.vehicle.FDESC}}</td>
+                            <td>{{vehicle_desc}}</td>
                         </tr>
                          <tr>
                             <td>Plate Number</td>
                             <td>:</td>
-                            <td>{{travel_info.driver_vehicle.vehicle.PLATENO}}</td>
+                            <td>{{plate_no}}</td>
                         </tr>
                          <tr>
                             <td>Fuel Type</td>
                             <td>:</td>
-                            <td>{{travel_info.gas_type}}</td>
+                            <td>{{fuel_type}}</td>
                         </tr>
                          <tr>
                             <td>Vehicle Condition</td>
                             <td>:</td>
-                            <td>{{travel_info.driver_vehicle.vehicle.vehicle_status.condition}}</td>
+                            <td>{{vehicle_condition}}</td>
                         </tr>
                         <tr>
                             <td>Travel Date</td>
                             <td>:</td>
-                            <td>{{travel_info.travelDate}}</td>
+                            <td>{{travel_date}}</td>
                         </tr>
                         <tr>
                             <td>Place To Visit</td>
                             <td>:</td>
-                            <td>{{travel_info.place_to_visit}}</td>
+                            <td>{{place_to_visit}}</td>
                         </tr>
                         <tr>
                             <td>Purpose</td>
                             <td>:</td>
-                            <td>{{travel_info.purpose}}</td>
+                            <td>{{purpose}}</td>
                         </tr>
                         <tr>
                             <td>Travel Ticket Number</td>
                             <td>:</td>
-                            <td>{{travel_info.ticket_number}}</td>
+                            <td>{{ticket_number}}</td>
                         </tr>
                         <tr>
                             <td>Status</td>
                             <td>:</td>
-                            <td v-html="statusDisplay(travel_info.status)"></td>
+                            <td v-html="statusDisplay(vehicle_status)"></td>
                         </tr>
                     </tbody>
                 </table>
@@ -233,8 +238,17 @@ export default ({
                
 
             },
-            travelDate:""
-
+            office:"",
+            vehicle_desc:"",
+            plate_no:"",
+            fuel_type:"",
+            vehicle_condition:"",
+            travel_date:"",
+            place_to_visit:"",
+            purpose:"",
+            ticket_number:"",
+            vehicle_status:"",
+            noTravel:false
         }
     },
     computed: {
@@ -293,11 +307,40 @@ export default ({
         },
         showInfo(id)
         {
+            console.log(id)
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
+               
                 this.travel_info = response.data[0]
-                
+                if(response.data != "Error")
+                {
+                      this.noTravel = false
+                      this.office = response.data[0].driver_vehicle.office.office
+                      this.vehicle_desc =response.data[0].driver_vehicle.vehicle.FDESC
+                      this.plate_no =response.data[0].driver_vehicle.vehicle.PLATENO
+                      this.fuel_type =response.data[0].gas_type
+                      this.vehicle_condition=response.data[0].driver_vehicle.vehicle.vehicle_status.condition
+                      this.travel_date=response.data[0].travelDate
+                      this.place_to_visit=response.data[0].place_to_visit
+                      this.purpose=response.data[0].purpose
+                      this.ticket_number=response.data[0].ticket_number
+                      this.vehicle_status=response.data[0].status
+                }
+                else{
+                      this.noTravel = true
+                      this.office ="",
+                      this.vehicle_desc ="",
+                      this.plate_no ="",
+                      this.fuel_type ="",
+                      this.vehicle_condition="",
+                      this.travel_date="",
+                      this.place_to_visit="",
+                      this.purpose="",
+                      this.ticket_number="",
+                      this.vehicle_status=""
+                }
+               
                 this.showModal = true
-                console.log(this.travel_info)
+                
             });
            
               

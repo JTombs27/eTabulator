@@ -119,21 +119,25 @@ class VehicleController extends Controller
                         'id' => $item->PLATENO,
                         'text' => $item->FDESC
                     ]);
-         
         return $query;
     }
 
     public function getWhereAboutsTravel(Request $request,$id)
     {
-
+        
         $driverVehiclesId = $this->driverVehicle->where('vehicles_id',$id)->first();
-
-        $travel_info = $this->travel
-                       ->with(['driverVehicle.vehicle.vehicle_status','driverVehicle.office'])
-                       ->where('driver_vehicles_id', $driverVehiclesId->id)
-                       ->get();
-     
+        try{
+            $travel_info = $this->travel
+            ->with(['driverVehicle.vehicle.vehicle_status','driverVehicle.office'])
+            ->where('driver_vehicles_id', $driverVehiclesId->id)
+            ->get();
+            
+            return  $travel_info;
+        }catch(\Throwable $e ){
+            return  "Error";
+        }
+        
       
-        return  $travel_info;
+        
     }
 }
