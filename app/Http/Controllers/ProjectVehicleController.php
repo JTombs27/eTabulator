@@ -140,9 +140,9 @@ class ProjectVehicleController extends Controller
 
         //Validate Backend for adding a vehicle conflic and exist to other project
         //with same or within the period
-        foreach ($request->vehiclesGroup as $key => $value) {
-            # code...
-        }
+        // foreach ($request->vehiclesGroup as $key => $value) {
+        //     # code...
+        // }
 
         foreach($request->vehiclesGroup as $key=>$vehicle) 
         { 
@@ -173,26 +173,26 @@ class ProjectVehicleController extends Controller
                                         "vehiclesGroup.*.date_to.required"    =>"Date To is Required",
                                         "vehiclesGroup.*.date_to.after_or_equal"       =>"Date To must be a date after date From"] );
         
-        $data = $this->model
-        ->where('id','!=',$vid)
-        ->where('vehicle_id',$request->vehiclesGroup[0]["vehicle_id"])
-        ->where(function ($qeury) use($request){
-            $qeury->where("date_from",$request->vehiclesGroup[0]["date_from"])
-            ->orWhere(function($query2) use ($request){
-                $query2->whereBetween("date_from",[$request->vehiclesGroup[0]["date_from"],$request->vehiclesGroup[0]["date_to"]])
-                ->where("purpose",$request->vehiclesGroup[0]["purpose"]);
-            });
-        })
-        ->first();
-        if($data)
-        {
-            $attributes = $request->validate([
-            "vehiclesGroup.*.date_fromX"=>"required",
-            "vehiclesGroup.*.date_toX"=>"required"],[
-                "vehiclesGroup.*.date_fromX.required"=>"Date Conflic to other entry",
-                "vehiclesGroup.*.date_toX.required"=>"Date Conflic to other entry"
-            ]);
-        }
+        // $data = $this->model
+        // ->where('id','!=',$vid)
+        // ->where('vehicle_id',$request->vehiclesGroup[0]["vehicle_id"])
+        // ->where(function ($qeury) use($request){
+        //     $qeury->where("date_from",$request->vehiclesGroup[0]["date_from"])
+        //     ->orWhere(function($query2) use ($request){
+        //         $query2->whereBetween("date_from",[$request->vehiclesGroup[0]["date_from"],$request->vehiclesGroup[0]["date_to"]])
+        //         ->where("purpose",$request->vehiclesGroup[0]["purpose"]);
+        //     });
+        // })
+        // ->first();
+        // if($data)
+        // {
+        //     $attributes = $request->validate([
+        //     "vehiclesGroup.*.date_fromX"=>"required",
+        //     "vehiclesGroup.*.date_toX"=>"required"],[
+        //         "vehiclesGroup.*.date_fromX.required"=>"Date Conflic to other entry",
+        //         "vehiclesGroup.*.date_toX.required"=>"Date Conflic to other entry"
+        //     ]);
+        // }
         try {
             //code...
             $data = $this->model->findOrFail($vid);

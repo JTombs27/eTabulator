@@ -14,4 +14,5 @@ class Project extends Model
     {
         return $this->hasMany(ProjectVehicle::class,"project_id","id");
     }
+    
 }

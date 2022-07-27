@@ -8,17 +8,22 @@ use App\Models\VehicleStatus;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\VehicleValidation;
 use App\Models\DriverVehicle;
+use App\Models\Project;
+use App\Models\ProjectVehicle;
 use App\Models\Travel;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 
 class VehicleController extends Controller
 {
-
-    public function __construct(Vehicle $model, VehicleStatus $status,Travel $travel,DriverVehicle $driverVehicle)
+    protected $isBorrow;
+    public function __construct(Vehicle $model, VehicleStatus $status,Travel $travel,DriverVehicle $driverVehicle,Project $project,ProjectVehicle $projectVehicle)
     {
         $this->model = $model;
         $this->status = $status;
         $this->travel = $travel;
         $this->driverVehicle = $driverVehicle;
+        $this->project = $project;
+        $this->projectVehicle = $projectVehicle;
     }
 
     public function index(Request $request)
@@ -174,8 +179,9 @@ class VehicleController extends Controller
             $travel_info = $this->travel
             ->with(['driverVehicle.vehicle.vehicle_status','driverVehicle.office'])
             ->where('driver_vehicles_id', $driverVehiclesId->id)
+            ->latest()
             ->get();
-            
+
             return  $travel_info;
         }catch(\Throwable $e ){
             return  "Error";
@@ -184,4 +190,51 @@ class VehicleController extends Controller
       
         
     }
+    public function getWhereAboutsProject(Request $request,$id)
+    {
+        
+        try{
+            $pv = $this->projectVehicle->where('vehicle_id',$id)->latest()->first();
+             if(!!$pv)
+             {
+                 $this->isBorrow = $pv->external_borrow_flag;
+             }
+             else{
+                 $this->isBorrow = 0;
+             }
+        }catch(\Throwable $e){
+           $this->isBorrow = 0;
+        }
+       
+        try{
+             if($this->isBorrow == 1)
+             {
+                 $project_info = $this->project
+                 ->with(['ProjectVehicles.municipality','ProjectVehicles.barangay'])
+                 ->whereHas('ProjectVehicles',function($query) use($id){
+                       $query->where('vehicle_id',$id);
+                 })
+                 ->latest()
+                 ->get();
+                 return  [$project_info, $this->isBorrow];
+        
+             }
+             else{
+                 $project_info = $this->project
+                 ->with('ProjectVehicles')
+                 ->whereHas('ProjectVehicles',function($query) use($id){
+                    $query->where('vehicle_id',$id);
+                 })
+                 ->latest()
+                 ->get();
+                 return  [$project_info, $this->isBorrow];
+             }
+        }catch(\Throwable $e){
+            return  $e;
+        }
+    }
+
+
+    
+
 }

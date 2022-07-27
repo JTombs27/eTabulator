@@ -20,6 +20,14 @@ class ProjectVehicle extends Model
 
     public function Projects()
     {
-        return $this->belongsTo(Project::class, 'projects_id', 'id');
+        return $this->belongsTo(Project::class, 'project_id', 'id');
+    }
+    public function barangay()
+    {
+        return $this->belongsTo(Barangay::class, 'barangay_id', 'brgyCode');
+    }
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class, 'municipality_id', 'citymunCode');
     }
 }
