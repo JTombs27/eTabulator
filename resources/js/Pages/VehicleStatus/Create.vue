@@ -16,7 +16,7 @@
             <form @submit.prevent="submit()">
                
                 <label for="">Plate number</label>
-                <input type="text" v-model="form.plate_no" class="form-control" autocomplete="chrome-off" disabled readonly>
+                <input type="text" v-model="plate_no" class="form-control" autocomplete="chrome-off" disabled readonly>
                 <label for="">Date</label>
                 <input type="date" v-model="form.vehicle_status_date" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicle_status_date">{{ form.errors.vehicle_status_date }}</div>
@@ -61,10 +61,9 @@ export default {
                id:'',
                vehicles_id:'',
                vehicle_status_date:'',
-               plate_no:'',
                condition:''
             }),
-           
+            plate_no:"",
             pageTitle: "Add Vehicle Status",
             loading:false,
         };
@@ -73,19 +72,18 @@ export default {
     mounted() {
        // this.plate_no = this.id
   
-
+         this.plate_no = this.vehicle.PLATENO
          if(this.editData) {
             this.pageTitle = "Edit Vehicle Status"
             this.form.id = this.vehicle.id
             this.form.vehicles_id = this.vehicle.vehicles_id
             this.form.vehicle_status_date = this.vehicle.vehicle_status_date
-            this.form.plate_no = this.vehicle.plate_no
+          
             this.form.condition = this.vehicle.condition
             this.vehicleid = this.vehicle.vehicles_id
           
         } else {
             this.pageTitle = "Add Vehicle Status"
-            this.form.plate_no = this.vehicle.PLATENO
             this.form.vehicles_id = this.vehicle.id
             this.vehicleid = this.vehicle.id
         }

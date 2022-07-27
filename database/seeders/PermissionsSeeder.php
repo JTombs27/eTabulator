@@ -39,6 +39,8 @@ class PermissionsSeeder extends Seeder
             array('id' => 22,'permission_name' => 'can_delete_prices', 'permission_group' => 'Price'), //GSO
             array('id' => 23,'permission_name' => 'can_edit_charges', 'permission_group' => 'Charges'), // Super user
             array('id' => 24,'permission_name' => 'can_delete_charges', 'permission_group' => 'Charges'), // Super user
+            array('id' => 25,'permission_name' => 'can_edit_travels', 'permission_group' => 'Travel'), 
+            array('id' => 26,'permission_name' => 'can_delete_travels', 'permission_group' => 'Travel'), 
         );
     }
 }

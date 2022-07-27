@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPriceIdToTravelsTable extends Migration
+class AddBorrowingToTravelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,9 @@ class AddPriceIdToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->integer('price_id')->after('price');
+            $table->boolean('is_borrowed_fuel')->after('is_carpool')->nullable();
+            $table->boolean('is_borrowed_vehicle')->after('is_borrowed_fuel')->nullable();
+            $table->string('borrowing_office')->after('is_borrowed_vehicle')->nullable();
         });
     }
 
@@ -26,7 +28,9 @@ class AddPriceIdToTravelsTable extends Migration
     public function down()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->dropColumn('price_id');
+            $table->dropColumn('is_borrowed_fuel');
+            $table->dropColumn('is_borrowed_vehicle');
+            $table->dropColumn('borrowing_office');
         });
     }
 }

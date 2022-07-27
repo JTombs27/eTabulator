@@ -34,30 +34,33 @@
 
             <label>Description</label>
             <input type="text" class="form-control">
-            
+
             <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
         </filtering>
 
-        <div class="col-12">
+        <div class="col-12" v-if="vehiclesGroup.length > 0">
             <div class="card">
                 <div class="card-body">
-                    <h7>Select Vehicle Status</h7>
                     <div class="row">
-                        <div class="col-4">
-                            <label>Vehicle Type</label>
-                            <select class="form-select">
+                        <div class="col-2" >
+                             <label style="padding-top:auto;padding-bottom:auto;height:100%;">Select Vehicle Status</label>
+                        </div>
+                        <div class="col-3">
+                            <select class="form-select form-sm" v-model="form.condition">
                                 <option disabled value=""></option>
                                 <option value="Good Condition">Good Condition</option>
                                 <option value="In Repair">In Repair</option>
                                 <option value="Wasted">Wasted</option>
                             </select>
                         </div>
-                        <div class="col-4">
+                        <div class="col-1">
                             <label>Status Date</label>
-                            <input type="date" class="form-control" autocomplete="chrome-off">
                         </div>
-                        <div class="col-4">
-                            <button type="button" class="btn btn-primary mt-4" @click="submit()">Save</button>
+                        <div class="col-3">
+                            <input type="date" class="form-control" v-model="form.vehicle_status_date" autocomplete="chrome-off"/>
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-primary" @click="setStatus()">Save</button>
                         </div>
                     </div>
                 </div>
@@ -69,6 +72,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th></th>
                             <th scope="col">Plate Number</th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
@@ -76,12 +80,18 @@
                             <th scope="col" >Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
+                            <th scope="col"></th>
                             <th scope="col" style="text-align: right"> Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(vehicle, index) in vehicles.data" :key="index">
-                            <td> {{vehicle.PLATENO}}</td>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" :value="vehicle.id"  :id="vehicle.id" v-model="vehiclesGroup">
+                                </div>
+                            </th>
+                            <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.FDATEACQ}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
@@ -90,6 +100,7 @@
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
+                            <td><span class="badge bg-info" @click="showInfo(vehicle.id)">Where Abouts</span></td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -127,7 +138,7 @@
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                         </svg> Delete </Link></li>
                                     </ul>
-                                
+
                                 </div>
                             </td>
                         </tr>
@@ -144,13 +155,136 @@
             </div>
         </div>
     </div>
+  <Modal
+        v-if="showModal"
+        :modalTitle="'Vehicle Where Abouts'"
+        :addional_class="'modal-lg'"
+        @closeModal="closeModal">
+       <table class="table table-hover table-responsive">
+                    <thead>
+                          <tr>
+                            <th scope="col"><h3>Travels</h3></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="!!noTravel">
+                            <td scope="col"><Link class="btn btn-info" @click="createTravel()">Create Travel</Link></td>
+                            <td scope="col"> | </td>
+                            <td scope="col">No Latest Travel Data </td>
+                         </tr>
+                          <tr v-if="!noTravel">
+                            <td scope="col"><Link class="btn btn-info" @click="goToTravel()">Go to Travel</Link></td>
+                            <td scope="col"></td>
+                            <td scope="col"></td>
+                         </tr>
+                        <tr v-if="!noTravel">
+                            <td>Office</td>
+                            <td>:</td>
+                            <td>{{office}}</td>
+                        </tr>
+                        <tr  v-if="!noTravel">
+                            <td>Description</td>
+                            <td>:</td>
+                            <td>{{vehicle_desc}}</td>
+                        </tr>
+                         <tr v-if="!noTravel">
+                            <td>Plate Number</td>
+                            <td>:</td>
+                            <td>{{plate_no}}</td>
+                        </tr>
+                         <tr v-if="!noTravel">
+                            <td>Fuel Type</td>
+                            <td>:</td>
+                            <td>{{fuel_type}}</td>
+                        </tr>
+                         <tr v-if="!noTravel">
+                            <td>Vehicle Condition</td>
+                            <td>:</td>
+                            <td>{{vehicle_condition}}</td>
+                        </tr>
+                        <tr v-if="!noTravel">
+                            <td>Travel Date</td>
+                            <td>:</td>
+                            <td>{{travel_date}}</td>
+                        </tr>
+                        <tr v-if="!noTravel">
+                            <td>Place To Visit</td>
+                            <td>:</td>
+                            <td>{{place_to_visit}}</td>
+                        </tr>
+                        <tr v-if="!noTravel">
+                            <td>Purpose</td>
+                            <td>:</td>
+                            <td>{{purpose}}</td>
+                        </tr>
+                        <tr v-if="!noTravel">
+                            <td>Travel Ticket Number</td>
+                            <td>:</td>
+                            <td>{{ticket_number}}</td>
+                        </tr>
+                        <tr v-if="!noTravel">
+                            <td>Status</td>
+                            <td>:</td>
+                            <td v-html="statusDisplay(vehicle_status)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+               <table class="table table-hover table-responsive">
+                    <thead>
+                          <tr>
+                            <th scope="col"><h3>Project</h3></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                         </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-if="!!noProject">
+                            <td scope="col"><Link class="btn btn-info" @click="createProject()" >Create Project</Link></td>
+                            <td scope="col"> | </td>
+                            <td scope="col">No Latest Project Data </td>
+                         </tr>
+                          <tr v-if="!noProject">
+                            <td scope="col"><Link class="btn btn-info" @click="goToProject()">Go to Project</Link></td>
+                            <td scope="col"></td>
+                            <td scope="col"></td>
+                         </tr>
+                        <tr v-if="!noProject">
+                            <td>Project Description</td>
+                            <td>:</td>
+                            <td>{{projectDescription}}</td>
+                        </tr>
+                        <tr  v-if="!noProject">
+                            <td>Purpose</td>
+                            <td>:</td>
+                            <td>{{projectPurpose}}</td>
+                        </tr>
+                         <tr v-if="!noProject">
+                            <td>Borrowed</td>
+                            <td>:</td>
+                            <td v-html="borrowdisplay(externalBorrow)"></td>
+                        </tr>
+                         <tr v-if="!!externalBorrow">
+                            <td>Munincipality</td>
+                            <td>:</td>
+                            <td>{{borrowMun}}</td>
+                        </tr>
+                        <tr v-if="!!externalBorrow">
+                            <td>Barangay</td>
+                            <td>:</td>
+                            <td>{{borrowBrgy}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+    </Modal>
 
 </template>
 
 <script>
 import Pagination from "@/Shared/Pagination";
 import Filtering from "@/Shared/Filter";
-
+import { useForm } from "@inertiajs/inertia-vue3";
 export default ({
     components: { Pagination, Filtering},
     props: {
@@ -161,8 +295,32 @@ export default ({
         return {
             driverid: "",
             search: this.$props.filters.search,
-            filter:false
-
+            filter:false,
+            vehiclesGroup:[],
+            form:useForm({
+                condition:"",
+                vehicle_status_date:""
+            }),
+            showModal: false,
+            travel_info:{},
+            project_info:{},
+            office:"",
+            vehicle_desc:"",
+            plate_no:"",
+            fuel_type:"",
+            vehicle_condition:"",
+            travel_date:"",
+            place_to_visit:"",
+            purpose:"",
+            ticket_number:"",
+            vehicle_status:"",
+            noTravel:false,
+            noProject:false,
+            externalBorrow:false,
+            projectDescription:"",
+            projectPurpose:"",
+            borrowMun:"",
+            borrowBrgy:""
         }
     },
     computed: {
@@ -182,12 +340,8 @@ export default ({
                     replace: true,
                 }
             );
-        }, 300),
-
+        }, 300)
     },
-
-    
-
     methods: {
         code (code) {
             switch(code) {
@@ -205,26 +359,195 @@ export default ({
                     break
             }
         },
+
+        borrowdisplay (code) {
+            switch(code) {
+                case false:
+                    return "<span> No </span>"
+                    break
+                case true:
+                    return "<span> Yes </span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
         driverVehicle(driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");
         },
-        
+
         deleteVehicle(vehicle)
         {
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
             if(confirm(text) == true) {
-                this.$inertia.post("/vehicles/" + vehicle.id);
+                this.$inertia.delete("/vehicles/" + vehicle.id);
             }
         },
         showFilter()
         {
             this.filter = !this.filter
-        }
+        },
+
+        setStatus(){
+            axios.post('/vehicles/set-status', {
+                "condition":this.form.condition,
+                "vehicle_status_date":this.form.vehicle_status_date,
+                "vehiclesGroup":this.vehiclesGroup
+            }).then(response=>{
+
+                if(response.data != null)
+                {
+                    if(response.data == "success")
+                    {
+                        alert("Status Successfully Set");
+                        this.vehiclesGroup = [];
+                        this.$inertia.reload({only:['vehicles']});
+                    }
+                    else{
+                        this.saveMessage = response.data;
+                    }
+                }
+            })
+
+        },
+        showInfo(id)
+        {
+
+            axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
+
+                this.travel_info = response.data[0]
+                if(response.data != "Error")
+                {
+                      this.noTravel = false
+                      this.office = response.data[0].driver_vehicle.office.office
+                      this.vehicle_desc =response.data[0].driver_vehicle.vehicle.FDESC
+                      this.plate_no =response.data[0].driver_vehicle.vehicle.PLATENO
+                      this.fuel_type =response.data[0].gas_type
+                      this.vehicle_condition=response.data[0].driver_vehicle.vehicle.vehicle_status.condition
+                      this.travel_date=response.data[0].travelDate
+                      this.place_to_visit=response.data[0].place_to_visit
+                      this.purpose=response.data[0].purpose
+                      this.ticket_number=response.data[0].ticket_number
+                      this.vehicle_status=response.data[0].status
+                }
+                else{
+                      this.noTravel = true
+                      this.office ="",
+                      this.vehicle_desc ="",
+                      this.plate_no ="",
+                      this.fuel_type ="",
+                      this.vehicle_condition="",
+                      this.travel_date="",
+                      this.place_to_visit="",
+                      this.purpose="",
+                      this.ticket_number="",
+                      this.vehicle_status=""
+
+                }
+                 this.showModal = true
+
+
+            });
+            this.noProject = true
+
+             axios.post('/vehicles/getWhereAboutsProject/'+id).then((response) => {
+                  this.project_info = response.data[0]
+                 if(response.data[0][0] == "Error" || response.data[0][0] == undefined)
+                 {
+                       this.noProject = true
+                       this.externalBorrow = false
+                       this.projectDescription = ""
+                       this.projectPurpose = ""
+                       this.borrowMun  = ""
+                       this.borrowBrgy = ""
+                 }
+                 else{
+                       this.noProject = false
+                       if(response.data[1] == 1)
+                       {
+                              this.externalBorrow = true
+
+                              this.borrowMun  =  response.data[0][0].project_vehicles[0].municipality.citymunDesc
+                              this.borrowBrgy = response.data[0][0].project_vehicles[0].barangay.brgyDesc
+                       }
+                       else{
+                            this.externalBorrow = false
+                       }
+                       this.projectDescription = response.data[0][0].description
+                       this.projectPurpose =    response.data[0][0].project_vehicles[0].purpose
+
+
+
+                 }
+                  this.showModal = true
+             });
+
+
+        },
+
+
+        statusDisplay (code) {
+            switch(code) {
+                case 'Approved':
+                    return "<span class='badge bg-success'>Approved</span>"
+                    break
+                case 'Disapproved':
+                    return "<span class='badge bg-danger'>Disapproved</span>"
+                    break
+                case null:
+                    return "<span class='badge bg-warning'>Pending</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
+        createProject(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/projects/create/");
+           this.showModal = false
+
+       },
+
+       goToProject(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/projects");
+           this.showModal = false
+
+       },
+       createTravel(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/travels/create/");
+           this.showModal = false
+
+       },
+       goToTravel(){
+             $('body').css("overflow","scroll");
+             $('.modal-backdrop').remove();
+             $('body').removeClass('modal-open');
+           this.$inertia.get("/travels");
+           this.showModal = false
+
+       },
+
+        closeModal() {
+
+            this.showModal = false
+
+        },
+
     },
 
 
 })
 </script>
- 
+

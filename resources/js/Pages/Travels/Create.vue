@@ -5,7 +5,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3> 
-            <h3>Balance: <u>{{`\u20B1${charges}`}}</u></h3>
+            <h3>Balance: <u>{{`\u20B1${Number(charges).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</u></h3>
             <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -21,7 +21,7 @@
                 <div class="row">
                     <div :class="[columnFrom]">
                         <label for="">From</label>
-                        <input v-model="form.date_from" type="date" class="form-control" autocomplete="chrome-off"/>
+                        <input v-model="form.date_from" type="date" class="form-control" autocomplete="chrome-off" @change="fetchPrice()"/>
                         <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
                     </div>
                     <Transition name="fade"  mode="out-in">
@@ -53,8 +53,12 @@
                         <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
                     </div>
                 </div>
-                <label for="">Vehicle Name</label>
-                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails()"/>
+                <br>
+                <div class="position-relative">
+                    <label class="col-md-3" for="">Vehicle Name</label>
+                    <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
+                </div>
+                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <div class="col-md-12">
                     <br>
@@ -64,6 +68,26 @@
                          </label>
                         <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
                     </div>
+
+                     <div class="form-check">
+                         <label class="form-check-label disable-select" for="is_borrowed_fuel">
+                            Check if borrow fuel
+                         </label>
+                        <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
+                    </div>
+
+                     <div class="form-check ">
+                         <label class="form-check-label disable-select" for="is_borrowed_vehicle">
+                            Check if borrow vehicle
+                         </label>
+                        <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                    </div>
+                    <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
+                        <br>
+                        <label >Borrowed by</label>
+                        <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
+                        <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
+                    </span>
                 </div>
                 <hr>
                 <label>Authorized Driver</label>
@@ -112,7 +136,7 @@
                 <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                 <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
                 <label for="">Price</label>
-                <input type="text" v-model="form.price" class="form-control">
+                <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
                 <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                     changes</button>
@@ -131,7 +155,7 @@ export default {
 
     props: {
         editData: Object,
-        charges:String
+        charges:Number
     },
 
     data() {
@@ -157,10 +181,15 @@ export default {
                 drivers_id:null,
                 is_carpool:null,
                 actual_driver_id:null,
-                charges:null
+                charges:null,
+                type_code:null,
+                is_borrowed_vehicle:null,
+                is_borrowed_fuel:null,
+                borrowing_office:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
+            vehicle_status:"",
             employees:[],
             drivers:[],
             gasPrice:"",
@@ -213,6 +242,7 @@ export default {
             }
             await this.getVehicleDetails();
             await this.showActualDriver();
+            await this.fetchPrice();
             // setTimeout(() => {
             // }, 0);
             
@@ -220,7 +250,7 @@ export default {
             this.pageTitle = "Create"
         }
         this.getVehicles();
-       
+        
 
        
         // $("#actualDriver").select2({
@@ -229,12 +259,16 @@ export default {
     },
 
     methods:{
+        formatRepo(repo) {
+            return `<div class="text-success">asaas</div>`;
+        },
+
         fetchPrice() {
             axios.post('/travels/get-price', 
                 {datefilter:this.form.date_from, gasType:this.form.gas_type}
             ).then((response) => {
                 this.gasPrice = `Price: \u20B1${parseFloat(response.data).toFixed(2)}`;
-                this.form.price =  Number(response.data) * Number(this.form.total_liters);
+                this.form.price =  (Number(response.data) * Number(this.form.total_liters)).toFixed(2);
             })
         },
 
@@ -251,7 +285,12 @@ export default {
             })
         },
 
-        getVehicleDetails() {
+        getVehicleDetails(e) {
+            if (this.editData !== undefined) {
+                this.form.type_code = this.editData.driver_vehicle.vehicle
+            } else {
+                this.form.type_code = e.typeCode.TYPECODE;
+            }
             axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
                 .then((response) => {
                     this.drivers =  response.data.map(obj => {
@@ -270,7 +309,8 @@ export default {
                             office_id: obj.empl.department_code,
                             "selected": _selected
                         }
-                    })                   
+                    })   
+                    this.vehicle_status = response.data ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
                 })
            
         },
@@ -327,6 +367,36 @@ export default {
             this.form.driver_vehicles_id = $event.dv_id;
             if (this.editData === undefined) {
                 this.form.office_id = $event.office_id;
+            }
+        },
+
+        getOffice(e) {
+            if (e.target.checked) {
+                $('#office').select2({
+                    ajax: {
+                        url: '/offices/fetch',
+                        dataType:'json',
+                        delay:500,
+                        data: function(filter) {
+                            return {filter:filter.term};
+                        },
+                        processResults: function(data, params) {
+                            params.page = params.page || 1;
+
+                            return{
+                                results: $.map(data, function(obj) {
+                                    return {
+                                        id: obj.id,
+                                        text: obj.text
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    },
+                    placeholder: 'Search for an office',
+                    minimumInputLength: 2,
+                })
             }
         },
         

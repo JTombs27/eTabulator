@@ -121,11 +121,14 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [VehicleController::class, 'index']);
         Route::get('/create', [VehicleController::class, 'create']);
         Route::post('/', [VehicleController::class, 'store']);
+        Route::post('/set-status', [VehicleController::class, 'setStatus']);
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
-        Route::post('/{id}', [VehicleController::class, 'destroy']);
+        Route::delete('/{id}', [VehicleController::class, 'destroy']);
         Route::get('/getVehicles/{id}', [VehicleController::class, 'getVehicles']);
         Route::get('fetch', [OfficeController::class, 'loadVehicles']);
+        Route::post('/getWhereAboutsTravel/{id}', [VehicleController::class, 'getWhereAboutsTravel']);
+        Route::post('/getWhereAboutsProject/{id}', [VehicleController::class, 'getWhereAboutsProject']);
     });
 
     // Driver Vehicles
@@ -145,6 +148,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [TravelController::class, 'edit']);
         Route::patch('/{id}', [TravelController::class, 'update']);
         Route::post('get-price', [TravelController::class, 'getPrice']);
+      
     });
 
     Route::prefix('sync')->group(function() {

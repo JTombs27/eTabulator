@@ -475,7 +475,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     "class": "page-link",
     href: $props.prev,
-    "preserve-scroll": ""
+    "preserve-scroll": "",
+    "preserve-state": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_3];
@@ -496,7 +497,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     key: 0,
     "class": "page-link",
     href: $props.next,
-    "preserve-scroll": ""
+    "preserve-scroll": "",
+    "preserve-state": ""
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_5];

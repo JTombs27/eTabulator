@@ -125,7 +125,7 @@
         <div class="masonry-item col-12">
             <!-- #Site Visits ==================== -->
             <div class="bd bgc-white">
-                <div class="peers fxw-nw@lg+ ai-s">
+                <!-- <div class="peers fxw-nw@lg+ ai-s">
                     <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">
                         <div class="layers">
                             <div class="layer w-100 mB-10">
@@ -232,16 +232,16 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="row">
             <div class="col-md-4">
                 <div class="layers bd bgc-white p-20">
                     <div class="layer w-100 mB-10">
-                        <h6 class="lh-1">Site Data</h6>
+                        <h6 class="lh-1">Fund Utilization Report</h6>
                     </div>
-                    <some-chart :chartData="someData"></some-chart>
+                    <some-chart :chartData="someData" :chartLabel="labels" :piColor="myColors"></some-chart>
                 </div>
             </div>
             <div class="col-md-4">
@@ -262,8 +262,6 @@
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
-
-                    <!-- <pie-chart></pie-chart> -->
                 </div>
             </div>
         </div>
@@ -280,7 +278,9 @@ export default {
     data() {
         return {
             totalUser: [40, 20, 12, 39, 10, 40, 39, 80, 40, 20, 12, 11],
-            someData: [40, 20, 80, 10]
+            someData: [10,500,100],
+            labels:['JOSEPH','JADE','JORGE'],
+            myColors:['red','green','blue']
         }
     }
 };

@@ -55,13 +55,25 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    chartLabel: {
+      type: String,
+      "default": function _default() {
+        return [];
+      }
+    },
+    piColor: {
+      type: String,
+      "default": function _default() {
+        return [];
+      }
     }
   },
   setup: function setup(props) {
     var chartData = {
-      labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+      labels: props.chartLabel,
       datasets: [{
-        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+        backgroundColor: props.piColor,
         data: props.chartData
       }]
     };
