@@ -29,9 +29,11 @@ class TravelController extends Controller
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
-                            ->where(function($q) {
-                                $q->where('office_id', auth()->user()->office_id);
-                            })
+                            ->when(auth()->user()->role != 'PGO' || auth()->user()->role != 'Admin',
+                                function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                                }
+                            )
                             ->latest()
                             ->simplePaginate(10)
                             ->through(fn($item) => [
