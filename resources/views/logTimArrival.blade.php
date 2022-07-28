@@ -49,7 +49,6 @@
            
         </form>
         @else
-        
             <a href="/logArrivalTime">
                 <div class="alert alert-{{ $type }} text-center no-padding" >
                     <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
@@ -61,7 +60,6 @@
                     </h3>
                 </div>
             </a>
-       
         @endif
        
     </div> 
@@ -70,11 +68,10 @@
   
 </body>
 <script>
-    function pageReload(){
-        alert("sdjkfs")
-    }
+  
     window.addEventListener("load", (function () {
       
     }))
+    
 </script>
 </html>
