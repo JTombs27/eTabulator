@@ -89,7 +89,9 @@ __webpack_require__.r(__webpack_exports__);
                 text: obj.employee_name,
                 cats: obj.empl_id,
                 data: obj.empl_photo_img.data,
-                position: obj.position_long_title
+                position: obj.position_long_title,
+                department_code: obj.department_code,
+                office: obj.department_proper_name
               };
             })
           };
@@ -122,7 +124,8 @@ __webpack_require__.r(__webpack_exports__);
             results: $.map(data, function (obj) {
               return {
                 id: obj.id,
-                text: obj.text
+                text: obj.text,
+                office: obj.office
               };
             })
           };
@@ -130,21 +133,42 @@ __webpack_require__.r(__webpack_exports__);
         cache: true
       },
       placeholder: 'Search for an office',
-      minimumInputLength: 2
+      minimumInputLength: 2,
+      templateResult: this.formatOfficeSelection,
+      templateSelection: this.formatOffice
     }); // this.loadOffices();
   },
   methods: {
     selectName: function selectName($event) {
-      console.log($event);
       this.form.cats = $event.cats;
+      this.form.office_id = $event.department_code;
+      $('#office').select2({
+        data: [{
+          office: $event.office,
+          id: $event.department_code,
+          text: $event.office,
+          selected: true
+        }]
+      });
+    },
+    formatOffice: function formatOffice(repo) {
+      return repo.text;
+    },
+    formatOfficeSelection: function formatOfficeSelection(repo) {
+      if (repo.loading) {
+        return "Searching...";
+      }
+
+      var img = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-building\" viewBox=\"0 0 16 16\">\n            <path fill-rule=\"evenodd\" d=\"M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z\"/>\n            <path d=\"M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z\"/>\n            </svg>";
+      var $container = $("<div class=\"d-flex pt-3\">\n               ".concat(img, " <strong style=\"margin-left:5px\">").concat(repo.office, "</strong>\n            </div>\n           "));
+      return $container;
     },
     formatRepo: function formatRepo(repo) {
       if (repo.loading) {
-        return repo.text;
+        return "Searching...";
       }
 
       var img = "";
-      console.log(repo.isNull);
 
       if (!repo.data) {
         img = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"60\" height=\"60\" fill=\"currentColor\" class=\"bi bi-person-square bd-placeholder-img flex-shrink-0 me-2 rounded\" viewBox=\"0 0 16 16\">\n              <path d=\"M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z\"/>\n              <path d=\"M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z\"/>\n            </svg>";

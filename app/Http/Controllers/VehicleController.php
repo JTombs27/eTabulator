@@ -28,12 +28,11 @@ class VehicleController extends Controller
 
     public function index(Request $request)
     {
+
+        $index = $this->getFilter($request);
        
         return inertia('Vehicles/Index', [
-            "vehicles" => $this->model
-            ->with([
-                'driverassign.empl.office'
-            ])
+            "vehicles" => $index
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('PLATENO', 'like', '%'.$searchItem . '%');
             })
@@ -41,7 +40,36 @@ class VehicleController extends Controller
             ->simplePaginate(10)
             ->withQueryString(),
             "filters" => $request->only(['search']),
+            "can" => [
+                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class)
+            ]
         ]);
+    }
+
+    public function getFilter($request)
+    {
+        $index = $this->model->with([
+            'vehicle_status',
+            'driverassign.empl.office',
+        ]);
+        
+        if ($request->PLATENO) {
+            $index = $index->where('PLATENO', 'like' , '%' .$request->PLATENO. '%');
+        }
+        
+        if ($request->TYPECODE) {
+            $index = $index->where('TYPECODE', 'like' , '%'.$request->TYPECODE.'%');
+        }
+
+        if ($request->FDATEACQ) {
+            $index = $index->where('FDATEACQ', 'like' , '%'.$request->FDATEACQ.'%');
+        }
+
+        if ($request->FDESC) {
+            $index = $index->where('FDATEACQ', 'like' , '%'.$request->FDESC.'%');
+        }
+
+        return $index;
     }
 
     public function create()
@@ -122,10 +150,11 @@ class VehicleController extends Controller
     {
         foreach ($request->vehiclesGroup as $index => $value) 
         {
-           $this->status->create(['condition' => $request->condition,
-           'vehicles_id' => $value,
-           'vehicle_status_date' => $request->vehicle_status_date,
-           'plate_no' => '']);
+           $this->status->create(
+            [
+                'condition' => $request->condition,
+                'vehicles_id' => $value,
+                'vehicle_status_date' => $request->vehicle_status_date]);
         }
         return 'success';
     }
