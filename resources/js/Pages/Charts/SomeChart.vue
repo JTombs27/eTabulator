@@ -56,7 +56,7 @@ export default defineComponent({
             type:String,
             default: () => []
         },
-        piColor:{
+        chartColor:{
             type:String,
             default: () => []
         }
@@ -66,7 +66,7 @@ export default defineComponent({
             labels: props.chartLabel,
             datasets: [
                 {
-                    backgroundColor: props.piColor,
+                    backgroundColor: props.chartColor,
                     data: props.chartData
                 }
             ]

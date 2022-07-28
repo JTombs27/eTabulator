@@ -221,7 +221,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
         return [];
       }
     },
-    piColor: {
+    chartColor: {
       type: String,
       "default": function _default() {
         return [];
@@ -232,7 +232,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
     var chartData = {
       labels: props.chartLabel,
       datasets: [{
-        backgroundColor: props.piColor,
+        backgroundColor: props.chartColor,
         data: props.chartData
       }]
     };
@@ -317,15 +317,34 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    chartColor: {
+      type: Array,
+      "default": function _default() {
+        return ['#329719', '#433979', '#544979', '#855979', '#966979', '#177979', '#f87327', '#f81279', '#f87979', '#f86979', '#f11979', '#f89979'];
+      }
+    },
+    chartBarLabel: {
+      type: String,
+      "default": "Number of Travels"
+    },
+    chartOptionYAxis: {
+      type: Object,
+      "default": {
+        min: 0,
+        // minimum value
+        max: 100 // maximum value
+
+      }
     }
   },
   setup: function setup(props) {
     var vm = this;
     var chartData = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      labels: props.chartLabel,
       datasets: [{
-        label: 'Data One',
-        backgroundColor: ['#329719', '#433979', '#544979', '#855979', '#966979', '#177979', '#f87327', '#f81279', '#f87979', '#f86979', '#f11979', '#f89979'],
+        label: props.chartBarLabel,
+        backgroundColor: props.chartColor,
         data: props.chartData
       }]
     };
@@ -338,12 +357,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
         }
       },
       scales: {
-        yAxis: {
-          min: 0,
-          // minimum value
-          max: 100 // maximum value
-
-        }
+        yAxis: props.chartOptionYAxis
       }
     };
     return function () {
@@ -390,16 +404,31 @@ __webpack_require__.r(__webpack_exports__);
   },
   props: {
     chargesAmount: Array,
-    chargesLabel: Array
+    chargesLabel: Array,
+    officesLabels: Array
   },
   data: function data() {
     return {
-      totalUser: [10, 20, 50, 500, 100, 1000],
-      someData: this.chargesAmount,
-      labels: this.chargesLabel,
-      myColors: ['rgb(30 115 184)', 'green', 'blue']
+      totalUser: [10, 20, 50, 6, 96, 85],
+      pieChartData: {
+        Labels: this.chargesLabel,
+        Data: this.chargesAmount,
+        Colors: ['rgb(30 115 184)', 'rgb(580 100 80)', 'blue']
+      },
+      barChart: {
+        Labels: this.officesLabels,
+        Data: this.chargesAmount
+      },
+      barChartOptionYAxis: {
+        min: 0,
+        // minimum value
+        max: 500 // maximum value
+
+      },
+      barTitle: "Number Of Travels Per Office"
     };
-  }
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -505,7 +534,7 @@ var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "layer w-100 mB-10"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
   "class": "lh-1"
-}, "Site Data")], -1
+}, "Fund/Charges")], -1
 /* HOISTED */
 );
 
@@ -527,114 +556,15 @@ var _hoisted_12 = {
 var _hoisted_13 = {
   "class": "layers"
 };
-
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_14 = {
   "class": "layer w-100 mB-10"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
-  "class": "lh-1"
-}, "Site Visits")], -1
-/* HOISTED */
-);
-
+};
 var _hoisted_15 = {
+  "class": "lh-1"
+};
+var _hoisted_16 = {
   "class": "layer w-100"
 };
-
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "peer bdL p-20 w-30p@lg+ w-100p@lg-"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "layers"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "layer w-100"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "layers"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "layer w-100"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-  "class": "mB-5"
-}, "100k"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
-  "class": "fw-600 c-grey-700"
-}, "Visitors From USA"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "pull-right c-grey-600 fsz-sm"
-}, "50%"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress mT-10"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress-bar bgc-deep-purple-500",
-  role: "progressbar",
-  "aria-valuenow": "50",
-  "aria-valuemin": "0",
-  "aria-valuemax": "100",
-  style: {
-    "width": "50%"
-  }
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "visually-hidden"
-}, "50% Complete")])])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "layer w-100 mT-15"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-  "class": "mB-5"
-}, "1M"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
-  "class": "fw-600 c-grey-700"
-}, "Visitors From Europe"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "pull-right c-grey-600 fsz-sm"
-}, "80%"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress mT-10"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress-bar bgc-green-500",
-  role: "progressbar",
-  "aria-valuenow": "50",
-  "aria-valuemin": "0",
-  "aria-valuemax": "100",
-  style: {
-    "width": "80%"
-  }
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "visually-hidden"
-}, "80% Complete")])])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "layer w-100 mT-15"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-  "class": "mB-5"
-}, "450k"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
-  "class": "fw-600 c-grey-700"
-}, "Visitors From Australia"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "pull-right c-grey-600 fsz-sm"
-}, "40%"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress mT-10"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress-bar bgc-light-blue-500",
-  role: "progressbar",
-  "aria-valuenow": "50",
-  "aria-valuemin": "0",
-  "aria-valuemax": "100",
-  style: {
-    "width": "40%"
-  }
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "visually-hidden"
-}, "40% Complete")])])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "layer w-100 mT-15"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h5", {
-  "class": "mB-5"
-}, "1B"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", {
-  "class": "fw-600 c-grey-700"
-}, "Visitors From India"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "pull-right c-grey-600 fsz-sm"
-}, "90%"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress mT-10"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "progress-bar bgc-blue-grey-500",
-  role: "progressbar",
-  "aria-valuenow": "50",
-  "aria-valuemin": "0",
-  "aria-valuemax": "100",
-  style: {
-    "width": "90%"
-  }
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "visually-hidden"
-}, "90% Complete")])])])])])])], -1
-/* HOISTED */
-);
 
 var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"masonry-item w-100\"><div class=\"row gap-20\"><!-- #Toatl Visits ==================== --><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Total Visits</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500\">+10%</span></div></div></div></div></div><!-- #Total Page Views ==================== --><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Total Page Views</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash2\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500\">-7%</span></div></div></div></div></div><!-- #Unique Visitors ==================== --><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Unique Visitor</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash3\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500\">~12%</span></div></div></div></div></div><!-- #Bounce Rate ==================== --><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Bounce Rate</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash4\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500\">33%</span></div></div></div></div></div></div></div>", 1);
 
@@ -695,16 +625,20 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_some_chart, {
-    chartData: $data.someData,
-    chartLabel: $data.labels,
-    piColor: $data.myColors
+    chartData: $data.pieChartData.Data,
+    chartLabel: $data.pieChartData.Labels,
+    chartColor: $data.pieChartData.Colors
   }, null, 8
   /* PROPS */
-  , ["chartData", "chartLabel", "piColor"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" #Site Visits ==================== "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_total_user, {
-    chartData: $data.totalUser
+  , ["chartData", "chartLabel", "chartColor"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" #Site Visits ==================== "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.barTitle), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_total_user, {
+    chartData: $data.totalUser,
+    chartLabel: $props.officesLabels,
+    chartOptionYAxis: $data.barChartOptionYAxis
   }, null, 8
   /* PROPS */
-  , ["chartData"])])])]), _hoisted_16])])])])]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_line_chart)])]), _hoisted_22])])], 64
+  , ["chartData", "chartLabel", "chartOptionYAxis"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"peer bdL p-20 w-30p@lg+ w-100p@lg-\">\r\n                                <div class=\"layers\">\r\n                                    <div class=\"layer w-100\">\r\n                                        <div class=\"layers\">\r\n                                            <div class=\"layer w-100\">\r\n                                                <h5 class=\"mB-5\">100k</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From USA</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">50%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-deep-purple-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 50%\">\r\n                                                        <span class=\"visually-hidden\">50% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">1M</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From Europe</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">80%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-green-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 80%\">\r\n                                                        <span class=\"visually-hidden\">80% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">450k</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From Australia</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">40%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-light-blue-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 40%\">\r\n                                                        <span class=\"visually-hidden\">40% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">1B</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From India</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">90%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-blue-grey-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 90%\">\r\n                                                        <span class=\"visually-hidden\">90% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </div> ")])])])])]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_line_chart)])]), _hoisted_22])])], 64
   /* STABLE_FRAGMENT */
   );
 }

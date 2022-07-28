@@ -32,18 +32,21 @@ class HomeController extends Controller
         ->where('role','Admin')
         ->first();
 
-        $chargeAmount  =  Models\Charge::select('amount')
-                                        ->get()
-                                        ->map(fn($item) => [
-                                                $item->amount
-                                            ]);
+        $chargeAmount  =  Models\Charge::groupBy("office_id")->select("amount")->get();
+        dd($chargeAmount);
+                                        // ->map(fn($item) => [
+                                        //         $item->amount
+                                        //     ])
+                                            ;
         $chargeLabel   =  Models\Charge::with(['office'=>function($query){
             $query->select('short_name','department_code');
         }])->get()
         ->map(fn($item) => [
             $item->office->short_name
         ]);
-
+        $offices = Models\Office::get()->map(fn($item) => [
+            $item->short_name
+        ]);
         if(!$isAdmin)
         {
             $chargeAmount = Models\Charge::where('office_id', auth()->user()->office_id)->select('amount')->get()->map(fn($item) => [
@@ -59,7 +62,8 @@ class HomeController extends Controller
         //dd($chargeLabel);
         return inertia('Home',[
             'chargesAmount'=>$chargeAmount,
-            'chargesLabel'=>$chargeLabel
+            'chargesLabel'=>$chargeLabel,
+            'officesLabels' =>$offices
         ]);
     }
 }

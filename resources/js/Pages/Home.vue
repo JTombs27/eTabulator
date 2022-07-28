@@ -10,10 +10,10 @@
                 <div class="col-md-4">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">Site Data</h6>
+                            <h6 class="lh-1">Fund/Charges</h6>
                         </div>
                         <div class="col-12">
-                            <some-chart :chartData="someData" :chartLabel="labels" :piColor="myColors"></some-chart>
+                            <some-chart :chartData="pieChartData.Data" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>
                         </div>
                     </div>
                 </div>
@@ -24,14 +24,14 @@
                             <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">
                                 <div class="layers">
                                     <div class="layer w-100 mB-10">
-                                        <h6 class="lh-1">Site Visits</h6>
+                                        <h6 class="lh-1">{{barTitle}}</h6>
                                     </div>
                                     <div class="layer w-100">
-                                        <total-user :chartData="totalUser" ></total-user>
+                                        <total-user :chartData="totalUser" :chartLabel="officesLabels" :chartOptionYAxis="barChartOptionYAxis"></total-user>
                                     </div>
                                 </div>
                             </div>
-                            <div class="peer bdL p-20 w-30p@lg+ w-100p@lg-">
+                            <!-- <div class="peer bdL p-20 w-30p@lg+ w-100p@lg-">
                                 <div class="layers">
                                     <div class="layer w-100">
                                         <div class="layers">
@@ -94,7 +94,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -250,15 +250,30 @@ export default ({
     components: { TotalUser, SomeChart, LineChart, PieChart },
     props:{
         chargesAmount:Array,
-        chargesLabel:Array
+        chargesLabel:Array,
+        officesLabels:Array,
+       
     },
     data() {
         return {
-            totalUser:[10,20,50,500,100,1000],
-            someData:   this.chargesAmount,
-            labels:     this.chargesLabel,
-            myColors:['rgb(30 115 184)','green','blue']
+            totalUser:[10,20,50,6,96,85],
+            pieChartData:{
+                        Labels:this.chargesLabel,
+                        Data:this.chargesAmount,
+                        Colors:['rgb(30 115 184)','rgb(580 100 80)','blue']
+                    },
+            barChart:{
+                Labels:this.officesLabels,
+                Data:this.chargesAmount,
+            },
+            barChartOptionYAxis:{
+                min: 0, // minimum value
+                max: 500 // maximum value
+            },
+            barTitle:"Number Of Travels Per Office"
         }
+    },
+    mounted(){
     }
 });
 </script>
