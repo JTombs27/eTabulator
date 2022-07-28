@@ -58,40 +58,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     sortedEmp: function sortedEmp() {
       var _this = this;
 
-      var startDate = this.form.date_from;
-      var endDate = this.form.date_to;
-
-      if (startDate == "") {
-        this.temp2;
-      } else {
-        this.temp2 = this.Travels.filter(function (item) {
-          return item.soa_travel === null;
-        }).filter(function (item) {
-          var travelDateFrom = item.date_from;
-          var travelDateTo = item.date_to;
-
-          if (startDate && endDate) {
-            if (!!travelDateTo) {
-              return startDate <= travelDateFrom && endDate <= travelDateTo;
-            } else {
-              return startDate == travelDateFrom && endDate == travelDateFrom;
-            }
-          }
-          /*if ( startDate && !endDate ) {
-              return startDate <= travelDateFrom;
-          }
-          if ( !startDate && endDate ) {
-              return travelDateTo <= endDate;
-          }*/
-
-
-          return _this.temp2;
-        });
+      /*if ( startDate && !endDate ) {
+          return startDate <= travelDateFrom;
       }
-
-      this.form.travels = this.temp2.filter(function (item) {
-        return item.soa_travel === null;
-      });
+      if ( !startDate && endDate ) {
+          return travelDateTo <= endDate;
+      }*/
       this.myLength = this.temp2.length;
       return this.temp2.sort(function (a, b) {
         var modifier = 1;
@@ -160,21 +132,50 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     date_to: function date_to() {
       this.currentPage = 1;
+      var startDate = this.form.date_from;
+      var endDate = this.form.date_to;
+
+      if (startDate && endDate) {
+        this.temp2 = this.Travels.filter(function (item) {
+          return item.soa_travel === null;
+        }).filter(function (item) {
+          var travelDateFrom = item.date_from;
+          var travelDateTo = item.date_to;
+          return startDate <= travelDateFrom && endDate >= travelDateTo || startDate <= travelDateFrom && endDate >= travelDateFrom;
+        });
+        this.form.travels = this.temp2;
+        this.sortedEmp = this.temp2;
+      }
     },
     submit: function submit() {
-      this.$inertia.visit("/soatravels", {
-        method: 'post',
-        data: this.form
-      });
-    }
-    /*remove(soa_travel) {
-            this.item = soa_travel;
-        let text = "WARNING!\nAre you sure you want to Remove the tag?";
-          if (confirm(text) == true) {
-            this.$inertia.visit("/soatravels/remove", {method: 'post', data:this.item}) ;
-          }
-    },*/
+      this.form.post("/soatravels", this.form);
+    },
+    fetchPrice: function fetchPrice(soa_travel, gas_type, total_liters) {
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('/travels/get-price', {
+                  datefilter: soa_travel,
+                  gasType: gas_type
+                }).then(function (response) {
+                  (Number(response.data) * Number(total_liters)).toFixed(2);
+                  console.log(response.data);
+                });
 
+              case 2:
+                return _context2.abrupt("return", var_price);
+
+              case 3:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
   }
 });
 
@@ -407,9 +408,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(soa_travel.total_liters), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number(soa_travel.price).toLocaleString(undefined, {
-      minimumFractionDigits: 2
-    })), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.fetchPrice(soa_travel.date_from, soa_travel.gas_type, soa_travel.total_liters)), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td>\r\n                                <button class=\"btn btn-secondary btn-sm action-btn\" v-if=\"soa_travel.soa_travel !== null\" @click=\"remove(soa_travel)\">\r\n                                    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-eraser-fill\" viewBox=\"0 0 16 16\">\r\n                                    <path d=\"M8.086 2.207a2 2 0 0 1 2.828 0l3.879 3.879a2 2 0 0 1 0 2.828l-5.5 5.5A2 2 0 0 1 7.879 15H5.12a2 2 0 0 1-1.414-.586l-2.5-2.5a2 2 0 0 1 0-2.828l6.879-6.879zm.66 11.34L3.453 8.254 1.914 9.793a1 1 0 0 0 0 1.414l2.5 2.5a1 1 0 0 0 .707.293H7.88a1 1 0 0 0 .707-.293l.16-.16z\"/>\r\n                                    </svg> remove\r\n                                </button>\r\n                            </td> ")]);
   }), 256

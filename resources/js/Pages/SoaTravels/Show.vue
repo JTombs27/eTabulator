@@ -53,7 +53,7 @@
                             <td>{{ soa_travel.time_arrival }}</td>
                             <td>{{ soa_travel.gas_type }}</td>
                             <td>{{ soa_travel.total_liters }}</td>
-                            <td class="text-end">{{ Number(soa_travel.price).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</td>
+                            <td class="text-end">{{ fetchPrice(soa_travel.date_from, soa_travel.gas_type,soa_travel.total_liters) }}</td>
                             <!-- <td>
                                 <button class="btn btn-secondary btn-sm action-btn" v-if="soa_travel.soa_travel !== null" @click="remove(soa_travel)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
@@ -116,35 +116,15 @@ export default {
     computed:{
         sortedEmp:function() {
             
-            let startDate = this.form.date_from;
-            let endDate = this.form.date_to;
-
-            if ( startDate == "" ) {
-                this.temp2;
-            } else {
-
-                this.temp2 = this.Travels.filter(item => item.soa_travel === null)
-                .filter(item => {
-                    const travelDateFrom = item.date_from
-                    const travelDateTo = item.date_to
-                if ( startDate && endDate ) {
-                    if (!!travelDateTo) {
-                        return startDate <= travelDateFrom && endDate <= travelDateTo;
-                    } else {
-                        return startDate == travelDateFrom && endDate == travelDateFrom;
-                    }
-                }
+            
                 /*if ( startDate && !endDate ) {
                     return startDate <= travelDateFrom;
                 }
                 if ( !startDate && endDate ) {
                     return travelDateTo <= endDate;
                 }*/
-                    return this.temp2
-                })
 
-            }
-            this.form.travels = this.temp2.filter(item => item.soa_travel === null)
+            
             this.myLength = this.temp2.length;
             return this.temp2.sort((a,b) => {
                         let modifier = 1;
@@ -198,20 +178,46 @@ export default {
         },
         date_to(){
             this.currentPage=1;
+
+            let startDate = this.form.date_from;
+            let endDate = this.form.date_to;
+
+            if ( startDate && endDate ) {
+                this.temp2 = this.Travels.filter(item => item.soa_travel === null)
+                    .filter(item => {
+                    let travelDateFrom = item.date_from
+                    let travelDateTo = item.date_to
+                
+
+                    return  (startDate  <= travelDateFrom  && endDate >= travelDateTo) || ( startDate <= travelDateFrom &&  endDate  >= travelDateFrom);
+                   
+
+                })
+                 this.form.travels = this.temp2;
+                 this.sortedEmp = this.temp2;
+            }
         },
 
         submit() {
-            this.$inertia.visit("/soatravels", {method: 'post', data:this.form});
-            
+                this.form.post("/soatravels", this.form);
         },
 
-        /*remove(soa_travel) {
-                this.item = soa_travel;
-            let text = "WARNING!\nAre you sure you want to Remove the tag?";
-              if (confirm(text) == true) {
-                this.$inertia.visit("/soatravels/remove", {method: 'post', data:this.item}) ;
-              }
-        },*/
+        async fetchPrice(soa_travel,gas_type,total_liters) {
+           
+            
+
+            await axios.post('/travels/get-price', 
+                {datefilter:soa_travel, gasType:gas_type}
+            ).then((response) => {
+              
+                (Number(response.data) * Number(total_liters)).toFixed(2);
+                console.log(response.data)
+            
+            }) 
+
+            return  var_price;            
+        },
+
     },
     
 };

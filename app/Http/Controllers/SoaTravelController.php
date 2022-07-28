@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Price;
 use App\Models\User;
 use App\Models\Travel;
 use App\Models\SoaTravel;
@@ -10,11 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class SoaTravelController extends Controller
 {
-    public function __construct(Travel $model, SoaTravel $soatravel, User $user)
+    public function __construct(Travel $model, SoaTravel $soatravel, User $user, Price $price)
     {
         $this->model = $model;
         $this->soatravel = $soatravel;
         $this->user = $user;
+        $this->price = $price;
     }
 
     public function index(Request $request)
@@ -98,6 +100,7 @@ class SoaTravelController extends Controller
 
     public function store(Request $request)
     {
+
         $attributes = $request->validate([
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
@@ -149,4 +152,5 @@ class SoaTravelController extends Controller
 
         return redirect('/soatravels')->with('message', 'Soa Travel deleted');
     }
+
 }

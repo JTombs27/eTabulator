@@ -252,6 +252,7 @@ class TravelController extends Controller
             });
             $query = $query->latest()->first($request->gasType);
             return array_values($query->toArray())[0];
+            
         } catch (\Throwable $th) {
            return 0.00;
         }
