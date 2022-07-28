@@ -134,6 +134,7 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
+                                    'soa_travel' => $item->soa_travel,
                                     'price' => number_format(($total[$item->gas_type] * $item->total_liters),2),
                                 ]; 
                             }),

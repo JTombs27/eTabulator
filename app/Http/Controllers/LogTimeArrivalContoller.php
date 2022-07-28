@@ -50,23 +50,31 @@ class LogTimeArrivalContoller extends Controller
         // dd($request->time_arrival);
         try{
             $log = $this->travel->where('ticket_number',$request->ticket_number)->first();
+                               
             if ($log) {
-                $log2 = $this->model->where('travel_id',$log->id)->first();
-                if($log2)
-                {
-                    $log2->update([
+             
+                if ($log->status == "Approved"){
+                    $log2 = $this->model->where('travel_id',$log->id)->first();
+                    if($log2)
+                    {
+                        $log2->update([
+                            'time_arrival' => $request->time_arrival
+                        ]);
+                    }
+                    else{
+                        $this->model->create([
+                            'time_arrival' => $request->time_arrival,
+                            'travel_id' => $log->id,
+                        ]);
+                    }
+                    $log->update([
                         'time_arrival' => $request->time_arrival
                     ]);
-                }
-                else{
-                    $this->model->create([
-                        'time_arrival' => $request->time_arrival,
-                        'travel_id' => $log->id,
-                    ]);
-                }
-                $log->update([
-                    'time_arrival' => $request->time_arrival
-                ]);
+               }
+               else
+               {
+                  return back()->withErrors(['ticket_number' => 'Trip ticket not apporved'])->withInput();
+               }
             } else {
                 return back()->withErrors(['ticket_number' => 'Trip ticket not found'])->withInput();
             }

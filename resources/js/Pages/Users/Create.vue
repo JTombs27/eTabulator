@@ -151,6 +151,7 @@ export default {
             templateSelection: this.formatRepoSelection
         })
 
+
         $('#office').select2({
             ajax: {
                 url: '/offices/fetch',
