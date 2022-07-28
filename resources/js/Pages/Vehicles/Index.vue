@@ -105,6 +105,7 @@
                             <td v-else v-html="code(vehicle.TYPECODE, null)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
+                            <!-- <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td> -->
                             <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
                             <td v-else></td>
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
@@ -388,11 +389,11 @@ export default ({
 
         status (status) {
             if (status == "Good Condition") {
-                return "<small><span class='badge rounded-pill bg-success'>✔</span></small>"
+                return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-success'> ✔ </span></small>"
             } else if (status == "On-repair") {
-                return "<small><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
+                return "<small style='margin-left: 5px' ><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
             } else if (status == "Wasted") {
-                return "<small><span class='badge rounded-pill bg-danger'>🗑️</span></small>"
+                return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-danger'>🗑️</span></small>"
             }
             return ""
         },

@@ -85,9 +85,12 @@ class VehicleController extends Controller
 
         $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date'));
 
-        $vehicleStatus = $this->status->create(['condition' => $request->condition,
-                                                'vehicles_id' => $vehicle->id,
-                                                'vehicle_status_date' => $request->vehicle_status_date]);
+        if(!!$request->condition) {
+
+            $vehicleStatus = $this->status->create(['condition' => $request->condition,
+                                                    'vehicles_id' => $vehicle->id,
+                                                    'vehicle_status_date' => $request->vehicle_status_date]);
+        }
 
         if (!!$request->checkadd) {
             return redirect('/drivers/'.$vehicle->id.'/create')->with('message', 'Vehicle Added Successfully');
@@ -132,6 +135,8 @@ class VehicleController extends Controller
                     'vehicle_status.condition'
                 )
                 ->leftJoin('vehicle_status', 'vehicle_status.vehicles_id', 'vehicles.id')
+                ->leftJoin('driver_vehicles', 'vehicles_id', 'id')
+                ->when(,'driver_vehicles.department_code', auth()->user()->office_id)
                 // ->where(function ($query) use($id){
                 //     $query->where('vehicle_status.condition', 'Good Condition')
                 //         ->orWhere('vehicle_status.vehicles_id', $id);

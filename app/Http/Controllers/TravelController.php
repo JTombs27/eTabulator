@@ -211,22 +211,24 @@ class TravelController extends Controller
         // $now = Carbon::now();
         // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
         // $weekEndDate = Carbon::parse($date_to)->endOfWeek()->format('Y-m-d');
-        $isExistTravel = $this->model
-                            ->where('driver_vehicles_id', $request->driver_vehicles_id)
-                            ->where('id', '<>' ,$request->id)
-                            ->where(function($query) use($date_from, $date_to) {
-                                $query->whereBetween('date_from', [$date_from, $date_to])
-                                        ->OrWhereBetween('date_to', [$date_from, $date_to]);
-                            })
-                            ->exists();
-
-        $attributes = $request->validated();
+        
+        // $isExistTravel = $this->model
+        //                     ->where('driver_vehicles_id', $request->driver_vehicles_id)
+        //                     ->where('id', '<>' ,$request->id)
+        //                     ->where(function($query) use($date_from, $date_to) {
+        //                         $query->whereBetween('date_from', [$date_from, $date_to])
+        //                                 ->OrWhereBetween('date_to', [$date_from, $date_to]);
+        //                     })
+        //                     ->first();
        
-        if ($isExistTravel) {
-            return redirect('/travels/create')->with('error', 'This record already exist.');
-        }
+        // $attributes = $request->validated();
+       
+        // if ($isExistTravel) {
+        //     return redirect('/travels/create')->with('error', 'This record already exist.');
+        // }
 
         $request['office_id'] = auth()->user()->office_id;
+        
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
 
