@@ -31,25 +31,25 @@
                             Gasoline (Premium)
                             @break
                         @case('breaj_oil_price')
-                            'Break Oil'
+                            Break Oil
                             @break
                         @case ('regular_price')
-                            Gasoline (Regular)'
+                            Gasoline (Regular)
                             @break
                         @case ('deisoline_price')
-                            'Deisoline'
+                            Deisoline
                             @break
                         @case ('engine_oil_price')
-                            'Engine Oil'
+                            Engine Oil
                             @break
                         @case('break_oil_price')
-                            'Break Oil'
+                            Break Oil
                             @break
                         @case('greases_price')
-                            'Greases'
+                            Greases
                             @break
                         @default:
-                           'GG'
+                           NO CATEGORY
                     
                     @endswitch
 

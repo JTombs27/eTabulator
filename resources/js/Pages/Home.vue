@@ -252,15 +252,16 @@ export default ({
         chargesAmount:Array,
         chargesLabel:Array,
         officesLabels:Array,
-       
+        
     },
     data() {
         return {
             totalUser:[10,20,50,6,525,85],
+            myColors:[],
             pieChartData:{
                         Labels:this.chargesLabel,
                         Data:this.chargesAmount,
-                        Colors:['rgb(30 115 184)','rgb(580 100 80)','blue']
+                        Colors:this.myColors
                     },
             barChart:{
                 Labels:this.officesLabels,
@@ -270,6 +271,10 @@ export default ({
         }
     },
     mounted(){
+        this.chargesAmount.forEach(element => {
+            this.myColors.push('rgb(30 50 184)');
+        });
+        
     }
 });
 </script>
