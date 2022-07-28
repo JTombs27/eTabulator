@@ -47,6 +47,7 @@
                 </svg> Reset</button>
 
         </filtering>
+
         <div class="col-12" v-if="vehiclesGroup.length > 0">
             <div class="card">
                 <div class="card-body">
@@ -102,7 +103,7 @@
                                 </div>
                             </th>
                             <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
-                            <td v-if="vehicle.vehicle_status"><span style="color:brown">{{vehicle.vehicle_status.condition}} </span></td>
+                            <td v-if="vehicle.vehicle_status" v-html="status(vehicle.vehicle_status.condition)"></td>
                             <td v-else></td>
                             <td v-html="code(vehicle.TYPECODE)"></td>
                             <td> {{vehicle.date}}</td>
@@ -383,6 +384,23 @@ export default ({
             }
         },
 
+        status (status) {
+            switch(status) {
+                case 'Good Condition':
+                    return "<span class='badge bg-success'>Good Condition</span>"
+                    break
+                case 'On-Repair':
+                    return "<span class='badge bg-secondary'>In Repair</span>"
+                    break
+                case 'Wasted':
+                    return "<span class='badge bg-danger'>Wasted</span>"
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
+
         borrowdisplay (code) {
             switch(code) {
                 case false:
@@ -397,12 +415,12 @@ export default ({
             }
         },
         
-        driverVehicle(driverid)
+        driverVehicle (driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");
         },
 
-        deleteVehicle(vehicle)
+        deleteVehicle (vehicle)
         {
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
@@ -410,20 +428,22 @@ export default ({
                 this.$inertia.delete("/vehicles/" + vehicle.id);
             }
         },
-        showFilter()
+
+        showFilter ()
         {
             this.filter = !this.filter
         },
-        runFilter() {
-            
+
+        runFilter () {
             this.$inertia.get('/vehicles', this.filter1,{preserveState:true})
         },
-        reset() {
+
+        reset () {
             this.filter = {}
             this.$inertia.get('/vehicles')
 
         },
-        setStatus(){
+        setStatus () {
             axios.post('/vehicles/set-status', {
                 "condition":this.form.condition,
                 "vehicle_status_date":this.form.vehicle_status_date,
@@ -444,10 +464,9 @@ export default ({
                 }
             })
 
-        },
-        showInfo(id)
+        }, 
+        showInfo (id)
         {
-
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
 
                 this.travel_info = response.data[0]
@@ -520,7 +539,6 @@ export default ({
 
         },
 
-
         statusDisplay (code) {
             switch(code) {
                 case 'Approved':
@@ -537,7 +555,7 @@ export default ({
                     break
             }
         },
-        createProject(){
+        createProject () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -546,7 +564,7 @@ export default ({
 
        },
 
-       goToProject(){
+       goToProject () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -554,7 +572,8 @@ export default ({
            this.showModal = false
 
        },
-       createTravel(){
+
+       createTravel () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -562,6 +581,7 @@ export default ({
            this.showModal = false
 
        },
+       
        goToTravel(){
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
