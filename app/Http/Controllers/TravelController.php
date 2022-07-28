@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
+
 
 class TravelController extends Controller
 {
@@ -26,7 +26,7 @@ class TravelController extends Controller
 
     public function index(Request $request)
     {
-        
+       
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
@@ -35,6 +35,15 @@ class TravelController extends Controller
                                     $q->where('office_id', auth()->user()->office_id);
                                 }
                             )
+                            ->when($request->dateFilterType == 'all', function($q) use ($request) {
+                                $q->wherebetween('date_from', [$request->date_from,$request->date_from]);
+                            })
+                            ->when($request->dateFilterType == 'from', function($q) use ($request) {
+                                $q->where('date_from', '>=', $request->date_from);
+                            })
+                            ->when($request->dateFilterType == 'to', function($q) use ($request) {
+                                $q->where('date_from', '<=', $request->date_to);
+                            })
                             ->latest()
                             ->simplePaginate(10)
                             ->through(function ($item) {
@@ -56,12 +65,13 @@ class TravelController extends Controller
                                     'liters' => $item->total_liters,
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
-                                    'price' => $total[$item->gas_type],
+                                    'price' => ($total[$item->gas_type] * $item->total_liters),
                                 ]; 
                             }),
             "can" => [
                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
                 'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
+                'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
                 'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
             ]
         ]);
@@ -120,7 +130,7 @@ class TravelController extends Controller
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
-            'charges' => $amount
+            'balance' => $amount
         ]);
         
     }
@@ -273,6 +283,7 @@ class TravelController extends Controller
             });
             $query = $query->latest()->first($request->gasType);
             return array_values($query->toArray())[0];
+            
         } catch (\Throwable $th) {
            return 0.00;
         }

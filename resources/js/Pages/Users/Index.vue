@@ -84,7 +84,7 @@
                                     <li><Link class="dropdown-item" :href="`/users/${user.id}/edit`">Edit</Link></li>
                                     <li><a class="dropdown-item" href="#" @click="editPermissions(user.id)">Permissions</a></li>
                                     <li><hr class="dropdown-divider action-divider"></li>
-                                    <li v-if="can.canDeleteUser">
+                                    <li v-if="can.canDeleteUser && !user.can.delete">
                                         <Link class="text-danger dropdown-item" @click="deleteUser(user.id)">Delete</Link>
                                     </li>
                                   </ul>

@@ -46,8 +46,8 @@
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Price</th>
                             <th scope="col">Liter/s</th>
+                            <th scope="col">Price</th>
                             <th scope="col">Status</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
@@ -60,8 +60,8 @@
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
                             <td v-if="!item.date_to">{{item.date_from}}</td>
                             <td v-else>{{item.date_from}} to {{item.date_to}}</td>
-                            <td class="text-right">{{`\u20B1${Number(item.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>
                             <td class="text-center">{{item.liters}}</td>
+                            <td class="text-right">{{`\u20B1${Number(item.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>
                             <td v-html="statusDisplay(item)"></td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
@@ -73,8 +73,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu" :id="item.id" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
-                                    <li><hr class="dropdown-divider action-divider"></li>
+
                                     <li v-if="item.status == 'Approved'">
                                         <button as="button" class="dropdown-item" @click="tripTicket(item.id)">
                                             <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-printer me-2" viewBox="0 0 16 16">
@@ -95,7 +94,6 @@
                                         </svg>Driver Trip Ticket</span>
                                         </button>
                                     </li>
-                                    <li><hr class="dropdown-divider action-divider"></li>
                                     <!-- <li><Link class="dropdown-item" :href="`/travels/set-status`" method="post" :data="item" as="button" v-if="can.canSetStatus">Approve</Link></li> -->
                                     <li v-if="item.status == 'Disapproved' || item.status==null">
                                         
@@ -108,6 +106,11 @@
                                             <span  class="text-danger">Disapprove</span>
                                         </button>
                                     </li>
+                                    <li v-if="can.canEditTravel && item.status != 'Approved'"><hr class="dropdown-divider action-divider"></li>
+                                    <li v-if="can.canEditTravel && item.status != 'Approved'"><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
+                                    <!-- <li v-if="can.canDeleteTravel && item.status != 'Approved'">
+                                        <Link class="text-danger dropdown-item" @click="deleteTravel(item.id)">Delete</Link>
+                                    </li> -->
                                   </ul>
                                 </div>
                             </td>
@@ -130,6 +133,7 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+
 export default{
     components: { Pagination, Filtering },
     props: {
@@ -146,8 +150,9 @@ export default{
             dropdownOption:"outside",
             filter:false,
             filterData: {
-                data_from:null,
-                data_to:null,
+                date_from:null,
+                date_to:null,
+                dateFilterType:null,
             }
         }
     },
@@ -171,6 +176,26 @@ export default{
                 
             })
         },
+
+        runFilter() {
+            if (this.filterData.date_from && this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "all";
+                
+            } else if(this.filterData.date_from && !this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "from";
+               
+            } else if(!this.filterData.date_from && this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "to";
+               
+            }
+            this.$inertia.get('/travels',  this.filterData, {
+                preserveState:true
+            })
+        },
+
         tripTicket(id) {
             window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftrip_ticket&standAlone=true&decorate=no&id="+id,"_blank");
         },

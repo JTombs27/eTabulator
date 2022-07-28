@@ -27,7 +27,7 @@
                             <th scope="col">Time Arrival</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
-                            <th scope="col" style="text-align: right">Price</th>
+                            <th scope="col" style="text-align: right">Total Price</th>
                             <!-- <th scope="col">Action</th> -->
                         </tr>
                     </thead>

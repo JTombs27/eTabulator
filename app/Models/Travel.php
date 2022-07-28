@@ -55,10 +55,6 @@ class Travel extends Model
         }
 
     }
-    public function getMergeTotalAttribute()
-    {
-        return $this->sum('price');
-    }
 
     public function setStatus($value)
     {
