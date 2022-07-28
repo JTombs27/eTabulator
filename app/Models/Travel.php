@@ -62,11 +62,11 @@ class Travel extends Model
         $date_from = $this->date_from;
         $gas_type = $this->gas_type;
        $checkPrice = Price::whereDate('date', $date_from)->exists();
-        $total = Price::when($checkPrice, function($q) use ($date_from,$gas_type) {
+        $total = Price::when($checkPrice, function($q) use ($date_from) {
                                     $q->whereDate('date', $date_from);
                                 })->latest()->first($gas_type);
 
-        $totalPrice = number_format(($total[$gas_type] * $liters),2);
+        $totalPrice = ($total[$gas_type] * $liters);
 
         return $totalPrice;
 

@@ -36,6 +36,7 @@ class TravelValidationController extends Controller
             'travels.id',
             'travels.status',
             'travels.total_liters',
+            'travels.gas_type'
         )
         ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
         ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')

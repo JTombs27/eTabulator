@@ -24,6 +24,7 @@
             <tr><td>Plate Number</td><td>:</td><td><b>{{$data->PLATENO}}</b></td></tr>
             <tr><td>Travel Date</td><td>:</td><td><b>{{$data->date_to != null ? $data->date_from.' To '.$data->date_to:$data->date_from}}</b></td></tr>
             <tr><td>Allowed Liter/s </td><td>:</td><td><b>{{$data->total_liters}} Liter/s</b></td></tr>
+            <tr><td>Gas Type </td><td>:</td><td><b>{{$data->gas_type}}</b></td></tr>
             
             <tr><td colspan="3">Drivers Name:</td></tr>
             <tr><td colspan="3" style="padding-left: 20px;"><b>{{$data->first_name.' '.(Str::limit($data->middle_name,1,'.')).' '.$data->last_name}}</b></td></tr>
