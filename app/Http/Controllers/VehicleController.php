@@ -41,6 +41,10 @@ class VehicleController extends Controller
             ->simplePaginate(10)
             ->withQueryString(),
             "filters" => $request->only(['search']),
+            "can" => [
+                'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
+                'canCreateProject' => auth()->user()->can('canCreateProject',User::class),
+            ]
         ]);
     }
 
