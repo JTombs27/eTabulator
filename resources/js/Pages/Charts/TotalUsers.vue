@@ -100,9 +100,9 @@ export default defineComponent({
                     display: false
                 }
             },
-            scales: {
-                yAxis: props.chartOptionYAxis
-            }
+            // scales: {
+            //     yAxis: props.chartOptionYAxis
+            // }
         }
 
         return () =>

@@ -355,10 +355,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
         legend: {
           display: false
         }
-      },
-      scales: {
-        yAxis: props.chartOptionYAxis
-      }
+      } // scales: {
+      //     yAxis: props.chartOptionYAxis
+      // }
+
     };
     return function () {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.h)(vue_chartjs__WEBPACK_IMPORTED_MODULE_2__.Bar, {
@@ -409,7 +409,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      totalUser: [10, 20, 50, 6, 96, 85],
+      totalUser: [10, 20, 50, 6, 525, 85],
       pieChartData: {
         Labels: this.chargesLabel,
         Data: this.chargesAmount,
@@ -418,12 +418,6 @@ __webpack_require__.r(__webpack_exports__);
       barChart: {
         Labels: this.officesLabels,
         Data: this.chargesAmount
-      },
-      barChartOptionYAxis: {
-        min: 0,
-        // minimum value
-        max: 500 // maximum value
-
       },
       barTitle: "Number Of Travels Per Office"
     };
@@ -634,11 +628,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_total_user, {
     chartData: $data.totalUser,
-    chartLabel: $props.officesLabels,
-    chartOptionYAxis: $data.barChartOptionYAxis
+    chartLabel: $props.officesLabels
   }, null, 8
   /* PROPS */
-  , ["chartData", "chartLabel", "chartOptionYAxis"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"peer bdL p-20 w-30p@lg+ w-100p@lg-\">\r\n                                <div class=\"layers\">\r\n                                    <div class=\"layer w-100\">\r\n                                        <div class=\"layers\">\r\n                                            <div class=\"layer w-100\">\r\n                                                <h5 class=\"mB-5\">100k</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From USA</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">50%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-deep-purple-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 50%\">\r\n                                                        <span class=\"visually-hidden\">50% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">1M</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From Europe</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">80%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-green-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 80%\">\r\n                                                        <span class=\"visually-hidden\">80% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">450k</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From Australia</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">40%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-light-blue-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 40%\">\r\n                                                        <span class=\"visually-hidden\">40% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">1B</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From India</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">90%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-blue-grey-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 90%\">\r\n                                                        <span class=\"visually-hidden\">90% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </div> ")])])])])]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_line_chart)])]), _hoisted_22])])], 64
+  , ["chartData", "chartLabel"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"peer bdL p-20 w-30p@lg+ w-100p@lg-\">\r\n                                <div class=\"layers\">\r\n                                    <div class=\"layer w-100\">\r\n                                        <div class=\"layers\">\r\n                                            <div class=\"layer w-100\">\r\n                                                <h5 class=\"mB-5\">100k</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From USA</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">50%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-deep-purple-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 50%\">\r\n                                                        <span class=\"visually-hidden\">50% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">1M</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From Europe</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">80%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-green-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 80%\">\r\n                                                        <span class=\"visually-hidden\">80% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">450k</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From Australia</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">40%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-light-blue-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 40%\">\r\n                                                        <span class=\"visually-hidden\">40% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                            <div class=\"layer w-100 mT-15\">\r\n                                                <h5 class=\"mB-5\">1B</h5>\r\n                                                <small class=\"fw-600 c-grey-700\">Visitors From India</small>\r\n                                                <span class=\"pull-right c-grey-600 fsz-sm\">90%</span>\r\n                                                <div class=\"progress mT-10\">\r\n                                                    <div class=\"\r\n                                                            progress-bar\r\n                                                            bgc-blue-grey-500\r\n                                                        \" role=\"progressbar\" aria-valuenow=\"50\" aria-valuemin=\"0\"\r\n                                                        aria-valuemax=\"100\" style=\"width: 90%\">\r\n                                                        <span class=\"visually-hidden\">90% Complete</span>\r\n                                                    </div>\r\n                                                </div>\r\n                                            </div>\r\n                                        </div>\r\n                                    </div>\r\n                                </div>\r\n                            </div> ")])])])])]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_20, [_hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_line_chart)])]), _hoisted_22])])], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -657,13 +650,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _LineChart_vue_vue_type_template_id_0644bece__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LineChart.vue?vue&type=template&id=0644bece */ "./resources/js/Pages/Charts/LineChart.vue?vue&type=template&id=0644bece");
 /* harmony import */ var _LineChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LineChart.vue?vue&type=script&lang=js */ "./resources/js/Pages/Charts/LineChart.vue?vue&type=script&lang=js");
-/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_LineChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_LineChart_vue_vue_type_template_id_0644bece__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/LineChart.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_LineChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_LineChart_vue_vue_type_template_id_0644bece__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/LineChart.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -684,13 +677,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _PieChart_vue_vue_type_template_id_3aee11b3__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PieChart.vue?vue&type=template&id=3aee11b3 */ "./resources/js/Pages/Charts/PieChart.vue?vue&type=template&id=3aee11b3");
 /* harmony import */ var _PieChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PieChart.vue?vue&type=script&lang=js */ "./resources/js/Pages/Charts/PieChart.vue?vue&type=script&lang=js");
-/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PieChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PieChart_vue_vue_type_template_id_3aee11b3__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/PieChart.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_PieChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_PieChart_vue_vue_type_template_id_3aee11b3__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/PieChart.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -711,13 +704,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _SomeChart_vue_vue_type_template_id_1bb7fb99__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SomeChart.vue?vue&type=template&id=1bb7fb99 */ "./resources/js/Pages/Charts/SomeChart.vue?vue&type=template&id=1bb7fb99");
 /* harmony import */ var _SomeChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SomeChart.vue?vue&type=script&lang=js */ "./resources/js/Pages/Charts/SomeChart.vue?vue&type=script&lang=js");
-/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SomeChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SomeChart_vue_vue_type_template_id_1bb7fb99__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/SomeChart.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_SomeChart_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_SomeChart_vue_vue_type_template_id_1bb7fb99__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/SomeChart.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -738,13 +731,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _TotalUsers_vue_vue_type_template_id_46fa1c36__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./TotalUsers.vue?vue&type=template&id=46fa1c36 */ "./resources/js/Pages/Charts/TotalUsers.vue?vue&type=template&id=46fa1c36");
 /* harmony import */ var _TotalUsers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./TotalUsers.vue?vue&type=script&lang=js */ "./resources/js/Pages/Charts/TotalUsers.vue?vue&type=script&lang=js");
-/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TotalUsers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TotalUsers_vue_vue_type_template_id_46fa1c36__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/TotalUsers.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_TotalUsers_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_TotalUsers_vue_vue_type_template_id_46fa1c36__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Charts/TotalUsers.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -765,13 +758,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Home_vue_vue_type_template_id_6a63e488__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Home.vue?vue&type=template&id=6a63e488 */ "./resources/js/Pages/Home.vue?vue&type=template&id=6a63e488");
 /* harmony import */ var _Home_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Home.vue?vue&type=script&lang=js */ "./resources/js/Pages/Home.vue?vue&type=script&lang=js");
-/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Home_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Home_vue_vue_type_template_id_6a63e488__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Home.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Home_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Home_vue_vue_type_template_id_6a63e488__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Home.vue"]])
 /* hot reload */
 if (false) {}
 

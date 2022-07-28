@@ -27,7 +27,7 @@
                                         <h6 class="lh-1">{{barTitle}}</h6>
                                     </div>
                                     <div class="layer w-100">
-                                        <total-user :chartData="totalUser" :chartLabel="officesLabels" :chartOptionYAxis="barChartOptionYAxis"></total-user>
+                                        <total-user :chartData="totalUser" :chartLabel="officesLabels"></total-user>
                                     </div>
                                 </div>
                             </div>
@@ -256,7 +256,7 @@ export default ({
     },
     data() {
         return {
-            totalUser:[10,20,50,6,96,85],
+            totalUser:[10,20,50,6,525,85],
             pieChartData:{
                         Labels:this.chargesLabel,
                         Data:this.chargesAmount,
@@ -265,10 +265,6 @@ export default ({
             barChart:{
                 Labels:this.officesLabels,
                 Data:this.chargesAmount,
-            },
-            barChartOptionYAxis:{
-                min: 0, // minimum value
-                max: 500 // maximum value
             },
             barTitle:"Number Of Travels Per Office"
         }

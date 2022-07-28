@@ -32,15 +32,16 @@ class HomeController extends Controller
         ->where('role','Admin')
         ->first();
 
-        $chargeAmount  =  Models\Charge::groupBy("office_id")->select("amount")->get();
-        dd($chargeAmount);
-                                        // ->map(fn($item) => [
-                                        //         $item->amount
-                                        //     ])
-                                            ;
+        $chargeAmount  =  Models\Charge::groupBy("office_id")
+                        ->selectRaw('sum(amount) as amount')
+                        ->get()
+                        ->map(fn($item) => 
+                        [
+                            $item->amount
+                        ]);
         $chargeLabel   =  Models\Charge::with(['office'=>function($query){
             $query->select('short_name','department_code');
-        }])->get()
+        }])->groupBy("office_id")->get()
         ->map(fn($item) => [
             $item->office->short_name
         ]);
@@ -49,13 +50,19 @@ class HomeController extends Controller
         ]);
         if(!$isAdmin)
         {
-            $chargeAmount = Models\Charge::where('office_id', auth()->user()->office_id)->select('amount')->get()->map(fn($item) => [
+            $chargeAmount = Models\Charge::where('office_id', auth()->user()->office_id)
+            ->selectRaw('sum(amount) as amount')
+            ->get()
+            ->map(fn($item) => 
+            [
                 $item->amount
             ]);
 
             $chargeLabel  =  Models\Charge::with(['office'=>function($query){
                 $query->select('short_name','department_code');
-            }])->where('office_id', auth()->user()->office_id)->get()->map(fn($item) => [
+            }])->where('office_id', auth()->user()->office_id)
+            ->groupBy('office_id')
+            ->get()->map(fn($item) => [
                 $item->office->short_name
             ]);
         }
