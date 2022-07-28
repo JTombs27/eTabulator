@@ -66,7 +66,7 @@ class Travel extends Model
                                     $q->whereDate('date', $date_from);
                                 })->latest()->first($gas_type);
 
-        $totalPrice = number_format(($total[$gas_type] * $liters),2);
+        $totalPrice = (float) number_format(($total[$gas_type] * $liters),2);
 
         return $totalPrice;
 
