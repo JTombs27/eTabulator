@@ -51,7 +51,7 @@ class SoaTravelController extends Controller
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
                     'total_liters' => $item->travels->sum('total_liters'),
-                    'totalPrice' => number_format($item->travels->sum('totalPrice'),2)
+                    'totalPrice' => $item->travels->sum('totalPrice')
                 ])
                 ,
             "filters" => $request->only(['search']),
@@ -85,7 +85,7 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
-                                    'price' => number_format(($total[$item->gas_type] * $item->total_liters),2),
+                                    'price' => ($total[$item->gas_type] * $item->total_liters)
                                 ]; 
                 }),
         ]);
@@ -135,7 +135,7 @@ class SoaTravelController extends Controller
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
                                     'soa_travel' => $item->soa_travel,
-                                    'price' => number_format(($total[$item->gas_type] * $item->total_liters),2),
+                                    'price' => ($total[$item->gas_type] * $item->total_liters)
                                 ]; 
                             }),
             "filters" => $request->only(['search']),
