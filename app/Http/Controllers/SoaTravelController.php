@@ -51,7 +51,7 @@ class SoaTravelController extends Controller
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
                     'total_liters' => $item->travels->sum('total_liters'),
-                    'totalPrice' => $item->travels->sum('totalPrice')
+                    'totalPrice' => ""//$item->travels->sum('totalPrice')
                 ])
                 ,
             "filters" => $request->only(['search']),
