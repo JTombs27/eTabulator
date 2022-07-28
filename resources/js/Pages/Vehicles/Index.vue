@@ -90,7 +90,6 @@
                             <th scope="col" >Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
-                            <th scope="col"></th>
                             <th scope="col" style="text-align: right"> Action</th>
                         </tr>
                     </thead>
@@ -111,7 +110,6 @@
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
-                            <td><span class="badge bg-info" @click="showInfo(vehicle.id)">Where Abouts</span></td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -131,6 +129,10 @@
                                             <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
                                             <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
                                         </svg> Status</Link></li>
+                                        <li><span class="dropdown-item" @click="showInfo(vehicle.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
+                                            </svg> Whereabouts</span></li>
                                         <li><Link class="dropdown-item" :href="`/officeVehicles/${vehicle.id}`">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
@@ -166,9 +168,10 @@
             </div>
         </div>
     </div>
+ 
   <Modal
         v-if="showModal"
-        :modalTitle="'Vehicle Where Abouts'"
+        :modalTitle="'Vehicle Whereabouts'"
         :addional_class="'modal-lg'"
         @closeModal="closeModal">
        <table class="table table-hover table-responsive">
@@ -176,20 +179,19 @@
                           <tr>
                             <th scope="col"><h3>Travels</h3></th>
                             <th scope="col"></th>
-                            <th scope="col"></th>
+                            <th scope="col">
+                                  <h4><Link v-if="!!noTravel && can.canCreateTravel" class="pull-right" @click="createTravel()"><u>Create Travel</u></Link></h4>
+                                  <h4><Link v-if="!noTravel" class="pull-right" @click="goToTravel()"><u>Go to Travel</u></Link></h4>
+                            </th>
                          </tr>
                     </thead>
                     <tbody>
                         <tr v-if="!!noTravel">
-                            <td scope="col"><Link class="btn btn-info" @click="createTravel()">Create Travel</Link></td>
+                            <td scope="col"></td>
                             <td scope="col"> | </td>
                             <td scope="col">No Latest Travel Data </td>
                          </tr>
-                          <tr v-if="!noTravel">
-                            <td scope="col"><Link class="btn btn-info" @click="goToTravel()">Go to Travel</Link></td>
-                            <td scope="col"></td>
-                            <td scope="col"></td>
-                         </tr>
+                          
                         <tr v-if="!noTravel">
                             <td>Office</td>
                             <td>:</td>
@@ -247,19 +249,17 @@
                           <tr>
                             <th scope="col"><h3>Project</h3></th>
                             <th scope="col"></th>
-                            <th scope="col"></th>
+                            <th scope="col">
+                                <h4><Link v-if="!!noProject && can.canCreateProject" class="pull-right" @click="createProject()"><u>Create Project</u></Link></h4>
+                                <h4><Link v-if="!noProject" class="pull-right" @click="goToProject()"><u>Go to Project</u></Link></h4>
+                            </th>
                          </tr>
                     </thead>
                     <tbody>
                         <tr v-if="!!noProject">
-                            <td scope="col"><Link class="btn btn-info" @click="createProject()" >Create Project</Link></td>
+                            <td scope="col"></td>
                             <td scope="col"> | </td>
                             <td scope="col">No Latest Project Data </td>
-                         </tr>
-                          <tr v-if="!noProject">
-                            <td scope="col"><Link class="btn btn-info" @click="goToProject()">Go to Project</Link></td>
-                            <td scope="col"></td>
-                            <td scope="col"></td>
                          </tr>
                         <tr v-if="!noProject">
                             <td>Project Description</td>
@@ -300,6 +300,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 export default ({
     components: { Pagination, Filtering},
     props: {
+        can: Object,
         vehicles: Object,
         filters: Object,
         can: Object
@@ -462,6 +463,7 @@ export default ({
         }, 
         showInfo (id)
         {
+            
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
 
                 this.travel_info = response.data[0]
@@ -587,7 +589,7 @@ export default ({
        },
 
         closeModal() {
-
+          
             this.showModal = false
 
         },

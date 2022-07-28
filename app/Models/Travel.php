@@ -33,7 +33,7 @@ class Travel extends Model
         
 
     ];
-    protected $appends = ['travelDate'];
+    protected $appends = ['travelDate','totalPrice'];
     use HasFactory;
 
     public function updateTicket()
@@ -53,6 +53,22 @@ class Travel extends Model
         } else {
             return  (\Carbon\Carbon::parse($date_from)->format('M d, Y'));
         }
+
+    }
+
+    public function getTotalPriceAttribute()
+    {
+        $liters = $this->total_liters;
+        $date_from = $this->date_from;
+        $gas_type = $this->gas_type;
+       $checkPrice = Price::whereDate('date', $date_from)->exists();
+        $total = Price::when($checkPrice, function($q) use ($date_from,$gas_type) {
+                                    $q->whereDate('date', $date_from);
+                                })->latest()->first($gas_type);
+
+        $totalPrice = number_format(($total[$gas_type] * $liters),2);
+
+        return $totalPrice;
 
     }
 

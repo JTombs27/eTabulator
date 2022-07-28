@@ -198,7 +198,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item" v-if="$page.props.auth.user.role != 'PGSO'">
+                <li class="nav-item" v-if="$page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'Admin'">
                     <Link class="sidebar-link" href="/projects"
                         ><span class="icon-holder"
                             >

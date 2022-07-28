@@ -234,6 +234,7 @@ export default {
          removeNode(index){
             this.vehiclesGroup.splice(index,1);
         },
+        
         createProject(){
            //this.vehiclesGroup = [];
            //this.isEdit      = false;
