@@ -75,6 +75,7 @@ class SoaTravelController extends Controller
                                     $q->whereDate('date', $item->date_from);
                     })->latest()->first($item->gas_type);
                     return [
+                                    'id' => $item->id,
                                     'date_from' => $item->date_from,
                                     'date_to' => $item->date_to,
                                     'time_departure' => $item->time_departure,
@@ -85,6 +86,8 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
+                                    'office_id' => $item->office_id,
+                                    'actual_prices' => $total[$item->gas_type],
                                     'price' => number_format(($total[$item->gas_type] * $item->total_liters),2)
                                 ]; 
                 }),
@@ -124,7 +127,7 @@ class SoaTravelController extends Controller
                                     $q->whereDate('date', $item->date_from);
                                 })->latest()->first($item->gas_type);
                                 return [
-                                     'date_from' => $item->date_from,
+                                    'date_from' => $item->date_from,
                                     'date_to' => $item->date_to,
                                     'time_departure' => $item->time_departure,
                                     'time_arrival' => $item->time_arrival,
@@ -134,7 +137,7 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
-                                    'soa_travel' => $item->soa_travel,
+                                    'office_id' => $item->office_id,
                                     'price' => number_format(($total[$item->gas_type] * $item->total_liters),2)
                                 ]; 
                             }),
