@@ -28,7 +28,6 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Cafoa Number</th>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
                             <th scope="col" style="text-align: right">Total Price</th>
@@ -37,7 +36,6 @@
                     </thead>
                     <tbody>
                         <tr v-for="(soaTravels, index) in soaTravel.data" :key="index">
-                            <td>{{ soaTravels.cafoa_number }}</td>
                             <td>{{ soaTravels.date_from }}</td>
                             <td>{{ soaTravels.date_to }}</td>
                             <td class="text-end">{{ Number(soaTravels.travels_sum_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>

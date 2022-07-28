@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Price;
 use App\Models\User;
 use App\Models\Travel;
 use App\Models\SoaTravel;
@@ -10,11 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class SoaTravelController extends Controller
 {
-    public function __construct(Travel $model, SoaTravel $soatravel, User $user)
+    public function __construct(Travel $model, SoaTravel $soatravel, User $user, Price $price)
     {
         $this->model = $model;
         $this->soatravel = $soatravel;
         $this->user = $user;
+        $this->price = $price;
     }
 
     public function index(Request $request)
@@ -60,7 +62,25 @@ class SoaTravelController extends Controller
             	->where('office_id', auth()->user()->office_id)
                 ->where('status','Approved')
             	->orderBy('date_from', 'asc')
-            	->get(),
+            	->get()->map(function($item) {
+                    $checkPrice = $this->price->whereDate('date', $item->date_from)->exists();
+                                $total = $this->price->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                    })->latest()->first($item->gas_type);
+                    return [
+                                    'date_from' => $item->date_from,
+                                    'date_to' => $item->date_to,
+                                    'time_departure' => $item->time_departure,
+                                    'time_arrival' => $item->time_arrival,
+                                    'travelDate' => $item->travelDate,
+                                    'ticket_number' => $item->ticket_number,
+                                    'id' => $item->id,
+                                    'total_liters' => $item->total_liters,
+                                    'gas_type' => $item->gas_type,
+                                    'soa_travel' => $item->soa_travel,
+                                    'price' => number_format(($total[$item->gas_type] * $item->total_liters),2),
+                                ]; 
+                }),
         ]);
     }
 
@@ -90,7 +110,26 @@ class SoaTravelController extends Controller
                     $query->where('ticket_number', 'like', '%' . $searchItem . '%');
                 })
             	->where('soa_travel', $id)
-            	->simplePaginate(10),
+            	->simplePaginate(10)
+                ->through(function ($item) {
+                                $checkPrice = $this->price->whereDate('date', $item->date_from)->exists();
+                                $total = $this->price->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                                })->latest()->first($item->gas_type);
+                                return [
+                                     'date_from' => $item->date_from,
+                                    'date_to' => $item->date_to,
+                                    'time_departure' => $item->time_departure,
+                                    'time_arrival' => $item->time_arrival,
+                                    'travelDate' => $item->travelDate,
+                                    'ticket_number' => $item->ticket_number,
+                                    'id' => $item->id,
+                                    'total_liters' => $item->total_liters,
+                                    'gas_type' => $item->gas_type,
+                                    'soa_travel' => $item->soa_travel,
+                                    'price' => number_format(($total[$item->gas_type] * $item->total_liters),2),
+                                ]; 
+                            }),
             "filters" => $request->only(['search']),
             "soaTravelId" =>$id,
         ]);
@@ -98,6 +137,7 @@ class SoaTravelController extends Controller
 
     public function store(Request $request)
     {
+
         $attributes = $request->validate([
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
@@ -149,4 +189,5 @@ class SoaTravelController extends Controller
 
         return redirect('/soatravels')->with('message', 'Soa Travel deleted');
     }
+
 }
