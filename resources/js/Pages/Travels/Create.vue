@@ -19,6 +19,25 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <div class="row">
+                    
+                    <div class="col-md-4">    
+                        <div class="form-check ">
+                            <label class="form-check-label disable-select" for="is_borrowed_vehicle">
+                            Check if borrow vehicle
+                            </label>
+                            <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                        </div>
+                    </div>
+                    <div class="col-md-4">    
+                         <div class="form-check">
+                             <label class="form-check-label disable-select" for="is_borrowed_fuel">
+                                Check if borrow fuel
+                             </label>
+                            <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
+                        </div>
+                    <br>
+                    </div>
+                    <hr>
                     <div :class="[columnFrom]">
                         <label for="">From</label>
                         <input v-model="form.date_from" type="date" class="form-control" autocomplete="chrome-off" @change="fetchPrice()"/>
@@ -58,7 +77,7 @@
                     <label class="col-md-3" for="">Vehicle Name</label>
                     <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                 </div>
-                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
+                <Select2 v-model="form.vehicles_id" :options="officeFiltered" @select="getVehicleDetails($event)" />
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <div class="col-md-12">
                     <br>
@@ -69,25 +88,17 @@
                         <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
                     </div>
 
-                     <div class="form-check">
-                         <label class="form-check-label disable-select" for="is_borrowed_fuel">
-                            Check if borrow fuel
-                         </label>
-                        <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
-                    </div>
+                    
 
-                     <div class="form-check ">
-                         <label class="form-check-label disable-select" for="is_borrowed_vehicle">
-                            Check if borrow vehicle
-                         </label>
-                        <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
-                    </div>
-                    <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
-                        <br>
-                        <label >Borrowed by</label>
-                        <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
-                        <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
-                    </span>
+                    
+                    <transition name="fade"  mode="out-in">
+                        <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
+                            <br>
+                            <label >Borrowed by</label>
+                            <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
+                            <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
+                        </span>
+                    </transition>
                 </div>
                 <hr>
                 <label>Authorized Driver</label>
@@ -155,7 +166,8 @@ export default {
 
     props: {
         editData: Object,
-        balance:Number
+        balance:Number,
+        auth:Object
     },
 
     data() {
@@ -217,6 +229,7 @@ export default {
     },
 
     async mounted() {
+        // console.log(this.auth.user)
         this.form.balance = this.balance
         if (this.editData !== undefined) {
             this.loading = true
@@ -228,6 +241,7 @@ export default {
             this.form.total_liters = this.editData.total_liters
             this.form.vehicles_id = String(this.editData.driver_vehicle.vehicles_id)
             this.form.driver_vehicles_id = this.editData.driver_vehicle.id
+            this.form.official_passenger = this.editData.official_passenger
             this.form.purpose = this.editData.purpose
             this.form.price = this.editData.price
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
@@ -236,7 +250,7 @@ export default {
             this.form.office_id = this.editData.office_id
             this.form.is_carpool = Boolean(this.editData.is_carpool)
             this.form.showActualDriver = this.editData.actual_driver ? true : false
-            this.form.actual_driver = this.editData.actual_driver
+            this.form.actual_driver = this.editData.actual_driver ? this.editData.actual_driver : ""
             if (this.editData.date_to) {
                 this.form.rangedDate = true
             }
@@ -297,9 +311,20 @@ export default {
         },
 
 
-        getVehicles(){
-            axios.get(`/vehicles/getVehicles/${this.form.vehicles_id}`).then( (response) => {
+        getVehicles(e){
+            
+            axios.post(`/travels/get-vehicles`).then( (response) => {
                 this.vehicles = response.data
+                // let office = this.auth.user.office_id
+                // try {
+                //     if (e.target.checked) {
+                //         this.vehicles = response.data
+                //     } else {
+                //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+                //     }
+                // } catch (error) {
+                //     this.vehicles = response.data
+                // }
             })
         },
 
@@ -338,9 +363,10 @@ export default {
                 })
            
         },
+        
 
         showActualDriver(e) {
-            // console.log(e)
+            console.log(e)
             if (true){
 
                 $('#actualDriver').select2({
@@ -395,6 +421,9 @@ export default {
         },
 
         getOffice(e) {
+            if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
+                this.form.borrowing_office = null
+            }
             if (e.target.checked) {
                 $('#office').select2({
                     ajax: {
@@ -436,10 +465,23 @@ export default {
         }
     },
 
+    computed: {
+        officeFiltered() {
+            return _.filter(this.vehicles, (o) => {
+                if (!this.form.is_borrowed_vehicle) {
+                    return o.office_id == this.auth.user.office_id 
+                } else {
+                    return this.vehicles
+                }
+            })
+        }
+    },
+
     watch: {
         'form.rangedDate': function (value) {
             if (value) {
                 this.columnFrom = 'col-md-6'
+                this.form.date_to = null
             } else {
                 setTimeout(() => {
                     this.columnFrom = 'col-md-12'

@@ -10,8 +10,8 @@
             </div>
             <div class="peer" >
                 <button class="btn btn-primary btn-sm" :disabled="!can.canCreateProjectVehicle" href="#" @click="createProject()">Add Vehicle</button>
-                <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
-                &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
+                <button class="btn btn-primary btn-sm mL-2" @click="showFilter()">Filter</button>
+                &nbsp;
                 <back-button :href="'/projects'"></back-button>
                 <!-- <Link @click="goToProjects()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg"

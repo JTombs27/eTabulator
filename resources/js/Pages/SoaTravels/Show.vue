@@ -37,11 +37,10 @@
                         <tr>
                             <th scope="col">Ticket Number</th>
                             <th scope="col">Travel Date</th>
-                            <th scope="col">Time Departure</th>
-                            <th scope="col">Time Arrival</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
                             <th scope="col" style="text-align: right">Price</th>
+                            <th scope="col" style="text-align: right">total Price</th>
                             <!-- <th scope="col">Action</th> -->
                         </tr>
                     </thead>
@@ -49,11 +48,10 @@
                         <tr v-for="soa_travel in sortedEmp">
                             <td>{{ soa_travel.ticket_number }}</td>
                             <td>{{ soa_travel.travelDate}}</td>
-                            <td>{{ soa_travel.time_departure }}</td>
-                            <td>{{ soa_travel.time_arrival }}</td>
                             <td>{{ soa_travel.gas_type }}</td>
                             <td>{{ soa_travel.total_liters }}</td>
-                            <td class="text-end">{{ Number(soa_travel.price).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</td>
+                            <td class="text-end">{{ Number(soa_travel.actual_prices).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td class="text-end">{{ Number(soa_travel.price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <!-- <td>
                                 <button class="btn btn-secondary btn-sm action-btn" v-if="soa_travel.soa_travel !== null" @click="remove(soa_travel)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eraser-fill" viewBox="0 0 16 16">
@@ -119,32 +117,31 @@ export default {
             let startDate = this.form.date_from;
             let endDate = this.form.date_to;
 
-            if ( startDate == "" ) {
-                this.temp2;
+            if (startDate == "") {
+                this.temp2 = []
             } else {
-
                 this.temp2 = this.Travels.filter(item => item.soa_travel === null)
-                .filter(item => {
-                    const travelDateFrom = item.date_from
-                    const travelDateTo = item.date_to
+                    .filter(item => {
+                    let travelDateFrom = item.date_from
+                    let travelDateTo = item.date_to
+            
+
                 if ( startDate && endDate ) {
-                    if (!!travelDateTo) {
-                        return startDate <= travelDateFrom && endDate <= travelDateTo;
-                    } else {
-                        return startDate == travelDateFrom && endDate == travelDateFrom;
-                    }
+                
+                    return  (startDate  <= travelDateFrom  && endDate >= travelDateTo) || ( startDate <= travelDateFrom &&  endDate  >= travelDateFrom) || ( startDate <= travelDateTo &&  endDate  >= travelDateTo);
+                    
                 }
+                    return this.temp2;
+                })
+
+            }      
                 /*if ( startDate && !endDate ) {
                     return startDate <= travelDateFrom;
                 }
                 if ( !startDate && endDate ) {
                     return travelDateTo <= endDate;
                 }*/
-                    return this.temp2
-                })
-
-            }
-            this.form.travels = this.temp2.filter(item => item.soa_travel === null)
+            this.form.travels = this.temp2;
             this.myLength = this.temp2.length;
             return this.temp2.sort((a,b) => {
                         let modifier = 1;
@@ -201,17 +198,25 @@ export default {
         },
 
         submit() {
-            this.$inertia.visit("/soatravels", {method: 'post', data:this.form});
-            
+                this.form.post("/soatravels", this.form);
         },
 
-        /*remove(soa_travel) {
-                this.item = soa_travel;
-            let text = "WARNING!\nAre you sure you want to Remove the tag?";
-              if (confirm(text) == true) {
-                this.$inertia.visit("/soatravels/remove", {method: 'post', data:this.item}) ;
-              }
+        /* fetchPrice(soa_travel,gas_type,total_liters) {
+           
+            
+            var xxxx;
+            let var_price =  axios.post('/travels/get-price', 
+                {datefilter:soa_travel, gasType:gas_type}
+            ).then(response => respose.data)
+            .then(data => {
+                xxxx= (Number(data) * Number(total_liters)).toFixed(2);
+                
+            
+            }) 
+
+            return  xxxx;            
         },*/
+
     },
     
 };

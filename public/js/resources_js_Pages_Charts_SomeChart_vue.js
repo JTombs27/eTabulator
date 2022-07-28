@@ -62,7 +62,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
         return [];
       }
     },
-    piColor: {
+    chartColor: {
       type: String,
       "default": function _default() {
         return [];
@@ -73,7 +73,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
     var chartData = {
       labels: props.chartLabel,
       datasets: [{
-        backgroundColor: props.piColor,
+        backgroundColor: props.chartColor,
         data: props.chartData
       }]
     };

@@ -27,8 +27,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 Route::middleware('auth')->group(function() {
     Route::get('/', [HomeController::class, 'index']);
-
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+    //Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('/users')->group(function() {
         Route::get('/', [UserController::class, 'index']);
@@ -139,8 +138,10 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/delete/{did}', [DriverVehicleController::class, 'destroy']);
     });
     
+    // Route::post('/sss',  [TravelController::class, 'index']);
     Route::prefix('/travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
+        Route::post('get-vehicles', [TravelController::class, 'getVehicles']);
         Route::get('create', [TravelController::class, 'create']);
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
         Route::post('/', [TravelController::class, 'store']);
@@ -148,7 +149,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [TravelController::class, 'edit']);
         Route::patch('/{id}', [TravelController::class, 'update']);
         Route::post('get-price', [TravelController::class, 'getPrice']);
-      
+        
     });
 
     Route::prefix('sync')->group(function() {
@@ -207,4 +208,10 @@ Route::prefix('/reports')->group(function() {
 
 Route::prefix('/travelTicket')->group(function() {
     Route::get('/validate-travel/{id}', [TravelValidationController::class, 'index']);
+   
+});
+Route::prefix('/logArrivalTime')->group(function() {
+    Route::get('/', [LogTimeArrivalContoller::class, 'logtime']);
+    Route::post('/updateLog', [LogTimeArrivalContoller::class, 'updateLog']);
+    Route::get('/return', [LogTimeArrivalContoller::class, 'return']);
 });

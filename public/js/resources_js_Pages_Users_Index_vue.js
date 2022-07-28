@@ -537,7 +537,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, "Permissions", 8
     /* PROPS */
-    , _hoisted_27)]), _hoisted_28, $props.can.canDeleteUser ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    , _hoisted_27)]), _hoisted_28, $props.can.canDeleteUser && !user.can["delete"] ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_29, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
         return $options.deleteUser(user.id);

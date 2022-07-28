@@ -161,7 +161,7 @@ var _hoisted_6 = {
 };
 var _hoisted_7 = ["disabled"];
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("             ");
+var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("   ");
 
 var _hoisted_9 = {
   "class": "col-12 bgc-white p-20 bd"
@@ -333,7 +333,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, "Add Vehicle", 8
   /* PROPS */
   , _hoisted_7), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-    "class": "btn btn-primary btn-sm mL-2 text-white",
+    "class": "btn btn-primary btn-sm mL-2",
     onClick: _cache[2] || (_cache[2] = function ($event) {
       return _ctx.showFilter();
     })

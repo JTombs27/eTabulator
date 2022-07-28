@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \Illuminate\Support\Str;
-
+use App\Models\Price;
 class TravelValidationController extends Controller
 {
     //
@@ -36,6 +36,7 @@ class TravelValidationController extends Controller
             'travels.id',
             'travels.status',
             'travels.total_liters',
+            'travels.gas_type'
         )
         ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
         ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')

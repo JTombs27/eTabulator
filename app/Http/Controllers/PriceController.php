@@ -22,7 +22,7 @@ class PriceController extends Controller
                     $q->where('gas_type', 'like', '%' . $searchItem . '%');
                     
                 })
-                ->latest()
+                ->orderBy('date','desc')
                 ->simplePaginate(10)
                 ->withQueryString()
                 ,
@@ -63,10 +63,16 @@ class PriceController extends Controller
             "greases_price.regex"    =>"Provide Currency only",
         	"data.required"    =>"Date is Required",
     	]);
-       
+
+        $find = $this->model->where('date', $request->date)->first();
+
+        if ($find) {
+            return back()->with('error', 'Date Already Exists!');
+        } else {
             $this->model->create($request->all());  
 
             return redirect('/prices')->with('message', 'Added Successfully');
+        }   
     }
 
     public function edit(Request $request,$id)

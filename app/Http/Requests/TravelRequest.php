@@ -30,7 +30,16 @@ class TravelRequest extends FormRequest
         return [
             'date_from' =>['required','date'],
             'date_to' => ['required_if:rangedDate,true', Rule::when($this->rangedDate,['after:date_from'])], 
-            'total_liters' => Rule::when($valid,['numeric','max:14']),
+            'total_liters' => Rule::when($valid,[
+                'numeric',
+                'max:14',
+                function($attr, $value, $fail) {
+
+                    if ($this->date_from && $this->date_to) {
+                        
+                    }
+                }
+            ]),
             'gas_type' => 'required',
             'driver_vehicles_id' => 'required',
             'vehicles_id' => 'required',

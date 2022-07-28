@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\DriverVehicle;
 use App\Models\Vehicle;
+use PHPUnit\Framework\Constraint\IsTrue;
 
 class DriverVehicleController extends Controller
 {
@@ -13,21 +14,26 @@ class DriverVehicleController extends Controller
         $this->model = $model;
     }
 
-    public function index($id)
+    public function index(Request $request,$id)
     {
+       
         return inertia('Drivers/Index', [
-            'driver_vehicles' => $this->model->with([
+            'driver_vehicles' => $this->model->with(
                 'vehicle',
                 'empl',
                 'office',
                 'travel'
-            ])
+            )
 
-            ->latest()
             ->where('vehicles_id','=',$id)
+            ->latest()
             ->simplePaginate(10)
             ->withQueryString(),
-            "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
+            "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first(),
+            "can" => [
+                'canCreateDriver' => auth()->user()->can('canCreateDriver', User::class),
+            ]
+
         ]);
     }
 

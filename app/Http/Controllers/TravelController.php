@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TravelRequest;
 use App\Models\Charge;
 use App\Models\DriverVehicle;
+use App\Models\OfficeVehicles;
 use App\Models\Price;
 use App\Models\Travel;
 use App\Models\User;
@@ -12,20 +13,22 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
+
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
         $this->charges = $charges;
         $this->prices = $prices;
+        $this->officeVehicles = $officeVehicles;
     }    
 
-    public function index()
+    public function index(Request $request)
     {
+       
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
@@ -34,6 +37,15 @@ class TravelController extends Controller
                                     $q->where('office_id', auth()->user()->office_id);
                                 }
                             )
+                            ->when($request->dateFilterType == 'all', function($q) use ($request) {
+                                $q->wherebetween('date_from', [$request->date_from,$request->date_from]);
+                            })
+                            ->when($request->dateFilterType == 'from', function($q) use ($request) {
+                                $q->where('date_from', '>=', $request->date_from);
+                            })
+                            ->when($request->dateFilterType == 'to', function($q) use ($request) {
+                                $q->where('date_from', '<=', $request->date_to);
+                            })
                             ->latest()
                             ->simplePaginate(10)
                             ->through(function ($item) {
@@ -55,12 +67,13 @@ class TravelController extends Controller
                                     'liters' => $item->total_liters,
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
-                                    'price' => $total[$item->gas_type],
+                                    'price' => ($total[$item->gas_type] * $item->total_liters),
                                 ]; 
                             }),
             "can" => [
                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
                 'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
+                'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
                 'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
             ]
         ]);
@@ -88,6 +101,7 @@ class TravelController extends Controller
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
                         ->get();
+                        
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
             $total = $this->prices->when($checkPrice, function($q) use ($item) {
@@ -118,7 +132,7 @@ class TravelController extends Controller
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
-            'charges' => $amount
+            'balance' => $amount
         ]);
         
     }
@@ -136,7 +150,6 @@ class TravelController extends Controller
 
     public function store(TravelRequest $request)
     {
-        
         $date_from = $request->date_from;
         $date_to = $request->date_to;
         // $now = Carbon::now();
@@ -163,7 +176,9 @@ class TravelController extends Controller
         $request['ticket_number'] = 0;
         $request['user_id'] = auth()->user()->id;
         $request['office_id'] = auth()->user()->office_id;
-
+        if (!$request->rangedDate) {
+            $request['date_to'] = null;
+        }
         
         DB::beginTransaction();
         try {
@@ -199,22 +214,26 @@ class TravelController extends Controller
         // $now = Carbon::now();
         // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
         // $weekEndDate = Carbon::parse($date_to)->endOfWeek()->format('Y-m-d');
-        $isExistTravel = $this->model
-                            ->where('driver_vehicles_id', $request->driver_vehicles_id)
-                            ->where('id', '<>' ,$request->id)
-                            ->where(function($query) use($date_from, $date_to) {
-                                $query->whereBetween('date_from', [$date_from, $date_to])
-                                        ->OrWhereBetween('date_to', [$date_from, $date_to]);
-                            })
-                            ->exists();
-
-        $attributes = $request->validated();
+        
+        // $isExistTravel = $this->model
+        //                     ->where('driver_vehicles_id', $request->driver_vehicles_id)
+        //                     ->where('id', '<>' ,$request->id)
+        //                     ->where(function($query) use($date_from, $date_to) {
+        //                         $query->whereBetween('date_from', [$date_from, $date_to])
+        //                                 ->OrWhereBetween('date_to', [$date_from, $date_to]);
+        //                     })
+        //                     ->first();
        
-        if ($isExistTravel) {
-            return redirect('/travels/create')->with('error', 'This record already exist.');
-        }
+        // $attributes = $request->validated();
+       
+        // if ($isExistTravel) {
+        //     return redirect('/travels/create')->with('error', 'This record already exist.');
+        // }
 
         $request['office_id'] = auth()->user()->office_id;
+        if (!$request->rangedDate) {
+            $request['date_to'] = null;
+        }
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
 
@@ -271,8 +290,24 @@ class TravelController extends Controller
             });
             $query = $query->latest()->first($request->gasType);
             return array_values($query->toArray())[0];
+            
         } catch (\Throwable $th) {
            return 0.00;
         }
+    }
+
+    public function getVehicles(Request $request)
+    {
+        
+        return $this->officeVehicles
+                    ->with('vehicle.vehicle_latest_status')
+                    ->get()
+                    ->map(fn($item) => [
+                        'id' => $item->vehicles_id,
+                        'text' => $item->plate_no,
+                        'condition' => $item->vehicle->vehicle_latest_status->condition,
+                        'typeCode' => $item->vehicle->TYPECODE,
+                        'office_id' => $item->department_code
+                    ]);
     }
 }

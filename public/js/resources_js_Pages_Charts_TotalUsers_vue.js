@@ -55,15 +55,40 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    chartLabel: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    },
+    chartColor: {
+      type: Array,
+      "default": function _default() {
+        return ['#329719', '#433979', '#544979', '#855979', '#966979', '#177979', '#f87327', '#f81279', '#f87979', '#f86979', '#f11979', '#f89979'];
+      }
+    },
+    chartBarLabel: {
+      type: String,
+      "default": "Number of Travels"
+    },
+    chartOptionYAxis: {
+      type: Object,
+      "default": {
+        min: 0,
+        // minimum value
+        max: 100 // maximum value
+
+      }
     }
   },
   setup: function setup(props) {
     var vm = this;
     var chartData = {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      labels: props.chartLabel,
       datasets: [{
-        label: 'Data One',
-        backgroundColor: ['#329719', '#433979', '#544979', '#855979', '#966979', '#177979', '#f87327', '#f81279', '#f87979', '#f86979', '#f11979', '#f89979'],
+        label: props.chartBarLabel,
+        backgroundColor: props.chartColor,
         data: props.chartData
       }]
     };
@@ -74,15 +99,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
         legend: {
           display: false
         }
-      },
-      scales: {
-        yAxis: {
-          min: 0,
-          // minimum value
-          max: 100 // maximum value
+      } // scales: {
+      //     yAxis: props.chartOptionYAxis
+      // }
 
-        }
-      }
     };
     return function () {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.h)(vue_chartjs__WEBPACK_IMPORTED_MODULE_2__.Bar, {
