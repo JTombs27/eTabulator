@@ -82,12 +82,14 @@
                          </label>
                         <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
                     </div>
-                    <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
-                        <br>
-                        <label >Borrowed by</label>
-                        <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
-                        <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
-                    </span>
+                    <transition name="fade"  mode="out-in">
+                        <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
+                            <br>
+                            <label >Borrowed by</label>
+                            <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
+                            <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
+                        </span>
+                    </transition>
                 </div>
                 <hr>
                 <label>Authorized Driver</label>

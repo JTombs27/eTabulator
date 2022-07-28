@@ -138,6 +138,7 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}/delete/{did}', [DriverVehicleController::class, 'destroy']);
     });
     
+    Route::post('/sss',  [TravelController::class, 'index']);
     Route::prefix('/travels')->group(function() {
         Route::get('/', [TravelController::class, 'index']);
         Route::get('create', [TravelController::class, 'create']);

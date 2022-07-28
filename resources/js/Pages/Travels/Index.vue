@@ -17,6 +17,25 @@
             </div>
         </div>
 
+        <transition name="slide-fade" mode="in-out">
+            <filtering v-if="filter" @closeFilter="filter=false">
+                <label for="">From</label>
+                <input type="date" v-model="filterData.date_from" class="form-control">
+                <label for="">To</label>
+                <input type="date" v-model="filterData.date_to" class="form-control">
+                <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg> Find</button> &nbsp;
+                <button class="btn btn-sm btn-danger mT-5 text-white" @click="reset()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg> Reset</button>
+            
+            </filtering>
+        </transition>
+
        
         <div class="col-12">
             <div class="bgc-white p-20 bd">
@@ -27,8 +46,8 @@
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Date</th>
-                            <th scope="col">Price</th>
                             <th scope="col">Liter/s</th>
+                            <th scope="col">Price</th>
                             <th scope="col">Status</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
@@ -41,8 +60,8 @@
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
                             <td v-if="!item.date_to">{{item.date_from}}</td>
                             <td v-else>{{item.date_from}} to {{item.date_to}}</td>
-                            <td class="text-right">{{`\u20B1${Number(item.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>
                             <td class="text-center">{{item.liters}}</td>
+                            <td class="text-right">{{`\u20B1${Number(item.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>
                             <td v-html="statusDisplay(item)"></td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
@@ -54,8 +73,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu" :id="item.id" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
-                                    <li><hr class="dropdown-divider action-divider"></li>
+
                                     <li v-if="item.status == 'Approved'">
                                         <button as="button" class="dropdown-item" @click="tripTicket(item.id)">
                                             <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-printer me-2" viewBox="0 0 16 16">
@@ -76,7 +94,6 @@
                                         </svg>Driver Trip Ticket</span>
                                         </button>
                                     </li>
-                                    <li><hr class="dropdown-divider action-divider"></li>
                                     <!-- <li><Link class="dropdown-item" :href="`/travels/set-status`" method="post" :data="item" as="button" v-if="can.canSetStatus">Approve</Link></li> -->
                                     <li v-if="item.status == 'Disapproved' || item.status==null">
                                         
@@ -89,6 +106,11 @@
                                             <span  class="text-danger">Disapprove</span>
                                         </button>
                                     </li>
+                                    <li v-if="can.canEditTravel && item.status != 'Approved'"><hr class="dropdown-divider action-divider"></li>
+                                    <li v-if="can.canEditTravel && item.status != 'Approved'"><Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >Edit</Link></li>
+                                    <!-- <li v-if="can.canDeleteTravel && item.status != 'Approved'">
+                                        <Link class="text-danger dropdown-item" @click="deleteTravel(item.id)">Delete</Link>
+                                    </li> -->
                                   </ul>
                                 </div>
                             </td>
@@ -111,6 +133,7 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+
 export default{
     components: { Pagination, Filtering },
     props: {
@@ -124,11 +147,20 @@ export default{
         return {
             loader:false,
             itemId:"",
-            dropdownOption:"outside"
+            dropdownOption:"outside",
+            filter:false,
+            filterData: {
+                date_from:null,
+                date_to:null,
+                dateFilterType:null,
+            }
         }
     },
 
     methods:{
+        showFilter() {
+            this.filter = true
+        },
         approvedStatus(item, status) {
             //   $(`.dropdown-menu#${item.id}`).toggle();
             this.$inertia.post('/travels/set-status', {id:item.id, status:status}, { 
@@ -144,6 +176,26 @@ export default{
                 
             })
         },
+
+        runFilter() {
+            if (this.filterData.date_from && this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "all";
+                
+            } else if(this.filterData.date_from && !this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "from";
+               
+            } else if(!this.filterData.date_from && this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "to";
+               
+            }
+            this.$inertia.get('/travels',  this.filterData, {
+                preserveState:true
+            })
+        },
+
         tripTicket(id) {
             window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftrip_ticket&standAlone=true&decorate=no&id="+id,"_blank");
         },
