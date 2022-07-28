@@ -206,4 +206,10 @@ Route::prefix('/reports')->group(function() {
 
 Route::prefix('/travelTicket')->group(function() {
     Route::get('/validate-travel/{id}', [TravelValidationController::class, 'index']);
+   
+});
+Route::prefix('/logArrivalTime')->group(function() {
+    Route::get('/', [LogTimeArrivalContoller::class, 'logtime']);
+    Route::post('/updateLog', [LogTimeArrivalContoller::class, 'updateLog']);
+    Route::get('/return', [LogTimeArrivalContoller::class, 'return']);
 });
