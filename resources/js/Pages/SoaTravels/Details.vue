@@ -23,8 +23,6 @@
                         <tr>
                             <th scope="col">Ticket Number</th>
                             <th scope="col">Travel Date</th>
-                            <th scope="col">Time Departure</th>
-                            <th scope="col">Time Arrival</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
                             <th scope="col" style="text-align: right">Total Price</th>
@@ -35,8 +33,6 @@
                         <tr v-for="(detailTravels, index) in travels.data" :key="index">
                             <td>{{ detailTravels.ticket_number }}</td>
                             <td>{{ detailTravels.travelDate}}</td>
-                            <td>{{ detailTravels.time_departure }}</td>
-                            <td>{{ detailTravels.time_arrival }}</td>
                             <td>{{ detailTravels.gas_type }}</td>
                             <td>{{ detailTravels.total_liters }}</td>
                             <td class="text-end">{{ Number(detailTravels.price).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</td>
