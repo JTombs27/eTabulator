@@ -94,7 +94,7 @@ class UserPolicy
     public function canDeleteTravel(User $user)
     {
         return $user->permissions()->where('permission_name', 'can_delete_travels')->exists();
-
+    }
     public function canEditVehicle(User $user)
     {
         return $user->permissions()->where('permission_name', 'can_edit_vehicles')->exists();
