@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Faker\Core\Number;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon;
 
 class Vehicle extends Model
 {
@@ -12,6 +12,7 @@ class Vehicle extends Model
 
     protected $table = "vehicles";
     protected $guarded = [];
+    protected $appends = ['date'];
 
     public function vehicle_status()
     {
@@ -26,6 +27,12 @@ class Vehicle extends Model
     public function driverassign()
     {
         return $this->hasMany(DriverVehicle::class, 'vehicles_id', 'id');
+    }
+
+    public function getDateAttribute()
+    {
+        $FDATEACQ = $this->FDATEACQ;
+        return  (\Carbon\Carbon::parse($FDATEACQ)->format('M d, Y'));
     }
 
 }

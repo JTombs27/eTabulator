@@ -28,12 +28,11 @@ class VehicleController extends Controller
 
     public function index(Request $request)
     {
+
+        $index = $this->getFilter($request);
        
         return inertia('Vehicles/Index', [
-            "vehicles" => $this->model
-            ->with([
-                'driverassign.empl.office'
-            ])
+            "vehicles" => $index
             ->when($request->search, function ($query, $searchItem) {
                 $query->where('PLATENO', 'like', '%'.$searchItem . '%');
             })
@@ -42,10 +41,40 @@ class VehicleController extends Controller
             ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
+<<<<<<< HEAD
                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
                 'canCreateProject' => auth()->user()->can('canCreateProject',User::class),
+=======
+                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class)
+>>>>>>> c45c470084759593a30265c8f4a60ea73a64381c
             ]
         ]);
+    }
+
+    public function getFilter($request)
+    {
+        $index = $this->model->with([
+            'vehicle_status',
+            'driverassign.empl.office',
+        ]);
+        
+        if ($request->PLATENO) {
+            $index = $index->where('PLATENO', 'like' , '%' .$request->PLATENO. '%');
+        }
+        
+        if ($request->TYPECODE) {
+            $index = $index->where('TYPECODE', 'like' , '%'.$request->TYPECODE.'%');
+        }
+
+        if ($request->FDATEACQ) {
+            $index = $index->where('FDATEACQ', 'like' , '%'.$request->FDATEACQ.'%');
+        }
+
+        if ($request->FDESC) {
+            $index = $index->where('FDATEACQ', 'like' , '%'.$request->FDESC.'%');
+        }
+
+        return $index;
     }
 
     public function create()
@@ -126,9 +155,11 @@ class VehicleController extends Controller
     {
         foreach ($request->vehiclesGroup as $index => $value) 
         {
-           $this->status->create(['condition' => $request->condition,
-           'vehicles_id' => $value,
-           'vehicle_status_date' => $request->vehicle_status_date]);
+           $this->status->create(
+            [
+                'condition' => $request->condition,
+                'vehicles_id' => $value,
+                'vehicle_status_date' => $request->vehicle_status_date]);
         }
         return 'success';
     }

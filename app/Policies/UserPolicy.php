@@ -78,6 +78,10 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_create_prices')->exists();
     }
+    public function canCreateVehicle(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_vehicle')->exists();
+    }
     public function canEditPrice(User $user)
     {
         return $user->permissions()->where('permission_name', 'can_edit_prices')->exists();

@@ -36,22 +36,31 @@ class TravelController extends Controller
                             )
                             ->latest()
                             ->simplePaginate(10)
-                            ->through(fn($item) => [
-                                'first_name' => $item->driverVehicle->empl->first_name,
-                                'middle_name' => $item->driverVehicle->empl->middle_name,
-                                'last_name' => $item->driverVehicle->empl->last_name,
-                                'PLATENO' => $item->driverVehicle->vehicle->PLATENO,
-                                'FDESC' => $item->driverVehicle->vehicle->FDESC,
-                                'date_from' => $item->date_from,
-                                'date_to' => $item->date_to,
-                                'actual_driver' => $item->actual_driver,
-                                'ticket_number' => $item->ticket_number,
-                                'id' => $item->id,
-                                'status' => $item->status,
-                                'office_id' => $item->office_id,
-                            ]),
+                            ->through(function ($item) {
+                                $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                                $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                                })->latest()->first($item->gas_type);
+                                return [
+                                    'first_name' => $item->driverVehicle->empl->first_name,
+                                    'middle_name' => $item->driverVehicle->empl->middle_name,
+                                    'last_name' => $item->driverVehicle->empl->last_name,
+                                    'PLATENO' => $item->driverVehicle->vehicle->PLATENO,
+                                    'FDESC' => $item->driverVehicle->vehicle->FDESC,
+                                    'date_from' => $item->date_from,
+                                    'date_to' => $item->date_to,
+                                    'actual_driver' => $item->actual_driver,
+                                    'ticket_number' => $item->ticket_number,
+                                    'id' => $item->id,
+                                    'liters' => $item->total_liters,
+                                    'status' => $item->status,
+                                    'office_id' => $item->office_id,
+                                    'price' => $total[$item->gas_type],
+                                ]; 
+                            }),
             "can" => [
                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
+                'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
                 'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
             ]
         ]);
@@ -74,15 +83,25 @@ class TravelController extends Controller
         //    $amount = number_format($amount->sum('amount'), 2);
         }
 
+        
         $travels = $this->model
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
                         ->get();
+        $travels = $travels->map(function($item)  {
+            $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+            $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                $q->whereDate('date', $item->date_from);
+            })->latest()->first($item->gas_type);
+            return [
+                'price' => ($total[$item->gas_type] * $item->total_liters),
+                'date' => $item->date_from
+            ];
+        });
+      
 
-        // dd($amount);
-        #
         return inertia('Travels/Create',[
-           'charges' => $amount
+           'balance' => $amount - $travels->sum('price')
         ]);
     }
 
@@ -252,6 +271,7 @@ class TravelController extends Controller
             });
             $query = $query->latest()->first($request->gasType);
             return array_values($query->toArray())[0];
+            
         } catch (\Throwable $th) {
            return 0.00;
         }
