@@ -10,4 +10,9 @@ class Price extends Model
     use HasFactory;
     
     protected $guarded = [];
+
+    public function getPrice()
+    {
+        
+    }
 }

@@ -27,6 +27,8 @@
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Date</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Liter/s</th>
                             <th scope="col">Status</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
@@ -39,6 +41,8 @@
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
                             <td v-if="!item.date_to">{{item.date_from}}</td>
                             <td v-else>{{item.date_from}} to {{item.date_to}}</td>
+                            <td class="text-right">{{`\u20B1${Number(item.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>
+                            <td class="text-center">{{item.liters}}</td>
                             <td v-html="statusDisplay(item)"></td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
