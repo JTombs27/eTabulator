@@ -26,11 +26,7 @@ class VehicleValidation extends FormRequest
         return [
             'PLATENO' => 'required|unique:vehicles',
             'TYPECODE' => 'required',
-            'FDATEACQ' => 'required',
-            'FACQCOST'=> 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'FDESC' => 'required',
-            'condition' => 'required',
-            'vehicle_status_date' => 'required'
+            'FACQCOST'=> 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/',
             
         ];
     }
@@ -41,12 +37,7 @@ class VehicleValidation extends FormRequest
             'PLATENO.required' => 'Plate Number is required!',
             'PLATENO.unique' => 'Plate Number already exists!',
             'TYPECODE.required' => 'Vehicle Type is required!',
-            'FDATEACQ.required' => 'Date of Acquisition is required!',
-            'FACQCOST.required' => 'Acquisition Cost is required!',
-            'FDESC.required' => 'Description is required!',
-            'condition.required' => 'Vehicle Condition is required!',
-            'vehicle_status_date.required' => 'Vehicle Status date is required!',
-            
+            'FACQCOST.regex' => 'Acquisition Cost is invalid format!'
         ];
     }
 }

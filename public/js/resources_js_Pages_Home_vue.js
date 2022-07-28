@@ -410,10 +410,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       totalUser: [10, 20, 50, 6, 525, 85],
+      myColors: [],
       pieChartData: {
         Labels: this.chargesLabel,
         Data: this.chargesAmount,
-        Colors: ['rgb(30 115 184)', 'rgb(580 100 80)', 'blue']
+        Colors: this.myColors
       },
       barChart: {
         Labels: this.officesLabels,
@@ -422,7 +423,13 @@ __webpack_require__.r(__webpack_exports__);
       barTitle: "Number Of Travels Per Office"
     };
   },
-  mounted: function mounted() {}
+  mounted: function mounted() {
+    var _this = this;
+
+    this.chargesAmount.forEach(function (element) {
+      _this.myColors.push('rgb(30 50 184)');
+    });
+  }
 });
 
 /***/ }),

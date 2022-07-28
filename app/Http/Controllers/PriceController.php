@@ -22,7 +22,7 @@ class PriceController extends Controller
                     $q->where('gas_type', 'like', '%' . $searchItem . '%');
                     
                 })
-                ->latest()
+                ->orderBy('date','desc')
                 ->simplePaginate(10)
                 ->withQueryString()
                 ,

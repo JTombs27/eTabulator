@@ -17,7 +17,7 @@ class VehicleStatusController extends Controller
 
     public function index($id)
     {
-        // dd(auth()->user());
+        // dd(auth()->user());  
         return inertia('VehicleStatus/Index',[
             'vehicle_status' =>  $this->model->with('vehicle')
                                     ->where('vehicles_id',$id)
