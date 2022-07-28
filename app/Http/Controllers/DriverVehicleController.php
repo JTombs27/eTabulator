@@ -30,7 +30,7 @@ class DriverVehicleController extends Controller
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first(),
             "can" => [
-                'canCreateDriver' => auth()->user()->can('canCreateDriver', User::class)
+                'canCreateDriver' => true
             ]
 
         ]);
