@@ -5,7 +5,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3> 
-            <h3>Balance: <u>{{`\u20B1${Number(charges).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</u></h3>
+            <h3>Balance: <u>{{`\u20B1${Number(balance).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</u></h3>
             <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -21,7 +21,7 @@
                 <div class="row">
                     <div :class="[columnFrom]">
                         <label for="">From</label>
-                        <input v-model="form.date_from" type="date" class="form-control" autocomplete="chrome-off"/>
+                        <input v-model="form.date_from" type="date" class="form-control" autocomplete="chrome-off" @change="fetchPrice()"/>
                         <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
                     </div>
                     <Transition name="fade"  mode="out-in">
@@ -155,7 +155,7 @@ export default {
 
     props: {
         editData: Object,
-        charges:Number
+        balance:Number
     },
 
     data() {
@@ -181,7 +181,7 @@ export default {
                 drivers_id:null,
                 is_carpool:null,
                 actual_driver_id:null,
-                charges:null,
+                balance:null,
                 type_code:null,
                 is_borrowed_vehicle:null,
                 is_borrowed_fuel:null,
@@ -217,7 +217,7 @@ export default {
     },
 
     async mounted() {
-        this.form.charges = this.charges
+        this.form.balance = this.balance
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
@@ -250,31 +250,7 @@ export default {
             this.pageTitle = "Create"
         }
         this.getVehicles();
-        $('#office').select2({
-            ajax: {
-                url: '/offices/fetch',
-                dataType:'json',
-                delay:500,
-                data: function(filter) {
-                    return {filter:filter.term};
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-
-                    return{
-                        results: $.map(data, function(obj) {
-                            return {
-                                id: obj.id,
-                                text: obj.text
-                            }
-                        })
-                    };
-                },
-                cache: true
-            },
-            placeholder: 'Search for an office',
-            minimumInputLength: 2,
-        })
+        
 
        
         // $("#actualDriver").select2({
@@ -283,6 +259,30 @@ export default {
     },
 
     methods:{
+        formatOffice(repo) {
+            return repo.text
+        },
+
+        formatOfficeSelection(repo) {
+            
+            if (repo.loading) {
+                return `Searching...`;
+            }
+            var img = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+            <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+            </svg>`;
+            
+            var $container = $(
+            `<div class="d-flex pt-3">
+               ${img} <strong style="margin-left:5px">${repo.office}</strong>
+            </div>
+           `
+        
+          );
+          return $container;
+        },
+
         formatRepo(repo) {
             return `<div class="text-success">asaas</div>`;
         },
@@ -395,9 +395,35 @@ export default {
         },
 
         getOffice(e) {
-            console.log(e.target)
-            if (e.target.cheked) {
-                
+            if (e.target.checked) {
+                $('#office').select2({
+                    ajax: {
+                        url: '/offices/fetch',
+                        dataType:'json',
+                        delay:500,
+                        data: function(filter) {
+                            return {filter:filter.term};
+                        },
+                        processResults: function(data, params) {
+                            params.page = params.page || 1;
+
+                            return{
+                                results: $.map(data, function(obj) {
+                                    return {
+                                        id: obj.id,
+                                        text: obj.text,
+                                        office:obj.office
+                                    }
+                                })
+                            };
+                        },
+                        cache: true
+                    },
+                    placeholder: 'Search for an office',
+                    minimumInputLength: 2,
+                    templateResult:this.formatOfficeSelection,
+                    templateSelection:this.formatOffice
+                })
             }
         },
         

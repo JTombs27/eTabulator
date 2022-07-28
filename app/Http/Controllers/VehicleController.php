@@ -41,7 +41,9 @@ class VehicleController extends Controller
             ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
-                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class)
+                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class),
+                'canEditVehicle' => auth()->user()->can('canEditVehicle', User::class),
+                'canDeleteVehicle' => auth()->user()->can('canDeleteVehicle', User::class),
             ]
         ]);
     }
@@ -150,9 +152,11 @@ class VehicleController extends Controller
     {
         foreach ($request->vehiclesGroup as $index => $value) 
         {
-           $this->status->create(['condition' => $request->condition,
-           'vehicles_id' => $value,
-           'vehicle_status_date' => $request->vehicle_status_date]);
+           $this->status->create(
+            [
+                'condition' => $request->condition,
+                'vehicles_id' => $value,
+                'vehicle_status_date' => $request->vehicle_status_date]);
         }
         return 'success';
     }
