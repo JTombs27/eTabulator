@@ -14,7 +14,7 @@ class Office extends Model
 
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'department_code', 'id');
+        return $this->belongsTo(Employee::class, 'department_code', 'departmert_code');
     }
     
     public function officeVehicles()

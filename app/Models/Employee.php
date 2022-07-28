@@ -23,7 +23,7 @@ class Employee extends Model
 
     public function office()
     {
-        return $this->belongsTo(Office::class, 'department_code', 'id');
+        return $this->belongsTo(Office::class, 'department_code', 'department_code');
     }
 
     public function driverV()
