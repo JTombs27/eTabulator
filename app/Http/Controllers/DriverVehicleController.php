@@ -27,7 +27,12 @@ class DriverVehicleController extends Controller
             ->where('vehicles_id','=',$id)
             ->simplePaginate(10)
             ->withQueryString(),
-            "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first()
+            "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first(),
+
+            "can" => [
+                'canCreateDriver' => auth()->user()->can('caCreateDriver', User::class)
+            ]
+
         ]);
     }
 
