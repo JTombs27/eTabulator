@@ -389,11 +389,11 @@ export default ({
 
         status (status) {
             if (status == "Good Condition") {
-                return "<small><span class='badge rounded-pill bg-success'>✔</span></small>"
+                return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-success'> ✔ </span></small>"
             } else if (status == "On-repair") {
-                return "<small><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
+                return "<small style='margin-left: 5px' ><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
             } else if (status == "Wasted") {
-                return "<small><span class='badge rounded-pill bg-danger'>🗑️</span></small>"
+                return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-danger'>🗑️</span></small>"
             }
             return ""
         },
