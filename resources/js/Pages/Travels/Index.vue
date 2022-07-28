@@ -17,6 +17,25 @@
             </div>
         </div>
 
+        <transition name="slide-fade" mode="in-out">
+            <filtering v-if="filter" @closeFilter="filter=false">
+                <label for="">From</label>
+                <input type="date" v-model="filterData.date_from" class="form-control">
+                <label for="">To</label>
+                <input type="date" v-model="filterData.date_to" class="form-control">
+                <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg> Find</button> &nbsp;
+                <button class="btn btn-sm btn-danger mT-5 text-white" @click="reset()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg> Reset</button>
+            
+            </filtering>
+        </transition>
+
        
         <div class="col-12">
             <div class="bgc-white p-20 bd">
@@ -124,11 +143,19 @@ export default{
         return {
             loader:false,
             itemId:"",
-            dropdownOption:"outside"
+            dropdownOption:"outside",
+            filter:false,
+            filterData: {
+                data_from:null,
+                data_to:null,
+            }
         }
     },
 
     methods:{
+        showFilter() {
+            this.filter = true
+        },
         approvedStatus(item, status) {
             //   $(`.dropdown-menu#${item.id}`).toggle();
             this.$inertia.post('/travels/set-status', {id:item.id, status:status}, { 

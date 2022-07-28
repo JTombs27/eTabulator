@@ -24,8 +24,9 @@ class TravelController extends Controller
         $this->prices = $prices;
     }    
 
-    public function index()
+    public function index(Request $request)
     {
+        
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
@@ -88,6 +89,7 @@ class TravelController extends Controller
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
                         ->get();
+                        
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
             $total = $this->prices->when($checkPrice, function($q) use ($item) {
