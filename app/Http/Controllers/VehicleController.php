@@ -41,12 +41,9 @@ class VehicleController extends Controller
             ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
-<<<<<<< HEAD
-                'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
-                'canCreateProject' => auth()->user()->can('canCreateProject',User::class),
-=======
-                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class)
->>>>>>> c45c470084759593a30265c8f4a60ea73a64381c
+                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class),
+                'canEditVehicle' => auth()->user()->can('canEditVehicle', User::class),
+                'canDeleteVehicle' => auth()->user()->can('canDeleteVehicle', User::class),
             ]
         ]);
     }

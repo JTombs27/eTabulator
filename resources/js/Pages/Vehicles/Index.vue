@@ -47,6 +47,7 @@
                 </svg> Reset</button>
 
         </filtering>
+
         <div class="col-12" v-if="vehiclesGroup.length > 0">
             <div class="card">
                 <div class="card-body">
@@ -83,7 +84,6 @@
                         <tr>
                             <th></th>
                             <th scope="col">Plate Number</th>
-                            <th></th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col">Acquisition</th>
@@ -101,9 +101,8 @@
                                 </div>
                             </th>
                             <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
-                            <td v-if="vehicle.vehicle_status"><span style="color:brown">{{vehicle.vehicle_status.condition}} </span></td>
-                            <td v-else></td>
-                            <td v-html="code(vehicle.TYPECODE)"></td>
+                            <td v-if="!!vehicle.vehicle_status" v-html="code(vehicle.TYPECODE, vehicle.vehicle_status.condition)"></td>
+                            <td v-else v-html="code(vehicle.TYPECODE, null)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
                             <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
@@ -119,7 +118,7 @@
                                     </svg>
                                     </button>
                                     <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                        <li><Link class="dropdown-item" :href="`/vehicles/${vehicle.id}/edit`">
+                                        <li v-if="can.canEditVehicle"><Link class="dropdown-item" :href="`/vehicles/${vehicle.id}/edit`">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -147,7 +146,7 @@
                                         </svg> Drivers Assignment</Link></li>
 
                                         <li> <hr class="dropdown-divider action-divider"></li>
-                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicle.driver_vehicles !== 0">
+                                        <li v-if="can.canDeleteVehicle"><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicle.driver_vehicles !== 0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                         </svg> Delete </Link></li>
@@ -367,21 +366,35 @@ export default ({
         }, 300)
     },
     methods: {
-        code (code) {
+        code (code,status) {
+
+           var stats = this.status(status); 
+
             switch(code) {
                 case '1':
-                    return "<span>Motorcycle</span>"
+                    return "<span>Motorcycle</span>"+stats;
                     break
                 case '2':
-                    return "<span>Light Vehicle</span>"
+                    return "<span>Light Vehicle</span>"+stats;
                     break
                 case '3':
-                    return "<span>Heavy Equipment</span>"
+                    return "<span>Heavy Equipment</span>"+stats;
                     break
                 default:
                     return ""
                     break
             }
+        },
+
+        status (status) {
+            if (status == "Good Condition") {
+                return "<small><span class='badge rounded-pill bg-success'>✔</span></small>"
+            } else if (status == "On-repair") {
+                return "<small><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
+            } else if (status == "Wasted") {
+                return "<small><span class='badge rounded-pill bg-danger'>🗑️</span></small>"
+            }
+            return ""
         },
 
         borrowdisplay (code) {
@@ -398,12 +411,12 @@ export default ({
             }
         },
         
-        driverVehicle(driverid)
+        driverVehicle (driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");
         },
 
-        deleteVehicle(vehicle)
+        deleteVehicle (vehicle)
         {
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
@@ -411,20 +424,22 @@ export default ({
                 this.$inertia.delete("/vehicles/" + vehicle.id);
             }
         },
-        showFilter()
+
+        showFilter ()
         {
             this.filter = !this.filter
         },
-        runFilter() {
-            
+
+        runFilter () {
             this.$inertia.get('/vehicles', this.filter1,{preserveState:true})
         },
-        reset() {
+
+        reset () {
             this.filter = {}
             this.$inertia.get('/vehicles')
 
         },
-        setStatus(){
+        setStatus () {
             axios.post('/vehicles/set-status', {
                 "condition":this.form.condition,
                 "vehicle_status_date":this.form.vehicle_status_date,
@@ -445,11 +460,10 @@ export default ({
                 }
             })
 
-        },
-        showInfo(id)
+        }, 
+        showInfo (id)
         {
             
-           
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
 
                 this.travel_info = response.data[0]
@@ -522,7 +536,6 @@ export default ({
 
         },
 
-
         statusDisplay (code) {
             switch(code) {
                 case 'Approved':
@@ -539,7 +552,7 @@ export default ({
                     break
             }
         },
-        createProject(){
+        createProject () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -548,7 +561,7 @@ export default ({
 
        },
 
-       goToProject(){
+       goToProject () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -556,7 +569,8 @@ export default ({
            this.showModal = false
 
        },
-       createTravel(){
+
+       createTravel () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -564,6 +578,7 @@ export default ({
            this.showModal = false
 
        },
+       
        goToTravel(){
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
