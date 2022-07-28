@@ -11,7 +11,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer" >
-                    <Link class="btn btn-primary btn-sm" @click="gotoCreate()">Add Status</Link>
+                    <Link  class="btn btn-primary btn-sm" @click="gotoCreate()">Add Status</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     &nbsp;&nbsp;
                      <Link href="/vehicles">
@@ -101,6 +101,7 @@ export default {
         filters: Object,
         vehicles_id: Object,
         PLATENO:Object,
+        
     },
     data() {
         return {
@@ -131,8 +132,8 @@ export default {
     mounted() {
        this.plate_no = this.PLATENO
         
-        // this.plate_no = this.vehicle_status.plate_no
-        // this.form.plate_no = this.plate_no
+            // this.plate_no = this.vehicle_status.plate_no
+            // this.form.plate_no = this.plate_no
             // if(this.vehicle.vehicle_status)
             // {
             //     this.form.id = this.vehicle.vehicle_status.id

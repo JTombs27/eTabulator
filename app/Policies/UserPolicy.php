@@ -111,4 +111,20 @@ class UserPolicy
     {
         return $user->permissions()->user('permission_name', 'can_delete_drivers')->exists();
     }
+    public function canCreateVehicleStatus(User $user)
+    {
+        return $user->permissions()->user('permission_name', 'can_create_vehicle_status')->exists();
+    }
+    public function canEditVehicleStatus(User $user)
+    {
+        return $user->permissions()->user('permission_name', 'can_edit_vehicle_status')->exists();
+    }
+    public function canCreateOfficeVehicles(User $user)
+    {
+        return $user->permissions()->user('permission_name', 'can_create_office_vehicles')->exists();
+    }
+    public function canEditOfficeVehicles(User $user)
+    {
+        return $user->permissions()->user('permission_name', 'can_edit_office_vehicles')->exists();
+    }
 }
