@@ -20,16 +20,45 @@
     </div> 
     <div class="col-md-12 p-20">
         <table class="table table-bordered bg-white" >
-            <tr><td>Travel Status</td><td>:</td><td><b style="color:{{$data->status == 'Approved' ? 'green':'red'}}">{{$data->status != null ? $data->status:'Pending'}}</b></td></tr>
-            <tr><td>Plate Number</td><td>:</td><td><b>{{$data->PLATENO}}</b></td></tr>
-            <tr><td>Travel Date</td><td>:</td><td><b>{{$data->date_to != null ? $data->date_from.' To '.$data->date_to:$data->date_from}}</b></td></tr>
-            <tr><td>Allowed Liter/s </td><td>:</td><td><b>{{$data->total_liters}} Liter/s</b></td></tr>
-            <tr><td>Gas Type </td><td>:</td><td><b>{{$data->gas_type}}</b></td></tr>
-            
+            <tr><td>Travel Status</td><td>:</td><td><b style="color:{{$data[0]['status'] == 'Approved' ? 'green':'red'}}">{{$data[0]['status'] != null ? $data[0]['status']:'Pending'}}</b></td></tr>
+            <tr><td>Plate Number</td><td>:</td><td><b>{{$data[0]['PLATENO']}}</b></td></tr>
+            <tr><td>Travel Date</td><td>:</td><td><b>{{$data[0]['date_to'] != null ? $data[0]['date_from'].' To '.$data[0]['date_to']:$data[0]['date_from']}}</b></td></tr>
+            <tr><td>Allowed Liter/s </td><td>:</td><td><b>{{$data[0]['liters']}} Liter/s</b></td></tr>
+            <tr><td>Gas Type </td><td>:</td><td><b>
+                
+                    @switch ($data[0]['gas_type'])
+                        @case ('premium_price')
+                            Gasoline (Premium)
+                            @break
+                        @case('breaj_oil_price')
+                            Break Oil
+                            @break
+                        @case ('regular_price')
+                            Gasoline (Regular)
+                            @break
+                        @case ('deisoline_price')
+                            Deisoline
+                            @break
+                        @case ('engine_oil_price')
+                            Engine Oil
+                            @break
+                        @case('break_oil_price')
+                            Break Oil
+                            @break
+                        @case('greases_price')
+                            Greases
+                            @break
+                        @default:
+                           NO CATEGORY
+                    
+                    @endswitch
+
+                </b></td></tr>
+            <tr><td>Price</td><td>:</td><td><b>₱ {{$data[0]['price']}}</b></td></tr>
             <tr><td colspan="3">Drivers Name:</td></tr>
-            <tr><td colspan="3" style="padding-left: 20px;"><b>{{$data->first_name.' '.(Str::limit($data->middle_name,1,'.')).' '.$data->last_name}}</b></td></tr>
+            <tr><td colspan="3" style="padding-left: 20px;"><b>{{$data[0]['first_name'].' '.(Str::limit($data[0]['middle_name'],1,'.')).' '.$data[0]['last_name']}}</b></td></tr>
             <tr><td colspan="3">Vehicle Description:</td></tr>
-            <tr><td colspan="3" style="padding-left: 20px;"><b>{{$data->FDESC}}</b></td></tr>
+            <tr><td colspan="3" style="padding-left: 20px;"><b>{{$data[0]['FDESC']}}</b></td></tr>
         </table>
     </div> 
         

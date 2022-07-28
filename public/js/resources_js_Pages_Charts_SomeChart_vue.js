@@ -73,13 +73,25 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
     var chartData = {
       labels: props.chartLabel,
       datasets: [{
-        backgroundColor: props.chartColor,
-        data: props.chartData
+        data: props.chartData,
+        backgroundColor: props.chartColor
       }]
     };
     var chartOptions = {
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      plugins: {
+        datalabels: {
+          display: true,
+          formatter: function formatter(value, context) {
+            return context.chart.data.labels[ontext.dataIndex];
+          },
+          color: "white"
+        },
+        legend: {
+          position: 'top'
+        }
+      }
     };
     return function () {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.h)(vue_chartjs__WEBPACK_IMPORTED_MODULE_2__.Doughnut, {

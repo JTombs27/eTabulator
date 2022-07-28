@@ -272,7 +272,7 @@ class TravelController extends Controller
                                      $join->on('travels.office_id', '=', 'head.department_code')
                                           ->where('head.is_pghead','=', 1);
                                  })
-                            ->leftJoin('offices', 'head.department_code', 'offices.department_code')
+                            ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->where('travels.id', $request->id)
                             ->first();
         return $travel;
