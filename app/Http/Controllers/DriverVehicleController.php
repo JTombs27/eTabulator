@@ -15,22 +15,22 @@ class DriverVehicleController extends Controller
 
     public function index($id)
     {
+       
         return inertia('Drivers/Index', [
-            'driver_vehicles' => $this->model->with([
+            'driver_vehicles' => $this->model->with(
                 'vehicle',
                 'empl',
                 'office',
                 'travel'
-            ])
+            )
 
-            ->latest()
             ->where('vehicles_id','=',$id)
+            ->latest()
             ->simplePaginate(10)
             ->withQueryString(),
             "Vdriver" => Vehicle::where('id', $id)->select('id', 'PLATENO')->first(),
-
             "can" => [
-                'canCreateDriver' => auth()->user()->can('caCreateDriver', User::class)
+                'canCreateDriver' => true
             ]
 
         ]);
