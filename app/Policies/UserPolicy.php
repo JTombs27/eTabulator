@@ -90,9 +90,27 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_delete_prices')->exists();
     }
+<<<<<<< HEAD
 
     public function canDeleteTravel(User $user)
     {
         return $user->permissions()->where('permission_name', 'can_delete_travels')->exists();
+=======
+    public function canEditVehicle(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_edit_vehicles')->exists();
+    }
+    public function canDeleteVehicle(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_delete_vehicles')->exists();
+    }
+    public function canCreateDriver(User $user)
+    {
+        return $user->permissions()->user('permission_name', 'can_create_drivers')->exists();
+    }
+    public function canDeleteDriver(User $user)
+    {
+        return $user->permissions()->user('permission_name', 'can_delete_drivers')->exists();
+>>>>>>> 023ef0e8a45bb18a45808e4bcead4d3ad660bee9
     }
 }

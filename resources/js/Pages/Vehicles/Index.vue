@@ -47,6 +47,7 @@
                 </svg> Reset</button>
 
         </filtering>
+
         <div class="col-12" v-if="vehiclesGroup.length > 0">
             <div class="card">
                 <div class="card-body">
@@ -83,14 +84,12 @@
                         <tr>
                             <th></th>
                             <th scope="col">Plate Number</th>
-                            <th></th>
                             <th scope="col">Vehicle Type</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col">Acquisition</th>
                             <th scope="col" >Office</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
-                            <th scope="col"></th>
                             <th scope="col" style="text-align: right"> Action</th>
                         </tr>
                     </thead>
@@ -102,9 +101,8 @@
                                 </div>
                             </th>
                             <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
-                            <td v-if="vehicle.vehicle_status"><span style="color:brown">{{vehicle.vehicle_status.condition}} </span></td>
-                            <td v-else></td>
-                            <td v-html="code(vehicle.TYPECODE)"></td>
+                            <td v-if="!!vehicle.vehicle_status" v-html="code(vehicle.TYPECODE, vehicle.vehicle_status.condition)"></td>
+                            <td v-else v-html="code(vehicle.TYPECODE, null)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
                             <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
@@ -112,7 +110,6 @@
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
-                            <td><span class="badge bg-info" @click="showInfo(vehicle.id)">Where Abouts</span></td>
                             <td style="text-align: right">
                                 <div class="dropdown downstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -121,7 +118,7 @@
                                     </svg>
                                     </button>
                                     <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                        <li><Link class="dropdown-item" :href="`/vehicles/${vehicle.id}/edit`">
+                                        <li v-if="can.canEditVehicle"><Link class="dropdown-item" :href="`/vehicles/${vehicle.id}/edit`">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                         <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                                         <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
@@ -132,6 +129,10 @@
                                             <path d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z"/>
                                             <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
                                         </svg> Status</Link></li>
+                                        <li><span class="dropdown-item" @click="showInfo(vehicle.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrows-fullscreen" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344 0a.5.5 0 0 1 .707 0l4.096 4.096V11.5a.5.5 0 1 1 1 0v3.975a.5.5 0 0 1-.5.5H11.5a.5.5 0 0 1 0-1h2.768l-4.096-4.096a.5.5 0 0 1 0-.707zm0-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707zm-4.344 0a.5.5 0 0 1-.707 0L1.025 1.732V4.5a.5.5 0 0 1-1 0V.525a.5.5 0 0 1 .5-.5H4.5a.5.5 0 0 1 0 1H1.732l4.096 4.096a.5.5 0 0 1 0 .707z"/>
+                                            </svg> Whereabouts</span></li>
                                         <li><Link class="dropdown-item" :href="`/officeVehicles/${vehicle.id}`">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
@@ -145,7 +146,7 @@
                                         </svg> Drivers Assignment</Link></li>
 
                                         <li> <hr class="dropdown-divider action-divider"></li>
-                                        <li><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicle.driver_vehicles !== 0">
+                                        <li v-if="can.canDeleteVehicle"><Link class="text-danger dropdown-item" @click="deleteVehicle(vehicle)" :disabled="vehicle.driver_vehicles !== 0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                         <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                                         </svg> Delete </Link></li>
@@ -167,9 +168,10 @@
             </div>
         </div>
     </div>
+ 
   <Modal
         v-if="showModal"
-        :modalTitle="'Vehicle Where Abouts'"
+        :modalTitle="'Vehicle Whereabouts'"
         :addional_class="'modal-lg'"
         @closeModal="closeModal">
        <table class="table table-hover table-responsive">
@@ -177,20 +179,19 @@
                           <tr>
                             <th scope="col"><h3>Travels</h3></th>
                             <th scope="col"></th>
-                            <th scope="col"></th>
+                            <th scope="col">
+                                  <h4><Link v-if="!!noTravel && can.canCreateTravel" class="pull-right" @click="createTravel()"><u>Create Travel</u></Link></h4>
+                                  <h4><Link v-if="!noTravel" class="pull-right" @click="goToTravel()"><u>Go to Travel</u></Link></h4>
+                            </th>
                          </tr>
                     </thead>
                     <tbody>
                         <tr v-if="!!noTravel">
-                            <td scope="col"><Link class="btn btn-info" @click="createTravel()">Create Travel</Link></td>
+                            <td scope="col"></td>
                             <td scope="col"> | </td>
                             <td scope="col">No Latest Travel Data </td>
                          </tr>
-                          <tr v-if="!noTravel">
-                            <td scope="col"><Link class="btn btn-info" @click="goToTravel()">Go to Travel</Link></td>
-                            <td scope="col"></td>
-                            <td scope="col"></td>
-                         </tr>
+                          
                         <tr v-if="!noTravel">
                             <td>Office</td>
                             <td>:</td>
@@ -248,19 +249,17 @@
                           <tr>
                             <th scope="col"><h3>Project</h3></th>
                             <th scope="col"></th>
-                            <th scope="col"></th>
+                            <th scope="col">
+                                <h4><Link v-if="!!noProject && can.canCreateProject" class="pull-right" @click="createProject()"><u>Create Project</u></Link></h4>
+                                <h4><Link v-if="!noProject" class="pull-right" @click="goToProject()"><u>Go to Project</u></Link></h4>
+                            </th>
                          </tr>
                     </thead>
                     <tbody>
                         <tr v-if="!!noProject">
-                            <td scope="col"><Link class="btn btn-info" @click="createProject()" >Create Project</Link></td>
+                            <td scope="col"></td>
                             <td scope="col"> | </td>
                             <td scope="col">No Latest Project Data </td>
-                         </tr>
-                          <tr v-if="!noProject">
-                            <td scope="col"><Link class="btn btn-info" @click="goToProject()">Go to Project</Link></td>
-                            <td scope="col"></td>
-                            <td scope="col"></td>
                          </tr>
                         <tr v-if="!noProject">
                             <td>Project Description</td>
@@ -301,6 +300,7 @@ import { useForm } from "@inertiajs/inertia-vue3";
 export default ({
     components: { Pagination, Filtering},
     props: {
+        can: Object,
         vehicles: Object,
         filters: Object,
         can: Object
@@ -366,21 +366,35 @@ export default ({
         }, 300)
     },
     methods: {
-        code (code) {
+        code (code,status) {
+
+           var stats = this.status(status); 
+
             switch(code) {
                 case '1':
-                    return "<span>Motorcycle</span>"
+                    return "<span>Motorcycle</span>"+stats;
                     break
                 case '2':
-                    return "<span>Light Vehicle</span>"
+                    return "<span>Light Vehicle</span>"+stats;
                     break
                 case '3':
-                    return "<span>Heavy Equipment</span>"
+                    return "<span>Heavy Equipment</span>"+stats;
                     break
                 default:
                     return ""
                     break
             }
+        },
+
+        status (status) {
+            if (status == "Good Condition") {
+                return "<small><span class='badge rounded-pill bg-success'>✔</span></small>"
+            } else if (status == "On-repair") {
+                return "<small><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
+            } else if (status == "Wasted") {
+                return "<small><span class='badge rounded-pill bg-danger'>🗑️</span></small>"
+            }
+            return ""
         },
 
         borrowdisplay (code) {
@@ -397,12 +411,12 @@ export default ({
             }
         },
         
-        driverVehicle(driverid)
+        driverVehicle (driverid)
         {
             this.$inertia.get("/drivers/" + driverid+"/vehicles");
         },
 
-        deleteVehicle(vehicle)
+        deleteVehicle (vehicle)
         {
             let text = "Warning! \Are you sure you want to Delete this Vehicle Plate Number " + vehicle.PLATENO;
 
@@ -410,20 +424,22 @@ export default ({
                 this.$inertia.delete("/vehicles/" + vehicle.id);
             }
         },
-        showFilter()
+
+        showFilter ()
         {
             this.filter = !this.filter
         },
-        runFilter() {
-            
+
+        runFilter () {
             this.$inertia.get('/vehicles', this.filter1,{preserveState:true})
         },
-        reset() {
+
+        reset () {
             this.filter = {}
             this.$inertia.get('/vehicles')
 
         },
-        setStatus(){
+        setStatus () {
             axios.post('/vehicles/set-status', {
                 "condition":this.form.condition,
                 "vehicle_status_date":this.form.vehicle_status_date,
@@ -444,10 +460,10 @@ export default ({
                 }
             })
 
-        },
-        showInfo(id)
+        }, 
+        showInfo (id)
         {
-
+            
             axios.post('/vehicles/getWhereAboutsTravel/'+id).then((response) => {
 
                 this.travel_info = response.data[0]
@@ -520,7 +536,6 @@ export default ({
 
         },
 
-
         statusDisplay (code) {
             switch(code) {
                 case 'Approved':
@@ -537,7 +552,7 @@ export default ({
                     break
             }
         },
-        createProject(){
+        createProject () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -546,7 +561,7 @@ export default ({
 
        },
 
-       goToProject(){
+       goToProject () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -554,7 +569,8 @@ export default ({
            this.showModal = false
 
        },
-       createTravel(){
+
+       createTravel () {
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
              $('body').removeClass('modal-open');
@@ -562,6 +578,7 @@ export default ({
            this.showModal = false
 
        },
+       
        goToTravel(){
              $('body').css("overflow","scroll");
              $('.modal-backdrop').remove();
@@ -572,7 +589,7 @@ export default ({
        },
 
         closeModal() {
-
+          
             this.showModal = false
 
         },
