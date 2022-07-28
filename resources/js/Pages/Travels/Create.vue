@@ -19,6 +19,25 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <div class="row">
+                    
+                    <div class="col-md-4">    
+                        <div class="form-check ">
+                            <label class="form-check-label disable-select" for="is_borrowed_vehicle">
+                            Check if borrow vehicle
+                            </label>
+                            <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                        </div>
+                    </div>
+                    <div class="col-md-4">    
+                         <div class="form-check">
+                             <label class="form-check-label disable-select" for="is_borrowed_fuel">
+                                Check if borrow fuel
+                             </label>
+                            <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
+                        </div>
+                    <br>
+                    </div>
+                    <hr>
                     <div :class="[columnFrom]">
                         <label for="">From</label>
                         <input v-model="form.date_from" type="date" class="form-control" autocomplete="chrome-off" @change="fetchPrice()"/>
@@ -69,19 +88,9 @@
                         <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
                     </div>
 
-                     <div class="form-check">
-                         <label class="form-check-label disable-select" for="is_borrowed_fuel">
-                            Check if borrow fuel
-                         </label>
-                        <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
-                    </div>
+                    
 
-                     <div class="form-check ">
-                         <label class="form-check-label disable-select" for="is_borrowed_vehicle">
-                            Check if borrow vehicle
-                         </label>
-                        <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
-                    </div>
+                    
                     <transition name="fade"  mode="out-in">
                         <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
                             <br>
@@ -230,6 +239,7 @@ export default {
             this.form.total_liters = this.editData.total_liters
             this.form.vehicles_id = String(this.editData.driver_vehicle.vehicles_id)
             this.form.driver_vehicles_id = this.editData.driver_vehicle.id
+            this.form.official_passenger = this.editData.official_passenger
             this.form.purpose = this.editData.purpose
             this.form.price = this.editData.price
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
@@ -238,7 +248,7 @@ export default {
             this.form.office_id = this.editData.office_id
             this.form.is_carpool = Boolean(this.editData.is_carpool)
             this.form.showActualDriver = this.editData.actual_driver ? true : false
-            this.form.actual_driver = this.editData.actual_driver
+            this.form.actual_driver = this.editData.actual_driver ? this.editData.actual_driver : ""
             if (this.editData.date_to) {
                 this.form.rangedDate = true
             }
@@ -342,7 +352,7 @@ export default {
         },
 
         showActualDriver(e) {
-            // console.log(e)
+            console.log(e)
             if (true){
 
                 $('#actualDriver').select2({
@@ -442,6 +452,7 @@ export default {
         'form.rangedDate': function (value) {
             if (value) {
                 this.columnFrom = 'col-md-6'
+                this.form.date_to = null
             } else {
                 setTimeout(() => {
                     this.columnFrom = 'col-md-12'
