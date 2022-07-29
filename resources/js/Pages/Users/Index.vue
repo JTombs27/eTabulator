@@ -170,7 +170,7 @@
 
 <script>
 import Filtering from "@/Shared/Filter";
-import Pagination from "@/Shared/PaginationNumber";
+import Pagination from "@/Shared/Pagination";
 
 export default {
     components: { Pagination, Filtering },

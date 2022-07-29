@@ -21,6 +21,7 @@ use App\Http\Controllers\OfficeVehiclesController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\LogTimeArrivalContoller;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -204,6 +205,7 @@ Route::middleware('auth')->group(function() {
     //for api
 Route::prefix('/reports')->group(function() {
     Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
+    Route::get('/travel', [ReportController::class, 'travels']);
 });
 
 Route::prefix('/travelTicket')->group(function() {
