@@ -21,10 +21,10 @@ class HomeController extends Controller
      */
     public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices)
     {
-        $this->model = $model;
-        $this->driverVehicle = $driverVehicle;
-        $this->charges = $charges;
-        $this->prices = $prices;
+        $this->model            = $model;
+        $this->driverVehicle    = $driverVehicle;
+        $this->charges          = $charges;
+        $this->prices           = $prices;
     }    
 
     /**
@@ -34,44 +34,55 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $isAdmin = User::
-        where('id', auth()->user()->id)
-        ->where('role','Admin')
-        ->first();
+        $isAdmin =  User::
+                    where('id', auth()->user()->id)
+                    ->where('role','Admin')
+                    ->first();
 
-        $chargeAmount  =  Models\Charge::groupBy("office_id")
+        $chargeAmount  =  $this->charges->groupBy("office_id")
                         ->selectRaw('sum(amount) as amount')
                         ->get()
                         ->map(fn($item) => 
                         [
                             $item->amount
                         ]);
-        $chargeLabel   =  Models\Charge::with(['office'=>function($query){
-            $query->select('short_name','department_code');
-        }])->groupBy("office_id")->get()
-        ->map(fn($item) => [
-            $item->office->short_name
-        ]);
-        $offices = Models\Office::get()->map(fn($item) => [
-            $item->short_name
-        ]);
+        $chargeLabel   =    $this->charges
+                            ->with(['office'=>function($query){
+                                $query->select('short_name','department_code');
+                            }])
+                            ->groupBy("office_id")->get()
+                            ->map(fn($item) => [
+                                $item->office->short_name
+                            ]);
+        $officesLabels = Models\Office::withCount('officeTravelCount')
+                                ->get()
+                                ->map(fn($item) => [
+                                    $item->short_name
+                                ]);
+        $officesTravelCount = Models\Office::withCount('officeTravelCount')
+                                ->get()
+                                ->map(fn($item) => [
+                                    $item->office_travel_count_count
+                                ]);
         if(!$isAdmin)
         {
-            $chargeAmount = Models\Charge::where('office_id', auth()->user()->office_id)
-            ->selectRaw('sum(amount) as amount')
-            ->get()
-            ->map(fn($item) => 
-            [
-                $item->amount
-            ]);
+            $chargeAmount = $this->charges
+                            ->where('office_id', auth()->user()->office_id)
+                            ->selectRaw('sum(amount) as amount')
+                            ->get()
+                            ->map(fn($item) => 
+                            [
+                                $item->amount
+                            ]);
 
-            $chargeLabel  =  Models\Charge::with(['office'=>function($query){
-                $query->select('short_name','department_code');
-            }])->where('office_id', auth()->user()->office_id)
-            ->groupBy('office_id')
-            ->get()->map(fn($item) => [
-                $item->office->short_name
-            ]);
+            $chargeLabel  =  $this->charges
+                            ->with(['office'=>function($query){
+                                $query->select('short_name','department_code');
+                            }])->where('office_id', auth()->user()->office_id)
+                            ->groupBy('office_id')
+                            ->get()->map(fn($item) => [
+                                $item->office->short_name
+                            ]);
         }
 
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
@@ -89,26 +100,28 @@ class HomeController extends Controller
                         ->where('office_id', auth()->user()->office_id)
                         ->get();
                         
-        $travels = $travels->map(function($item)  {
-            $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-            $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                $q->whereDate('date', $item->date_from);
-            })->latest()->first($item->gas_type);
-            return [
-                'price' => ($total[$item->gas_type] * $item->total_liters),
-                'date' => $item->date_from
-            ];
-        });
+        $travels = $travels->map(function($item)  
+                    {
+                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                        $total      = $this->prices->when($checkPrice, function($q) use ($item) {
+                                        $q->whereDate('date', $item->date_from);
+                                    })->latest()->first($item->gas_type);
+                        return [
+                            'price' => ($total[$item->gas_type] * $item->total_liters),
+                            'date' => $item->date_from
+                        ];
+                    });
 
 
 
         return inertia('Home',[
-            'chargesAmount'=>$chargeAmount,
-            'chargesLabel'=>$chargeLabel,
-            'officesLabels' =>$offices,
-            'consume'=>$travels->sum('price'),
-            'balance'=>$amount,
-            'isAdmin'=>$isAdmin
+            'chargesAmount' =>$chargeAmount,
+            'chargesLabel'  =>$chargeLabel,
+            'officesLabels' =>$officesLabels,
+            'officesTravelCount'=>$officesTravelCount,
+            'consume'       =>$travels->sum('price'),
+            'balance'       =>$amount,
+            'isAdmin'       =>$isAdmin
         ]);
     }
 }

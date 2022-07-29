@@ -110,6 +110,7 @@
         :modalTitle="'Permissions'" 
         :addional_class="'modal-lg'"
         @closeModal="closeModal"
+        :showSaveButton = "true"
         @saveModal="updatePermissions">
         <div class="row pb-3">
             <div class="col-md-3">

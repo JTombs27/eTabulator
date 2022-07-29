@@ -139,7 +139,7 @@
                                         <h6 class="lh-1">{{barTitle}}</h6>
                                     </div>
                                     <div class="layer w-100">
-                                        <total-user :chartData="totalUser" :chartLabel="officesLabels"></total-user>
+                                        <total-user :chartData="barChart.Data" :chartLabel="barChart.Labels"></total-user>
                                     </div>
                                 </div>
                             </div>
@@ -185,6 +185,8 @@ export default ({
         chargesAmount:Array,
         chargesLabel:Array,
         officesLabels:Array,
+        officesTravelCount:Array,
+
         consume:"",
         balance:"",
         isAdmin:""
@@ -199,12 +201,14 @@ export default ({
                     },
             barChart:{
                 Labels:this.officesLabels,
-                Data:this.chargesAmount,
+                Data:this.officesTravelCount,
             },
             barTitle:"Number Of Travels Per Office"
         }
     },
-    mounted(){
+    mounted()
+    {
+
     }
 });
 </script>
