@@ -29,6 +29,8 @@ class OfficeController extends Controller
                     'office' => $value['department_name1'],
                     'department_code' => $value['department_code'],
                     'short_name' => $value['department_short_name'],
+                    'empl_id' => $value['empl_id'],
+                    'designation' => $value['designation_head2'],
                     'created_at' => now()
                 ];
                 array_push($officeArray, $data);
