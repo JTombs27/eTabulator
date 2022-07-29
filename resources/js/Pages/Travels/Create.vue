@@ -25,7 +25,7 @@
                             <label class="form-check-label disable-select" for="is_borrowed_vehicle">
                             Check if borrow vehicle
                             </label>
-                            <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                            <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
                         </div>
                     </div>
                     <div class="col-md-4">    
@@ -166,7 +166,8 @@ export default {
 
     props: {
         editData: Object,
-        balance:Number
+        balance:Number,
+        auth:Object
     },
 
     data() {
@@ -228,6 +229,7 @@ export default {
     },
 
     async mounted() {
+        // console.log(this.auth.user)
         this.form.balance = this.balance
         if (this.editData !== undefined) {
             this.loading = true
@@ -244,19 +246,20 @@ export default {
             this.form.price = this.editData.price
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
             this.form.date_from = this.editData.date_from
-            this.form.date_to = this.editData.date_to
             this.form.office_id = this.editData.office_id
             this.form.is_carpool = Boolean(this.editData.is_carpool)
             this.form.showActualDriver = this.editData.actual_driver ? true : false
             this.form.actual_driver = this.editData.actual_driver ? this.editData.actual_driver : ""
             if (this.editData.date_to) {
                 this.form.rangedDate = true
+                
             }
             await this.getVehicleDetails();
             await this.showActualDriver();
             await this.fetchPrice();
-            // setTimeout(() => {
-            // }, 0);
+            setTimeout(() => {
+                this.form.date_to = this.editData.date_to
+            }, 0);
             
         } else {
             this.pageTitle = "Create"
@@ -309,10 +312,24 @@ export default {
         },
 
 
-        getVehicles(){
-            axios.get(`/vehicles/getVehicles/${this.form.vehicles_id}`).then( (response) => {
+        getVehicles(e){
+            
+            axios.post(`/vehicles/getVehicles`).then( (response) => {
                 this.vehicles = response.data
             })
+            // axios.post(`/travels/get-vehicles`).then( (response) => {
+            //     this.vehicles = response.data
+            //     // let office = this.auth.user.office_id
+            //     // try {
+            //     //     if (e.target.checked) {
+            //     //         this.vehicles = response.data
+            //     //     } else {
+            //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+            //     //     }
+            //     // } catch (error) {
+            //     //     this.vehicles = response.data
+            //     // }
+            // })
         },
 
         getEmployees() {
@@ -346,10 +363,15 @@ export default {
                             "selected": _selected
                         }
                     })   
-                    this.vehicle_status = response.data ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
+                    try {
+                        this.vehicle_status = response.data ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
+                    } catch (error) {
+                        this.vehicle_status = "No status available"   
+                    }
                 })
            
         },
+        
 
         showActualDriver(e) {
             console.log(e)
@@ -407,6 +429,9 @@ export default {
         },
 
         getOffice(e) {
+            if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
+                this.form.borrowing_office = null
+            }
             if (e.target.checked) {
                 $('#office').select2({
                     ajax: {
@@ -445,6 +470,18 @@ export default {
                 return false;
             }
             this.form.post("/travels", this.form);
+        }
+    },
+
+    computed: {
+        officeFiltered() {
+            return _.filter(this.vehicles, (o) => {
+                if (!this.form.is_borrowed_vehicle) {
+                    return o.office_id == this.auth.user.office_id 
+                } else {
+                    return this.vehicles
+                }
+            })
         }
     },
 

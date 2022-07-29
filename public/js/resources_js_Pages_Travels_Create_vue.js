@@ -24,7 +24,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     editData: Object,
-    balance: Number
+    balance: Number,
+    auth: Object
   },
   data: function data() {
     return {
@@ -90,6 +91,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              // console.log(this.auth.user)
               _this.form.balance = _this.balance;
 
               if (!(_this.editData !== undefined)) {
@@ -111,7 +113,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this.form.price = _this.editData.price;
               _this.form.drivers_id = _this.editData.driver_vehicle.drivers_id;
               _this.form.date_from = _this.editData.date_from;
-              _this.form.date_to = _this.editData.date_to;
               _this.form.office_id = _this.editData.office_id;
               _this.form.is_carpool = Boolean(_this.editData.is_carpool);
               _this.form.showActualDriver = _this.editData.actual_driver ? true : false;
@@ -121,18 +122,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 24;
+              _context.next = 23;
               return _this.getVehicleDetails();
 
-            case 24:
-              _context.next = 26;
+            case 23:
+              _context.next = 25;
               return _this.showActualDriver();
 
-            case 26:
-              _context.next = 28;
+            case 25:
+              _context.next = 27;
               return _this.fetchPrice();
 
-            case 28:
+            case 27:
+              setTimeout(function () {
+                _this.form.date_to = _this.editData.date_to;
+              }, 0);
               _context.next = 31;
               break;
 
@@ -180,12 +184,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this2.form.price = (Number(response.data) * Number(_this2.form.total_liters)).toFixed(2);
       });
     },
-    getVehicles: function getVehicles() {
+    getVehicles: function getVehicles(e) {
       var _this3 = this;
 
-      axios.get("/vehicles/getVehicles/".concat(this.form.vehicles_id)).then(function (response) {
+      axios.post("/vehicles/getVehicles").then(function (response) {
         _this3.vehicles = response.data;
-      });
+      }); // axios.post(`/travels/get-vehicles`).then( (response) => {
+      //     this.vehicles = response.data
+      //     // let office = this.auth.user.office_id
+      //     // try {
+      //     //     if (e.target.checked) {
+      //     //         this.vehicles = response.data
+      //     //     } else {
+      //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+      //     //     }
+      //     // } catch (error) {
+      //     //     this.vehicles = response.data
+      //     // }
+      // })
     },
     getEmployees: function getEmployees() {
       var _this4 = this;
@@ -227,7 +243,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             "selected": _selected
           };
         });
-        _this5.vehicle_status = response.data ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
+
+        try {
+          _this5.vehicle_status = response.data ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
+        } catch (error) {
+          _this5.vehicle_status = "No status available";
+        }
       });
     },
     showActualDriver: function showActualDriver(e) {
@@ -286,6 +307,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getOffice: function getOffice(e) {
+      if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
+        this.form.borrowing_office = null;
+      }
+
       if (e.target.checked) {
         $('#office').select2({
           ajax: {
@@ -327,16 +352,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.form.post("/travels", this.form);
     }
   },
+  computed: {
+    officeFiltered: function officeFiltered() {
+      var _this6 = this;
+
+      return _.filter(this.vehicles, function (o) {
+        if (!_this6.form.is_borrowed_vehicle) {
+          return o.office_id == _this6.auth.user.office_id;
+        } else {
+          return _this6.vehicles;
+        }
+      });
+    }
+  },
   watch: {
     'form.rangedDate': function formRangedDate(value) {
-      var _this6 = this;
+      var _this7 = this;
 
       if (value) {
         this.columnFrom = 'col-md-6';
         this.form.date_to = null;
       } else {
         setTimeout(function () {
-          _this6.columnFrom = 'col-md-12';
+          _this7.columnFrom = 'col-md-12';
         }, 100);
       }
     },
@@ -704,7 +742,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "ml-5 form-check-input",
     type: "checkbox",
-    value: "",
     id: "is_borrowed_vehicle",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.form.is_borrowed_vehicle = $event;

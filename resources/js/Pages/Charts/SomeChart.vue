@@ -15,9 +15,7 @@ import {
     CategoryScale,
     Plugin
 } from 'chart.js'
-
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
-
 export default defineComponent({
     name: 'DoughnutChart',
     components: {
@@ -61,20 +59,35 @@ export default defineComponent({
             default: () => []
         }
     },
-    setup(props) {
+    setup(props) 
+    {
         const chartData = {
             labels: props.chartLabel,
             datasets: [
                 {
-                    backgroundColor: props.chartColor,
-                    data: props.chartData
+                    data: props.chartData,
+                    backgroundColor: props.chartColor
                 }
             ]
         }
 
         const chartOptions = {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            plugins: {
+                 
+                 datalabels: 
+                 {
+                    display:true,
+                   formatter: function (value, context) {
+                            return context.chart.data.labels[ontext.dataIndex];
+                        },
+                    color:"white",
+                },
+                legend:{
+                    position: 'top'
+                }
+            }
         }
 
         return () =>

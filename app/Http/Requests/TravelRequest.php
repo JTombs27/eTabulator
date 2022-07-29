@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -32,9 +33,27 @@ class TravelRequest extends FormRequest
             'date_to' => ['required_if:rangedDate,true', Rule::when($this->rangedDate,['after:date_from'])], 
             'total_liters' => Rule::when($valid,[
                 'numeric',
-                'max:14',
                 function($attr, $value, $fail) {
-                    
+
+                    if ($this->date_from && $this->date_to) {
+                        $different_days = date_diff(Carbon::parse("$this->date_from 00:00:00"),Carbon::parse("$this->date_to 24:00:00"))->days;
+                        $validLiters = false;
+                        $max_fuel = 0;
+                        if ($different_days > 7) {
+                            $validLiters = (14 * 7) < $value;
+                            $max_fuel = 14 * 7;
+                        } else if($different_days <= 7 && $value > ($different_days * 14)) {
+                            $validLiters = (14 * $different_days) < $value;
+                            $max_fuel = 14 * $different_days;
+                        }                        
+                        if ($validLiters) {
+                            $fail("Fuel exceeds the limitation. Maximum fuel should not greater than $max_fuel liters");
+                        }
+                    } else if ($this->date_from && !$this->date_to) {
+                       if ($value > 14) {
+                        $fail("Fuel exceeds the limitation. Maximum fuel should not greater than 14 liters");
+                       }
+                    }
                 }
             ]),
             'gas_type' => 'required',

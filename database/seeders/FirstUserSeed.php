@@ -52,7 +52,7 @@ class FirstUserSeed extends Seeder
         ),
         array(
             'id' => 4,
-            'name' => 'PGO-Admn',
+            'name' => 'PGO',
             'cats' => '0828',
             'is_active' => true,
             'email' => 'pgoAdmin@admin.com',

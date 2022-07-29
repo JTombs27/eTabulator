@@ -99,10 +99,15 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
         legend: {
           display: false
         }
-      } // scales: {
-      //     yAxis: props.chartOptionYAxis
-      // }
-
+      },
+      scales: {
+        // yAxis: props.chartOptionYAxis
+        x: {
+          grid: {
+            display: false
+          }
+        }
+      }
     };
     return function () {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.h)(vue_chartjs__WEBPACK_IMPORTED_MODULE_2__.Bar, {

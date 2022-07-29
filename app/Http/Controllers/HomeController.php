@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models;
+use App\Models\Charge;
+use App\Models\DriverVehicle;
+use App\Models\Price;
+use App\Models\Travel;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -14,11 +19,13 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices)
     {
-        $this->middleware('auth');
-        
-    }
+        $this->model = $model;
+        $this->driverVehicle = $driverVehicle;
+        $this->charges = $charges;
+        $this->prices = $prices;
+    }    
 
     /**
      * Show the application dashboard.
@@ -66,11 +73,42 @@ class HomeController extends Controller
                 $item->office->short_name
             ]);
         }
-        //dd($chargeLabel);
+
+        $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+        
+        if(!$amount) {
+            $amount = 0.00;
+        } else {
+           $amount = $amount->sum('amount');
+        //    $amount = number_format($amount->sum('amount'), 2);
+        }
+
+        
+        $travels = $this->model
+                        ->whereYear('date_from', date("Y"))
+                        ->where('office_id', auth()->user()->office_id)
+                        ->get();
+                        
+        $travels = $travels->map(function($item)  {
+            $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+            $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                $q->whereDate('date', $item->date_from);
+            })->latest()->first($item->gas_type);
+            return [
+                'price' => ($total[$item->gas_type] * $item->total_liters),
+                'date' => $item->date_from
+            ];
+        });
+
+
+
         return inertia('Home',[
             'chargesAmount'=>$chargeAmount,
             'chargesLabel'=>$chargeLabel,
-            'officesLabels' =>$offices
+            'officesLabels' =>$offices,
+            'consume'=>$travels->sum('price'),
+            'balance'=>$amount,
+            'isAdmin'=>$isAdmin
         ]);
     }
 }
