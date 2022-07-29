@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TravelRequest;
 use App\Models\Charge;
 use App\Models\DriverVehicle;
+use App\Models\OfficeVehicles;
 use App\Models\Price;
 use App\Models\Travel;
 use App\Models\User;
@@ -16,12 +17,13 @@ use Illuminate\Support\Facades\Http;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
         $this->charges = $charges;
         $this->prices = $prices;
+        $this->officeVehicles = $officeVehicles;
     }    
 
     public function index(Request $request)
@@ -148,7 +150,6 @@ class TravelController extends Controller
 
     public function store(TravelRequest $request)
     {
-        
         $date_from = $request->date_from;
         $date_to = $request->date_to;
         // $now = Carbon::now();
@@ -175,7 +176,9 @@ class TravelController extends Controller
         $request['ticket_number'] = 0;
         $request['user_id'] = auth()->user()->id;
         $request['office_id'] = auth()->user()->office_id;
-
+        if (!$request->rangedDate) {
+            $request['date_to'] = null;
+        }
         
         DB::beginTransaction();
         try {
@@ -228,7 +231,9 @@ class TravelController extends Controller
         // }
 
         $request['office_id'] = auth()->user()->office_id;
-        
+        if (!$request->rangedDate) {
+            $request['date_to'] = null;
+        }
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
 
@@ -258,16 +263,16 @@ class TravelController extends Controller
                                 head.last_name as head_last_name,
                                 head.position_title_short as position_short,
                                 offices.short_name,
-                                offices.office'))
+                                offices.office,
+                                offices.designation'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
+                            ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->leftJoin('employees as head', function($join)
                                  {
-                                     $join->on('travels.office_id', '=', 'head.department_code')
-                                          ->where('head.is_pghead','=', 1);
+                                     $join->on('offices.empl_id', '=', 'head.empl_id');
                                  })
-                            ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->where('travels.id', $request->id)
                             ->first();
         return $travel;
@@ -289,5 +294,20 @@ class TravelController extends Controller
         } catch (\Throwable $th) {
            return 0.00;
         }
+    }
+
+    public function getVehicles(Request $request)
+    {
+        
+        return $this->officeVehicles
+                    ->with('vehicle.vehicle_latest_status')
+                    ->get()
+                    ->map(fn($item) => [
+                        'id' => $item->vehicles_id,
+                        'text' => $item->plate_no,
+                        'condition' => $item->vehicle->vehicle_latest_status->condition,
+                        'typeCode' => $item->vehicle->TYPECODE,
+                        'office_id' => $item->department_code
+                    ]);
     }
 }

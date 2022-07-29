@@ -6,103 +6,7 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="masonry-item w-100">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">Fund/Charges</h6>
-                        </div>
-                        <div class="col-12">
-                            <some-chart :chartData="pieChartData.Data" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>
-                        </div>
-                    </div>
-                </div>
-                <div class="masonry-item col-8">
-                    <!-- #Site Visits ==================== -->
-                    <div class="bd bgc-white">
-                        <div class="peers fxw-nw@lg+ ai-s">
-                            <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">
-                                <div class="layers">
-                                    <div class="layer w-100 mB-10">
-                                        <h6 class="lh-1">{{barTitle}}</h6>
-                                    </div>
-                                    <div class="layer w-100">
-                                        <total-user :chartData="totalUser" :chartLabel="officesLabels"></total-user>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- <div class="peer bdL p-20 w-30p@lg+ w-100p@lg-">
-                                <div class="layers">
-                                    <div class="layer w-100">
-                                        <div class="layers">
-                                            <div class="layer w-100">
-                                                <h5 class="mB-5">100k</h5>
-                                                <small class="fw-600 c-grey-700">Visitors From USA</small>
-                                                <span class="pull-right c-grey-600 fsz-sm">50%</span>
-                                                <div class="progress mT-10">
-                                                    <div class="
-                                                            progress-bar
-                                                            bgc-deep-purple-500
-                                                        " role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                                                        aria-valuemax="100" style="width: 50%">
-                                                        <span class="visually-hidden">50% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="layer w-100 mT-15">
-                                                <h5 class="mB-5">1M</h5>
-                                                <small class="fw-600 c-grey-700">Visitors From Europe</small>
-                                                <span class="pull-right c-grey-600 fsz-sm">80%</span>
-                                                <div class="progress mT-10">
-                                                    <div class="
-                                                            progress-bar
-                                                            bgc-green-500
-                                                        " role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                                                        aria-valuemax="100" style="width: 80%">
-                                                        <span class="visually-hidden">80% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="layer w-100 mT-15">
-                                                <h5 class="mB-5">450k</h5>
-                                                <small class="fw-600 c-grey-700">Visitors From Australia</small>
-                                                <span class="pull-right c-grey-600 fsz-sm">40%</span>
-                                                <div class="progress mT-10">
-                                                    <div class="
-                                                            progress-bar
-                                                            bgc-light-blue-500
-                                                        " role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                                                        aria-valuemax="100" style="width: 40%">
-                                                        <span class="visually-hidden">40% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="layer w-100 mT-15">
-                                                <h5 class="mB-5">1B</h5>
-                                                <small class="fw-600 c-grey-700">Visitors From India</small>
-                                                <span class="pull-right c-grey-600 fsz-sm">90%</span>
-                                                <div class="progress mT-10">
-                                                    <div class="
-                                                            progress-bar
-                                                            bgc-blue-grey-500
-                                                        " role="progressbar" aria-valuenow="50" aria-valuemin="0"
-                                                        aria-valuemax="100" style="width: 90%">
-                                                        <span class="visually-hidden">90% Complete</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="masonry-item w-100">
             <div class="row gap-20">
-                <!-- #Toatl Visits ==================== -->
                 <div class="col-md-3">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
@@ -130,7 +34,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- #Total Page Views ==================== -->
                 <div class="col-md-3">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
@@ -158,7 +61,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- #Unique Visitors ==================== -->
                 <div class="col-md-3">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
@@ -186,7 +88,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- #Bounce Rate ==================== -->
                 <div class="col-md-3">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
@@ -216,7 +117,39 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="masonry-item w-100">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="layers bd bgc-white p-20">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Fund/Charges</h6>
+                        </div>
+                        <div class="col-12">
+                            <some-chart :chartData="pieChartData.Data" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>
+                        </div>
+                    </div>
+                </div>
+                <div class="masonry-item col-8">
+                    <!-- #Site Visits ==================== -->
+                    <div class="bd bgc-white">
+                        <div class="peers fxw-nw@lg+ ai-s">
+                            <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">
+                                <div class="layers">
+                                    <div class="layer w-100 mB-10">
+                                        <h6 class="lh-1">{{barTitle}}</h6>
+                                    </div>
+                                    <div class="layer w-100">
+                                        <total-user :chartData="totalUser" :chartLabel="officesLabels"></total-user>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- <div class="row">
             <div class="col-md-4">
                 <div class="layers bd bgc-white p-20">
                     <div class="layer w-100 mB-10">
@@ -237,7 +170,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 <script>
@@ -252,16 +185,17 @@ export default ({
         chargesAmount:Array,
         chargesLabel:Array,
         officesLabels:Array,
-        
+        consume:"",
+        balance:"",
+        isAdmin:""
     },
     data() {
         return {
             totalUser:[10,20,50,6,525,85],
-            myColors:[],
             pieChartData:{
-                        Labels:this.chargesLabel,
-                        Data:this.chargesAmount,
-                        Colors:this.myColors
+                        Labels:this.isAdmin == null ? [this.chargesLabel+' Balance','Consumed']:this.chargesLabel,
+                        Data: this.isAdmin  == null ? [this.balance-this.consume,this.consume]:this.chargesAmount,
+                        Colors:['rgb(13 110 253)','rgb(25 135 84)','rgb(220 53 69)','rgb(255 193 7)','rgb(13 202 240)']
                     },
             barChart:{
                 Labels:this.officesLabels,
@@ -271,10 +205,6 @@ export default ({
         }
     },
     mounted(){
-        this.chargesAmount.forEach(element => {
-            this.myColors.push('rgb(30 50 184)');
-        });
-        
     }
 });
 </script>

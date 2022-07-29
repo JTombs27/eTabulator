@@ -34,7 +34,10 @@ class TravelRequest extends FormRequest
                 'numeric',
                 'max:14',
                 function($attr, $value, $fail) {
-                    
+
+                    if ($this->date_from && $this->date_to) {
+                        
+                    }
                 }
             ]),
             'gas_type' => 'required',
