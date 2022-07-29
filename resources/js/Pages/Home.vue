@@ -122,7 +122,7 @@
                 <div class="col-md-4">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">Fund/Charges</h6>
+                            <h6 class="lh-1">Fuel Utilizations</h6>
                         </div>
                         <div class="col-12">
                             <some-chart :chartData="pieChartData.Data" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>

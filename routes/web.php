@@ -21,6 +21,7 @@ use App\Http\Controllers\OfficeVehiclesController;
 use App\Http\Controllers\ChargeController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\LogTimeArrivalContoller;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -124,7 +125,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
         Route::patch('/{id}', [VehicleController::class, 'update']);
         Route::delete('/{id}', [VehicleController::class, 'destroy']);
-        Route::get('/getVehicles/{id}', [VehicleController::class, 'getVehicles']);
+        Route::post('/getVehicles', [VehicleController::class, 'getVehicles']);
         Route::get('fetch', [OfficeController::class, 'loadVehicles']);
         Route::post('/getWhereAboutsTravel/{id}', [VehicleController::class, 'getWhereAboutsTravel']);
         Route::post('/getWhereAboutsProject/{id}', [VehicleController::class, 'getWhereAboutsProject']);
@@ -204,6 +205,7 @@ Route::middleware('auth')->group(function() {
     //for api
 Route::prefix('/reports')->group(function() {
     Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
+    Route::get('/travel', [ReportController::class, 'travels']);
 });
 
 Route::prefix('/travelTicket')->group(function() {

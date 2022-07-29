@@ -124,7 +124,7 @@ class VehicleController extends Controller
         return redirect('/vehicles')->with('message', 'Deleted Susccessfuly');
     }
 
-    public function getVehicles($id)
+    public function getVehicles()
     {
         
         return DB::table('vehicles')
@@ -135,7 +135,8 @@ class VehicleController extends Controller
                     'vehicle_status.condition'
                 )
                 ->leftJoin('vehicle_status', 'vehicle_status.vehicles_id', 'vehicles.id')
-                ->leftJoin('driver_vehicles', 'vehicles_id', 'id')
+
+                ->leftJoin('driver_vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                 //->when('driver_vehicles.department_code', auth()->user()->office_id)
                 // ->where(function ($query) use($id){
                 //     $query->where('vehicle_status.condition', 'Good Condition')
@@ -147,7 +148,7 @@ class VehicleController extends Controller
                 ->map(fn($item) => [
                     'id' => $item->id,
                     'text' => $item->PLATENO,
-                    'condition' => $item->condition,
+                    'condition' => $item->condition ? $item->condition:"",
                     'typeCode' => $item->TYPECODE
                 ]);
 

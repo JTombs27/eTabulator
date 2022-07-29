@@ -32,7 +32,7 @@ class TravelController extends Controller
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
-                            ->when(auth()->user()->role != 'PGO' || auth()->user()->role != 'Admin',
+                            ->when(auth()->user()->role == 'RO' || auth()->user()->role == 'PG-HEAD' || auth()->user()->role == 'PGSO',
                                 function($q) {
                                     $q->where('office_id', auth()->user()->office_id);
                                 }
@@ -68,6 +68,14 @@ class TravelController extends Controller
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
+
+                                    'soa_travel'        => $item->soa_travel,
+                                    'place_to_visit'    =>$item->place_to_visit,
+                                    'purpose'           =>$item->purpose,
+                                    'official_passenger'=>$item->official_passenger,
+                                    'is_carpool'        =>$item->is_carpool,
+                                    'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
+                                    'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                 ]; 
                             }),
             "can" => [
@@ -233,6 +241,10 @@ class TravelController extends Controller
         $request['office_id'] = auth()->user()->office_id;
         if (!$request->rangedDate) {
             $request['date_to'] = null;
+        }
+        if (!$request->showActualDriver) {
+            $request['actual_driver'] = null;
+            // dd($request->all());
         }
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
