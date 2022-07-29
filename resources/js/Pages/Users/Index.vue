@@ -98,7 +98,7 @@
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
                         <!-- <pagination :links="users.links" /> -->
-                        <pagination :links="users.links" />
+                        <pagination :next="users.next_page_url" :prev="users.prev_page_url" />
                     </div>
                 </div>
             </div>
