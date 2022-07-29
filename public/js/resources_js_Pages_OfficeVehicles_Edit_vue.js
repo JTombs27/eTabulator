@@ -24,6 +24,7 @@ __webpack_require__.r(__webpack_exports__);
       showModal: false,
       _disbled: true,
       button_label: '',
+      officeOptionList: [],
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         id: "",
         vehicles_id: '',
@@ -36,10 +37,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.vehicleid = this.officevehicle[0].vehicles_id;
-    this.form.id = this.officevehicle[0].id;
-    this.form.vehicles_id = this.officevehicle[0].vehicles_id;
-    this.form.plate_no = this.officevehicle[0].plate_no;
+    $('#department_code').select2({
+      data: [{
+        "text": this.officevehicle[0].office.office,
+        "id": this.officevehicle[0].department_code,
+        "selected": true
+      }]
+    });
     $('#department_code').select2({
       ajax: {
         url: '/offices/fetch',
@@ -52,7 +56,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         processResults: function processResults(data, params) {
           params.page = params.page || 1;
-          return {
+          this.officeOptionList = {
             results: $.map(data, function (obj) {
               return {
                 id: obj.id,
@@ -60,6 +64,7 @@ __webpack_require__.r(__webpack_exports__);
               };
             })
           };
+          return this.officeOptionList;
         },
         cache: true
       },
@@ -91,6 +96,12 @@ __webpack_require__.r(__webpack_exports__);
       },
       minimumInputLength: 2
     });
+    this.vehicleid = this.officevehicle[0].vehicles_id;
+    this.form.id = this.officevehicle[0].id;
+    this.form.vehicles_id = this.officevehicle[0].vehicles_id;
+    this.form.plate_no = this.officevehicle[0].plate_no;
+    this.form.department_code = this.officevehicle[0].department_code;
+    this.form.effective_date = this.officevehicle[0].effective_date;
   },
   methods: {
     edit: function edit() {
@@ -102,7 +113,8 @@ __webpack_require__.r(__webpack_exports__);
     //     this.filter = !this.filter
     // },
 
-  }
+  },
+  watch: {}
 });
 
 /***/ }),
