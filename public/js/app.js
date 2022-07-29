@@ -2021,15 +2021,15 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_Index_vue"
 	],
-	"./VehicleStatus/Status": [
-		"./resources/js/Pages/VehicleStatus/Status.vue",
+	"./VehicleStatus/status": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_Status_vue"
+		"resources_js_Pages_VehicleStatus_status_vue"
 	],
-	"./VehicleStatus/Status.vue": [
-		"./resources/js/Pages/VehicleStatus/Status.vue",
+	"./VehicleStatus/status.vue": [
+		"./resources/js/Pages/VehicleStatus/status.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_Status_vue"
+		"resources_js_Pages_VehicleStatus_status_vue"
 	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",

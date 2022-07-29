@@ -25,7 +25,7 @@
                             <label class="form-check-label disable-select" for="is_borrowed_vehicle">
                             Check if borrow vehicle
                             </label>
-                            <input class="ml-5 form-check-input" type="checkbox" value="" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                            <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
                         </div>
                     </div>
                     <div class="col-md-4">    
@@ -77,7 +77,7 @@
                     <label class="col-md-3" for="">Vehicle Name</label>
                     <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                 </div>
-                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
+                <Select2 v-model="form.vehicles_id" :options="officeFiltered" @select="getVehicleDetails($event)" />
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <div class="col-md-12">
                     <br>
@@ -166,7 +166,8 @@ export default {
 
     props: {
         editData: Object,
-        balance:Number
+        balance:Number,
+        auth:Object
     },
 
     data() {
@@ -228,6 +229,7 @@ export default {
     },
 
     async mounted() {
+        // console.log(this.auth.user)
         this.form.balance = this.balance
         if (this.editData !== undefined) {
             this.loading = true
@@ -309,9 +311,20 @@ export default {
         },
 
 
-        getVehicles(){
-            axios.get(`/vehicles/getVehicles/${this.form.vehicles_id}`).then( (response) => {
+        getVehicles(e){
+            
+            axios.post(`/travels/get-vehicles`).then( (response) => {
                 this.vehicles = response.data
+                // let office = this.auth.user.office_id
+                // try {
+                //     if (e.target.checked) {
+                //         this.vehicles = response.data
+                //     } else {
+                //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+                //     }
+                // } catch (error) {
+                //     this.vehicles = response.data
+                // }
             })
         },
 
@@ -350,6 +363,7 @@ export default {
                 })
            
         },
+        
 
         showActualDriver(e) {
             console.log(e)
@@ -407,6 +421,9 @@ export default {
         },
 
         getOffice(e) {
+            if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
+                this.form.borrowing_office = null
+            }
             if (e.target.checked) {
                 $('#office').select2({
                     ajax: {
@@ -445,6 +462,18 @@ export default {
                 return false;
             }
             this.form.post("/travels", this.form);
+        }
+    },
+
+    computed: {
+        officeFiltered() {
+            return _.filter(this.vehicles, (o) => {
+                if (!this.form.is_borrowed_vehicle) {
+                    return o.office_id == this.auth.user.office_id 
+                } else {
+                    return this.vehicles
+                }
+            })
         }
     },
 

@@ -24,7 +24,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     editData: Object,
-    balance: Number
+    balance: Number,
+    auth: Object
   },
   data: function data() {
     return {
@@ -90,6 +91,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              // console.log(this.auth.user)
               _this.form.balance = _this.balance;
 
               if (!(_this.editData !== undefined)) {
@@ -180,11 +182,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this2.form.price = (Number(response.data) * Number(_this2.form.total_liters)).toFixed(2);
       });
     },
-    getVehicles: function getVehicles() {
+    getVehicles: function getVehicles(e) {
       var _this3 = this;
 
-      axios.get("/vehicles/getVehicles/".concat(this.form.vehicles_id)).then(function (response) {
-        _this3.vehicles = response.data;
+      axios.post("/travels/get-vehicles").then(function (response) {
+        _this3.vehicles = response.data; // let office = this.auth.user.office_id
+        // try {
+        //     if (e.target.checked) {
+        //         this.vehicles = response.data
+        //     } else {
+        //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+        //     }
+        // } catch (error) {
+        //     this.vehicles = response.data
+        // }
       });
     },
     getEmployees: function getEmployees() {
@@ -286,6 +297,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getOffice: function getOffice(e) {
+      if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
+        this.form.borrowing_office = null;
+      }
+
       if (e.target.checked) {
         $('#office').select2({
           ajax: {
@@ -327,16 +342,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.form.post("/travels", this.form);
     }
   },
+  computed: {
+    officeFiltered: function officeFiltered() {
+      var _this6 = this;
+
+      return _.filter(this.vehicles, function (o) {
+        if (!_this6.form.is_borrowed_vehicle) {
+          return o.office_id == _this6.auth.user.office_id;
+        } else {
+          return _this6.vehicles;
+        }
+      });
+    }
+  },
   watch: {
     'form.rangedDate': function formRangedDate(value) {
-      var _this6 = this;
+      var _this7 = this;
 
       if (value) {
         this.columnFrom = 'col-md-6';
         this.form.date_to = null;
       } else {
         setTimeout(function () {
-          _this6.columnFrom = 'col-md-12';
+          _this7.columnFrom = 'col-md-12';
         }, 100);
       }
     },
@@ -704,7 +732,6 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     "class": "ml-5 form-check-input",
     type: "checkbox",
-    value: "",
     id: "is_borrowed_vehicle",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.form.is_borrowed_vehicle = $event;
@@ -800,7 +827,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
       return $data.form.vehicles_id = $event;
     }),
-    options: $data.vehicles,
+    options: $options.officeFiltered,
     onSelect: _cache[11] || (_cache[11] = function ($event) {
       return $options.getVehicleDetails($event);
     })
