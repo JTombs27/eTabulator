@@ -74,7 +74,7 @@ class OfficeVehiclesController extends Controller
     public function edit(Request $request,$id)
     {
        return inertia('OfficeVehicles/Edit',[
-           'officevehicle' => $this->officevehicles->where('id',$id)->get(),
+           'officevehicle' => $this->officevehicles->with('office')->where('id',$id)->get(),
        ]);
     }
 

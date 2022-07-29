@@ -11,7 +11,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer" >
-                    <Link class="btn btn-primary btn-sm" @click="gotoCreate()">Add Status</Link>
+                    <Link v-if="can.canCreateVehicleStatus"  class="btn btn-primary btn-sm" @click="gotoCreate()">Add Status</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                     &nbsp;&nbsp;
                      <Link href="/vehicles">
@@ -60,7 +60,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item" @click="gotoEdit(index)">Edit</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoEdit(index)">{{editLabel}}</Link></li>
                                     <!-- <li><a class="dropdown-item" href="#" @click="editPermissions(user.id)">Permissions</a></li>
                                     <li><hr class="dropdown-divider action-divider"></li>
                                     <li v-if="can.canDeleteUser">
@@ -101,6 +101,7 @@ export default {
         filters: Object,
         vehicles_id: Object,
         PLATENO:Object,
+        can:Object,
     },
     data() {
         return {
@@ -113,6 +114,8 @@ export default {
             pageTitle: "Vehicle Status",
             loading:false,
             plate_no:"",
+            editLabel:"",
+            editEnabled:""
         };
     },
      watch: {
@@ -130,9 +133,19 @@ export default {
     },
     mounted() {
        this.plate_no = this.PLATENO
-        
-        // this.plate_no = this.vehicle_status.plate_no
-        // this.form.plate_no = this.plate_no
+        if(this.can.canEditVehicleStatus)
+        {
+            this.editEnabled = ""
+            this.editLabel = "Edit"  
+        }
+        else
+        {
+            this.editEnabled = "disabled"
+            this.editLabel = "Edit not allowed" 
+        }
+
+            // this.plate_no = this.vehicle_status.plate_no
+            // this.form.plate_no = this.plate_no
             // if(this.vehicle.vehicle_status)
             // {
             //     this.form.id = this.vehicle.vehicle_status.id
@@ -162,8 +175,12 @@ export default {
         },
 
         gotoEdit(index) {
-            this.id = this.vehicle_status.data[index].id
-             this.$inertia.get("/VehicleStatus/" + this.id +"/edit");
+            if(this.can.canEditVehicleStatus)
+            {
+                this.id = this.vehicle_status.data[index].id
+                this.$inertia.get("/VehicleStatus/" + this.id +"/edit");
+            }
+           
         },
         
         code (code) {

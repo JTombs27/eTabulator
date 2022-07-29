@@ -18,7 +18,7 @@
                 <input type="text" v-model="form.plate_no" class="form-control" autocomplete="chrome-off" readonly>
                 <div class="fs-6 c-red-500" v-if="form.errors.plate_no">{{ form.errors.plate_no}}</div>
                 <label for="">Office</label>
-                <Select2 v-model="form.department_code" id="department_code" />
+                <Select2  v-model="form.department_code" id="department_code" />
                 <div class="fs-6 c-red-500" v-if="form.errors.department_code">{{ form.errors.department_code }}</div>
                 <label for="">Effective Date</label>
                 <input type="date" v-model="form.effective_date" class="form-control" autocomplete="chrome-off" >
@@ -44,6 +44,7 @@ export default {
             showModal: false,
             _disbled:true,
             button_label:'',
+            officeOptionList:[],
             form: useForm({
                 id:"",
                 vehicles_id:'',
@@ -55,14 +56,13 @@ export default {
             loading:false,
         };
     },
-    
     mounted() {
-           this.vehicleid = this.officevehicle[0].vehicles_id
-           this.form.id = this.officevehicle[0].id
-           this.form.vehicles_id = this.officevehicle[0].vehicles_id
-           this.form.plate_no = this.officevehicle[0].plate_no
-           
-           $('#department_code').select2({
+     
+        $('#department_code').select2({
+            data:[{"text": this.officevehicle[0].office.office, "id":this.officevehicle[0].department_code, "selected": true}],
+        })
+            
+        $('#department_code').select2({
             ajax: {
                 url: '/offices/fetch',
                 dataType:'json',
@@ -72,20 +72,22 @@ export default {
                 },
                 processResults: function(data, params) {
                     params.page = params.page || 1;
-
-                    return{
-                        results: $.map(data, function(obj) {
-                            return {
-                                id: obj.id,
-                                text: obj.text
-                            }
+                    this.officeOptionList = {
+                            results: $.map(data, function(obj) {
+                                return {
+                                    id: obj.id,
+                                    text: obj.text
+                                }
                         })
                     };
+                    return this.officeOptionList;
                 },
                 cache: true
             },
             minimumInputLength: 2,
         })
+
+        
 
         $('#plate_no').select2({
             ajax: {
@@ -111,8 +113,14 @@ export default {
             },
             minimumInputLength: 2,
         })
-            
-            
+
+        this.vehicleid = this.officevehicle[0].vehicles_id
+        this.form.id = this.officevehicle[0].id
+        this.form.vehicles_id = this.officevehicle[0].vehicles_id
+        this.form.plate_no = this.officevehicle[0].plate_no
+        this.form.department_code = this.officevehicle[0].department_code
+        this.form.effective_date = this.officevehicle[0].effective_date
+       
     },
     methods: {
         edit() {
@@ -123,7 +131,7 @@ export default {
         back(){
 
            this.$inertia.get("/officeVehicles/" +this.form.vehicles_id +"/back");
-       }
+        }
 
        
 
@@ -133,6 +141,10 @@ export default {
 
         
     },
+    watch: {
+     
+    },
+    
    
 };
 </script>
