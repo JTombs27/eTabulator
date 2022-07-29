@@ -51,9 +51,9 @@
                                             <label class="col-mb-3 col-form-label">Vehicle Condition</label>
                                             <select class="form-select md" v-model="form.condition">
                                                 <option disabled value="">Select Type</option>
-                                                <option >Good Condition</option>
-                                                <option >In Repair</option>
-                                                <option >Wasted</option>
+                                                <option value="Good Condition">Good Condition</option>
+                                                <option value="On-repair">On Repair</option>
+                                                <option value="Wasted">Wasted</option>
                                             </select>
                                             <div class="fs-6 c-red-500" v-if="form.errors.condition">{{ form.errors.condition }}</div>
                                         </div>
@@ -96,6 +96,8 @@ export default ({
                 {value:2, name:"Light Vehicle"},
                 {value:3, name:"Heavy Equipment"},
             ],
+            Vehicle_stat:"",
+            Vcondition:"",
             form: useForm ({
                 PLATENO: "",
                 TYPECODE: "",
@@ -107,7 +109,6 @@ export default ({
                 vehicle_status_date: ""
             }),
         pageTitle: "",
-        // isDisabled:false
         }
     },
 
@@ -119,6 +120,8 @@ export default ({
             this.form.FDATEACQ = this.editData.FDATEACQ
             this.form.FACQCOST = this.editData.FACQCOST
             this.form.FDESC = this.editData.FDESC
+            this.form.condition = this.editData.condition
+            this.form.vehicle_status_date = this.editData.vehicle_status_date
             this.form.id = this.editData.id
         } else {
             this.pageTitle = "Create Vehicles"
