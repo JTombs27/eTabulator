@@ -113,7 +113,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this.form.price = _this.editData.price;
               _this.form.drivers_id = _this.editData.driver_vehicle.drivers_id;
               _this.form.date_from = _this.editData.date_from;
-              _this.form.date_to = _this.editData.date_to;
               _this.form.office_id = _this.editData.office_id;
               _this.form.is_carpool = Boolean(_this.editData.is_carpool);
               _this.form.showActualDriver = _this.editData.actual_driver ? true : false;
@@ -123,18 +122,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 24;
+              _context.next = 23;
               return _this.getVehicleDetails();
 
-            case 24:
-              _context.next = 26;
+            case 23:
+              _context.next = 25;
               return _this.showActualDriver();
 
-            case 26:
-              _context.next = 28;
+            case 25:
+              _context.next = 27;
               return _this.fetchPrice();
 
-            case 28:
+            case 27:
+              setTimeout(function () {
+                _this.form.date_to = _this.editData.date_to;
+              }, 0);
               _context.next = 31;
               break;
 
@@ -185,18 +187,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getVehicles: function getVehicles(e) {
       var _this3 = this;
 
-      axios.post("/travels/get-vehicles").then(function (response) {
-        _this3.vehicles = response.data; // let office = this.auth.user.office_id
-        // try {
-        //     if (e.target.checked) {
-        //         this.vehicles = response.data
-        //     } else {
-        //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
-        //     }
-        // } catch (error) {
-        //     this.vehicles = response.data
-        // }
-      });
+      axios.post("/vehicles/getVehicles").then(function (response) {
+        _this3.vehicles = response.data;
+      }); // axios.post(`/travels/get-vehicles`).then( (response) => {
+      //     this.vehicles = response.data
+      //     // let office = this.auth.user.office_id
+      //     // try {
+      //     //     if (e.target.checked) {
+      //     //         this.vehicles = response.data
+      //     //     } else {
+      //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+      //     //     }
+      //     // } catch (error) {
+      //     //     this.vehicles = response.data
+      //     // }
+      // })
     },
     getEmployees: function getEmployees() {
       var _this4 = this;
@@ -238,7 +243,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             "selected": _selected
           };
         });
-        _this5.vehicle_status = response.data ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
+
+        try {
+          _this5.vehicle_status = response.data ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
+        } catch (error) {
+          _this5.vehicle_status = "No status available";
+        }
       });
     },
     showActualDriver: function showActualDriver(e) {
@@ -827,7 +837,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
       return $data.form.vehicles_id = $event;
     }),
-    options: $options.officeFiltered,
+    options: $data.vehicles,
     onSelect: _cache[11] || (_cache[11] = function ($event) {
       return $options.getVehicleDetails($event);
     })
@@ -1007,13 +1017,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Create_vue_vue_type_template_id_31abcf8a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=31abcf8a */ "./resources/js/Pages/Travels/Create.vue?vue&type=template&id=31abcf8a");
 /* harmony import */ var _Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js */ "./resources/js/Pages/Travels/Create.vue?vue&type=script&lang=js");
-/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_31abcf8a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Travels/Create.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_31abcf8a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Travels/Create.vue"]])
 /* hot reload */
 if (false) {}
 

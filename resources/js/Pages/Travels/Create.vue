@@ -77,7 +77,7 @@
                     <label class="col-md-3" for="">Vehicle Name</label>
                     <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                 </div>
-                <Select2 v-model="form.vehicles_id" :options="officeFiltered" @select="getVehicleDetails($event)" />
+                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
                 <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                 <div class="col-md-12">
                     <br>
@@ -246,19 +246,20 @@ export default {
             this.form.price = this.editData.price
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
             this.form.date_from = this.editData.date_from
-            this.form.date_to = this.editData.date_to
             this.form.office_id = this.editData.office_id
             this.form.is_carpool = Boolean(this.editData.is_carpool)
             this.form.showActualDriver = this.editData.actual_driver ? true : false
             this.form.actual_driver = this.editData.actual_driver ? this.editData.actual_driver : ""
             if (this.editData.date_to) {
                 this.form.rangedDate = true
+                
             }
             await this.getVehicleDetails();
             await this.showActualDriver();
             await this.fetchPrice();
-            // setTimeout(() => {
-            // }, 0);
+            setTimeout(() => {
+                this.form.date_to = this.editData.date_to
+            }, 0);
             
         } else {
             this.pageTitle = "Create"
@@ -313,19 +314,22 @@ export default {
 
         getVehicles(e){
             
-            axios.post(`/travels/get-vehicles`).then( (response) => {
+            axios.post(`/vehicles/getVehicles`).then( (response) => {
                 this.vehicles = response.data
-                // let office = this.auth.user.office_id
-                // try {
-                //     if (e.target.checked) {
-                //         this.vehicles = response.data
-                //     } else {
-                //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
-                //     }
-                // } catch (error) {
-                //     this.vehicles = response.data
-                // }
             })
+            // axios.post(`/travels/get-vehicles`).then( (response) => {
+            //     this.vehicles = response.data
+            //     // let office = this.auth.user.office_id
+            //     // try {
+            //     //     if (e.target.checked) {
+            //     //         this.vehicles = response.data
+            //     //     } else {
+            //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+            //     //     }
+            //     // } catch (error) {
+            //     //     this.vehicles = response.data
+            //     // }
+            // })
         },
 
         getEmployees() {
@@ -359,7 +363,11 @@ export default {
                             "selected": _selected
                         }
                     })   
-                    this.vehicle_status = response.data ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
+                    try {
+                        this.vehicle_status = response.data ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
+                    } catch (error) {
+                        this.vehicle_status = "No status available"   
+                    }
                 })
            
         },

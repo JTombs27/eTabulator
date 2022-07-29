@@ -32,7 +32,7 @@ class TravelController extends Controller
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
-                            ->when(auth()->user()->role != 'PGO' || auth()->user()->role != 'Admin',
+                            ->when(auth()->user()->role == 'RO' || auth()->user()->role == 'PG-HEAD' || auth()->user()->role == 'PGSO',
                                 function($q) {
                                     $q->where('office_id', auth()->user()->office_id);
                                 }
@@ -233,6 +233,10 @@ class TravelController extends Controller
         $request['office_id'] = auth()->user()->office_id;
         if (!$request->rangedDate) {
             $request['date_to'] = null;
+        }
+        if (!$request->showActualDriver) {
+            $request['actual_driver'] = null;
+            // dd($request->all());
         }
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
