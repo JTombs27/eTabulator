@@ -135,8 +135,9 @@ class VehicleController extends Controller
                     'vehicle_status.condition'
                 )
                 ->leftJoin('vehicle_status', 'vehicle_status.vehicles_id', 'vehicles.id')
+
                 ->leftJoin('driver_vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
-                // ->when(,'driver_vehicles.department_code', auth()->user()->office_id)
+                //->when('driver_vehicles.department_code', auth()->user()->office_id)
                 // ->where(function ($query) use($id){
                 //     $query->where('vehicle_status.condition', 'Good Condition')
                 //         ->orWhere('vehicle_status.vehicles_id', $id);
