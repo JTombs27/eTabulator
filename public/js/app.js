@@ -72,10 +72,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var string_decoder__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! string_decoder */ "./node_modules/string_decoder/lib/string_decoder.js");
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     modalTitle: String,
-    addional_class: String
+    addional_class: string_decoder__WEBPACK_IMPORTED_MODULE_0__.StringDecoder,
+    showSaveButton: Boolean
   },
   mounted: function mounted() {
     var myModal = new window.bootstrap.Modal(document.getElementById('modal'));
@@ -394,14 +397,15 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.closeModal && $options.closeModal.apply($options, arguments);
     })
-  }, "Close"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  }, "Close"), _ctx.showFooter ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+    key: 0,
     type: "button",
     "class": "btn btn-primary",
     id: "btn-save",
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.saveModal && $options.saveModal.apply($options, arguments);
     })
-  }, "Save changes")])])], 2
+  }, "Save changes")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 2
   /* CLASS */
   )]);
 }

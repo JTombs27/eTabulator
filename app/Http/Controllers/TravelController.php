@@ -70,8 +70,10 @@ class TravelController extends Controller
                                     'soa_travel'        => $item->soa_travel,
                                     'place_to_visit'    =>$item->place_to_visit,
                                     'purpose'           =>$item->purpose,
-                                    'place_to_visit'    =>$item->place_to_visit,
-                                    'place_to_visit'    =>$item->place_to_visit,
+                                    'official_passenger'=>$item->official_passenger,
+                                    'is_carpool'        =>$item->is_carpool,
+                                    'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
+                                    'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                 ]; 
                             }),
             "can" => [
