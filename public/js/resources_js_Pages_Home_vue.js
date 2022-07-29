@@ -551,7 +551,7 @@ var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
   "class": "layer w-100 mB-10"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
   "class": "lh-1"
-}, "Fund/Charges")], -1
+}, "Fuel Utilizations")], -1
 /* HOISTED */
 );
 

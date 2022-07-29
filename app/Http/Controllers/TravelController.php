@@ -66,6 +66,12 @@ class TravelController extends Controller
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
+
+                                    'soa_travel'        => $item->soa_travel,
+                                    'place_to_visit'    =>$item->place_to_visit,
+                                    'purpose'           =>$item->purpose,
+                                    'place_to_visit'    =>$item->place_to_visit,
+                                    'place_to_visit'    =>$item->place_to_visit,
                                 ]; 
                             }),
             "can" => [
