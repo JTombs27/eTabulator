@@ -59,7 +59,7 @@
                             <select class="form-select form-sm" v-model="form.condition">
                                 <option disabled value=""></option>
                                 <option value="Good Condition">Good Condition</option>
-                                <option value="In Repair">In Repair</option>
+                                <option value="On-Repair">On-Repair</option>
                                 <option value="Wasted">Wasted</option>
                             </select>
                         </div>
@@ -390,7 +390,7 @@ export default ({
         status (status) {
             if (status == "Good Condition") {
                 return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-success'> ✔ </span></small>"
-            } else if (status == "On-repair") {
+            } else if (status == "On-Repair") {
                 return "<small style='margin-left: 5px' ><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
             } else if (status == "Wasted") {
                 return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-danger'>🗑️</span></small>"
