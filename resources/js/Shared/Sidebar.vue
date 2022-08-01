@@ -99,7 +99,7 @@
                         ><span class="title">Statement of Accounts</span></Link
                     >
                 </li>
-                <li class="nav-item" v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'PG-Head'">
+                <li class="nav-item">
                     <Link class="sidebar-link" href="/charges"
                         ><span class="icon-holder"
                                 ><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-wallet-fill" viewBox="0 0 16 16">
