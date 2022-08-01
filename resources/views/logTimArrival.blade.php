@@ -81,7 +81,7 @@
     }))
     const ticket = document.getElementById('ticket_number');
 
-    form.addEventListener('focusout', (event) => {
+    form.addEventListener('blur', (event) => {
       //  event.target.style.background = '';
       alert("fsdkfksdk")
     });
