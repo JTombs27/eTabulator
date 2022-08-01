@@ -125,7 +125,7 @@ export default {
     },
     mounted() {
        
-        console.log(this._logTimeArrival)
+      
         // this.plate_no = this.vehicle_status.plate_no
         // this.form.plate_no = this.plate_no
             // if(this.vehicle.vehicle_status)
@@ -206,16 +206,23 @@ export default {
         }
 
     },
-    // computed:{
-    //     button_text(){
-    //         if(!!!this.vehicle.vehicle_status)
-    //         {
-    //               return "Add"
-    //         }
-    //         else{
-    //             return "Edit"
-    //         }
-    //     }
-    // }
+     computed: {
+        mi() {
+            return value => value ? `${value.charAt(0)}.` : "";
+        },
+
+        status() {
+            return value => {
+                if (value == "Approved") {
+                    return "Approved"
+                } else if (!value) {
+                    return "Pending"
+                } else if(value == "Disapproved") {
+                    return "Disapproved"
+                }
+            }
+        }
+    }
+   
 };
 </script>

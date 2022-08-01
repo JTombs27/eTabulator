@@ -79,11 +79,34 @@
     window.addEventListener("load", (function () {
       
     }))
-    const ticket = document.getElementById('ticket_number');
 
-    form.addEventListener('blur', (event) => {
-      //  event.target.style.background = '';
-      alert("fsdkfksdk")
+    const ticket = document.getElementById('ticket_number');
+    var ticket_number = document.getElementById('ticket_number')
+
+    ticket.addEventListener('blur', (event) => {
+          console.log(ticket_number)
+            // $.ajax({
+            //     url: "/ajax-request",
+            //     type:"POST",
+            //     data:{
+            //     trip_ticket:name,
+                
+            //     },
+            //     success:function(response){
+            //     console.log(response);
+            //     if(response) {
+            //         $('.success').text(response.success);
+            //         $("#ajaxform")[0].reset();
+            //     }
+            //     },
+            //     error: function(error) {
+            //     console.log(error);
+            //     $('#nameError').text(response.responseJSON.errors.name);
+            //     $('#emailError').text(response.responseJSON.errors.email);
+            //     $('#mobileError').text(response.responseJSON.errors.mobile);
+            //     $('#messageError').text(response.responseJSON.errors.message);
+            //     }
+            // });
     });
             
 </script>
