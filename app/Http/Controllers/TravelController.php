@@ -30,6 +30,7 @@ class TravelController extends Controller
     {
       
        
+<<<<<<< HEAD
      
          return inertia('Travels/Index',[
                  "travels" => $this->model
@@ -70,6 +71,48 @@ class TravelController extends Controller
                                          'status' => $item->status,
                                          'office_id' => $item->office_id,
                                          'price' => ($total[$item->gas_type] * $item->total_liters),
+=======
+        return inertia('Travels/Index',[
+            "travels" => $this->model
+                            ->with('driverVehicle.empl', 'driverVehicle.vehicle')
+                            ->when(strtolower(auth()->user()->role) == 'ro' || strtolower(auth()->user()->role) == 'pg-head' || strtolower(auth()->user()->role) == 'pgso',
+                                function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                                }
+                            )
+                            ->when($request->dateFilterType == 'all', function($q) use ($request) {
+                                $q->wherebetween('date_from', [$request->date_from,$request->date_from]);
+                            })
+                            ->when($request->dateFilterType == 'from', function($q) use ($request) {
+                                $q->where('date_from', '>=', $request->date_from);
+                            })
+                            ->when($request->dateFilterType == 'to', function($q) use ($request) {
+                                $q->where('date_from', '<=', $request->date_to);
+                            })
+                            ->orderBy('status')
+                            ->orderBy('id','desc')
+                            ->simplePaginate(10)
+                            ->through(function ($item) {
+                                $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                                $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                                })->latest()->first($item->gas_type);
+                                return [
+                                    'first_name' => $item->driverVehicle->empl->first_name,
+                                    'middle_name' => $item->driverVehicle->empl->middle_name,
+                                    'last_name' => $item->driverVehicle->empl->last_name,
+                                    'PLATENO' => $item->driverVehicle->vehicle->PLATENO,
+                                    'FDESC' => $item->driverVehicle->vehicle->FDESC,
+                                    'date_from' => $item->date_from,
+                                    'date_to' => $item->date_to,
+                                    'actual_driver' => $item->actual_driver,
+                                    'ticket_number' => $item->ticket_number,
+                                    'id' => $item->id,
+                                    'liters' => $item->total_liters,
+                                    'status' => $item->status,
+                                    'office_id' => $item->office_id,
+                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+>>>>>>> 4cf564330a812ad051443c32a7551b89c5316fb0
 
                                          'soa_travel'        => $item->soa_travel,
                                          'place_to_visit'    =>$item->place_to_visit,
@@ -110,6 +153,7 @@ class TravelController extends Controller
         $travels = $this->model
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
+                        ->where('status', '<>', 'Disapproved')
                         ->get();
                         
         $travels = $travels->map(function($item)  {
@@ -132,6 +176,23 @@ class TravelController extends Controller
     public function edit(Request $request, $id)
     {
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+
+        $travels = $this->model
+                ->whereYear('date_from', date("Y"))
+                ->where('office_id', auth()->user()->office_id)
+                ->where('status', '<>', 'Disapproved')
+                ->get();
+                
+        $travels = $travels->map(function($item)  {
+                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                        $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                                })->latest()->first($item->gas_type);
+                        return [
+                        'price' => ($total[$item->gas_type] * $item->total_liters),
+                        'date' => $item->date_from
+                        ];
+                    });
         
         if(!$amount) {
             $amount = 0.00;
@@ -142,7 +203,7 @@ class TravelController extends Controller
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
-            'balance' => $amount
+            'balance' => $amount - $travels->sum('price')
         ]);
         
     }
