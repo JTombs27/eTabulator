@@ -37,6 +37,7 @@ class HomeController extends Controller
         $isAdmin =  User::
                     where('id', auth()->user()->id)
                     ->where('role','Admin')
+                    ->orWhere('role','PGO')
                     ->first();
 
         $chargeAmount  =  $this->charges->groupBy("office_id")

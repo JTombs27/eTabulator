@@ -119,16 +119,26 @@
         </div>
         <div class="masonry-item w-100">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4" v-if="isAdmin">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">Fuel Utilizations</h6>
+                            <h6 class="lh-1">Charges</h6>
                         </div>
                         <div class="col-12">
-                            <some-chart :chartData="pieChartData.Data" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>
+                            <some-chart :chartData="pieChartData.Data" :CharLegelPosition="'left'" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>
                         </div>
                     </div>
                 </div>
+                <!-- <div :class="isAdmin? 'col-md-6':'col-md-4'">
+                    <div class="layers bd bgc-white p-20">
+                        <div class="layer w-100 mB-10">
+                            <h6 class="lh-1">Department Charges</h6>
+                        </div>
+                        <div class="col-12">
+                            <some-chart :chartData="pieChartData.Data" :CharLegelPosition="'left'" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>
+                        </div>
+                    </div>
+                </div> -->
                 <div class="masonry-item col-8">
                     <!-- #Site Visits ==================== -->
                     <div class="bd bgc-white">

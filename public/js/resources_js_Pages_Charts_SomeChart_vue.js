@@ -67,6 +67,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    CharLegelPosition: {
+      type: String,
+      "default": "top"
     }
   },
   setup: function setup(props) {
@@ -89,7 +93,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
           color: "white"
         },
         legend: {
-          position: 'top'
+          position: props.CharLegelPosition
         }
       }
     };
