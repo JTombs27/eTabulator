@@ -59,7 +59,7 @@
                             <select class="form-select form-sm" v-model="form.condition">
                                 <option disabled value=""></option>
                                 <option value="Good Condition">Good Condition</option>
-                                <option value="On-Repair">On-Repair</option>
+                                <option value="On-Repair">On Repair</option>
                                 <option value="Wasted">Wasted</option>
                             </select>
                         </div>
@@ -105,7 +105,6 @@
                             <td v-else v-html="code(vehicle.TYPECODE, null)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
-                            <!-- <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td> -->
                             <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
                             <td v-else></td>
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
