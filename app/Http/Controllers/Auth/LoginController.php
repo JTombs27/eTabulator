@@ -75,7 +75,7 @@ class LoginController extends Controller
         } catch (\Throwable $th) {
             return back()->withErrors([
                 'email' => $errorMessage,
-            ]);
+            ])->withInput();
         }
         
         
@@ -85,7 +85,7 @@ class LoginController extends Controller
         // }
         return back()->withErrors([
             'email' => $errorMessage,
-        ]);
+        ])->withInput();
     }
 
     public function logout()

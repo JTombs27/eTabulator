@@ -37,6 +37,13 @@
                         <div class="fs-6 c-red-500">{{ $message }}</div>
                 @enderror
             <div class="mb-3" style="margin-top:4px !important;">
+                <label for="empl_id" class="form-label">Employee Id</label>
+                <input type="text" class="form-control @error('empl_id') is-invalid @enderror" value="{{ old('empl_id') }}" name="time_arrival" id="empl_id" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                @error('empl_id')
+                    <div class="fs-6 c-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3" style="margin-top:4px !important;">
                 <label for="time_arrival" class="form-label">Time Of Arrival</label>
                 <input type="datetime-local" class="form-control @error('time_arrival') is-invalid @enderror" value="{{ old('time_arrival') }}" name="time_arrival" id="time_arrival" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                 @error('time_arrival')
@@ -72,6 +79,12 @@
     window.addEventListener("load", (function () {
       
     }))
-    
+    const ticket = document.getElementById('ticket_number');
+
+    form.addEventListener('blur', (event) => {
+      //  event.target.style.background = '';
+      alert("fsdkfksdk")
+    });
+            
 </script>
 </html>

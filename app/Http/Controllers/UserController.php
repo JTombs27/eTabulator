@@ -34,7 +34,7 @@ class UserController extends Controller
                     $query->where('name', 'like', '%' . $searchItem . '%');
                 })
                 ->orderBy('name', 'asc')
-                ->simplePaginate(10)
+                ->simplePaginate(8)
                 ->withQueryString()
                 ->through(fn($user) => [
                     'id' => $user->id,

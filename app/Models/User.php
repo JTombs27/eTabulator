@@ -39,6 +39,7 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
     ];
 
     public function permissions() {
+        // dd($this);
         return $this->belongsToMany(Permission::class);
     }
 

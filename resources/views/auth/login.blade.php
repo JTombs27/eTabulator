@@ -55,11 +55,17 @@
                 @csrf
                 <div class="mb-3">
                     <label class="text-normal text-dark form-label">Username</label>
-                    <input type="text" name="username" class="form-control">
+                    <input type="text" name="username" class="form-control" value="{{ old('username') }}">
                 </div>
                 <div class="mb-3">
                     <label class="text-normal text-dark form-label">Password</label>
-                    <input type="password" class="form-control" name="password">
+                    <input type="password" id="password" class="form-control" name="password" value="{{ old('password') }}">
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input disable-select" type="checkbox" onchange="showMyPassword(this)" id="showPassword">
+                  <label class="form-check-label" for="showPassword">
+                    Show Password
+                  </label>
                 </div>
                 <div class="">
                     <div class="peers ai-c jc-sb fxw-nw">
@@ -77,6 +83,7 @@
     </div>
 </body>
 
+
 <script>
     window.addEventListener("load", (function () {
         const t = document.getElementById("loader");
@@ -85,6 +92,14 @@
         }), 300)
     }))
 
+    function showMyPassword(e) {
+        if (e.checked) {
+            document.getElementById('password').setAttribute("type","text") 
+        } else {
+            document.getElementById('password').setAttribute("type","password") 
+        }
+    }
+
     var x = document.getElementById("mobile-logo");
 
     if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
@@ -92,5 +107,6 @@
     } else {
         x.style.display = "none";
     }
+
 </script>
 </html>
