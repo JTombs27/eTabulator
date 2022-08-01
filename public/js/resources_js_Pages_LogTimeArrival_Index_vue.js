@@ -48,8 +48,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     }, 300)
   },
-  mounted: function mounted() {
-    console.log(this._logTimeArrival); // this.plate_no = this.vehicle_status.plate_no
+  mounted: function mounted() {// this.plate_no = this.vehicle_status.plate_no
     // this.form.plate_no = this.plate_no
     // if(this.vehicle.vehicle_status)
     // {
@@ -107,18 +106,25 @@ __webpack_require__.r(__webpack_exports__);
         return "<span class=\"".concat(classText, "\">").concat(this.status(item.status), "</span>");
       }
     }
-  } // computed:{
-  //     button_text(){
-  //         if(!!!this.vehicle.vehicle_status)
-  //         {
-  //               return "Add"
-  //         }
-  //         else{
-  //             return "Edit"
-  //         }
-  //     }
-  // }
-
+  },
+  computed: {
+    mi: function mi() {
+      return function (value) {
+        return value ? "".concat(value.charAt(0), ".") : "";
+      };
+    },
+    status: function status() {
+      return function (value) {
+        if (value == "Approved") {
+          return "Approved";
+        } else if (!value) {
+          return "Pending";
+        } else if (value == "Disapproved") {
+          return "Disapproved";
+        }
+      };
+    }
+  }
 });
 
 /***/ }),
