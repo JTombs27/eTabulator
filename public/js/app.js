@@ -1987,12 +1987,12 @@ var map = {
 	],
 	"./Users/Index": [
 		"./resources/js/Pages/Users/Index.vue",
-		7,
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Index.vue": [
 		"./resources/js/Pages/Users/Index.vue",
-		7,
+		9,
 		"resources_js_Pages_Users_Index_vue"
 	],
 	"./Users/Settings": [
