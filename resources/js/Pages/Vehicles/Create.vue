@@ -47,6 +47,11 @@
                                             <input type="text" v-model="form.FDESC" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.FDESC">{{ form.errors.FDESC }}</div>
                                         </div>
+                                        <div class="col">
+                                            <label class="col-mb-3 col-form-label"> Fuel Limit</label>
+                                            <input type="text" v-model="form.fuel_limit" class="form-control" autocomplete="chrome-off">
+                                            <div class="fs-6 c-red-500" v-if="form.errors.fuel_limit">{{ form.errors.fuel_limit }}</div>
+                                        </div>
                                         <div class="col-mb-3" v-if="pageTitle === 'Create Vehicles'">
                                             <label class="col-mb-3 col-form-label">Vehicle Condition</label>
                                             <select class="form-select md" v-model="form.condition">
@@ -100,6 +105,7 @@ export default ({
                 FDATEACQ: "",
                 FACQCOST: "",
                 FDESC: "",
+                fuel_limit: "",
                 checkadd: "",
                 condition:"",
                 vehicle_status_date: ""
@@ -116,6 +122,7 @@ export default ({
             this.form.FDATEACQ = this.editData.FDATEACQ
             this.form.FACQCOST = this.editData.FACQCOST
             this.form.FDESC = this.editData.FDESC
+            this.form.fuel_limit = this.editData.fuel_limit
             this.form.id = this.editData.id
         } else {
             this.pageTitle = "Create Vehicles"
