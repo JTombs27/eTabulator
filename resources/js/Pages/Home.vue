@@ -5,7 +5,7 @@
     </Head>
 
     <div class="row gap-20 masonry pos-r">
-        <div class="masonry-item w-100">
+        <!-- <div class="masonry-item w-100">
             <div class="row gap-20">
                 <div class="col-md-3">
                     <div class="layers bd bgc-white p-20">
@@ -116,7 +116,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="masonry-item w-100">
             <div class="row">
                 <div class="col-md-4">
@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="masonry-item col-8">
-                    <!-- #Site Visits ==================== -->
+                   
                     <div class="bd bgc-white">
                         <div class="peers fxw-nw@lg+ ai-s">
                             <div class="peer peer-greed w-70p@lg+ w-100@lg- p-20">

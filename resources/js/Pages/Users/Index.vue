@@ -109,6 +109,7 @@
         v-if="showModal" 
         :modalTitle="'Permissions'" 
         :addional_class="'modal-lg'"
+        :showSaveButton="true"
         @closeModal="closeModal"
         @saveModal="updatePermissions">
         <div class="row pb-3">
