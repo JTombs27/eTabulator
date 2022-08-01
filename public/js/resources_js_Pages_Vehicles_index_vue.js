@@ -490,8 +490,8 @@ var _hoisted_33 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 );
 
 var _hoisted_34 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-  value: "In Repair"
-}, "In Repair", -1
+  value: "On-Repair"
+}, "On Repair", -1
 /* HOISTED */
 );
 
@@ -1168,7 +1168,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       minimumFractionDigits: 2
     })), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <td v-if=\"vehicle.driverassign[0]!= null\"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td> "), vehicle.driverassign[0] != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat(vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name)), 1
+    ), vehicle.driverassign[0] != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat(vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name)), 1
     /* TEXT */
     )) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_51)), vehicle.driverassign.length != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("".concat(vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name, " ").concat($options.mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name), " ").concat(vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name)), 1
     /* TEXT */
