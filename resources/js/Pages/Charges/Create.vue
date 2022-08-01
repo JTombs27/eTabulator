@@ -56,7 +56,6 @@
             </div>
         </div>
     </div>
-
 </template>
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";

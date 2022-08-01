@@ -54,6 +54,7 @@
                             <td>{{log.ticket_number}}</td>
                             <td>{{log.date_from}}</td>
                             <td>{{log.date_to}}</td>
+                            <td v-html="statusDisplay(log)"></td>
                             <td>{{ifnull(log.log_time_arrival)}}</td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
@@ -183,6 +184,26 @@ export default {
                return true
            }
         },
+         statusDisplay(item) {
+            if (this.loader && item.id == this.itemId) {
+                return `<span v-if="loader" class="dropdown-item">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden"></span>
+                    </div>
+                    Processing...
+                </span>`
+            } else {
+                let classText = "";
+                if (item.status == "Approved") {
+                    classText = "badge bg-success";
+                } else if (item.status == "Disapproved") {
+                    classText = "badge bg-danger";
+                } else {
+                    classText = "badge bg-secondary";
+                }
+                return `<span class="${classText}">${this.status(item.status)}</span>`
+            }
+        }
 
     },
     // computed:{

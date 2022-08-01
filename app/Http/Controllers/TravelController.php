@@ -28,63 +28,65 @@ class TravelController extends Controller
 
     public function index(Request $request)
     {
+      
        
-        return inertia('Travels/Index',[
-            "travels" => $this->model
-                            ->with('driverVehicle.empl', 'driverVehicle.vehicle')
-                            ->when(auth()->user()->role == 'RO' || auth()->user()->role == 'PG-HEAD' || auth()->user()->role == 'PGSO',
-                                function($q) {
-                                    $q->where('office_id', auth()->user()->office_id);
-                                }
-                            )
-                            ->when($request->dateFilterType == 'all', function($q) use ($request) {
-                                $q->wherebetween('date_from', [$request->date_from,$request->date_from]);
-                            })
-                            ->when($request->dateFilterType == 'from', function($q) use ($request) {
-                                $q->where('date_from', '>=', $request->date_from);
-                            })
-                            ->when($request->dateFilterType == 'to', function($q) use ($request) {
-                                $q->where('date_from', '<=', $request->date_to);
-                            })
-                            ->latest()
-                            ->simplePaginate(10)
-                            ->through(function ($item) {
-                                $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-                                $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
-                                })->latest()->first($item->gas_type);
-                                return [
-                                    'first_name' => $item->driverVehicle->empl->first_name,
-                                    'middle_name' => $item->driverVehicle->empl->middle_name,
-                                    'last_name' => $item->driverVehicle->empl->last_name,
-                                    'PLATENO' => $item->driverVehicle->vehicle->PLATENO,
-                                    'FDESC' => $item->driverVehicle->vehicle->FDESC,
-                                    'date_from' => $item->date_from,
-                                    'date_to' => $item->date_to,
-                                    'actual_driver' => $item->actual_driver,
-                                    'ticket_number' => $item->ticket_number,
-                                    'id' => $item->id,
-                                    'liters' => $item->total_liters,
-                                    'status' => $item->status,
-                                    'office_id' => $item->office_id,
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+     
+         return inertia('Travels/Index',[
+                 "travels" => $this->model
+                                 ->with('driverVehicle.empl', 'driverVehicle.vehicle')
+                                 ->when(auth()->user()->role == 'RO' || auth()->user()->role == 'PG-HEAD' || auth()->user()->role == 'PGSO',
+                                     function($q) {
+                                         $q->where('office_id', auth()->user()->office_id);
+                                     }
+                                 )
+                                 ->when($request->dateFilterType == 'all', function($q) use ($request) {
+                                     $q->wherebetween('date_from', [$request->date_from,$request->date_from]);
+                                 })
+                                 ->when($request->dateFilterType == 'from', function($q) use ($request) {
+                                     $q->where('date_from', '>=', $request->date_from);
+                                 })
+                                 ->when($request->dateFilterType == 'to', function($q) use ($request) {
+                                     $q->where('date_from', '<=', $request->date_to);
+                                 })
+                                 ->latest()
+                                 ->simplePaginate(10)
+                                 ->through(function ($item) {
+                                     $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                                     $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                                         $q->whereDate('date', $item->date_from);
+                                     })->latest()->first($item->gas_type);
+                                     return [
+                                         'first_name' => $item->driverVehicle->empl->first_name,
+                                         'middle_name' => $item->driverVehicle->empl->middle_name,
+                                         'last_name' => $item->driverVehicle->empl->last_name,
+                                         'PLATENO' => $item->driverVehicle->vehicle->PLATENO,
+                                         'FDESC' => $item->driverVehicle->vehicle->FDESC,
+                                         'date_from' => $item->date_from,
+                                         'date_to' => $item->date_to,
+                                         'actual_driver' => $item->actual_driver,
+                                         'ticket_number' => $item->ticket_number,
+                                         'id' => $item->id,
+                                         'liters' => $item->total_liters,
+                                         'status' => $item->status,
+                                         'office_id' => $item->office_id,
+                                         'price' => ($total[$item->gas_type] * $item->total_liters),
 
-                                    'soa_travel'        => $item->soa_travel,
-                                    'place_to_visit'    =>$item->place_to_visit,
-                                    'purpose'           =>$item->purpose,
-                                    'official_passenger'=>$item->official_passenger,
-                                    'is_carpool'        =>$item->is_carpool,
-                                    'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
-                                    'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
-                                ]; 
-                            }),
-            "can" => [
-                'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
-                'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
-                'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
-                'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
-            ]
-        ]);
+                                         'soa_travel'        => $item->soa_travel,
+                                         'place_to_visit'    =>$item->place_to_visit,
+                                         'purpose'           =>$item->purpose,
+                                         'official_passenger'=>$item->official_passenger,
+                                         'is_carpool'        =>$item->is_carpool,
+                                         'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
+                                         'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
+                                     ]; 
+                                 }),
+             "can" => [
+                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
+                 'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
+                 'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
+                 'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
+             ]
+         ]);
     }
 
     public function create()

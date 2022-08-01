@@ -20,13 +20,8 @@ class LogTimeArrivalContoller extends Controller
             '_logTimeArrival' =>  $this->travel
             ->with("logTimeArrival")
             ->where([
-                'is_carpool' => 1,
                 'status' => 'Approved',
                 ])
-            ->orWhere([
-                    'is_borrowed_vehicle' => 1,
-                    'status' => 'Approved',
-                    ])
             ->latest()
             ->simplePaginate(10),
         ]);
@@ -45,6 +40,7 @@ class LogTimeArrivalContoller extends Controller
         
         $validated = $request->validate([
             'ticket_number' => 'required',
+            'empl_id' => 'required',
             'time_arrival' => 'required',
         ]);
         // dd($request->time_arrival);
@@ -52,7 +48,9 @@ class LogTimeArrivalContoller extends Controller
             $log = $this->travel->where('ticket_number',$request->ticket_number)->first();
                                
             if ($log) {
-             
+              $log2 = $this->$log->where([
+                'ticket_number'=> $request->ticket_number,
+                ]);
                 if ($log->status == "Approved"){
                     $log2 = $this->model->where('travel_id',$log->id)->first();
                     if($log2)
