@@ -39,6 +39,7 @@ class VehicleStatusController extends Controller
             'vehicle_status_date' => 'required',
             'condition' => 'required',
            
+           
             
         ]);
         $this->model->create($request->all());
@@ -50,14 +51,15 @@ class VehicleStatusController extends Controller
        
         return inertia('VehicleStatus/Create',[
             'vehicle' => $this->vehicle->findOrFail($id),
-            'editData' => false
+            'editData' => false,
+            
         ]);
     }
 
     public function edit(Request $request)
     {
         return inertia('VehicleStatus/Create',[
-            'vehicle' => $this->model->findOrFail($request->id),
+            'vehicle' => $this->model->with('vehicle')->findOrFail($request->id),
             'editData' => True
         ]);
     }

@@ -8,6 +8,16 @@ use DB;
 
 class ReportController extends Controller
 {
+	public function __construct(User $model)
+    {
+        $this->model = $model;
+    }
+
+    protected function index(Request $request)
+    {
+        return inertia('Reports/Index');
+    } 
+
     public function travels(Request $request)
     {
 

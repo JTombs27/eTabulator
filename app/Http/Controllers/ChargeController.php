@@ -17,10 +17,13 @@ class ChargeController extends Controller
 
     public function index(Request $request)
     {
-        $isAdmin = $this->user
-            ->where('id', auth()->user()->id)
-            ->where('role','Admin')
-            ->first();
+        $isAdmin =  User::
+                    where('id', auth()->user()->id)
+                    ->where(function($query){
+                        $query->where('role','Admin')
+                        ->orWhere('role','PGO');
+                    })
+                    ->first();
 
         $charge =  $this->model;
                                 

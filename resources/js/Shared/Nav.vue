@@ -295,7 +295,7 @@
                         </svg>
                     </a>
                     <ul class="dropdown-menu fsz-sm dropdown-menu-c">
-                        <li>
+                        <!-- <li>
                             <Link
                                 href="/users/settings"
                                 class="
@@ -310,7 +310,7 @@
                                 </svg> 
                                 <span> Setting</span></Link
                             >
-                        </li>
+                        </li> -->
                         <li>
                             <Link
                                 href="/users/change-password"

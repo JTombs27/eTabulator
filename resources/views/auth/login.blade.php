@@ -79,6 +79,13 @@
                     </div>
                 </div>
             </form>
+            <div style="margin-top:10px;">
+                <center>
+                    <div class="peers ai-c jc-sb fxw-nw">
+                        <a href="/logArrivalTime">Log your arrival ? - for drivers only.</a>
+                    </div>
+                </center>
+            </div>
         </div>
     </div>
 </body>

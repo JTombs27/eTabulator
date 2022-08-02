@@ -100,4 +100,9 @@ class Travel extends Model
         return $this->belongsToMany(Charge::class, 'office_id', 'office_id');                                                                                                                                                                                                                                                                                                                                                                                    
     }
 
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id', 'department_code');                                                                                                                                                                                                                                                                                                                                                                                    
+    }
+
 }

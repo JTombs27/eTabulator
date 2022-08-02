@@ -176,7 +176,7 @@ class UserController extends Controller
 
     public function settings()
     {
-        return inertia('Users/Settings');
+        // return inertia('Users/Settings');
     }
 
     public function changeName(Request $request)
