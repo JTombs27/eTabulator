@@ -177,9 +177,10 @@ class TravelController extends Controller
     {
         $date_from = $request->date_from;
         $date_to = $request->date_to;
-        // $now = Carbon::now();
-        // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
-        // $weekEndDate = Carbon::parse($date_to)->endOfWeek()->format('Y-m-d');
+        $now = Carbon::now();
+        $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
+        $weekEndDate = Carbon::parse($date_from)->endOfWeek()->format('Y-m-d');
+        dd($weekStartDate, $weekEndDate);
         $isExistTravel = $this->model
                             ->where('driver_vehicles_id', $request->driver_vehicles_id)
                             ->where(function($query) use($date_from, $date_to) {

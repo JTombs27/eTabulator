@@ -62,95 +62,96 @@
                     
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="">Travel Departure</label>
-                        <input v-model="form.time_departure" type="time" class="form-control" autocomplete="chrome-off"/>
+                <span v-if="form.date_from">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Travel Departure</label>
+                            <input v-model="form.time_departure" type="time" class="form-control" autocomplete="chrome-off"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Travel Arrival</label>
+                            <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="">Travel Arrival</label>
-                        <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
-                    </div>
-                </div>
-                <br>
-                <div class="position-relative">
-                    <label class="col-md-3" for="">Vehicle Name</label>
-                    <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
-                </div>
-                <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
-                <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
-                <div class="col-md-12">
                     <br>
-                     <div class="form-check ">
-                         <label class="form-check-label disable-select" for="carpool">
-                             Tag as carpool
-                         </label>
-                        <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
+                    <div class="position-relative">
+                        <label class="col-md-3" for="">Vehicle Name</label>
+                        <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                     </div>
-
+                    <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
+                    <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
+                    <div class="col-md-12">
+                        <br>
+                         <div class="form-check ">
+                             <label class="form-check-label disable-select" for="carpool">
+                                 Tag as carpool
+                             </label>
+                            <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
+                        </div>
                     
-
+                        
                     
-                    <transition name="fade"  mode="out-in">
-                        <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
-                            <br>
-                            <label >Borrowed by</label>
-                            <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
-                            <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
-                        </span>
-                    </transition>
-                </div>
-                <hr>
-                <label>Authorized Driver</label>
-                <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
-                <!-- <input type="text" class="form-control" v-model="driverName"> -->
-                <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
-                <br>
-
-                <div class="col-md-12">
-                    <div class="form-check ">
-                        <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
-                        <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
-                            Check to set substitute driver
-                        </label>
+                        
+                        <transition name="fade"  mode="out-in">
+                            <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
+                                <br>
+                                <label >Borrowed by</label>
+                                <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
+                                <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
+                            </span>
+                        </transition>
                     </div>
-                </div>
-                
-                <label v-if="form.showActualDriver">Actual Driver</label>
-                <Select2 
-                    v-if="form.showActualDriver"
-                    v-model="form.actual_driver" 
-                    id="actualDriver" 
-                    @select="setActualDriver($event)" 
-                />
-                <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
-                
-                <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
-                
-                <hr>
-                <label for="">Name of Authorized Passenger/s</label>
-                <textarea class="form-control" cols="3" v-model="form.official_passenger"></textarea>
-                <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
-                <label for="">Place to visit</label>
-                <input type="text" v-model="form.place_to_visit" class="form-control">
-                <label for="">Purpose of Travel</label>
-                <input type="text" v-model="form.purpose" class="form-control">
-                <div class="position-relative">
-                    <label class="col-md-3" for="">Gas Type</label>
-                    <label class="position-absolute top-0 end-0" for=""><strong>{{ gasPrice }}</strong></label>
-                </div>
-                <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
-                        <option  v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
-                </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
-                <label for="">Liter/s</label>
-                <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
-                <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
-                <label for="">Price</label>
-                <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
-                <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
-                    changes</button>
+                    <hr>
+                    <label>Authorized Driver</label>
+                    <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
+                    <!-- <input type="text" class="form-control" v-model="driverName"> -->
+                    <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
+                    <br>
+                    
+                    <div class="col-md-12">
+                        <div class="form-check ">
+                            <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
+                            <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
+                                Check to set substitute driver
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <label v-if="form.showActualDriver">Actual Driver</label>
+                    <Select2 
+                        v-if="form.showActualDriver"
+                        v-model="form.actual_driver" 
+                        id="actualDriver" 
+                        @select="setActualDriver($event)" 
+                    />
+                    <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
+                    
+                    <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
+                    
+                    <hr>
+                    <label for="">Name of Authorized Passenger/s</label>
+                    <textarea class="form-control" cols="3" v-model="form.official_passenger"></textarea>
+                    <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
+                    <label for="">Place to visit</label>
+                    <input type="text" v-model="form.place_to_visit" class="form-control">
+                    <label for="">Purpose of Travel</label>
+                    <input type="text" v-model="form.purpose" class="form-control">
+                    <div class="position-relative">
+                        <label class="col-md-3" for="">Gas Type</label>
+                        <label class="position-absolute top-0 end-0" for=""><strong>{{ gasPrice }}</strong></label>
+                    </div>
+                    <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
+                            <option  v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
+                    </select>
+                    <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
+                    <label for="">Liter/s</label>
+                    <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
+                    <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
+                    <label for="">Price</label>
+                    <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
+                    <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
+                    <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save changes</button>
+                </span>
             </form>
 
 
@@ -309,7 +310,13 @@ export default {
                 this.gasPrice = `Price: \u20B1${parseFloat(response.data).toFixed(2)}`;
                 this.form.price =  (Number(response.data) * Number(this.form.total_liters)).toFixed(2);
             })
+
+            if (form.vehicles_id) {
+                
+            }
         },
+
+        
 
 
         getVehicles(e){

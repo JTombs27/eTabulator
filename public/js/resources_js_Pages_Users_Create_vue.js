@@ -55,14 +55,14 @@ __webpack_require__.r(__webpack_exports__);
       this.form.username = this.editData.username;
       this.form.email = this.editData.email;
       this.form.id = this.editData.id;
+      this.form.office_id = this.editData.office_id;
       this.form.permission = this.editData.role;
 
       if (this.editData.office_id) {
         $('#office').select2({
           data: [{
-            "text": this.editData.office.office,
-            "id": this.editData.office.department_code,
-            "selected": true
+            text: this.editData.office.office,
+            id: this.editData.office_id
           }]
         });
       }
