@@ -204,16 +204,17 @@ Route::middleware('auth')->group(function() {
 
     //for api
 Route::prefix('/reports')->group(function() {
+    Route::get('/', [ReportController::class, 'index']);
     Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
     Route::get('/travel', [ReportController::class, 'travels']);
 });
 
 Route::prefix('/travelTicket')->group(function() {
     Route::get('/validate-travel/{id}', [TravelValidationController::class, 'index']);
-   
 });
 Route::prefix('/logArrivalTime')->group(function() {
-    Route::get('/', [LogTimeArrivalContoller::class, 'logtime']);
-    Route::post('/updateLog', [LogTimeArrivalContoller::class, 'updateLog']);
-    Route::get('/return', [LogTimeArrivalContoller::class, 'return']);
+     Route::get('/', [LogTimeArrivalContoller::class, 'logtime']);
+     Route::post('/updateLog', [LogTimeArrivalContoller::class, 'updateLog']);
+     Route::get('/return', [LogTimeArrivalContoller::class, 'return']);
+    
 });

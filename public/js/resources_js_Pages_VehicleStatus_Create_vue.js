@@ -39,9 +39,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     // this.plate_no = this.id
-    this.plate_no = this.vehicle.PLATENO;
-
     if (this.editData) {
+      this.plate_no = this.vehicle.vehicle.PLATENO;
       this.pageTitle = "Edit Vehicle Status";
       this.form.id = this.vehicle.id;
       this.form.vehicles_id = this.vehicle.vehicles_id;
@@ -49,6 +48,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.condition = this.vehicle.condition;
       this.vehicleid = this.vehicle.vehicles_id;
     } else {
+      this.plate_no = this.vehicle.PLATENO;
       this.pageTitle = "Add Vehicle Status";
       this.form.vehicles_id = this.vehicle.id;
       this.vehicleid = this.vehicle.id;
