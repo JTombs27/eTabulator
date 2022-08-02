@@ -107,6 +107,13 @@
      @endif
        
     </div> 
+    <div style="margin-top:20px;">
+        <center>
+            <div class="text-center">
+            <a href="/">Go to login</a>
+            </div>
+        </center> 
+    </div>
    
    
   
