@@ -46,8 +46,8 @@ class PermissionsSeeder extends Seeder
             array('id' => 29,'permission_name' => 'can_edit_vehicles', 'permission_group' => 'Vehicle'), 
             array('id' => 30,'permission_name' => 'can_delete_vehicles', 'permission_group' => 'Vehicle'), 
         );
-        
-        // }[5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26] pgo
+
+        // }[5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,25,26] pgo
         // [5,7,10,11,12,13,14,15,25] ro
         // [6,25,26] pg head
         // [4,8,16,17,18,19,20,21,22,23,24,27,28,29,30] pgso
