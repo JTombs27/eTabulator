@@ -89,6 +89,8 @@ class UserController extends Controller
                 $user->permissions()->sync([6,25,26]);
             } elseif ($request->permission == 'Admin') {
                 $user->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]);
+            } elseif($request->permission == 'peo-motorpool') {
+                $user->permissions()->sync([18,19]);
             } else {
                 //specify an Array of permissions id here manually
                 $user->permissions()->sync([]);

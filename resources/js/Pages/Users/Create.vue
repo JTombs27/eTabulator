@@ -31,9 +31,10 @@
 
                     <option value="Admin">Admin</option>
                     <option value="PGO">PGO-Admin</option>
+                    <option value="PG-Head">PG-Head</option>
                     <option value="RO">Requestioning Office</option>
                     <option value="PGSO">PGSO</option>
-                    <option value="PG-Head">PG-Head</option>
+                    <option value="peo-motorpool">PEO Motorpool</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
 

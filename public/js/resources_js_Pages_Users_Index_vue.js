@@ -151,6 +151,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           this.selectedPermissions = [6, 25, 26];
         } else if (Permission_type == 'pgso') {
           this.selectedPermissions = [4, 8, 16, 17, 18, 19, 20, 21, 22, 23, 24, 27, 28, 29, 30];
+        } else if (Permission_type == 'peo-motorpool') {
+          this.selectedPermissions = [18, 19];
         }
       } else {
         this.selectedPermissions = [];
