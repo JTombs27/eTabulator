@@ -120,7 +120,7 @@
         <div class=" w-100">
             <div class="row">
                 <div class="col-md-4" >
-                    <div class="layers bd bgc-white p-20">
+                    <div class="layers bd bgc-white p-20 shadow-sm">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">Charges</h6>
                         </div>
@@ -140,7 +140,7 @@
                     </div>
                 </div> -->
                 <div class=" col-md-8">
-                    <div class="layers bd bgc-white p-20">
+                    <div class="layers bd bgc-white p-20 shadow-sm">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">{{barTitle}}</h6>
                         </div>

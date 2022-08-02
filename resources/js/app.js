@@ -8,24 +8,24 @@ import Notification  from "./Shared/Notification"
 import { InertiaProgress } from '@inertiajs/progress'
 import Select2 from 'vue3-select2-component';
 
-//PLEASE COMMENT THE PLUGINS THAT YOU WON'T BE USING
+// //PLEASE COMMENT THE PLUGINS THAT YOU WON'T BE USING
 
-// FileUpload
-import vueFilePond from "vue-filepond";
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
-import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
-import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
-import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
+// // FileUpload
+// import vueFilePond from "vue-filepond";
+// import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+// import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+// import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
+// import FilePondPluginImageCrop from 'filepond-plugin-image-crop';
+// import FilePondPluginImageTransform from 'filepond-plugin-image-transform';
 
-const FilePond = vueFilePond(
-    FilePondPluginFileValidateType,
-    FilePondPluginImagePreview,
-    FilePondPluginFileValidateSize,
-    FilePondPluginImageCrop,
-    FilePondPluginImageTransform
-);
-// end FileUpload
+// const FilePond = vueFilePond(
+//     FilePondPluginFileValidateType,
+//     FilePondPluginImagePreview,
+//     FilePondPluginFileValidateSize,
+//     FilePondPluginImageCrop,
+//     FilePondPluginImageTransform
+// );
+// // end FileUpload
 
 
 createInertiaApp({
@@ -44,7 +44,7 @@ createInertiaApp({
       .component("Modal", Modal)
       .component("BackButton", BackButton)
       .component("Notification", Notification)
-      .component("FilePond", FilePond)
+      // .component("FilePond", FilePond)
       .component('Select2', Select2)
       .mount(el)
   },

@@ -519,7 +519,7 @@ var _hoisted_40 = {
   "class": "col-12"
 };
 var _hoisted_41 = {
-  "class": "bgc-white p-20 bd"
+  "class": "bgc-white p-20 bd shadow-sm"
 };
 var _hoisted_42 = {
   "class": "table table-hover"
