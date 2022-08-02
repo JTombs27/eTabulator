@@ -150,6 +150,8 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [TravelController::class, 'edit']);
         Route::patch('/{id}', [TravelController::class, 'update']);
         Route::post('get-price', [TravelController::class, 'getPrice']);
+        Route::post('get-fuel', [TravelController::class, 'getFuel']);
+        Route::post('check-week', [TravelController::class, 'checkWeek']);
         
     });
 

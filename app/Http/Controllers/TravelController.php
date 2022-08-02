@@ -9,6 +9,8 @@ use App\Models\OfficeVehicles;
 use App\Models\Price;
 use App\Models\Travel;
 use App\Models\User;
+use App\Models\Vehicle;
+use App\Rules\ValidateWeek;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,13 +19,14 @@ use Illuminate\Support\Facades\Http;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles, Vehicle $vehicles)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
         $this->charges = $charges;
         $this->prices = $prices;
         $this->officeVehicles = $officeVehicles;
+        $this->vehicles = $vehicles;
     }    
 
     public function index(Request $request)
@@ -95,7 +98,6 @@ class TravelController extends Controller
         //     ]
         // ]);
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
-        
         if(!$amount) {
             $amount = 0.00;
         } else {
@@ -165,6 +167,23 @@ class TravelController extends Controller
     public function getVehicleDriver(Request $request)
     {
         $mi = "";
+        // $weekStartDate = Carbon::parse($request->date_from)->startOfWeek()->format('Y-m-d');
+        // $weekEndDate = Carbon::parse($request->date_from)->endOfWeek()->format('Y-m-d');
+      
+        // $fuel = $this->model->whereBetween('date_from', [$weekStartDate,$weekEndDate])
+        //             ->with(['driverVehicle' => function($q) use ($request) {
+        //                 $q->where('vehicles_id', $request->vehicles_id);
+        //             }])
+        //             ->whereHas('driverVehicle', function($q) use ($request) {
+        //                 $q->where('vehicles_id', $request->vehicles_id);
+        //             })
+        //             ->when($request->date_to, function ($q) use ($weekStartDate,$weekEndDate){
+        //                 $q->orWhereBetween('date_to', [$weekStartDate,$weekEndDate]);
+        //             })
+                    
+        //             ->latest()
+        //             ->get();
+
         $driverVehicle = $this->driverVehicle
                             ->with('empl','vehicle.vehicle_status')
                             ->where('vehicles_id', $request->vehicles_id)
@@ -178,20 +197,20 @@ class TravelController extends Controller
         $date_from = $request->date_from;
         $date_to = $request->date_to;
         $now = Carbon::now();
-        $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
-        $weekEndDate = Carbon::parse($date_from)->endOfWeek()->format('Y-m-d');
-        dd($weekStartDate, $weekEndDate);
-        $isExistTravel = $this->model
-                            ->where('driver_vehicles_id', $request->driver_vehicles_id)
-                            ->where(function($query) use($date_from, $date_to) {
-                                $query->whereBetween('date_from', [$date_from, $date_to])
-                                        ->OrWhereBetween('date_to', [$date_from, $date_to]);
-                            })
-                            ->exists();
+        // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
+        // $weekEndDate = Carbon::parse($date_from)->endOfWeek()->format('Y-m-d');
+        // dd($weekStartDate, $weekEndDate);
+        // $isExistTravel = $this->model
+        //                     ->where('driver_vehicles_id', $request->driver_vehicles_id)
+        //                     ->where(function($query) use($date_from, $date_to) {
+        //                         $query->whereBetween('date_from', [$date_from, $date_to])
+        //                                 ->OrWhereBetween('date_to', [$date_from, $date_to]);
+        //                     })
+        //                     ->exists();
       
-        if ($isExistTravel) {
-            return redirect('/travels/create')->with('error', 'This record already exist.');
-        }
+        // if ($isExistTravel) {
+        //     return redirect('/travels/create')->with('error', 'This record already exist.');
+        // }
 
         // $attributes = $request->validated();
         
@@ -311,14 +330,14 @@ class TravelController extends Controller
     public function getPrice(Request $request)
     {
         try {
-            $is_exist = $this->prices->whereDate('date',$request->datefilter)->exists();
+            $is_exist = $this->prices->where('gasoline_id', $request->gasoline_id)->whereDate('date',$request->datefilter)->exists();
             
             $query = $this->prices->query();
 
             $query->when($is_exist, function ($q) {
                 return $q->whereDate('date',request('datefilter'));
             });
-            $query = $query->latest()->first($request->gasType);
+            $query = $query->where('gasoline_id', request('gasoline_id'))->latest()->first($request->gasType);
             return array_values($query->toArray())[0];
             
         } catch (\Throwable $th) {
@@ -340,4 +359,14 @@ class TravelController extends Controller
                         'office_id' => $item->department_code
                     ]);
     }
+
+    // public function checkWeek(Request $request)
+    // {
+    //     $validator = $request->validate([
+    //         'date_to' => ['required', new ValidateWeek($request->date_from, $request->date_from)]
+    //     ]);
+
+        
+
+    // }
 }

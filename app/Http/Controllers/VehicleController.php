@@ -132,7 +132,8 @@ class VehicleController extends Controller
                     'vehicles.id',
                     'vehicles.PLATENO',
                     'vehicles.TYPECODE',
-                    'vehicle_status.condition'
+                    'vehicle_status.condition',
+                    'vehicles.fuel_limit'
                 )
                 ->leftJoin('vehicle_status', 'vehicle_status.vehicles_id', 'vehicles.id')
 
@@ -149,7 +150,8 @@ class VehicleController extends Controller
                     'id' => $item->id,
                     'text' => $item->PLATENO,
                     'condition' => $item->condition ? $item->condition:"",
-                    'typeCode' => $item->TYPECODE
+                    'typeCode' => $item->TYPECODE,
+                    'fuel_limit' => $item->fuel_limit ? $item->fuel_limit:""
                 ]);
 
     }

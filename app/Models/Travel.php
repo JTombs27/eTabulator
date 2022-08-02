@@ -29,7 +29,8 @@ class Travel extends Model
         'office_id',
         'is_borrowed_fuel',
         'is_borrowed_vehicle',
-        'borrowing_office'
+        'borrowing_office',
+        'gasoline_id'
         
 
     ];
