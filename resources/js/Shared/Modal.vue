@@ -13,7 +13,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal"  @click="closeModal">Close</button>
-            <button type="button" class="btn btn-primary"  v-if="showFooter"  id="btn-save" @click="saveModal">Save changes</button>
+            <button type="button" class="btn btn-primary"  v-if="showSaveButton"  id="btn-save" @click="saveModal">Save changes</button>
           </div>
         </div>
       </div>

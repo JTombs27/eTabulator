@@ -78,13 +78,14 @@
         </div>
 
         <div class="col-12">
-            <div class="bgc-white p-20 bd">
+            <div class="bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th></th>
                             <th scope="col">Plate Number</th>
                             <th scope="col">Vehicle Type</th>
+                            <th scope="col">Fuel Limit</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col">Acquisition</th>
                             <th scope="col" >Office</th>
@@ -103,6 +104,7 @@
                             <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
                             <td v-if="!!vehicle.vehicle_status" v-html="code(vehicle.TYPECODE, vehicle.vehicle_status.condition)"></td>
                             <td v-else v-html="code(vehicle.TYPECODE, null)"></td>
+                            <td style="text-align: center"> {{vehicle.fuel_limit}}</td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
                             <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
@@ -389,7 +391,7 @@ export default ({
         status (status) {
             if (status == "Good Condition") {
                 return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-success'> ✔ </span></small>"
-            } else if (status == "On-repair") {
+            } else if (status == "On-Repair") {
                 return "<small style='margin-left: 5px' ><span class='badge rounded-pill bg-warning text-black'>⚙️</span></small>"
             } else if (status == "Wasted") {
                 return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-danger'>🗑️</span></small>"

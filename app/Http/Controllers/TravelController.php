@@ -28,8 +28,11 @@ class TravelController extends Controller
 
     public function index(Request $request)
     {
+<<<<<<< HEAD
       
        
+=======
+>>>>>>> 63c2cf0bce28f76496b6afc7680a1d716d992a02
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
@@ -70,12 +73,20 @@ class TravelController extends Controller
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
+<<<<<<< HEAD
 
                                          'soa_travel'        => $item->soa_travel,
                                          'place_to_visit'    =>$item->place_to_visit,
                                          'purpose'           =>$item->purpose,
                                          'official_passenger'=>$item->official_passenger,
                                          'is_carpool'        =>$item->is_carpool,
+=======
+                                    'soa_travel'        => $item->soa_travel,
+                                    'place_to_visit'    =>$item->place_to_visit,
+                                    'purpose'           =>$item->purpose,
+                                    'official_passenger'=>$item->official_passenger,
+                                    'is_carpool'        =>$item->is_carpool,
+>>>>>>> 63c2cf0bce28f76496b6afc7680a1d716d992a02
                                          'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                          'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                      ]; 
@@ -180,9 +191,10 @@ class TravelController extends Controller
     {
         $date_from = $request->date_from;
         $date_to = $request->date_to;
-        // $now = Carbon::now();
-        // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
-        // $weekEndDate = Carbon::parse($date_to)->endOfWeek()->format('Y-m-d');
+        $now = Carbon::now();
+        $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
+        $weekEndDate = Carbon::parse($date_from)->endOfWeek()->format('Y-m-d');
+        dd($weekStartDate, $weekEndDate);
         $isExistTravel = $this->model
                             ->where('driver_vehicles_id', $request->driver_vehicles_id)
                             ->where(function($query) use($date_from, $date_to) {

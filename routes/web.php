@@ -204,6 +204,7 @@ Route::middleware('auth')->group(function() {
 
     //for api
 Route::prefix('/reports')->group(function() {
+    Route::get('/', [ReportController::class, 'index']);
     Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
     Route::get('/travel', [ReportController::class, 'travels']);
 });

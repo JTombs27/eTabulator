@@ -24,7 +24,7 @@
         </filtering>
  
         <div class="col-12">
-            <div class="bgc-white p-20 bd">
+            <div class="bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -109,6 +109,7 @@
         v-if="showModal" 
         :modalTitle="'Permissions'" 
         :addional_class="'modal-lg'"
+        :showSaveButton="true"
         @closeModal="closeModal"
         @saveModal="updatePermissions">
         <div class="row pb-3">

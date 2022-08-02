@@ -121,6 +121,7 @@ class UserController extends Controller
         $data = $this->model->findOrFail($request->id);
         $validated = $request->safe()->only(['password']);
         $validated['office_id'] = $request->office_id;
+        $validated['username'] = $request->username;
         if ($request->password) {
             $validated['password'] = bcrypt($request->password);
         } else {
@@ -175,7 +176,7 @@ class UserController extends Controller
 
     public function settings()
     {
-        return inertia('Users/Settings');
+        // return inertia('Users/Settings');
     }
 
     public function changeName(Request $request)
