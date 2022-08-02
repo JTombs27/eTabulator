@@ -36,10 +36,11 @@ class HomeController extends Controller
     {
         $isAdmin =  User::
                     where('id', auth()->user()->id)
-                    ->where('role','Admin')
-                    ->orWhere('role','PGO')
+                    ->where(function($query){
+                        $query->where('role','Admin')
+                        ->orWhere('role','PGO');
+                    })
                     ->first();
-
         $chargeAmount  =  $this->charges->groupBy("office_id")
                         ->selectRaw('sum(amount) as amount')
                         ->get()
@@ -58,13 +59,14 @@ class HomeController extends Controller
         $officesLabels = Models\Office::withCount('officeTravelCount')
                                 ->get()
                                 ->map(fn($item) => [
-                                    $item->short_name
+                                    'short_name'=>$item->short_name,//['PGO'.'SPO']
+                                    'travel_count'=> $item->office_travel_count_count
                                 ]);
-        $officesTravelCount = Models\Office::withCount('officeTravelCount')
-                                ->get()
-                                ->map(fn($item) => [
-                                    $item->office_travel_count_count
-                                ]);
+        // $officesTravelCount = Models\Office::withCount('officeTravelCount')
+        //                         ->get()
+        //                         ->map(fn($item) => [
+        //                             $item->office_travel_count_count
+        //                         ]);
         if(!$isAdmin)
         {
             $chargeAmount = $this->charges
@@ -119,7 +121,7 @@ class HomeController extends Controller
             'chargesAmount' =>$chargeAmount,
             'chargesLabel'  =>$chargeLabel,
             'officesLabels' =>$officesLabels,
-            'officesTravelCount'=>$officesTravelCount,
+            //'officesTravelCount'=>$officesTravelCount,
             'consume'       =>$travels->sum('price'),
             'balance'       =>$amount,
             'isAdmin'       =>$isAdmin
