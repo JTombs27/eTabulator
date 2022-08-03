@@ -1096,7 +1096,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.auth.user.role == 'PGSO' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  , ["class"])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.auth.user.role == 'PGSO' || _ctx.$page.props.auth.user.role == 'Admin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
       'active': _ctx.$page.url.startsWith('/gasolines')
     }]),
@@ -2139,15 +2139,15 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_Index_vue"
 	],
-	"./VehicleStatus/status": [
-		"./resources/js/Pages/VehicleStatus/status.vue",
+	"./VehicleStatus/Status": [
+		"./resources/js/Pages/VehicleStatus/Status.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_status_vue"
+		"resources_js_Pages_VehicleStatus_Status_vue"
 	],
-	"./VehicleStatus/status.vue": [
-		"./resources/js/Pages/VehicleStatus/status.vue",
+	"./VehicleStatus/Status.vue": [
+		"./resources/js/Pages/VehicleStatus/Status.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_status_vue"
+		"resources_js_Pages_VehicleStatus_Status_vue"
 	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
