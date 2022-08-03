@@ -31,7 +31,7 @@ class TravelRequest extends FormRequest
     {
         // dd($this->type_code);
         $fuel_limit = Vehicle::where('id', $this->vehicles_id)->first(['fuel_limit']);
-        // dd($fuel_limit);
+        // dd($fuel_limit->fuel_limit);
         $valid = auth()->user()->office_id != '01';
         // dd($valid);
         return [
@@ -67,7 +67,7 @@ class TravelRequest extends FormRequest
                             //     }
                             //     }
                             // },
-                            // new ValidateLiters($this, $fuel_limit->fuel_limit)
+                            new ValidateLiters($this, $fuel_limit->fuel_limit)
                         ]),
             'gas_type' => 'required',
             'driver_vehicles_id' => 'required',

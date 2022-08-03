@@ -131,15 +131,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               }
 
               _context.next = 25;
-              return _this.getVehicleDetails();
+              return _this.fetchPrice();
 
             case 25:
               _context.next = 27;
-              return _this.showActualDriver();
+              return _this.getVehicleDetails();
 
             case 27:
               _context.next = 29;
-              return _this.fetchPrice();
+              return _this.showActualDriver();
 
             case 29:
               setTimeout(function () {
@@ -240,10 +240,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getVehicleDetails: function getVehicleDetails(e) {
       var _this5 = this;
 
-      console.log(e.typeCode);
-
+      // console.log(this.editData !== undefined)
       if (this.editData !== undefined) {
-        this.form.type_code = this.editData.driver_vehicle.vehicle;
+        this.form.type_code = this.editData.driver_vehicle.vehicle.TYPECODE;
       } else {
         this.form.type_code = e.typeCode;
       }

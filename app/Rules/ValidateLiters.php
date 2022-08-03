@@ -44,7 +44,7 @@ class ValidateLiters implements Rule
                         $q->where('vehicles_id', $this->attributes->vehicles_id);
                     })
                     ->when(request('date_from') && !request('date_to'), function($q) use($weekStartDate,$weekEndDate){
-                        $q->whereBetween('date_from', [$weekStartDate,$weekEndDate]);
+                        $q->where('date_from', request('date_from'))->whereNull('date_to');
                     })
                     ->when(request('date_from') && request('date_to'), function ($q) use ($weekStartDate,$weekEndDate){
                         $q->whereBetween('date_from', [$weekStartDate,$weekEndDate])
@@ -52,36 +52,38 @@ class ValidateLiters implements Rule
                     })
                     ->latest()
                     ->get();
-      
-        $consumed = $fuel->sum('total_liters');
-        $consumedFuel = $consumed;
-        //remaining fuel 
         
-
+        $consumed = $fuel->sum('total_liters');
         // $remainingPerWeek = ($this->fuel_limit * 7) - $consumed;
-        // dd($remainingPerWeek);
+        // dd($consumed);
         if (request('date_from') && request('date_to')) {
-            $this->validateWithRange();
+            if ($this->attributes->id) {
+                $currentLiters = Travel::findOrFail($this->attributes->id);
+                $consumed = $consumed - $currentLiters->total_liters; 
+                $allowable = $this->fuel_limit - $consumed;
+                return $this->validateWithRange($allowable, $value);
+                // return $value <= $allowable && $value != 0;
+            }
+            // $allowedFuel = $this->fuel_limit - $consumed;
+         
+            return $this->validateWithRange($consumed, $value);
         } elseif(request('date_from') && !request('date_to')) {
+            if ($this->attributes->id) {
+                $currentLiters = Travel::findOrFail($this->attributes->id);
+                $consumed = $consumed - $currentLiters->total_liters; 
+                $allowable = $this->fuel_limit - $consumed;
+                return $this->validateFuel($allowable, $value);
+                // return $value <= $allowable && $value != 0;
+            }
             $allowedFuel = $this->fuel_limit - $consumed;
-            dd($allowedFuel);
+            return $this->validateFuel($allowedFuel, $value);
         }
 
         // dd($this->fuel_limit);
         //edit
-        if ($this->attributes->id) {
-            $currentLiters = Travel::findOrFail($this->attributes->id);
-            $consumed = $consumed - $currentLiters->total_liters;
-            $allowable = $this->fuel_limit - $consumed;
-            $this->totalLiters = $allowable;
-            return $value <= $allowable && $value != 0;
-        }
-
-     
-
-        $this->totalLiters = ($this->fuel_limit - $consumed);
         
-        return $value <= $this->totalLiters && $value != 0;
+        
+        // return $value <= $this->totalLiters && $value != 0;
    
     }
 
@@ -95,19 +97,26 @@ class ValidateLiters implements Rule
         return "Maximum liters available: ". $this->totalLiters." liters";
     }
     
-    protected function validateWithRange()
+    protected function validateWithRange($consumed, $value)
     {
-       
         $different_days = date_diff(Carbon::parse(request('date_from')."00:00:00"),Carbon::parse(request('date_to')."24:00:00"))->days;
         if ($different_days > 7) {
-            $validLiters = ($this->fuel_limit * 7) < $this->attributes->total_liters;
-            $this->totalLiters = $this->fuel_limit * 7;
-        } else if($different_days <= 7 && $this->attributes->total_liters > ($different_days * $this->fuel_limit)) {
-            $validLiters = ($this->fuel_limit * $different_days) < $this->attributes->total_liters;
-            dd($this->fuel_limit * $different_days);
-            $this->totalLiters = $this->fuel_limit * $different_days;
+            $allowedFuel = ($this->fuel_limit * 7) - $consumed;
+            // $this->totalLiters = $this->fuel_limit * 7;
+        } else if($different_days <= 7) {
+            $allowedFuel = ($this->fuel_limit * $different_days) - $consumed;
+
+            //continue
         } 
-        return $validLiters; 
         
+        return $this->validateFuel($allowedFuel, $value);
+        
+    }
+
+    protected function validateFuel($allowable, $value)
+    {
+        dd($allowable);
+        $this->totalLiters = $allowable;
+        return $allowable >= $value;
     }
 }

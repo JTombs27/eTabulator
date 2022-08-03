@@ -275,9 +275,9 @@ export default {
                 this.form.rangedDate = true
                 
             }
+            await this.fetchPrice();
             await this.getVehicleDetails();
             await this.showActualDriver();
-            await this.fetchPrice();
             setTimeout(() => {
                 this.form.date_to = this.editData.date_to
             }, 0);
@@ -385,9 +385,9 @@ export default {
         // },
 
         getVehicleDetails(e) {
-            console.log(e.typeCode)
+            // console.log(this.editData !== undefined)
             if (this.editData !== undefined) {
-                this.form.type_code = this.editData.driver_vehicle.vehicle
+                this.form.type_code = this.editData.driver_vehicle.vehicle.TYPECODE
             } else {
                 this.form.type_code = e.typeCode;
             }

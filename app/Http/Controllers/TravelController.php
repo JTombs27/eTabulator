@@ -149,7 +149,7 @@ class TravelController extends Controller
         $travels = $this->model
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
-                        ->where('status', '<>', 'Disapproved')
+                        // ->where('status', '<>', 'Disapproved')
                         ->get();
                 
         $travels = $travels->map(function($item)  {
@@ -173,7 +173,7 @@ class TravelController extends Controller
            $amount = $amount->sum('amount');
         //    $amount = number_format($amount->sum('amount'), 2);
         }
-        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
             'balance' => $amount - $travels->sum('price')
