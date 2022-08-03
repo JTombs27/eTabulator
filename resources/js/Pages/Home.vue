@@ -230,24 +230,34 @@ export default ({
         temp(){
 
              let vm = this;
-              _.forEach(vm.officesLabels, function(value,key) {
-                vm.barChart.Labels.push(value.short_name);
-                vm.barChart.Data.push(value.travel_count);
-            });
-
-            if(vm.isAdmin)
+             if(vm.officesLabels !== null){
+                    _.forEach(vm.officesLabels, function(value,key) {
+                    vm.barChart.Labels.push(value.short_name);
+                    vm.barChart.Data.push(value.travel_count);
+                });
+             }
+             
+            if(vm.chargesChartData !== null)
             {
-                _.forEach(vm.charges,function(value,key){
-                vm.chargesChartData.Labels.push(value.office_short_name);
-                vm.chargesChartData.Data.push(value.office_charges_amount);
-            })
+                 if(vm.isAdmin)
+                {
+                    _.forEach(vm.charges,function(value,key){
+                    vm.chargesChartData.Labels.push(value.office_short_name);
+                    vm.chargesChartData.Data.push(value.office_charges_amount);
+                })
+                }
+                else{
+                    if(vm.charges.length >0)
+                    {
+                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
+                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
+                        vm.chargesChartData.Data.push((vm.balance - vm.consume));
+                        vm.chargesChartData.Data.push(vm.consume);
+                    }
+                  
+                }
             }
-            else{
-                vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
-                vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
-                vm.chargesChartData.Data.push((vm.balance - vm.consume));
-                vm.chargesChartData.Data.push(vm.consume);
-            }
+           
 
             _.forEach((_(vm.fuelConsumed)
             .groupBy('office_short_name')

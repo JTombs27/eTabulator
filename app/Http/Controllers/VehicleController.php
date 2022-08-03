@@ -45,7 +45,8 @@ class VehicleController extends Controller
                 'canEditVehicle' => auth()->user()->can('canEditVehicle', User::class),
                 'canDeleteVehicle' => auth()->user()->can('canDeleteVehicle', User::class),
                 'canCreateDriver' => auth()->user()->can('canCreateDriver', User::class ),
-                'canCreateOfficeVehicles' => auth()->user()->can('canCreateOfficeVehicles', User::class)
+                'canCreateOfficeVehicles' => auth()->user()->can('canCreateOfficeVehicles', User::class),
+                'canViewWhereAbouts' => auth()->user()->can('canViewWhereAbouts', User::class)
             ]
         ]);
     }

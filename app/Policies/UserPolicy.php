@@ -123,6 +123,10 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_edit_office_vehicles')->exists();
     }
+    public function canViewWhereAbouts(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_view_whereabouts')->exists();
+    }
     // public function canDeleteDriver(User $user)
     // {
     //     return $user->permissions()->user('permission_name', 'can_delete_drivers')->exists();
