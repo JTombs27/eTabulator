@@ -70,10 +70,10 @@ class SoaTravelController extends Controller
                 ->where('status','Approved')
             	->orderBy('date_from', 'asc')
             	->get()->map(function($item) {
-                    $checkPrice = $this->price->whereDate('date', $item->date_from)->exists();
+                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
-                    })->latest()->first($item->gas_type);
+                    })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
                     return [
                                     'id' => $item->id,
                                     'date_from' => $item->date_from,
@@ -122,10 +122,10 @@ class SoaTravelController extends Controller
             	->where('soa_travel', $id)
             	->simplePaginate(10)
                 ->through(function ($item) {
-                                $checkPrice = $this->price->whereDate('date', $item->date_from)->exists();
+                                $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
-                                })->latest()->first($item->gas_type);
+                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
                                 return [
                                     'date_from' => $item->date_from,
                                     'date_to' => $item->date_to,
