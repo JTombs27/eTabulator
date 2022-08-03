@@ -152,6 +152,7 @@ Route::middleware('auth')->group(function() {
         Route::post('get-price', [TravelController::class, 'getPrice'])->name('getPrice');
         Route::post('get-fuel', [TravelController::class, 'getFuel'])->name('getFuel');
         Route::post('check-week', [TravelController::class, 'checkWeek'])->name('checkWeek');
+        Route::delete('/{id}', [TravelController::class, 'destroy'])->name('destroy');
         
     });
 
