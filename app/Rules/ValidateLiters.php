@@ -48,7 +48,7 @@ class ValidateLiters implements Rule
                     })
                     ->latest()
                     ->get();
-        // dd($fuel->sum('total_liters'));
+      
         $consumed = $fuel->sum('total_liters');
 
         //edit
@@ -57,14 +57,13 @@ class ValidateLiters implements Rule
             $consumed = $consumed - $currentLiters->total_liters;
             $allowable = $this->fuel_limit - $consumed;
             $this->totalLiters = $allowable;
-            // dd($consumed);
             return $value <= $allowable && $value != 0;
         }
 
      
 
         $this->totalLiters = ($this->fuel_limit - $consumed);
-        // dd($value);
+        
         return $value <= $this->totalLiters && $value != 0;
    
     }
