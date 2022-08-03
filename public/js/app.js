@@ -2073,15 +2073,15 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_Index_vue"
 	],
-	"./VehicleStatus/status": [
-		"./resources/js/Pages/VehicleStatus/status.vue",
+	"./VehicleStatus/Status": [
+		"./resources/js/Pages/VehicleStatus/Status.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_status_vue"
+		"resources_js_Pages_VehicleStatus_Status_vue"
 	],
-	"./VehicleStatus/status.vue": [
-		"./resources/js/Pages/VehicleStatus/status.vue",
+	"./VehicleStatus/Status.vue": [
+		"./resources/js/Pages/VehicleStatus/Status.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_status_vue"
+		"resources_js_Pages_VehicleStatus_Status_vue"
 	],
 	"./Vehicles/Create": [
 		"./resources/js/Pages/Vehicles/Create.vue",
