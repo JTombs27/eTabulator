@@ -42,6 +42,7 @@ class UserController extends Controller
                     'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
+                    'role' => $user->role,
                     'photo' => $user->user_photo,
                     "can" => [
                         'delete' => Travel::where('user_id', $user->id)->exists()
