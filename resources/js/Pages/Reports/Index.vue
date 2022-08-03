@@ -6,8 +6,18 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="masonry-item w-100">
+            <div class="peers fxw-nw jc-sb ai-c bgc-white p-20" v-if="user.role ==='Admin'|| user.role==='PGO'">
+                <div class="col-md-5">
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-2 col-form-label">Offices</label>
+                        <div class="col-sm-10">
+                            <Select2 v-model="office_id" :options="offices"/>  
+                        </div>
+                    </div>  
+                </div>
+            </div>
             <div class="row gap-20">
-                <div class="col-md-6">
+                <div class="col-md-3  mt-3">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">Travel Report</h6>
@@ -15,7 +25,7 @@
                         <div class="layer w-100">
                             <div class="peers ai-sb fxw-nw">
                                 <div class="peer peer-greed">
-                                    <Select2 v-model="office_id" :options="offices" v-if="user.role ==='Admin'|| user.role==='PGO'"/> 
+                                    
                                 </div>
                                 <div class="peer">
                                     <button type="button" class="btn btn-primary" @click="print()">
@@ -29,10 +39,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-3  mt-3">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">Soa Reports</h6>
+                            <h6 class="lh-1">SOA Reports</h6>
                         </div>
                         <div class="layer w-100">
                             <div class="peers ai-sb fxw-nw">
@@ -40,17 +50,12 @@
                                     <span id="sparklinedash4"></span>
                                 </div>
                                 <div class="peer">
-                                    <span class="
-                                            d-ib
-                                            lh-0
-                                            va-m
-                                            fw-600
-                                            bdrs-10em
-                                            pX-15
-                                            pY-15
-                                            bgc-blue-50
-                                            c-blue-500
-                                        ">33%</span>
+                                    <button type="button" class="btn btn-primary" @click="print_soa()">
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                        <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                                        <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"/>
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
                         </div>
