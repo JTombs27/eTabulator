@@ -55,7 +55,8 @@ class TravelController extends Controller
                                 $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
-                                })->latest()->first($item->gas_type);
+                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                // dd($total[$item->gas_type], $item->total_liters);
                                 return [
                                     'first_name' => $item->driverVehicle->empl->first_name,
                                     'middle_name' => $item->driverVehicle->empl->middle_name,
