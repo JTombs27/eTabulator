@@ -151,7 +151,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     reset: function reset() {
-      this.filter = {};
       this.$inertia.get('/vehicles');
     },
     setStatus: function setStatus() {

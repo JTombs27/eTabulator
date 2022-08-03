@@ -437,7 +437,6 @@ export default ({
         },
 
         reset () {
-            this.filter = {}
             this.$inertia.get('/vehicles')
 
         },

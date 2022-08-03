@@ -48,6 +48,12 @@ class TravelController extends Controller
                             ->when($request->dateFilterType == 'to', function($q) use ($request) {
                                 $q->where('date_from', '<=', $request->date_to);
                             })
+                            ->when($request->status, function($q) {
+                                $q->where('status', request('status'));
+                            })
+                            ->when(!$request->status, function($q) {
+                                $q->whereNull('status');
+                            })
                             ->orderBy('status')
                             ->orderBy('id','desc')
                             ->simplePaginate(10)
