@@ -1857,6 +1857,16 @@ var map = {
 		9,
 		"resources_js_Pages_Drivers_Index_vue"
 	],
+	"./Gasolines/Create": [
+		"./resources/js/Pages/Gasolines/Create.vue",
+		9,
+		"resources_js_Pages_Gasolines_Create_vue"
+	],
+	"./Gasolines/Create.vue": [
+		"./resources/js/Pages/Gasolines/Create.vue",
+		9,
+		"resources_js_Pages_Gasolines_Create_vue"
+	],
 	"./Gasolines/Index": [
 		"./resources/js/Pages/Gasolines/Index.vue",
 		9,

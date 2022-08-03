@@ -11,11 +11,10 @@
                         <div class="col-12 mt-2">
                             <div class="input-group">
                                 <span class="input-group-text">Station</span>
+
                                 <select class="form-select md" v-model="form.gasoline_id" :disabled="disablegasType">
                                     <option disabled value="">Select Station</option>
-                                    <option value="1">Petron</option>
-                                    <option value="2">Shell</option>
-                                    <option value="3">Sea Oil</option>
+                                    <option v-for="item, index in gasoline" :value="item.id">{{ item.text }}</option>
                                 </select>
                             </div>   
                             <div class="fs-6 c-red-500" v-if="form.errors.gasoline_id">{{ form.errors.gasoline_id }}</div>      
@@ -118,6 +117,7 @@ export default {
                 date:new Date().toLocaleDateString("en-CA",{year:"numeric",month:"2-digit", day:"2-digit"}),
                 gasoline_id:''
             }),
+            gasoline:[],
             pageTitle: "",
             disablegasType:false,
             loading:false,
@@ -143,6 +143,8 @@ export default {
             this.pageTitle = "Add";
             this.disablegasType = false;
         }
+
+        this.loadGasoline()
 
     },
 
@@ -172,6 +174,12 @@ export default {
         backToMain()
         {
              this.$inertia.get("/prices");
+        },
+        loadGasoline() {
+            axios.get('/prices/fetch').then((response) => {
+                this.gasoline = response.data;
+
+            })
         }
     },
 };

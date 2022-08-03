@@ -202,11 +202,17 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [PriceController::class, 'edit']);
         Route::patch('/{id}', [PriceController::class, 'update']);
         Route::delete('/{id}', [PriceController::class, 'destroy']);
+        Route::get('fetch', [PriceController::class, 'loadGasoline']);
     });
 
     //for Gasoline
     Route::prefix('gasolines')->group(function () {
         Route::get('/', [GasolineController::class, 'index']);
+        Route::get('/create', [GasolineController::class, 'create']);
+        Route::post('/store', [GasolineController::class, 'store']);
+        Route::get('/{id}/edit', [GasolineController::class, 'edit']);
+        Route::patch('/{id}', [GasolineController::class, 'update']);
+        Route::delete('/{id}', [GasolineController::class, 'destroy']);
        
     });
     

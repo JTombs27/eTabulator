@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gasoline;
 use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PriceController extends Controller
 {
-    public function __construct(Price $model)
+    public function __construct(Price $model, Gasoline $gas)
     {
         $this->model = $model;
+        $this->gas = $gas;
     }
 
     public function index(Request $request)
@@ -137,5 +139,18 @@ class PriceController extends Controller
             return   ["message"=>"error"];
         }
        
+    }
+
+    public function loadGasoline(Request $request)
+    {
+        $query = $this->gas
+                    ->where('name', 'like', "%$request->filter%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'text' => $item->name,
+                    ]);
+
+        return $query;
     }
 }
