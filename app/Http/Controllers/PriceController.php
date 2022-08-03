@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class PriceController extends Controller
 {
-     public function __construct(Price $model)
+    public function __construct(Price $model)
     {
         $this->model = $model;
     }
