@@ -165,4 +165,51 @@ class ReportController extends Controller
        	}
         return $travel;
     }
+
+    public function soa_travels(Request $request)
+    {
+
+    	$soa =  $this->soatravel
+            	->with('travels','office')
+            	->orderBy("office_id" , "ASC")
+            	->orderBy("date_from" , "ASC")
+            	->get()
+                ->map( function($item) { return
+                	[
+                    'id' => $item->id,
+                    'date_from' => $item->date_from,
+                    'date_to' => $item->date_to,
+                    'short_name' => $item->office->short_name,
+                    'office' => $item->office->office,
+                    'total_liters' => $item->travels->sum('total_liters'),
+                    'totalPrice' => number_format($item->travels->sum('totalPrice'),2)
+                ];
+            });
+
+        if (!!$request->office_id) {
+
+        	$soa =  $this->soatravel
+            	->with('travels','office')
+            	->where('office_id', $request->office_id)
+            	->orderBy("office_id" , "ASC")
+            	->orderBy("date_from" , "ASC")
+            	->get()
+                ->map( function($item) { return
+                	[
+                    'id' => $item->id,
+                    'date_from' => $item->date_from,
+                    'date_to' => $item->date_to,
+                    'short_name' => $item->office->short_name,
+                    'office' => $item->office->office,
+                    'total_liters' => $item->travels->sum('total_liters'),
+                    'totalPrice' => number_format($item->travels->sum('totalPrice'),2)
+                ];
+            });
+            
+
+       
+        }
+
+         return $soa;
+    }
 }
