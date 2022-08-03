@@ -57,6 +57,10 @@ export default defineComponent({
         chartColor:{
             type:String,
             default: () => []
+        },
+        CharLegelPosition:{
+            type:String,
+            default:"top"
         }
     },
     setup(props) 
@@ -85,7 +89,7 @@ export default defineComponent({
                     color:"white",
                 },
                 legend:{
-                    position: 'top'
+                    position: props.CharLegelPosition
                 }
             }
         }

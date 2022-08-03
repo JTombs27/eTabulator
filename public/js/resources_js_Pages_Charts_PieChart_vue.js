@@ -49,19 +49,36 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    pieChartData: {
+      type: Array,
+      defualt: function defualt() {
+        return [];
+      }
+    },
+    pieChartLabels: {
+      type: Array,
+      defualt: function defualt() {
+        return [];
+      }
     }
   },
   setup: function setup(props) {
     var chartData = {
-      labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+      labels: props.pieChartLabels,
       datasets: [{
         backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-        data: [40, 20, 80, 10]
+        data: props.pieChartData
       }]
     };
     var chartOptions = {
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right'
+        }
+      }
     };
     return function () {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.h)(vue_chartjs__WEBPACK_IMPORTED_MODULE_2__.Pie, {

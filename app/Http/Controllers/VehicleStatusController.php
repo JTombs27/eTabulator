@@ -17,13 +17,17 @@ class VehicleStatusController extends Controller
 
     public function index($id)
     {
-
+        // dd(auth()->user());  
         return inertia('VehicleStatus/Index',[
             'vehicle_status' =>  $this->model->with('vehicle')
                                     ->where('vehicles_id',$id)
                                     ->latest()->simplePaginate(10),
             'vehicles_id' => $id,
-            'PLATENO' =>  $this->vehicle->where('id',$id)->first()->PLATENO
+            'PLATENO' =>  $this->vehicle->where('id',$id)->first()->PLATENO,
+             'can' => [
+                 'canCreateVehicleStatus' => auth()->user()->can('canCreateVehicleStatus', User::class),
+                 'canEditVehicleStatus' => auth()->user()->can('canEditVehicleStatus', User::class),
+             ]
         ]);
       
 
@@ -34,6 +38,7 @@ class VehicleStatusController extends Controller
         $attributes = $request->validate([
             'vehicle_status_date' => 'required',
             'condition' => 'required',
+           
            
             
         ]);
@@ -46,14 +51,15 @@ class VehicleStatusController extends Controller
        
         return inertia('VehicleStatus/Create',[
             'vehicle' => $this->vehicle->findOrFail($id),
-            'editData' => false
+            'editData' => false,
+            
         ]);
     }
 
     public function edit(Request $request)
     {
         return inertia('VehicleStatus/Create',[
-            'vehicle' => $this->model->findOrFail($request->id),
+            'vehicle' => $this->model->with('vehicle')->findOrFail($request->id),
             'editData' => True
         ]);
     }

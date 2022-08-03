@@ -10,11 +10,21 @@
                 <form @submit.prevent="submit()" id="mainForm">
                         <div class="col-12 mt-2">
                             <div class="input-group">
+                                <span class="input-group-text">Station</span>
+
+                                <select class="form-select md" v-model="form.gasoline_id" :disabled="disablegasType">
+                                    <option disabled value="">Select Station</option>
+                                    <option v-for="item, index in gasoline" :value="item.id">{{ item.text }}</option>
+                                </select>
+                            </div>   
+                            <div class="fs-6 c-red-500" v-if="form.errors.gasoline_id">{{ form.errors.gasoline_id }}</div>      
+                        </div>
+                        <div class="col-12 mt-3">
+                            <div class="input-group">
                                 <span class="input-group-text">Date</span>
                                 <input type="date" v-model="form.date" class="form-control" :disabled="disablegasType">
                             </div>   
-                            <div class="fs-6 c-red-500" v-if="form.errors.date">{{ form.error.date }}</div>
-                                
+                            <div class="fs-6 c-red-500" v-if="form.errors.date">{{ form.error.date }}</div>      
                         </div>
                     <div class="row">
                         <div class="col-12 bgc-white p-10 bd mt-2">
@@ -104,8 +114,10 @@ export default {
                 engine_oil_price:'',
                 brake_oil_price:'',
                 greases_price:'',
-                date:new Date().toLocaleDateString("en-CA",{year:"numeric",month:"2-digit", day:"2-digit"})
+                date:new Date().toLocaleDateString("en-CA",{year:"numeric",month:"2-digit", day:"2-digit"}),
+                gasoline_id:''
             }),
+            gasoline:[],
             pageTitle: "",
             disablegasType:false,
             loading:false,
@@ -124,12 +136,15 @@ export default {
             this.form.engine_oil_price       = this.editData.engine_oil_price;
             this.form.brake_oil_price       = this.editData.brake_oil_price;
             this.form.greases_price       = this.editData.greases_price;
+            this.form.gasoline_id       = this.editData.gasoline_id;
             this.form.id            = this.editData.id;   
             this.disablegasType = true;
         } else {
             this.pageTitle = "Add";
             this.disablegasType = false;
         }
+
+        this.loadGasoline()
 
     },
 
@@ -159,6 +174,12 @@ export default {
         backToMain()
         {
              this.$inertia.get("/prices");
+        },
+        loadGasoline() {
+            axios.get('/prices/fetch').then((response) => {
+                this.gasoline = response.data;
+
+            })
         }
     },
 };

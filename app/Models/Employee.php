@@ -28,7 +28,7 @@ class Employee extends Model
 
     public function driverV()
     {
-        return $this->hasOne(DriverVehicle::class, 'deparment_code', 'department_code');
+        return $this->hasOne(DriverVehicle::class, 'department_code', 'department_code');
     }
 
 }

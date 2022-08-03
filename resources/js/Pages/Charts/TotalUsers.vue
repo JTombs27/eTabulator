@@ -80,7 +80,7 @@ export default defineComponent({
 
     setup(props) {
         var vm = this
-
+        console.log(props.chartLabel)
         const chartData = {
             labels: props.chartLabel,
             datasets: [

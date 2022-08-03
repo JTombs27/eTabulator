@@ -34,7 +34,7 @@ class UserController extends Controller
                     $query->where('name', 'like', '%' . $searchItem . '%');
                 })
                 ->orderBy('name', 'asc')
-                ->simplePaginate(10)
+                ->simplePaginate(8)
                 ->withQueryString()
                 ->through(fn($user) => [
                     'id' => $user->id,
@@ -42,6 +42,7 @@ class UserController extends Controller
                     'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
+                    'role' => $user->role,
                     'photo' => $user->user_photo,
                     "can" => [
                         'delete' => Travel::where('user_id', $user->id)->exists()
@@ -80,15 +81,17 @@ class UserController extends Controller
 
             if ($request->permission == 'PGO') {
                 //1,2,3 are all available permissions for the admin
-                $user->permissions()->sync([5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26]);
+                $user->permissions()->sync([5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26,31]);
             } elseif ($request->permission == 'RO') {
                 $user->permissions()->sync([5,7,10,11,12,13,14,15,25]);
             } elseif ($request->permission == 'PGSO') {
-                $user->permissions()->sync([4,8,16,17,18,19,20,21,22,23,24,27,28,29,30]);
+                $user->permissions()->sync([4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31]);
             } elseif ($request->permission == 'PG-Head') {
                 $user->permissions()->sync([6,25,26]);
             } elseif ($request->permission == 'Admin') {
-                $user->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]);
+                $user->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
+            } elseif($request->permission == 'peo-motorpool') {
+                $user->permissions()->sync([18,19]);
             } else {
                 //specify an Array of permissions id here manually
                 $user->permissions()->sync([]);
@@ -121,11 +124,31 @@ class UserController extends Controller
         $data = $this->model->findOrFail($request->id);
         $validated = $request->safe()->only(['password']);
         $validated['office_id'] = $request->office_id;
+        $validated['username'] = $request->username;
+        $validated['role'] = $request->permission;
         if ($request->password) {
             $validated['password'] = bcrypt($request->password);
         } else {
             
             $validated['password'] = $data->password;
+        }
+
+        if ($request->permission == 'PGO') {
+            //1,2,3 are all available permissions for the admin
+            $data->permissions()->sync([5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26,31]);
+        } elseif ($request->permission == 'RO') {
+            $data->permissions()->sync([5,7,10,11,12,13,14,15,25]);
+        } elseif ($request->permission == 'PGSO') {
+            $data->permissions()->sync([4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31]);
+        } elseif ($request->permission == 'PG-Head') {
+            $data->permissions()->sync([6,25,26]);
+        } elseif ($request->permission == 'Admin') {
+            $data->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
+        } elseif($request->permission == 'peo-motorpool') {
+            $data->permissions()->sync([18,19]);
+        } else {
+            //specify an Array of permissions id here manually
+            $data->permissions()->sync([]);
         }
         // $data->update([
         //     'name' => $request->name,
@@ -175,7 +198,7 @@ class UserController extends Controller
 
     public function settings()
     {
-        return inertia('Users/Settings');
+        // return inertia('Users/Settings');
     }
 
     public function changeName(Request $request)

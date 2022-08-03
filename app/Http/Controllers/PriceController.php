@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gasoline;
 use App\Models\Price;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PriceController extends Controller
 {
-     public function __construct(Price $model)
+    public function __construct(Price $model, Gasoline $gas)
     {
         $this->model = $model;
+        $this->gas = $gas;
     }
 
     public function index(Request $request)
@@ -44,6 +46,7 @@ class PriceController extends Controller
     {
 
         $attributes = $request->validate([
+            'gasoline_id' => 'required',
         	'date' => 'required|date',
         	"premium_price" =>"required|regex:/^\d{1,13}(\.\d{1,4})?$/",
         	"regular_price" =>"required|regex:/^\d{1,13}(\.\d{1,4})?$/",
@@ -52,6 +55,7 @@ class PriceController extends Controller
             "brake_oil_price" =>"nullable|regex:/^\d{1,13}(\.\d{1,4})?$/",
             "greases_price" =>"nullable|regex:/^\d{1,13}(\.\d{1,4})?$/",
     	],[
+            "gasoline_id.required"    =>"Station is Required",
     		"premium_price.required"    =>"Price is Required",
         	"premium_price.regex"    =>"Provide Currency only",
             "regular_price.required"    =>"Price is Required",
@@ -64,10 +68,10 @@ class PriceController extends Controller
         	"data.required"    =>"Date is Required",
     	]);
 
-        $find = $this->model->where('date', $request->date)->first();
+        $find = $this->model->where('date', $request->date)->where('gasoline_id', $request->gasoline_id)->first();
 
         if ($find) {
-            return back()->with('error', 'Date Already Exists!');
+            return back()->with('error', 'Date and Station Already Exists!');
         } else {
             $this->model->create($request->all());  
 
@@ -87,6 +91,7 @@ class PriceController extends Controller
     public function update(Request $request,$id)
     {
        $attributes = $request->validate([
+            'gasoline_id' => 'required',
             'date' => 'required|date',
             "premium_price" =>"required|regex:/^\d{1,13}(\.\d{1,4})?$/",
             "regular_price" =>"required|regex:/^\d{1,13}(\.\d{1,4})?$/",
@@ -95,6 +100,7 @@ class PriceController extends Controller
             "brake_oil_price" =>"nullable|regex:/^\d{1,13}(\.\d{1,4})?$/",
             "greases_price" =>"nullable|regex:/^\d{1,13}(\.\d{1,4})?$/",
         ],[
+            "gasoline_id.required"    =>"Station is Required",
             "premium_price.required"    =>"Price is Required",
             "premium_price.regex"    =>"Provide Currency only",
             "regular_price.required"    =>"Price is Required",
@@ -133,5 +139,18 @@ class PriceController extends Controller
             return   ["message"=>"error"];
         }
        
+    }
+
+    public function loadGasoline(Request $request)
+    {
+        $query = $this->gas
+                    ->where('name', 'like', "%$request->filter%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'text' => $item->name,
+                    ]);
+
+        return $query;
     }
 }

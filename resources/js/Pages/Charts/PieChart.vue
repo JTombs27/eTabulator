@@ -47,22 +47,37 @@ export default defineComponent({
         plugins: {
             type: Array,
             default: () => []
+        },
+
+        pieChartData:{
+            type:Array,
+            defualt:() => []
+        },
+         pieChartLabels:{
+            type:Array,
+            defualt:() => []
         }
+
     },
     setup(props) {
         const chartData = {
-            labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+            labels: props.pieChartLabels,
             datasets: [
                 {
                     backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-                    data: [40, 20, 80, 10]
+                    data: props.pieChartData
                 }
             ]
         }
 
         const chartOptions = {
             responsive: true,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+             plugins: {
+                legend:{
+                    position: 'right'
+                }
+            }
         }
 
         return () =>

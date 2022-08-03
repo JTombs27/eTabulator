@@ -44,6 +44,9 @@ class VehicleController extends Controller
                 'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class),
                 'canEditVehicle' => auth()->user()->can('canEditVehicle', User::class),
                 'canDeleteVehicle' => auth()->user()->can('canDeleteVehicle', User::class),
+                'canCreateDriver' => auth()->user()->can('canCreateDriver', User::class ),
+                'canCreateOfficeVehicles' => auth()->user()->can('canCreateOfficeVehicles', User::class),
+                'canViewWhereAbouts' => auth()->user()->can('canViewWhereAbouts', User::class)
             ]
         ]);
     }
@@ -124,7 +127,7 @@ class VehicleController extends Controller
         return redirect('/vehicles')->with('message', 'Deleted Susccessfuly');
     }
 
-    public function getVehicles($id)
+    public function getVehicles()
     {
         
         return DB::table('vehicles')
@@ -132,15 +135,13 @@ class VehicleController extends Controller
                     'vehicles.id',
                     'vehicles.PLATENO',
                     'vehicles.TYPECODE',
-                    'vehicle_status.condition'
+                    'vehicle_status.condition',
+                    'vehicles.fuel_limit'
                 )
                 ->leftJoin('vehicle_status', 'vehicle_status.vehicles_id', 'vehicles.id')
-                ->leftJoin('driver_vehicles', 'vehicles_id', 'id')
-<<<<<<< HEAD
-                // ->when(,'driver_vehicles.department_code', auth()->user()->office_id)
-=======
-                ->when('driver_vehicles.department_code', auth()->user()->office_id)
->>>>>>> f11540497319d821a35d67294e7d86d222e25b8e
+
+                ->leftJoin('driver_vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
+                //->when('driver_vehicles.department_code', auth()->user()->office_id)
                 // ->where(function ($query) use($id){
                 //     $query->where('vehicle_status.condition', 'Good Condition')
                 //         ->orWhere('vehicle_status.vehicles_id', $id);
@@ -151,8 +152,9 @@ class VehicleController extends Controller
                 ->map(fn($item) => [
                     'id' => $item->id,
                     'text' => $item->PLATENO,
-                    'condition' => $item->condition,
-                    'typeCode' => $item->TYPECODE
+                    'condition' => $item->condition ? $item->condition:"",
+                    'typeCode' => $item->TYPECODE,
+                    'fuel_limit' => $item->fuel_limit ? $item->fuel_limit:""
                 ]);
 
     }

@@ -120,7 +120,7 @@ var _hoisted_3 = {
   "class": "peers fxw-nw jc-sb ai-c"
 };
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Soa Travels", -1
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "Statement of Accounts", -1
 /* HOISTED */
 );
 
@@ -152,7 +152,7 @@ var _hoisted_11 = {
   "class": "col-12"
 };
 var _hoisted_12 = {
-  "class": "bgc-white p-20 bd"
+  "class": "bgc-white p-20 bd shadow-sm"
 };
 var _hoisted_13 = {
   "class": "table table-hover"

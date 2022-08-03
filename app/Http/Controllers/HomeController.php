@@ -21,10 +21,10 @@ class HomeController extends Controller
      */
     public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices)
     {
-        $this->model = $model;
-        $this->driverVehicle = $driverVehicle;
-        $this->charges = $charges;
-        $this->prices = $prices;
+        $this->model            = $model;
+        $this->driverVehicle    = $driverVehicle;
+        $this->charges          = $charges;
+        $this->prices           = $prices;
     }    
 
     /**
@@ -34,53 +34,59 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $isAdmin = User::
-        where('id', auth()->user()->id)
-        ->where('role','Admin')
-        ->first();
+        $isAdmin =  User::
+                    where('id', auth()->user()->id)
+                    ->where(function($query){
+                        $query->where('role','Admin')
+                        ->orWhere('role','PGO');
+                    })
+                    ->first();
 
-        $chargeAmount  =  Models\Charge::groupBy("office_id")
-                        ->selectRaw('sum(amount) as amount')
-                        ->get()
-                        ->map(fn($item) => 
-                        [
-                            $item->amount
-                        ]);
-        $chargeLabel   =  Models\Charge::with(['office'=>function($query){
-            $query->select('short_name','department_code');
-        }])->groupBy("office_id")->get()
-        ->map(fn($item) => [
-            $item->office->short_name
-        ]);
-        $offices = Models\Office::get()->map(fn($item) => [
-            $item->short_name
-        ]);
+        $charges  =  $this->charges
+                    ->with(['office'=>function($query){
+                        $query->select('short_name','department_code');
+                    }])
+                    ->groupBy("office_id")
+                    ->selectRaw('sum(amount) as amount, office_id')
+                    ->get()
+                    ->map(fn($item) => 
+                    [
+                       'office_charges_amount'=> $item->amount,
+                       'office_short_name'=> $item->office->short_name,
+                    ]);
+
+        $officesLabels = Models\Office::withCount('officeTravelCount')
+                                ->get()
+                                ->map(fn($item) => [
+                                    'short_name'=>$item->short_name,//['PGO'.'SPO']
+                                    'travel_count'=> $item->office_travel_count_count
+                                ]);
+
         if(!$isAdmin)
         {
-            $chargeAmount = Models\Charge::where('office_id', auth()->user()->office_id)
-            ->selectRaw('sum(amount) as amount')
-            ->get()
-            ->map(fn($item) => 
-            [
-                $item->amount
-            ]);
-
-            $chargeLabel  =  Models\Charge::with(['office'=>function($query){
-                $query->select('short_name','department_code');
-            }])->where('office_id', auth()->user()->office_id)
-            ->groupBy('office_id')
-            ->get()->map(fn($item) => [
-                $item->office->short_name
-            ]);
+            $charges  =  $this->charges
+                            ->where('office_id', auth()->user()->office_id)
+                            ->with(['office'=>function($query){
+                                $query->select('short_name','department_code');
+                            }])
+                            ->groupBy("office_id")
+                            ->selectRaw('sum(amount) as amount, office_id')
+                            ->get()
+                            ->map(fn($item) => 
+                            [
+                               'office_charges_amount'=> $item->amount,
+                               'office_short_name'=> $item->office->short_name,
+                            ]);
         }
 
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
-        
+
+        $amountTotal = $this->charges->whereYear('created_at', date("Y"))->get();
+        $amountTotal = $amountTotal->sum('amount');
         if(!$amount) {
             $amount = 0.00;
         } else {
            $amount = $amount->sum('amount');
-        //    $amount = number_format($amount->sum('amount'), 2);
         }
 
         
@@ -89,26 +95,48 @@ class HomeController extends Controller
                         ->where('office_id', auth()->user()->office_id)
                         ->get();
                         
-        $travels = $travels->map(function($item)  {
+        $travels = $travels->map(function($item)  
+                    {
+                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                        $total      = $this->prices->when($checkPrice, function($q) use ($item) {
+                                        $q->whereDate('date', $item->date_from);
+                                    })->latest()->first($item->gas_type);
+                        return [
+                            'price' => ($total[$item->gas_type] * $item->total_liters),
+                            'date' => $item->date_from
+                        ];
+                    });
+
+        $fuelConsumed = $this->model
+                        ->with(['office'=>function($query){
+                            $query->select('short_name','department_code');
+                        }])
+                        ->whereYear('date_from', date("Y"))
+                        ->get();
+
+        $fuelConsumed = $fuelConsumed->map(function($item)  
+        {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-            $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                $q->whereDate('date', $item->date_from);
-            })->latest()->first($item->gas_type);
+            $total      = $this->prices
+                            ->when($checkPrice, function($q) use ($item) 
+                                {
+                                    $q->whereDate('date', $item->date_from);
+                                })
+                            ->latest()->first($item->gas_type);
             return [
                 'price' => ($total[$item->gas_type] * $item->total_liters),
-                'date' => $item->date_from
+                'office_short_name' => $item->office->short_name
             ];
         });
 
-
-
         return inertia('Home',[
-            'chargesAmount'=>$chargeAmount,
-            'chargesLabel'=>$chargeLabel,
-            'officesLabels' =>$offices,
-            'consume'=>$travels->sum('price'),
-            'balance'=>$amount,
-            'isAdmin'=>$isAdmin
+            'charges' =>$charges,
+            'officesLabels' =>$officesLabels,
+            'consume'       =>$travels->sum('price'),
+            'balance'       =>$amount,
+            'isAdmin'       =>$isAdmin,
+            'fuelConsumed' => $fuelConsumed,
+            'TotalCharge' => $amountTotal
         ]);
     }
 }

@@ -107,6 +107,41 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_create_drivers')->exists();
     }
+    public function canCreateVehicleStatus(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_vehicle_status')->exists();
+    }
+    public function canEditVehicleStatus(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_edit_vehicle_status')->exists();
+    }
+    public function canCreateOfficeVehicles(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_office_vehicles')->exists();
+    }
+    public function canEditOfficeVehicles(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_edit_office_vehicles')->exists();
+    }
+    public function canViewWhereAbouts(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_view_whereabouts')->exists();
+    }
+
+    public function canCreateGasoline(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_create_gasoline')->exists();
+    }
+
+    public function canEditGasoline(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_edit_gasoline')->exists();
+    }
+
+    public function canDeleteGasoline(User $user)
+    {
+        return $user->permissions()->where('permission_name', 'can_delete_gasoline')->exists();
+    }
     // public function canDeleteDriver(User $user)
     // {
     //     return $user->permissions()->user('permission_name', 'can_delete_drivers')->exists();

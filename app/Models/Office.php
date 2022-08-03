@@ -14,12 +14,17 @@ class Office extends Model
 
     public function employee()
     {
-        return $this->belongsTo(Employee::class, 'department_code', 'departmert_code');
+        return $this->belongsTo(Employee::class, 'department_code', 'department_code');
     }
     
     public function officeVehicles()
     {
         return $this->hasMany(OfficeVehicles::class,"department_code","department_code");
+    }
+
+    public function officeTravelCount()
+    {
+        return $this->hasMany(Travel::class,"office_id","department_code");
     }
     
 }

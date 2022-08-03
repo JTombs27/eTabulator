@@ -129,19 +129,36 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    pieChartData: {
+      type: Array,
+      defualt: function defualt() {
+        return [];
+      }
+    },
+    pieChartLabels: {
+      type: Array,
+      defualt: function defualt() {
+        return [];
+      }
     }
   },
   setup: function setup(props) {
     var chartData = {
-      labels: ['VueJs', 'EmberJs', 'ReactJs', 'AngularJs'],
+      labels: props.pieChartLabels,
       datasets: [{
         backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
-        data: [40, 20, 80, 10]
+        data: props.pieChartData
       }]
     };
     var chartOptions = {
       responsive: true,
-      maintainAspectRatio: false
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right'
+        }
+      }
     };
     return function () {
       return (0,vue__WEBPACK_IMPORTED_MODULE_0__.h)(vue_chartjs__WEBPACK_IMPORTED_MODULE_2__.Pie, {
@@ -226,6 +243,10 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       "default": function _default() {
         return [];
       }
+    },
+    CharLegelPosition: {
+      type: String,
+      "default": "top"
     }
   },
   setup: function setup(props) {
@@ -248,7 +269,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
           color: "white"
         },
         legend: {
-          position: 'top'
+          position: props.CharLegelPosition
         }
       }
     };
@@ -352,6 +373,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
   },
   setup: function setup(props) {
     var vm = this;
+    console.log(props.chartLabel);
     var chartData = {
       labels: props.chartLabel,
       datasets: [{
@@ -408,6 +430,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Pages_Charts_SomeChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Pages/Charts/SomeChart */ "./resources/js/Pages/Charts/SomeChart.vue");
 /* harmony import */ var _Pages_Charts_LineChart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Pages/Charts/LineChart */ "./resources/js/Pages/Charts/LineChart.vue");
 /* harmony import */ var _Pages_Charts_PieChart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Pages/Charts/PieChart */ "./resources/js/Pages/Charts/PieChart.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
+
 
 
 
@@ -420,27 +444,77 @@ __webpack_require__.r(__webpack_exports__);
     PieChart: _Pages_Charts_PieChart__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
-    chargesAmount: Array,
-    chargesLabel: Array,
+    charges: Array,
     officesLabels: Array,
     consume: "",
     balance: "",
-    isAdmin: ""
+    isAdmin: "",
+    fuelConsumed: Array,
+    TotalCharge: ""
   },
   data: function data() {
     return {
       totalUser: [10, 20, 50, 6, 525, 85],
+      chargesChartData: {
+        Labels: [],
+        Data: [],
+        Colors: ['rgb(13 110 253)', 'rgb(25 135 84)', 'rgb(220 53 69)', 'rgb(255 193 7)', 'rgb(13 202 240)']
+      },
       pieChartData: {
-        Labels: this.isAdmin == null ? [this.chargesLabel + ' Balance', 'Consumed'] : this.chargesLabel,
-        Data: this.isAdmin == null ? [this.balance - this.consume, this.consume] : this.chargesAmount,
+        Labels: [],
+        Data: [],
         Colors: ['rgb(13 110 253)', 'rgb(25 135 84)', 'rgb(220 53 69)', 'rgb(255 193 7)', 'rgb(13 202 240)']
       },
       barChart: {
-        Labels: this.officesLabels,
-        Data: this.chargesAmount
+        Labels: [],
+        Data: []
       },
       barTitle: "Number Of Travels Per Office"
     };
+  },
+  computed: {
+    temp: function temp() {
+      var vm = this;
+
+      if (vm.officesLabels !== null) {
+        _.forEach(vm.officesLabels, function (value, key) {
+          vm.barChart.Labels.push(value.short_name);
+          vm.barChart.Data.push(value.travel_count);
+        });
+      }
+
+      if (vm.chargesChartData !== null) {
+        if (vm.isAdmin) {
+          _.forEach(vm.charges, function (value, key) {
+            vm.chargesChartData.Labels.push(value.office_short_name);
+            vm.chargesChartData.Data.push(value.office_charges_amount);
+          });
+        } else {
+          if (vm.charges.length > 0) {
+            vm.chargesChartData.Labels.push(vm.charges[0].office_short_name + ' Balance');
+            vm.chargesChartData.Labels.push(vm.charges[0].office_short_name + ' Consumed');
+            vm.chargesChartData.Data.push(vm.balance - vm.consume);
+            vm.chargesChartData.Data.push(vm.consume);
+          }
+        }
+      }
+
+      _.forEach(_(vm.fuelConsumed).groupBy('office_short_name').map(function (platform, id) {
+        return {
+          office_short_name: id,
+          price: _.sumBy(platform, 'price')
+        };
+      }).value(), function (value, key) {
+        vm.pieChartData.Labels.push(value.office_short_name);
+        vm.pieChartData.Data.push(value.price);
+      });
+
+      var total_consumed = _.sum(vm.pieChartData.Data);
+
+      vm.pieChartData.Labels.push('Total Balance');
+      vm.pieChartData.Data.push(vm.TotalCharge - total_consumed);
+      return vm.barChart;
+    }
   },
   mounted: function mounted() {}
 });
@@ -531,61 +605,58 @@ var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 var _hoisted_2 = {
   "class": "row gap-20 masonry pos-r"
 };
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"masonry-item w-100\"><div class=\"row gap-20\"><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Total Visits</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500\">+10%</span></div></div></div></div></div><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Total Page Views</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash2\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500\">-7%</span></div></div></div></div></div><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Unique Visitor</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash3\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500\">~12%</span></div></div></div></div></div><div class=\"col-md-3\"><div class=\"layers bd bgc-white p-20\"><div class=\"layer w-100 mB-10\"><h6 class=\"lh-1\">Bounce Rate</h6></div><div class=\"layer w-100\"><div class=\"peers ai-sb fxw-nw\"><div class=\"peer peer-greed\"><span id=\"sparklinedash4\"></span></div><div class=\"peer\"><span class=\"d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500\">33%</span></div></div></div></div></div></div></div>", 1);
-
-var _hoisted_4 = {
-  "class": "masonry-item w-100"
+var _hoisted_3 = {
+  "class": "w-100"
 };
-var _hoisted_5 = {
+var _hoisted_4 = {
+  key: 0,
   "class": "row"
 };
+var _hoisted_5 = {
+  "class": "layers bd bgc-white p-20"
+};
 var _hoisted_6 = {
-  "class": "col-md-4"
+  "class": "layer w-100 mB-10"
 };
 var _hoisted_7 = {
+  "class": "lh-1"
+};
+var _hoisted_8 = {
+  "class": "col-12"
+};
+var _hoisted_9 = {
   "class": "layers bd bgc-white p-20"
 };
 
-var _hoisted_8 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_10 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "layer w-100 mB-10"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
   "class": "lh-1"
-}, "Fund/Charges")], -1
+}, "Fuel Utilized")], -1
 /* HOISTED */
 );
 
-var _hoisted_9 = {
+var _hoisted_11 = {
   "class": "col-12"
 };
-var _hoisted_10 = {
-  "class": "masonry-item col-8"
-};
-var _hoisted_11 = {
-  "class": "bd bgc-white"
-};
 var _hoisted_12 = {
-  "class": "peers fxw-nw@lg+ ai-s"
+  "class": "layers bd bgc-white p-20"
 };
 var _hoisted_13 = {
-  "class": "peer peer-greed w-70p@lg+ w-100@lg- p-20"
-};
-var _hoisted_14 = {
-  "class": "layers"
-};
-var _hoisted_15 = {
   "class": "layer w-100 mB-10"
 };
-var _hoisted_16 = {
+var _hoisted_14 = {
   "class": "lh-1"
 };
-var _hoisted_17 = {
-  "class": "layer w-100"
+var _hoisted_15 = {
+  "class": "col-12"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
   var _component_some_chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("some-chart");
+
+  var _component_pie_chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("pie-chart");
 
   var _component_total_user = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("total-user");
 
@@ -596,20 +667,41 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_some_chart, {
-    chartData: $data.pieChartData.Data,
-    chartLabel: $data.pieChartData.Labels,
-    chartColor: $data.pieChartData.Colors
-  }, null, 8
-  /* PROPS */
-  , ["chartData", "chartLabel", "chartColor"])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" #Site Visits ==================== "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.barTitle), 1
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"masonry-item w-100\">\r\n            <div class=\"row gap-20\">\r\n                <div class=\"col-md-3\">\r\n                    <div class=\"layers bd bgc-white p-20\">\r\n                        <div class=\"layer w-100 mB-10\">\r\n                            <h6 class=\"lh-1\">Total Visits</h6>\r\n                        </div>\r\n                        <div class=\"layer w-100\">\r\n                            <div class=\"peers ai-sb fxw-nw\">\r\n                                <div class=\"peer peer-greed\">\r\n                                    <span id=\"sparklinedash\"></span>\r\n                                </div>\r\n                                <div class=\"peer\">\r\n                                    <span class=\"\r\n                                            d-ib\r\n                                            lh-0\r\n                                            va-m\r\n                                            fw-600\r\n                                            bdrs-10em\r\n                                            pX-15\r\n                                            pY-15\r\n                                            bgc-green-50\r\n                                            c-green-500\r\n                                        \">+10%</span>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"col-md-3\">\r\n                    <div class=\"layers bd bgc-white p-20\">\r\n                        <div class=\"layer w-100 mB-10\">\r\n                            <h6 class=\"lh-1\">Total Page Views</h6>\r\n                        </div>\r\n                        <div class=\"layer w-100\">\r\n                            <div class=\"peers ai-sb fxw-nw\">\r\n                                <div class=\"peer peer-greed\">\r\n                                    <span id=\"sparklinedash2\"></span>\r\n                                </div>\r\n                                <div class=\"peer\">\r\n                                    <span class=\"\r\n                                            d-ib\r\n                                            lh-0\r\n                                            va-m\r\n                                            fw-600\r\n                                            bdrs-10em\r\n                                            pX-15\r\n                                            pY-15\r\n                                            bgc-red-50\r\n                                            c-red-500\r\n                                        \">-7%</span>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"col-md-3\">\r\n                    <div class=\"layers bd bgc-white p-20\">\r\n                        <div class=\"layer w-100 mB-10\">\r\n                            <h6 class=\"lh-1\">Unique Visitor</h6>\r\n                        </div>\r\n                        <div class=\"layer w-100\">\r\n                            <div class=\"peers ai-sb fxw-nw\">\r\n                                <div class=\"peer peer-greed\">\r\n                                    <span id=\"sparklinedash3\"></span>\r\n                                </div>\r\n                                <div class=\"peer\">\r\n                                    <span class=\"\r\n                                            d-ib\r\n                                            lh-0\r\n                                            va-m\r\n                                            fw-600\r\n                                            bdrs-10em\r\n                                            pX-15\r\n                                            pY-15\r\n                                            bgc-purple-50\r\n                                            c-purple-500\r\n                                        \">~12%</span>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n                <div class=\"col-md-3\">\r\n                    <div class=\"layers bd bgc-white p-20\">\r\n                        <div class=\"layer w-100 mB-10\">\r\n                            <h6 class=\"lh-1\">Bounce Rate</h6>\r\n                        </div>\r\n                        <div class=\"layer w-100\">\r\n                            <div class=\"peers ai-sb fxw-nw\">\r\n                                <div class=\"peer peer-greed\">\r\n                                    <span id=\"sparklinedash4\"></span>\r\n                                </div>\r\n                                <div class=\"peer\">\r\n                                    <span class=\"\r\n                                            d-ib\r\n                                            lh-0\r\n                                            va-m\r\n                                            fw-600\r\n                                            bdrs-10em\r\n                                            pX-15\r\n                                            pY-15\r\n                                            bgc-blue-50\r\n                                            c-blue-500\r\n                                        \">33%</span>\r\n                                </div>\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [$options.temp ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($props.isAdmin == null ? 'col-md-4' : 'col-md-6')
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.isAdmin == null ? 'Fuel Utilization' : 'Department Charges'), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_total_user, {
-    chartData: $data.totalUser,
-    chartLabel: $props.officesLabels
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_some_chart, {
+    chartData: $data.chargesChartData.Data,
+    CharLegelPosition: $props.isAdmin == null ? 'top' : 'left',
+    chartLabel: $data.chargesChartData.Labels,
+    chartColor: $data.chargesChartData.Colors
   }, null, 8
   /* PROPS */
-  , ["chartData", "chartLabel"])])])])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row\">\r\n            <div class=\"col-md-4\">\r\n                <div class=\"layers bd bgc-white p-20\">\r\n                    <div class=\"layer w-100 mB-10\">\r\n                        <h6 class=\"lh-1\">Site Data</h6>\r\n                    </div>\r\n                    <line-chart></line-chart>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div class=\"layers bd bgc-white p-20\" style=\"min-height: 400px;\">\r\n                    <div class=\"layer w-100 mB-10\">\r\n                        <h6 class=\"lh-1\">Site Data</h6>\r\n                    </div>\r\n                    <div class=\"d-flex justify-content-center\">\r\n                        <div class=\"spinner-border\" role=\"status\">\r\n                            <span class=\"visually-hidden\">Loading...</span>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div> ")])], 64
+  , ["chartData", "CharLegelPosition", "chartLabel", "chartColor"])])])], 2
+  /* CLASS */
+  ), $props.isAdmin !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+    key: 0,
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($props.isAdmin == null ? 'col-md-4' : 'col-md-6')
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [_hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pie_chart, {
+    pieChartData: $data.pieChartData.Data,
+    pieChartLabels: $data.pieChartData.Labels
+  }, null, 8
+  /* PROPS */
+  , ["pieChartData", "pieChartLabels"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <some-chart :chartData=\"pieChartData.Data\" :CharLegelPosition=\"isAdmin == null ? 'top':'left'\" :chartLabel=\"pieChartData.Labels\" :chartColor=\"pieChartData.Colors\"></some-chart> ")])])], 2
+  /* CLASS */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div :class=\"isAdmin? 'col-md-6':'col-md-4'\">\r\n                    <div class=\"layers bd bgc-white p-20\">\r\n                        <div class=\"layer w-100 mB-10\">\r\n                            <h6 class=\"lh-1\">Department Charges</h6>\r\n                        </div>\r\n                        <div class=\"col-12\">\r\n                            <some-chart :chartData=\"pieChartData.Data\" :CharLegelPosition=\"'left'\" :chartLabel=\"pieChartData.Labels\" :chartColor=\"pieChartData.Colors\"></some-chart>\r\n                        </div>\r\n                    </div>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($props.isAdmin !== null ? 'col-md-12 mT-10' : 'col-md-8')
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.barTitle), 1
+  /* TEXT */
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_total_user, {
+    chartData: $data.barChart.Data,
+    chartLabel: $data.barChart.Labels
+  }, null, 8
+  /* PROPS */
+  , ["chartData", "chartLabel"])])])], 2
+  /* CLASS */
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row\">\r\n            <div class=\"col-md-4\">\r\n                <div class=\"layers bd bgc-white p-20\">\r\n                    <div class=\"layer w-100 mB-10\">\r\n                        <h6 class=\"lh-1\">Site Data</h6>\r\n                    </div>\r\n                    <line-chart></line-chart>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div class=\"layers bd bgc-white p-20\" style=\"min-height: 400px;\">\r\n                    <div class=\"layer w-100 mB-10\">\r\n                        <h6 class=\"lh-1\">Site Data</h6>\r\n                    </div>\r\n                    <div class=\"d-flex justify-content-center\">\r\n                        <div class=\"spinner-border\" role=\"status\">\r\n                            <span class=\"visually-hidden\">Loading...</span>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div> ")])], 64
   /* STABLE_FRAGMENT */
   );
 }

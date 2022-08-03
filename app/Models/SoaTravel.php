@@ -16,4 +16,9 @@ class SoaTravel extends Model
     {
         return $this->hasMany(Travel::class,"soa_travel","id");
     }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id', 'department_code');                                                                                                                     
+    }
 }

@@ -84,6 +84,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
   },
   setup: function setup(props) {
     var vm = this;
+    console.log(props.chartLabel);
     var chartData = {
       labels: props.chartLabel,
       datasets: [{

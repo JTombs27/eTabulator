@@ -9,6 +9,8 @@ use App\Models\OfficeVehicles;
 use App\Models\Price;
 use App\Models\Travel;
 use App\Models\User;
+use App\Models\Vehicle;
+use App\Rules\ValidateWeek;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,28 +19,29 @@ use Illuminate\Support\Facades\Http;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles, Vehicle $vehicles)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
         $this->charges = $charges;
         $this->prices = $prices;
         $this->officeVehicles = $officeVehicles;
+        $this->vehicles = $vehicles;
     }    
 
     public function index(Request $request)
     {
-       
+        // dd($request->all());
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
-                            ->when(auth()->user()->role != 'PGO' || auth()->user()->role != 'Admin',
+                            ->when(strtolower(auth()->user()->role) == 'ro' || strtolower(auth()->user()->role) == 'pg-head' || strtolower(auth()->user()->role) == 'pgso',
                                 function($q) {
                                     $q->where('office_id', auth()->user()->office_id);
                                 }
                             )
                             ->when($request->dateFilterType == 'all', function($q) use ($request) {
-                                $q->wherebetween('date_from', [$request->date_from,$request->date_from]);
+                                $q->orWherebetween('date_from', [$request->date_from,$request->date_to]);
                             })
                             ->when($request->dateFilterType == 'from', function($q) use ($request) {
                                 $q->where('date_from', '>=', $request->date_from);
@@ -46,13 +49,22 @@ class TravelController extends Controller
                             ->when($request->dateFilterType == 'to', function($q) use ($request) {
                                 $q->where('date_from', '<=', $request->date_to);
                             })
-                            ->latest()
+                            ->when($request->status && $request->status != 'pending', function($q) {
+                                $q->orWhere('status', request('status'));
+                            
+                            })
+                            ->when($request->status == 'pending', function($q) {
+                                $q->orWhereNull('status');
+                            })
+                            ->orderBy('status')
+                            ->orderBy('id','desc')
                             ->simplePaginate(10)
                             ->through(function ($item) {
-                                $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
-                                })->latest()->first($item->gas_type);
+                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                // dd($total[$item->gas_type], $item->total_liters);
                                 return [
                                     'first_name' => $item->driverVehicle->empl->first_name,
                                     'middle_name' => $item->driverVehicle->empl->middle_name,
@@ -68,15 +80,22 @@ class TravelController extends Controller
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
-                                ]; 
-                            }),
-            "can" => [
-                'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
-                'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
-                'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
-                'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
-            ]
-        ]);
+                                    'soa_travel'        => $item->soa_travel,
+                                    'place_to_visit'    =>$item->place_to_visit,
+                                    'purpose'           =>$item->purpose,
+                                    'official_passenger'=>$item->official_passenger,
+                                    'is_carpool'        =>$item->is_carpool,
+                                         'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
+                                         'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
+                                     ]; 
+                                 }),
+             "can" => [
+                 'canCreateTravel' => auth()->user()->can('canCreateTravel', User::class),
+                 'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
+                 'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
+                 'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
+             ]
+         ]);
     }
 
     public function create()
@@ -88,7 +107,6 @@ class TravelController extends Controller
         //     ]
         // ]);
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
-        
         if(!$amount) {
             $amount = 0.00;
         } else {
@@ -100,13 +118,18 @@ class TravelController extends Controller
         $travels = $this->model
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
+                        ->where('status', '<>', 'Disapproved')
                         ->get();
                         
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-            $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                $q->whereDate('date', $item->date_from);
-            })->latest()->first($item->gas_type);
+            $total = $this->prices
+                ->when($checkPrice, function($q) use ($item) {
+                    $q->whereDate('date', $item->date_from);
+                })
+                ->where('gasoline_id', $item->gasoline_id)
+                ->latest()
+                ->first($item->gas_type);
             return [
                 'price' => ($total[$item->gas_type] * $item->total_liters),
                 'date' => $item->date_from
@@ -122,6 +145,27 @@ class TravelController extends Controller
     public function edit(Request $request, $id)
     {
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+
+        $travels = $this->model
+                        ->whereYear('date_from', date("Y"))
+                        ->where('office_id', auth()->user()->office_id)
+                        ->where('status', '<>', 'Disapproved')
+                        ->get();
+                
+        $travels = $travels->map(function($item)  {
+                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->where('gasoline_id', $item->gasoline_id)->exists();
+                        $total = $this->prices
+                                ->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                                })
+                                ->where('gasoline_id', $item->gasoline_id)
+                                ->latest()
+                                ->first($item->gas_type);
+                        return [
+                        'price' => ($total[$item->gas_type] * $item->total_liters),
+                        'date' => $item->date_from
+                        ];
+                    });
         
         if(!$amount) {
             $amount = 0.00;
@@ -132,7 +176,7 @@ class TravelController extends Controller
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
-            'balance' => $amount
+            'balance' => $amount - $travels->sum('price')
         ]);
         
     }
@@ -140,6 +184,23 @@ class TravelController extends Controller
     public function getVehicleDriver(Request $request)
     {
         $mi = "";
+        // $weekStartDate = Carbon::parse($request->date_from)->startOfWeek()->format('Y-m-d');
+        // $weekEndDate = Carbon::parse($request->date_from)->endOfWeek()->format('Y-m-d');
+      
+        // $fuel = $this->model->whereBetween('date_from', [$weekStartDate,$weekEndDate])
+        //             ->with(['driverVehicle' => function($q) use ($request) {
+        //                 $q->where('vehicles_id', $request->vehicles_id);
+        //             }])
+        //             ->whereHas('driverVehicle', function($q) use ($request) {
+        //                 $q->where('vehicles_id', $request->vehicles_id);
+        //             })
+        //             ->when($request->date_to, function ($q) use ($weekStartDate,$weekEndDate){
+        //                 $q->orWhereBetween('date_to', [$weekStartDate,$weekEndDate]);
+        //             })
+                    
+        //             ->latest()
+        //             ->get();
+
         $driverVehicle = $this->driverVehicle
                             ->with('empl','vehicle.vehicle_status')
                             ->where('vehicles_id', $request->vehicles_id)
@@ -152,20 +213,21 @@ class TravelController extends Controller
     {
         $date_from = $request->date_from;
         $date_to = $request->date_to;
-        // $now = Carbon::now();
+        $now = Carbon::now();
         // $weekStartDate = Carbon::parse($date_from)->startOfWeek()->format('Y-m-d');
-        // $weekEndDate = Carbon::parse($date_to)->endOfWeek()->format('Y-m-d');
-        $isExistTravel = $this->model
-                            ->where('driver_vehicles_id', $request->driver_vehicles_id)
-                            ->where(function($query) use($date_from, $date_to) {
-                                $query->whereBetween('date_from', [$date_from, $date_to])
-                                        ->OrWhereBetween('date_to', [$date_from, $date_to]);
-                            })
-                            ->exists();
+        // $weekEndDate = Carbon::parse($date_from)->endOfWeek()->format('Y-m-d');
+        // dd($weekStartDate, $weekEndDate);
+        // $isExistTravel = $this->model
+        //                     ->where('driver_vehicles_id', $request->driver_vehicles_id)
+        //                     ->where(function($query) use($date_from, $date_to) {
+        //                         $query->whereBetween('date_from', [$date_from, $date_to])
+        //                                 ->OrWhereBetween('date_to', [$date_from, $date_to]);
+        //                     })
+        //                     ->exists();
       
-        if ($isExistTravel) {
-            return redirect('/travels/create')->with('error', 'This record already exist.');
-        }
+        // if ($isExistTravel) {
+        //     return redirect('/travels/create')->with('error', 'This record already exist.');
+        // }
 
         // $attributes = $request->validated();
         
@@ -234,11 +296,23 @@ class TravelController extends Controller
         if (!$request->rangedDate) {
             $request['date_to'] = null;
         }
+        if (!$request->showActualDriver) {
+            $request['actual_driver'] = null;
+            // dd($request->all());
+        }
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
 
         return redirect('/travels')->with('message', 'The changes have been saved');
 
+    }
+
+    public function destroy($id)
+    {
+        $data = $this->model->findOrFail($id);
+        $data->delete();
+
+        return redirect('/travels')->with('message', 'Travel deleted');
     }
 
     public function setStatus(Request $request)
@@ -263,16 +337,16 @@ class TravelController extends Controller
                                 head.last_name as head_last_name,
                                 head.position_title_short as position_short,
                                 offices.short_name,
-                                offices.office'))
+                                offices.office,
+                                offices.designation'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
+                            ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->leftJoin('employees as head', function($join)
                                  {
-                                     $join->on('travels.office_id', '=', 'head.department_code')
-                                          ->where('head.is_pghead','=', 1);
+                                     $join->on('offices.empl_id', '=', 'head.empl_id');
                                  })
-                            ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->where('travels.id', $request->id)
                             ->first();
         return $travel;
@@ -281,14 +355,14 @@ class TravelController extends Controller
     public function getPrice(Request $request)
     {
         try {
-            $is_exist = $this->prices->whereDate('date',$request->datefilter)->exists();
+            $is_exist = $this->prices->where('gasoline_id', $request->gasoline_id)->whereDate('date',$request->datefilter)->exists();
             
             $query = $this->prices->query();
 
             $query->when($is_exist, function ($q) {
                 return $q->whereDate('date',request('datefilter'));
             });
-            $query = $query->latest()->first($request->gasType);
+            $query = $query->where('gasoline_id', request('gasoline_id'))->latest()->first($request->gasType);
             return array_values($query->toArray())[0];
             
         } catch (\Throwable $th) {
@@ -310,4 +384,14 @@ class TravelController extends Controller
                         'office_id' => $item->department_code
                     ]);
     }
+
+    // public function checkWeek(Request $request)
+    // {
+    //     $validator = $request->validate([
+    //         'date_to' => ['required', new ValidateWeek($request->date_from, $request->date_from)]
+    //     ]);
+
+        
+
+    // }
 }

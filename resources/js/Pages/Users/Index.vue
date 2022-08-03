@@ -24,14 +24,14 @@
         </filtering>
  
         <div class="col-12">
-            <div class="bgc-white p-20 bd">
+            <div class="bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Active</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col" style="width: 30%"></th>
+                            <th scope="col">Role</th>
+                            <th scope="col" style="width: 30%">Permissions</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
@@ -65,7 +65,7 @@
                                 </div>
                             </td>
                             <td>
-                                {{ user.email }}
+                                {{ user.role }}
                             </td>
                             <td>
                                 <div class="badge bg-info me-1" v-for="permission in user.permissions">
@@ -98,7 +98,7 @@
                     <div class="col-md-12">
                         <!-- read the explanation in the Paginate.vue component -->
                         <!-- <pagination :links="users.links" /> -->
-                        <pagination :links="users.links" />
+                        <pagination :next="users.next_page_url" :prev="users.prev_page_url" />
                     </div>
                 </div>
             </div>
@@ -109,6 +109,7 @@
         v-if="showModal" 
         :modalTitle="'Permissions'" 
         :addional_class="'modal-lg'"
+        :showSaveButton="true"
         @closeModal="closeModal"
         @saveModal="updatePermissions">
         <div class="row pb-3">
@@ -170,7 +171,7 @@
 
 <script>
 import Filtering from "@/Shared/Filter";
-import Pagination from "@/Shared/PaginationNumber";
+import Pagination from "@/Shared/Pagination";
 
 export default {
     components: { Pagination, Filtering },
@@ -271,7 +272,7 @@ export default {
                     this.selectedPermissions = newArr;
                 } else if (Permission_type == 'pgo') {
 
-                    this.selectedPermissions = [5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26];
+                    this.selectedPermissions = [5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26,31];
 
                 } else if (Permission_type == 'ro') {
 
@@ -283,7 +284,11 @@ export default {
 
                 } else if (Permission_type == 'pgso') {
 
-                    this.selectedPermissions = [4,8,16,17,18,19,20,21,22,23,24,27,28,29,30];
+                    this.selectedPermissions = [4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31];
+
+                } else if (Permission_type == 'peo-motorpool') {
+
+                    this.selectedPermissions = [18, 19];
 
                 }
 

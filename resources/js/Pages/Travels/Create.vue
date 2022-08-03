@@ -62,95 +62,111 @@
                     
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label for="">Travel Departure</label>
-                        <input v-model="form.time_departure" type="time" class="form-control" autocomplete="chrome-off"/>
+                <span v-if="form.date_from">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="">Travel Departure</label>
+                            <input v-model="form.time_departure" type="time" class="form-control" autocomplete="chrome-off"/>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="">Travel Arrival</label>
+                            <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="">Travel Arrival</label>
-                        <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
-                    </div>
-                </div>
-                <br>
-                <div class="position-relative">
-                    <label class="col-md-3" for="">Vehicle Name</label>
-                    <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
-                </div>
-                <Select2 v-model="form.vehicles_id" :options="officeFiltered" @select="getVehicleDetails($event)" />
-                <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
-                <div class="col-md-12">
                     <br>
-                     <div class="form-check ">
-                         <label class="form-check-label disable-select" for="carpool">
-                             Tag as carpool
-                         </label>
-                        <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
+                    <div class="position-relative">
+                        <label class="col-md-3" for="">Vehicle Name</label>
+                        <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                     </div>
-
+                    <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
+                    <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
+                    <div class="col-md-12">
+                        <br>
+                         <div class="form-check ">
+                             <label class="form-check-label disable-select" for="carpool">
+                                 Tag as carpool
+                             </label>
+                            <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
+                        </div>
                     
-
+                        
                     
-                    <transition name="fade"  mode="out-in">
-                        <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
-                            <br>
-                            <label >Borrowed by</label>
-                            <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
-                            <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
-                        </span>
-                    </transition>
-                </div>
-                <hr>
-                <label>Authorized Driver</label>
-                <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
-                <!-- <input type="text" class="form-control" v-model="driverName"> -->
-                <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
-                <br>
-
-                <div class="col-md-12">
-                    <div class="form-check ">
-                        <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
-                        <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
-                            Check to set substitute driver
-                        </label>
+                        
+                        <transition name="fade"  mode="out-in">
+                            <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
+                                <br>
+                                <label >Borrowed by</label>
+                                <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
+                                <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
+                            </span>
+                        </transition>
                     </div>
-                </div>
-                
-                <label v-if="form.showActualDriver">Actual Driver</label>
-                <Select2 
-                    v-if="form.showActualDriver"
-                    v-model="form.actual_driver" 
-                    id="actualDriver" 
-                    @select="setActualDriver($event)" 
-                />
-                <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
-                
-                <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
-                
-                <hr>
-                <label for="">Name of Authorized Passenger/s</label>
-                <textarea class="form-control" cols="3" v-model="form.official_passenger"></textarea>
-                <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
-                <label for="">Place to visit</label>
-                <input type="text" v-model="form.place_to_visit" class="form-control">
-                <label for="">Purpose of Travel</label>
-                <input type="text" v-model="form.purpose" class="form-control">
-                <div class="position-relative">
-                    <label class="col-md-3" for="">Gas Type</label>
-                    <label class="position-absolute top-0 end-0" for=""><strong>{{ gasPrice }}</strong></label>
-                </div>
-                <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
-                        <option  v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
-                </select>
-                <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
-                <label for="">Liter/s</label>
-                <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
-                <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
-                <label for="">Price</label>
-                <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
-                <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
-                <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
-                    changes</button>
+                    <hr>
+                    <label>Authorized Driver</label>
+                    <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
+                    <!-- <input type="text" class="form-control" v-model="driverName"> -->
+                    <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
+                    <br>
+                    
+                    <div class="col-md-12">
+                        <div class="form-check ">
+                            <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
+                            <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
+                                Check to set substitute driver
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <label v-if="form.showActualDriver">Actual Driver</label>
+                    <Select2 
+                        v-if="form.showActualDriver"
+                        v-model="form.actual_driver" 
+                        id="actualDriver" 
+                        @select="setActualDriver($event)" 
+                    />
+                    <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
+                    
+                    <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
+                    
+                    <hr>
+                    <label for="">Name of Authorized Passenger/s</label>
+                    <textarea class="form-control" cols="3" v-model="form.official_passenger"></textarea>
+                    <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
+                    <label for="">Place to visit</label>
+                    <input type="text" v-model="form.place_to_visit" class="form-control">
+                    <label for="">Purpose of Travel</label>
+                    <input type="text" v-model="form.purpose" class="form-control">
+                    <div class="position-relative">
+                        <label class="col-md-3" for="">Gasoline Station</label>
+                    </div>
+                    <select class="form-select" v-model="form.gasoline_id" @change="fetchPrice()">
+                        <option disabled value="">Select Station</option>
+                        <option value="1">Petron</option>
+                        <option value="2">Shell</option>
+                        <option value="3">Sea Oil</option>
+                    </select>
+                    <div class="position-relative">
+                        <label class="col-md-3" for="">Gas Type</label>
+                        <label class="position-absolute top-0 end-0" for=""><strong>{{ gasPrice }}</strong></label>
+                    </div>
+                    <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
+                            <option value="" disabled></option>
+                            <option disabled value="" v-if="!form.gasoline_id">Select Gasoline Station first</option>
+                            <option  v-else v-for="item, index in gases" :value="item.id">{{ item.text }}</option>
+                    </select>
+                    <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
+                    
+                    <div class="position-relative">
+                        <label for="">Liter/s</label>
+                        <!-- <label class="position-absolute top-0 end-0" for=""><strong>{{ form.maxLiters ? `Maximum of: ${form.maxLiters} liters`: "" }}</strong></label> -->
+                    </div>
+                    <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
+                    <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
+                    <label for="">Price</label>
+                    <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
+                    <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
+                    <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save changes</button>
+                </span>
             </form>
 
 
@@ -197,7 +213,10 @@ export default {
                 type_code:null,
                 is_borrowed_vehicle:null,
                 is_borrowed_fuel:null,
-                borrowing_office:null
+                borrowing_office:null,
+                remaining_fuel:null,
+                maxLiters:"",
+                gasoline_id:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -232,6 +251,7 @@ export default {
         // console.log(this.auth.user)
         this.form.balance = this.balance
         if (this.editData !== undefined) {
+            _.assign(this.form, {current_liters:this.editData.total_liters})
             this.loading = true
             this.pageTitle = "Edit"
             this.form.place_to_visit = this.editData.place_to_visit
@@ -246,19 +266,21 @@ export default {
             this.form.price = this.editData.price
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
             this.form.date_from = this.editData.date_from
-            this.form.date_to = this.editData.date_to
+            this.form.gasoline_id = this.editData.gasoline_id
             this.form.office_id = this.editData.office_id
             this.form.is_carpool = Boolean(this.editData.is_carpool)
             this.form.showActualDriver = this.editData.actual_driver ? true : false
             this.form.actual_driver = this.editData.actual_driver ? this.editData.actual_driver : ""
             if (this.editData.date_to) {
                 this.form.rangedDate = true
+                
             }
             await this.getVehicleDetails();
             await this.showActualDriver();
             await this.fetchPrice();
-            // setTimeout(() => {
-            // }, 0);
+            setTimeout(() => {
+                this.form.date_to = this.editData.date_to
+            }, 0);
             
         } else {
             this.pageTitle = "Create"
@@ -303,29 +325,45 @@ export default {
 
         fetchPrice() {
             axios.post('/travels/get-price', 
-                {datefilter:this.form.date_from, gasType:this.form.gas_type}
+                {datefilter:this.form.date_from, gasType:this.form.gas_type, gasoline_id:this.form.gasoline_id}
             ).then((response) => {
                 this.gasPrice = `Price: \u20B1${parseFloat(response.data).toFixed(2)}`;
                 this.form.price =  (Number(response.data) * Number(this.form.total_liters)).toFixed(2);
             })
+
+            // if (this.form.vehicles_id) {
+            //     axios.post('/travels/get-fuel', {}).then((response) => {
+            //         this.form.remaining_fuel = response.data
+            //     })
+            // }
+
+            // if (this.form.vehicles_id) {
+            //     console.log('test')
+            //     this.getVehicleDetails();
+            // }
         },
+
+        
 
 
         getVehicles(e){
             
-            axios.post(`/travels/get-vehicles`).then( (response) => {
+            axios.post(`/vehicles/getVehicles`).then( (response) => {
                 this.vehicles = response.data
-                // let office = this.auth.user.office_id
-                // try {
-                //     if (e.target.checked) {
-                //         this.vehicles = response.data
-                //     } else {
-                //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
-                //     }
-                // } catch (error) {
-                //     this.vehicles = response.data
-                // }
             })
+            // axios.post(`/travels/get-vehicles`).then( (response) => {
+            //     this.vehicles = response.data
+            //     // let office = this.auth.user.office_id
+            //     // try {
+            //     //     if (e.target.checked) {
+            //     //         this.vehicles = response.data
+            //     //     } else {
+            //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+            //     //     }
+            //     // } catch (error) {
+            //     //     this.vehicles = response.data
+            //     // }
+            // })
         },
 
         getEmployees() {
@@ -334,13 +372,26 @@ export default {
             })
         },
 
+        // getMaxLiters() {
+        //     if (this.form.vehicles_id) {
+        //         axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id, date_to: this.form.date_to, date_from: this.form.date_from})
+        //         .then((response) => {
+        //             this.drivers =  response.data[0].map(obj => {
+        //                 this.form.maxLiters = response.data[1] != 0 ? Number(response.data[0][0].vehicle.fuel_limit) - Number(response.data[1]) : ""
+        //             })   
+                
+        //         })
+        //     }
+        // },
+
         getVehicleDetails(e) {
+            console.log(e.typeCode)
             if (this.editData !== undefined) {
                 this.form.type_code = this.editData.driver_vehicle.vehicle
             } else {
-                this.form.type_code = e.typeCode.TYPECODE;
+                this.form.type_code = e.typeCode;
             }
-            axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id})
+            axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id, date_to: this.form.date_to, date_from: this.form.date_from})
                 .then((response) => {
                     this.drivers =  response.data.map(obj => {
                         let _selected = false;
@@ -359,11 +410,24 @@ export default {
                             "selected": _selected
                         }
                     })   
-                    this.vehicle_status = response.data ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
+                    try {
+                        this.vehicle_status = response.data[0] ? `Status: ${response.data[0].vehicle.vehicle_status.condition}`: ""   
+                    } catch (error) {
+                        this.vehicle_status = "No status available"   
+                    }
                 })
            
         },
         
+        // checkWeek() {
+        //     if(this.form.date_to && this.form.date_to) {
+        //         this.form.post('/travels/check-week', {date_from:this.form.date_from, date_to:this.form.date_to}, {
+        //             onSuccess: page => {
+        //                 console.log(page)
+        //             }
+        //         });
+        //     }    
+        // },
 
         showActualDriver(e) {
             console.log(e)
@@ -459,6 +523,7 @@ export default {
         submit() {
             if(this.editData) {
                 this.form.patch(`/travels/${this.editData.id}`, this.form);
+                // console.log(this.form)
                 return false;
             }
             this.form.post("/travels", this.form);

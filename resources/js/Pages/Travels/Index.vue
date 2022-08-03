@@ -23,6 +23,13 @@
                 <input type="date" v-model="filterData.date_from" class="form-control">
                 <label for="">To</label>
                 <input type="date" v-model="filterData.date_to" class="form-control">
+                <label for="">Status</label>
+                <select class="form-select" v-model="filterData.status">
+                    <option disabled readonly>Select Status</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Disapproved">Disapproved</option>
+                    <option value="pending">Pending</option>
+                </select>
                 <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -38,7 +45,7 @@
 
        
         <div class="col-12">
-            <div class="bgc-white p-20 bd">
+            <div class="bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -73,7 +80,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu" :id="item.id" aria-labelledby="dropdownMenuButton1">
-                                    <li v-if="item.status == 'Disapproved' || item.status==null">
+                                    <li v-if="(item.status == 'Disapproved' || item.status==null) && item.soa_travel == null">
                                         
                                         <button as="button" class="dropdown-item" @click="approvedStatus(item,'Approved')" v-if="can.canSetStatus && !loader">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#31abf7" class="bi bi-hand-thumbs-up-fill" viewBox="0 0 16 16">
@@ -81,7 +88,7 @@
                                             </svg> Approve
                                         </button>
                                     </li>
-                                    <li v-if="item.status == 'Approved' || item.status==null">
+                                    <li v-if="(item.status == 'Approved' || item.status==null) && item.soa_travel == null">
                                         <button as="button" class="dropdown-item" @click="approvedStatus(item, 'Disapproved')" v-if="can.canSetStatus && !loader">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#f5565b" class="bi bi-hand-thumbs-down-fill" viewBox="0 0 16 16">
                                               <path d="M6.956 14.534c.065.936.952 1.659 1.908 1.42l.261-.065a1.378 1.378 0 0 0 1.012-.965c.22-.816.533-2.512.062-4.51.136.02.285.037.443.051.713.065 1.669.071 2.516-.211.518-.173.994-.68 1.2-1.272a1.896 1.896 0 0 0-.234-1.734c.058-.118.103-.242.138-.362.077-.27.113-.568.113-.856 0-.29-.036-.586-.113-.857a2.094 2.094 0 0 0-.16-.403c.169-.387.107-.82-.003-1.149a3.162 3.162 0 0 0-.488-.9c.054-.153.076-.313.076-.465a1.86 1.86 0 0 0-.253-.912C13.1.757 12.437.28 11.5.28H8c-.605 0-1.07.08-1.466.217a4.823 4.823 0 0 0-.97.485l-.048.029c-.504.308-.999.61-2.068.723C2.682 1.815 2 2.434 2 3.279v4c0 .851.685 1.433 1.357 1.616.849.232 1.574.787 2.132 1.41.56.626.914 1.28 1.039 1.638.199.575.356 1.54.428 2.591z"/>
@@ -112,7 +119,7 @@
                                     <!-- <li><Link class="dropdown-item" :href="`/travels/set-status`" method="post" :data="item" as="button" v-if="can.canSetStatus">Approve</Link></li> -->
                                     
                                     <li v-if="can.canEditTravel && item.status != 'Approved'"><hr class="dropdown-divider action-divider"></li>
-                                    <li v-if="can.canEditTravel && item.status != 'Approved'">
+                                    <li v-if="can.canEditTravel && item.status == null">
                                         <Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -121,9 +128,24 @@
                                             Edit
                                         </Link>
                                     </li>
-                                    <!-- <li v-if="can.canDeleteTravel && item.status != 'Approved'">
-                                        <Link class="text-danger dropdown-item" @click="deleteTravel(item.id)">Delete</Link>
-                                    </li> -->
+                                    <li>
+                                        <button class="dropdown-item"  @click="showDetails(index)" >
+                                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye" viewBox="0 0 16 16">
+                                                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                                                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                                            </svg>
+                                            View Details
+                                        </button>
+                                    </li>
+                                    <li v-if="can.canDeleteTravel && item.status == null">
+                                        <button class="text-danger dropdown-item"  @click="deleteTravel(item)" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                              <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                            </svg>
+                                            Delete
+                                        </button>
+                                    </li>
                                   </ul>
                                 </div>
                             </td>
@@ -141,6 +163,85 @@
             </div>
         </div>
     </div>
+    <Modal 
+        v-if="showModal" 
+        :modalTitle="'Tavel Details'" 
+        @closeModal="closeModal"
+        @saveModal ="insertProject"
+        :showSaveButton = "false"
+    >
+        <div class="col-12 p-5" style="margin-top:-10px;margin-bottom:-20px;">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td>Trip Ticket</td>
+                        <td>:</td>
+                        <td>{{deTailsData.ticket_number}}</td>
+                        <td>Status</td>
+                        <td>:</td>
+                        <td v-html="statusDisplay(deTailsData)"></td>
+                    </tr>
+                    <tr>
+                        <td>Liters</td>
+                        <td>:</td>
+                        <td>{{deTailsData.liters}} L</td>
+                        <td>Total</td>
+                        <td>:</td>
+                        <td class="text-right">{{`\u20B1${Number(deTailsData.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>
+                    </tr>
+                    <tr>
+                        <td>Place To Visit</td>
+                        <td>:</td>
+                        <td colspan="4">{{deTailsData.place_to_visit}}</td>
+                    </tr>
+                    <tr>
+                        <td>Travel Purpose</td>
+                        <td>:</td>
+                        <td colspan="4">{{deTailsData.purpose}}</td>
+                    </tr>
+                    <tr>
+                        <td>Travel Passenger</td>
+                        <td>:</td>
+                        <td colspan="4">{{deTailsData.official_passenger}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Tag as Carpool 
+                            <svg xmlns="http://www.w3.org/2000/svg" style="right:0px;" v-if="deTailsData.is_carpool != null" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" v-if="deTailsData.is_carpool == null" width="16" height="16" fill="currentColor" class="bi bi-x-square text-danger" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </td>
+                        <td colspan="2">Tag Borrowed Car 
+                            <svg xmlns="http://www.w3.org/2000/svg"  v-if="deTailsData.is_borrowed_fuel != null" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" v-if="deTailsData.is_borrowed_fuel == null" width="16" height="16" fill="currentColor" class="bi bi-x-square text-danger" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                           
+                        </td>
+                        <td colspan="2">Tag Borrowed Fuel 
+                            <svg xmlns="http://www.w3.org/2000/svg"  v-if="deTailsData.is_borrowed_vehicle != null" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" v-if="deTailsData.is_borrowed_vehicle == null" width="16" height="16" fill="currentColor" class="bi bi-x-square text-danger" viewBox="0 0 16 16">
+                                <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </Modal>
 </template>
 
 <script>
@@ -166,14 +267,42 @@ export default{
                 date_from:null,
                 date_to:null,
                 dateFilterType:null,
-            }
+                status:null
+            },
+
+            showModal:false,
+            deTailsData:[],
         }
     },
 
     methods:{
+        deleteTravel(item) {
+             let text = "WARNING!\nAre you sure you want to delete the record?";
+              if (confirm(text) == true) {
+                this.$inertia.delete("/travels/" + item.id);
+              }
+        },
+
         showFilter() {
             this.filter = true
         },
+
+        reset () {
+            this.filter = {}
+            this.$inertia.get('/travels')
+
+        },
+
+        showDetails(index)
+        {
+            this.deTailsData = this.travels.data[index];
+            this.showModal = true;
+        },
+
+        closeModal(){
+             this.showModal = false;
+        },
+
         approvedStatus(item, status) {
             //   $(`.dropdown-menu#${item.id}`).toggle();
             this.$inertia.post('/travels/set-status', {id:item.id, status:status}, { 
@@ -212,10 +341,12 @@ export default{
         tripTicket(id) {
             window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftrip_ticket&standAlone=true&decorate=no&id="+id,"_blank");
         },
+
         withdrawal(id) {
             window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fwithdrawal_slip&standAlone=true&decorate=no&id="+id,"_blank");
 
         },
+
         driver_trip(id) {
             window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fdriver_trip_ticket&standAlone=true&decorate=no&id="+id,"_blank");
         },

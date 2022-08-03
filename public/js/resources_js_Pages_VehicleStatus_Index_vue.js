@@ -26,7 +26,8 @@ __webpack_require__.r(__webpack_exports__);
     vehicle_status: Object,
     filters: Object,
     vehicles_id: Object,
-    PLATENO: Object
+    PLATENO: Object,
+    can: Object
   },
   data: function data() {
     return {
@@ -38,7 +39,9 @@ __webpack_require__.r(__webpack_exports__);
       button_label: '',
       pageTitle: "Vehicle Status",
       loading: false,
-      plate_no: ""
+      plate_no: "",
+      editLabel: "",
+      editEnabled: ""
     };
   },
   watch: {
@@ -53,13 +56,22 @@ __webpack_require__.r(__webpack_exports__);
     }, 300)
   },
   mounted: function mounted() {
-    this.plate_no = this.PLATENO; // this.plate_no = this.vehicle_status.plate_no
+    this.plate_no = this.PLATENO;
+
+    if (this.can.canEditVehicleStatus) {
+      this.editEnabled = "";
+      this.editLabel = "Edit";
+    } else {
+      this.editEnabled = "disabled";
+      this.editLabel = "Edit not allowed";
+    } // this.plate_no = this.vehicle_status.plate_no
     // this.form.plate_no = this.plate_no
     // if(this.vehicle.vehicle_status)
     // {
     //     this.form.id = this.vehicle.vehicle_status.id
     //     this.form.condition = this.vehicle.vehicle_status.condition
     // }
+
   },
   methods: {
     submit: function submit() {
@@ -79,8 +91,10 @@ __webpack_require__.r(__webpack_exports__);
       this.$inertia.get("/VehicleStatus/" + this.vehicles_id + "/Create");
     },
     gotoEdit: function gotoEdit(index) {
-      this.id = this.vehicle_status.data[index].id;
-      this.$inertia.get("/VehicleStatus/" + this.id + "/edit");
+      if (this.can.canEditVehicleStatus) {
+        this.id = this.vehicle_status.data[index].id;
+        this.$inertia.get("/VehicleStatus/" + this.id + "/edit");
+      }
     },
     code: function code(_code) {
       switch (_code) {
@@ -288,17 +302,14 @@ var _hoisted_21 = {
   "class": "dropdown-menu action-dropdown",
   "aria-labelledby": "dropdownMenuButton1"
 };
-
-var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Edit");
-
-var _hoisted_23 = {
+var _hoisted_22 = {
   "class": "row justify-content-center"
 };
-var _hoisted_24 = {
+var _hoisted_23 = {
   "class": "col-md-12"
 };
 
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
 /* HOISTED */
 );
 
@@ -322,7 +333,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     placeholder: "Search..."
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, _ctx.search]])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [$props.can.canCreateVehicleStatus ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+    key: 0,
     "class": "btn btn-primary btn-sm",
     onClick: _cache[1] || (_cache[1] = function ($event) {
       return $options.gotoCreate();
@@ -334,7 +346,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary btn-sm mL-2 text-white",
     onClick: _cache[2] || (_cache[2] = function ($event) {
       return $options.showFilter();
@@ -376,7 +388,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, {
       "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-        return [_hoisted_22];
+        return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.editLabel), 1
+        /* TEXT */
+        )];
       }),
       _: 2
       /* DYNAMIC */
@@ -386,12 +400,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     , ["onClick"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li><a class=\"dropdown-item\" href=\"#\" @click=\"editPermissions(user.id)\">Permissions</a></li>\r\n                                    <li><hr class=\"dropdown-divider action-divider\"></li>\r\n                                    <li v-if=\"can.canDeleteUser\">\r\n                                        <Link class=\"text-danger dropdown-item\" @click=\"deleteUser(user.id)\">Delete</Link>\r\n                                    </li> ")])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" read the explanation in the Paginate.vue component "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination :links=\"users.links\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
+  ))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" read the explanation in the Paginate.vue component "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pagination :links=\"users.links\" /> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_pagination, {
     next: $props.vehicle_status.next_page_url,
     prev: $props.vehicle_status.prev_page_url
   }, null, 8
   /* PROPS */
-  , ["next", "prev"])])])])])]), _hoisted_25], 64
+  , ["next", "prev"])])])])])]), _hoisted_24], 64
   /* STABLE_FRAGMENT */
   );
 }
