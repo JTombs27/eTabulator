@@ -60,7 +60,7 @@ class TravelController extends Controller
                             ->orderBy('id','desc')
                             ->simplePaginate(10)
                             ->through(function ($item) {
-                                $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
                                 })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
