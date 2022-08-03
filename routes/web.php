@@ -141,17 +141,17 @@ Route::middleware('auth')->group(function() {
     
     // Route::post('/sss',  [TravelController::class, 'index']);
     Route::prefix('/travels')->group(function() {
-        Route::get('/', [TravelController::class, 'index']);
+        Route::get('/', [TravelController::class, 'index'])->name('index');
         Route::post('get-vehicles', [TravelController::class, 'getVehicles']);
-        Route::get('create', [TravelController::class, 'create']);
-        Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver']);
-        Route::post('/', [TravelController::class, 'store']);
-        Route::post('set-status', [TravelController::class, 'setStatus']);
-        Route::get('/{id}/edit', [TravelController::class, 'edit']);
-        Route::patch('/{id}', [TravelController::class, 'update']);
-        Route::post('get-price', [TravelController::class, 'getPrice']);
-        Route::post('get-fuel', [TravelController::class, 'getFuel']);
-        Route::post('check-week', [TravelController::class, 'checkWeek']);
+        Route::get('create', [TravelController::class, 'create'])->name('create');
+        Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver'])->name('getVehicleDriver');
+        Route::post('/', [TravelController::class, 'store'])->name('store');
+        Route::post('set-status', [TravelController::class, 'setStatus'])->name('setStatus');
+        Route::get('/{id}/edit', [TravelController::class, 'edit'])->name('edit');
+        Route::patch('/{id}', [TravelController::class, 'update'])->name('update');
+        Route::post('get-price', [TravelController::class, 'getPrice'])->name('getPrice');
+        Route::post('get-fuel', [TravelController::class, 'getFuel'])->name('getFuel');
+        Route::post('check-week', [TravelController::class, 'checkWeek'])->name('checkWeek');
         
     });
 
