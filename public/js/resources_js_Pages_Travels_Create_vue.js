@@ -240,10 +240,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getVehicleDetails: function getVehicleDetails(e) {
       var _this5 = this;
 
+      console.log(e.typeCode);
+
       if (this.editData !== undefined) {
         this.form.type_code = this.editData.driver_vehicle.vehicle;
       } else {
-        this.form.type_code = e.typeCode.TYPECODE;
+        this.form.type_code = e.typeCode;
       }
 
       axios.post('/travels/vehicle-details', {

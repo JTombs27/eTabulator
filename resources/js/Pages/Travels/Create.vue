@@ -385,10 +385,11 @@ export default {
         // },
 
         getVehicleDetails(e) {
+            console.log(e.typeCode)
             if (this.editData !== undefined) {
                 this.form.type_code = this.editData.driver_vehicle.vehicle
             } else {
-                this.form.type_code = e.typeCode.TYPECODE;
+                this.form.type_code = e.typeCode;
             }
             axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id, date_to: this.form.date_to, date_from: this.form.date_from})
                 .then((response) => {

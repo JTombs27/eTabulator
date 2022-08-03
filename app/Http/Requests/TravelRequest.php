@@ -29,9 +29,10 @@ class TravelRequest extends FormRequest
      */
     public function rules()
     {
+        // dd($this->type_code);
         $fuel_limit = Vehicle::where('id', $this->vehicles_id)->first(['fuel_limit']);
         // dd($fuel_limit);
-        $valid = auth()->user()->office_id != '01' && $this->type_code != 3;
+        $valid = auth()->user()->office_id != '01';
         // dd($valid);
         return [
             'date_from' =>['required','date'],

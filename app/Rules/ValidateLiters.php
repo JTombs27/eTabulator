@@ -12,6 +12,7 @@ class ValidateLiters implements Rule
     protected $attributes;
     protected $totalLiters;
     protected $fuel_limit;
+    protected $consumedFuel;
     /**
      * Create a new rule instance.
      *
@@ -50,7 +51,16 @@ class ValidateLiters implements Rule
                     ->get();
       
         $consumed = $fuel->sum('total_liters');
+        $consumedFuel = $consumed;
+        //remaining fuel 
 
+        // $remainingPerWeek = ($this->fuel_limit * 7) - $consumed;
+        // dd($remainingPerWeek);
+        if (request('date_from') && request('date_to')) {
+            $this->validateWithRange();
+        }
+
+        // dd($this->fuel_limit);
         //edit
         if ($this->attributes->id) {
             $currentLiters = Travel::findOrFail($this->attributes->id);
@@ -76,5 +86,21 @@ class ValidateLiters implements Rule
     public function message()
     {
         return "Maximum liters available: ". $this->totalLiters." liters";
+    }
+    
+    protected function validateWithRange()
+    {
+       
+        $different_days = date_diff(Carbon::parse(request('date_from')."00:00:00"),Carbon::parse(request('date_to')."24:00:00"))->days;
+        if ($different_days > 7) {
+            $validLiters = ($this->fuel_limit * 7) < $this->attributes->total_liters;
+            $this->totalLiters = $this->fuel_limit * 7;
+        } else if($different_days <= 7 && $this->attributes->total_liters > ($different_days * $this->fuel_limit)) {
+            $validLiters = ($this->fuel_limit * $different_days) < $this->attributes->total_liters;
+            dd($this->fuel_limit * $different_days);
+            $this->totalLiters = $this->fuel_limit * $different_days;
+        } 
+        return $validLiters; 
+        
     }
 }
