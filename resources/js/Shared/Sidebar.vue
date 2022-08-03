@@ -35,7 +35,7 @@
             </div>
             <!-- ### $Sidebar Menu ### -->
             <ul class="sidebar-menu scrollable pos-r">
-                <li class="nav-item mT-30 actived">
+                <li class="nav-item mT-30 actived" v-if="$page.props.auth.user.role != 'peo-motorpool'">
                     <Link class="sidebar-link" href="/" :class="{'active': $page.url === '/'}"><span
                         class="icon-holder"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
@@ -45,7 +45,7 @@
                     </span><span class="title">Dashboard</span></Link>
                 </li>
 
-                <li class="nav-item" v-if="$page.props.auth.user.role != 'PGSO'">
+                <li class="nav-item" v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/travels" :class="{'active': $page.url.startsWith('/travels')}"><span
                         class="icon-holder">
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -84,7 +84,7 @@
                 </li>
 
                 <li class="nav-item"
-                    v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PGSO'">
+                    v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PGSO' || $page.props.auth.user.role == 'peo-motorpool'">
                     <Link class="sidebar-link" href="/vehicles" :class="{'active': $page.url.startsWith('/vehicles')}" ><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-truck" viewBox="0 0 16 16">
@@ -94,7 +94,7 @@
                     </span><span class="title">Vehicles</span></Link>
                 </li>
 
-                <li class="nav-item" v-if="$page.props.auth.user.role != 'PGSO'">
+                <li class="nav-item" v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/soatravels" :class="{'active': $page.url.startsWith('/soatravels')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
@@ -105,7 +105,7 @@
                         </svg>
                     </span><span class="title">Statement of Accounts</span></Link>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" v-if="$page.props.auth.user.role != 'peo-motorpool'">
                     <Link class="sidebar-link" href="/charges" :class="{'active': $page.url.startsWith('/charges')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-wallet-fill" viewBox="0 0 16 16">
@@ -116,7 +116,7 @@
                         </svg>
                     </span><span class="title">&nbsp;Charges</span></Link>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" v-if="$page.props.auth.user.role != 'peo-motorpool'">
                     <Link class="sidebar-link" href="/prices" :class="{'active': $page.url.startsWith('/prices')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-tags" viewBox="0 0 16 16">
@@ -219,7 +219,7 @@
                         </svg>
                     </span><span class="title">Projects</span></Link>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" v-if="$page.props.auth.user.role != 'peo-motorpool'">
                     <Link class="sidebar-link" href="/reports"
                         ><span class="icon-holder"
                             >
