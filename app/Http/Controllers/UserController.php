@@ -42,6 +42,7 @@ class UserController extends Controller
                     'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
+                    'role' => $user->role,
                     'photo' => $user->user_photo,
                     "can" => [
                         'delete' => Travel::where('user_id', $user->id)->exists()
@@ -124,6 +125,7 @@ class UserController extends Controller
         $validated = $request->safe()->only(['password']);
         $validated['office_id'] = $request->office_id;
         $validated['username'] = $request->username;
+        $validated['role'] = $request->permission;
         if ($request->password) {
             $validated['password'] = bcrypt($request->password);
         } else {
