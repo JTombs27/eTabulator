@@ -40,7 +40,14 @@ __webpack_require__.r(__webpack_exports__);
       if (!!this.office_id) {
         window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&__flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftravel_report_per_office&standAlone=true&decorate=no&office_id=" + this.office_id, "_blank");
       } else {
-        window.open(" http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftravel_report&standAlone=true&decorate=no", "_blank");
+        window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftravel_report&standAlone=true&decorate=no", "_blank");
+      }
+    },
+    print_soa: function print_soa() {
+      if (!!this.office_id) {
+        window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fsoa_by_office&standAlone=true&decorate=no&office_id=" + this.office_id, "_blank");
+      } else {
+        window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fsoa_travel_all_offices&standAlone=true &standAlone=true&decorate=no", "_blank");
       }
     }
   }
@@ -73,10 +80,10 @@ var _hoisted_3 = {
 };
 var _hoisted_4 = {
   key: 0,
-  "class": "peers fxw-nw jc-sb ai-c bgc-white p-20"
+  "class": "peers fxw-nw jc-sb ai-c"
 };
 var _hoisted_5 = {
-  "class": "col-md-5"
+  "class": "col-md-6 bgc-white p-20"
 };
 var _hoisted_6 = {
   "class": "mb-3 row"
@@ -223,7 +230,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     type: "button",
     "class": "btn btn-primary",
     onClick: _cache[2] || (_cache[2] = function ($event) {
-      return _ctx.print_soa();
+      return $options.print_soa();
     })
   }, _hoisted_27)])])])])])])])])], 64
   /* STABLE_FRAGMENT */
@@ -244,21 +251,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Index_vue_vue_type_template_id_456176ee__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Index.vue?vue&type=template&id=456176ee */ "./resources/js/Pages/Reports/Index.vue?vue&type=template&id=456176ee");
 /* harmony import */ var _Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue?vue&type=script&lang=js */ "./resources/js/Pages/Reports/Index.vue?vue&type=script&lang=js");
-<<<<<<< HEAD
 /* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
-/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> 6bab2b8e022b3039a4af0b37cdb2eea1cc6e1368
 
 
 
 
 ;
-<<<<<<< HEAD
 const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_456176ee__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Reports/Index.vue"]])
-=======
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_456176ee__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Reports/Index.vue"]])
->>>>>>> 6bab2b8e022b3039a4af0b37cdb2eea1cc6e1368
 /* hot reload */
 if (false) {}
 

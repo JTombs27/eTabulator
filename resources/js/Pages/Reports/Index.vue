@@ -6,8 +6,8 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="masonry-item w-100">
-            <div class="peers fxw-nw jc-sb ai-c bgc-white p-20" v-if="user.role ==='Admin'|| user.role==='PGO'">
-                <div class="col-md-5">
+            <div class="peers fxw-nw jc-sb ai-c " v-if="user.role ==='Admin'|| user.role==='PGO'">
+                <div class="col-md-6 bgc-white p-20">
                     <div class="mb-3 row">
                         <label for="staticEmail" class="col-sm-2 col-form-label">Offices</label>
                         <div class="col-sm-10">
@@ -103,8 +103,23 @@ export default ({
 
             } else 
             {
-                window.open(" http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftravel_report&standAlone=true&decorate=no","_blank");  
+                window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Ftravel_report&standAlone=true&decorate=no","_blank");  
                 
+            }
+        },
+
+        print_soa() {
+
+            if (!!this.office_id) 
+            {
+                window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fsoa_by_office&standAlone=true&decorate=no&office_id="+this.office_id,"_blank");
+
+
+
+
+            } else 
+            {
+                window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fsoa_travel_all_offices&standAlone=true &standAlone=true&decorate=no","_blank"); 
             }
 
         },
