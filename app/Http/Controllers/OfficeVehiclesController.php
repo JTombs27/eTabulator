@@ -33,7 +33,7 @@ class OfficeVehiclesController extends Controller
     {
         $attributes = $request->validate([
             'department_code' => 'required',
-            'effective_date' => 'required',
+            // 'effective_date' => 'required',
             
         ]);
         $this->officevehicles->create($request->all());
@@ -64,7 +64,7 @@ class OfficeVehiclesController extends Controller
     {
         $attributes = $request->validate([
             'department_code' => 'required',
-            'effective_date' => 'required',
+            // 'effective_date' => 'required',
             
         ]);
         $data = $this->officevehicles->findOrFail($request->id);
