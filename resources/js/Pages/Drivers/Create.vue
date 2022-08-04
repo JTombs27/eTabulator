@@ -35,14 +35,14 @@
                                         <div class="col">
                                             <label for="" class="col-mb-3 col-form-label">Date From</label>
                                             <input type="date" v-model="form.date_from" class="form-control" autocomplete="chrome-off" />
-                                            <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
+                                            <!-- <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div> -->
                                             <div class="fs-6 c-red-500" v-if="form.errors.date_fromA">{{ form.errors.date_fromA }}</div>
                                         </div>
 
                                         <div class="col">
                                             <label for="" class="col-mb-3 col-form-label">Date To</label>
                                             <input type="date" v-model="form.date_to" class="form-control" autocomplete="chrome-off" />
-                                            <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
+                                            <!-- <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div> -->
                                             <div class="fs-6 c-red-500" v-if="form.errors.date_toB">{{ form.errors.date_toB }}</div>
                                         </div>
                                     </div>
