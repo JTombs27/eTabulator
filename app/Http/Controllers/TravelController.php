@@ -400,6 +400,7 @@ class TravelController extends Controller
         $weekStartDate = Carbon::parse($request->date_from)->startOfWeek()->format('Y-m-d');
         $weekEndDate = Carbon::parse($request->date_from)->endOfWeek()->format('Y-m-d');
         $fuel_limit = $this->vehicles->find($request->vehicles_id)->fuel_limit;
+       
         $fuel = $this->model
                     ->whereBetween('date_from', [$weekStartDate,$weekEndDate])
                     ->with(['driverVehicle' => function($q) use ($request) {
@@ -413,7 +414,12 @@ class TravelController extends Controller
                     })
                     ->latest()
                     ->get();
+        $consumedFuel = $fuel->sum('total_liters');
+        if ($request->id) {
+            $currentLitters = $this->model->find($request->id)->total_liters;
+            $consumedFuel = $consumedFuel - $currentLitters;
+        }
 
-        return ($fuel_limit * 7) - $fuel->sum('total_liters');
+        return ($fuel_limit * 7) - $consumedFuel;
     }
 }

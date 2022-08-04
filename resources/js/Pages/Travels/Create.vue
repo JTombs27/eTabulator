@@ -158,7 +158,7 @@
                     
                     <div class="position-relative">
                         <label for="">Liter/s</label>
-                        <label class="position-absolute top-0 end-0" for=""><strong>{{ fuelLimit != null ? `Maximum of: ${fuelLimit} liters`: "" }}</strong></label>
+                        <label class="position-absolute top-0 end-0" for=""><strong>{{ fuelLimit != null ? `Remaining weekly fuel limit: ${fuelLimit} liters`: "" }}</strong></label>
                     </div>
                     <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                     <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
@@ -423,10 +423,18 @@ export default {
         },
 
         getFuelLimit() {
-             axios.post('/travels/get-fuel', {vehicles_id:this.form.vehicles_id, date_to: this.form.date_to, date_from: this.form.date_from})
-                    .then((response) => {
-                        this.fuelLimit = response.data
-                    })
+            let data = { vehicles_id:this.form.vehicles_id, 
+                        date_to: this.form.date_to, 
+                        date_from: this.form.date_from, 
+                        driver_vehicles_id: this.form.driver_vehicles_id
+                        }
+            if (this.editData !== undefined) {
+                _.assign(data, {id:this.editData.id})
+            }
+             axios.post('/travels/get-fuel',data)
+            .then((response) => {
+                this.fuelLimit = response.data
+            })
         },
         
         // checkWeek() {
@@ -553,6 +561,10 @@ export default {
     },
 
     watch: {
+        'form.total_liters' : _.debounce(function() {
+            this.getFuelLimit();
+        }, 1000), 
+
         'form.rangedDate': function (value) {
             if (value) {
                 this.columnFrom = 'col-md-6'
@@ -564,11 +576,6 @@ export default {
                 },100)
             }
         },
-        form:{
-            handler(val) {
-                console.log("test")
-            }
-        }
     }
 }
 </script>

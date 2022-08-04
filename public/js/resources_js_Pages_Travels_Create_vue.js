@@ -323,11 +323,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getFuelLimit: function getFuelLimit() {
       var _this6 = this;
 
-      axios.post('/travels/get-fuel', {
+      var data = {
         vehicles_id: this.form.vehicles_id,
         date_to: this.form.date_to,
-        date_from: this.form.date_from
-      }).then(function (response) {
+        date_from: this.form.date_from,
+        driver_vehicles_id: this.form.driver_vehicles_id
+      };
+
+      if (this.editData !== undefined) {
+        _.assign(data, {
+          id: this.editData.id
+        });
+      }
+
+      axios.post('/travels/get-fuel', data).then(function (response) {
         _this6.fuelLimit = response.data;
       });
     },
@@ -456,6 +465,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   watch: {
+    'form.total_liters': _.debounce(function () {
+      this.getFuelLimit();
+    }, 1000),
     'form.rangedDate': function formRangedDate(value) {
       var _this8 = this;
 
@@ -466,11 +478,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           _this8.form.date_to = null;
           _this8.columnFrom = 'col-md-12';
         }, 100);
-      }
-    },
-    form: {
-      handler: function handler(val) {
-        console.log("test");
       }
     }
   }
@@ -1123,7 +1130,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gas_type]]), $data.form.errors.gas_type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gas_type), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [_hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_72, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.fuelLimit != null ? "Maximum of: ".concat($data.fuelLimit, " liters") : ""), 1
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [_hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_72, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.fuelLimit != null ? "Remaining weekly fuel limit: ".concat($data.fuelLimit, " liters") : ""), 1
   /* TEXT */
   )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",

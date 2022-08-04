@@ -101,7 +101,7 @@ class ValidateLiters implements Rule
         if ($this->totalLiters < 1) {
             return "This vehicle reached out the maximum weekly limit of fuel.";
         }
-        return "Maximum liters available: ". $this->totalLiters." liters";
+        return "Maximum liters available: ". $this->totalLiters." liters per Trip Ticket";
     }
     
     protected function validateWithRange($remainingPerWeek, $value)
