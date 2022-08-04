@@ -147,16 +147,20 @@ class TravelController extends Controller
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
 
         $travels = $this->model
-                ->whereYear('date_from', date("Y"))
-                ->where('office_id', auth()->user()->office_id)
-                ->where('status', '<>', 'Disapproved')
-                ->get();
+                        ->whereYear('date_from', date("Y"))
+                        ->where('office_id', auth()->user()->office_id)
+                        // ->where('status', '<>', 'Disapproved')
+                        ->get();
                 
         $travels = $travels->map(function($item)  {
-                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-                        $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->where('gasoline_id', $item->gasoline_id)->exists();
+                        $total = $this->prices
+                                ->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
-                                })->latest()->first($item->gas_type);
+                                })
+                                ->where('gasoline_id', $item->gasoline_id)
+                                ->latest()
+                                ->first($item->gas_type);
                         return [
                         'price' => ($total[$item->gas_type] * $item->total_liters),
                         'date' => $item->date_from
@@ -169,7 +173,7 @@ class TravelController extends Controller
            $amount = $amount->sum('amount');
         //    $amount = number_format($amount->sum('amount'), 2);
         }
-        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
             'balance' => $amount - $travels->sum('price')
