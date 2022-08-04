@@ -30,8 +30,8 @@
                         <tr>
                             <th scope="col">Active</th>
                             <th scope="col">Name</th>
-                            <th scope="col">Email</th>
-                            <th scope="col" style="width: 30%"></th>
+                            <th scope="col">Role</th>
+                            <th scope="col" style="width: 30%">Permissions</th>
                             <th scope="col" style="text-align: right">Action</th>
                         </tr>
                     </thead>
@@ -65,7 +65,7 @@
                                 </div>
                             </td>
                             <td>
-                                {{ user.email }}
+                                {{ user.role }}
                             </td>
                             <td>
                                 <div class="badge bg-info me-1" v-for="permission in user.permissions">

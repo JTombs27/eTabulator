@@ -31,6 +31,7 @@ class TravelController extends Controller
 
     public function index(Request $request)
     {
+        // dd($request->all());
         return inertia('Travels/Index',[
             "travels" => $this->model
                             ->with('driverVehicle.empl', 'driverVehicle.vehicle')
@@ -40,7 +41,7 @@ class TravelController extends Controller
                                 }
                             )
                             ->when($request->dateFilterType == 'all', function($q) use ($request) {
-                                $q->wherebetween('date_from', [$request->date_from,$request->date_from]);
+                                $q->orWherebetween('date_from', [$request->date_from,$request->date_to]);
                             })
                             ->when($request->dateFilterType == 'from', function($q) use ($request) {
                                 $q->where('date_from', '>=', $request->date_from);
@@ -48,17 +49,18 @@ class TravelController extends Controller
                             ->when($request->dateFilterType == 'to', function($q) use ($request) {
                                 $q->where('date_from', '<=', $request->date_to);
                             })
-                            ->when($request->status, function($q) {
-                                $q->where('status', request('status'));
+                            ->when($request->status && $request->status != 'pending', function($q) {
+                                $q->orWhere('status', request('status'));
+                            
                             })
-                            ->when(!$request->status, function($q) {
-                                $q->whereNull('status');
+                            ->when($request->status == 'pending', function($q) {
+                                $q->orWhereNull('status');
                             })
                             ->orderBy('status')
                             ->orderBy('id','desc')
                             ->simplePaginate(10)
                             ->through(function ($item) {
-                                $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
                                 })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
@@ -121,9 +123,13 @@ class TravelController extends Controller
                         
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-            $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                $q->whereDate('date', $item->date_from);
-            })->latest()->first($item->gas_type);
+            $total = $this->prices
+                ->when($checkPrice, function($q) use ($item) {
+                    $q->whereDate('date', $item->date_from);
+                })
+                ->where('gasoline_id', $item->gasoline_id)
+                ->latest()
+                ->first($item->gas_type);
             return [
                 'price' => ($total[$item->gas_type] * $item->total_liters),
                 'date' => $item->date_from
@@ -141,16 +147,20 @@ class TravelController extends Controller
         $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
 
         $travels = $this->model
-                ->whereYear('date_from', date("Y"))
-                ->where('office_id', auth()->user()->office_id)
-                ->where('status', '<>', 'Disapproved')
-                ->get();
+                        ->whereYear('date_from', date("Y"))
+                        ->where('office_id', auth()->user()->office_id)
+                        // ->where('status', '<>', 'Disapproved')
+                        ->get();
                 
         $travels = $travels->map(function($item)  {
-                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-                        $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->where('gasoline_id', $item->gasoline_id)->exists();
+                        $total = $this->prices
+                                ->when($checkPrice, function($q) use ($item) {
                                     $q->whereDate('date', $item->date_from);
-                                })->latest()->first($item->gas_type);
+                                })
+                                ->where('gasoline_id', $item->gasoline_id)
+                                ->latest()
+                                ->first($item->gas_type);
                         return [
                         'price' => ($total[$item->gas_type] * $item->total_liters),
                         'date' => $item->date_from
@@ -163,7 +173,7 @@ class TravelController extends Controller
            $amount = $amount->sum('amount');
         //    $amount = number_format($amount->sum('amount'), 2);
         }
-        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl')->where('id',$id)->first();
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
         return inertia('Travels/Create', [
             'editData' => $editData,
             'balance' => $amount - $travels->sum('price')
@@ -295,6 +305,14 @@ class TravelController extends Controller
 
         return redirect('/travels')->with('message', 'The changes have been saved');
 
+    }
+
+    public function destroy($id)
+    {
+        $data = $this->model->findOrFail($id);
+        $data->delete();
+
+        return redirect('/travels')->with('message', 'Travel deleted');
     }
 
     public function setStatus(Request $request)
