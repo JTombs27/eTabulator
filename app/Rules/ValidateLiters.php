@@ -35,7 +35,6 @@ class ValidateLiters implements Rule
     {
         $weekStartDate = Carbon::parse(request('date_from'))->startOfWeek()->format('Y-m-d');
         $weekEndDate = Carbon::parse(request('date_from'))->endOfWeek()->format('Y-m-d');
-
         $fuel = Travel::where('driver_vehicles_id', $this->attributes->driver_vehicles_id)
                         ->whereBetween('date_from', [$weekStartDate,$weekEndDate])
                     // ->when(request('date_from') && !request('date_to'), function($q) use($weekStartDate,$weekEndDate){
@@ -99,6 +98,9 @@ class ValidateLiters implements Rule
      */
     public function message()
     {
+        if ($this->totalLiters < 1) {
+            return "This vehicle reached out the maximum weekly limit of fuel.";
+        }
         return "Maximum liters available: ". $this->totalLiters." liters";
     }
     

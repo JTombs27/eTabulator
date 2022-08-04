@@ -65,6 +65,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       employees: [],
       drivers: [],
       gasPrice: "",
+      fuelLimit: null,
       gases: [{
         id: "regular_price",
         text: "Gasoline(Regular)"
@@ -184,22 +185,37 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     fetchPrice: function fetchPrice() {
       var _this2 = this;
 
-      axios.post('/travels/get-price', {
-        datefilter: this.form.date_from,
-        gasType: this.form.gas_type,
-        gasoline_id: this.form.gasoline_id
-      }).then(function (response) {
-        _this2.gasPrice = "Price: \u20B1".concat(parseFloat(response.data).toFixed(2));
-        _this2.form.price = (Number(response.data) * Number(_this2.form.total_liters)).toFixed(2);
-      }); // if (this.form.vehicles_id) {
-      //     axios.post('/travels/get-fuel', {}).then((response) => {
-      //         this.form.remaining_fuel = response.data
-      //     })
-      // }
-      // if (this.form.vehicles_id) {
-      //     console.log('test')
-      //     this.getVehicleDetails();
-      // }
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('/travels/get-price', {
+                  datefilter: _this2.form.date_from,
+                  gasType: _this2.form.gas_type,
+                  gasoline_id: _this2.form.gasoline_id
+                }).then(function (response) {
+                  _this2.gasPrice = "Price: \u20B1".concat(parseFloat(response.data).toFixed(2));
+                  _this2.form.price = (Number(response.data) * Number(_this2.form.total_liters)).toFixed(2);
+                });
+
+              case 2:
+                if (!_this2.form.vehicles_id) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                _context2.next = 5;
+                return _this2.getFuelLimit();
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     },
     getVehicles: function getVehicles(e) {
       var _this3 = this;
@@ -240,45 +256,79 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getVehicleDetails: function getVehicleDetails(e) {
       var _this5 = this;
 
-      // console.log(this.editData !== undefined)
-      if (this.editData !== undefined) {
-        this.form.type_code = this.editData.driver_vehicle.vehicle.TYPECODE;
-      } else {
-        this.form.type_code = e.typeCode;
-      }
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                // console.log(this.editData !== undefined)
+                if (_this5.editData !== undefined) {
+                  _this5.form.type_code = _this5.editData.driver_vehicle.vehicle.TYPECODE;
+                } else {
+                  _this5.form.type_code = e.typeCode;
+                }
 
-      axios.post('/travels/vehicle-details', {
+                _context3.next = 3;
+                return axios.post('/travels/vehicle-details', {
+                  vehicles_id: _this5.form.vehicles_id,
+                  date_to: _this5.form.date_to,
+                  date_from: _this5.form.date_from
+                }).then(function (response) {
+                  _this5.drivers = response.data.map(function (obj) {
+                    var _selected = false;
+
+                    if (_this5.editData != undefined) {
+                      _selected = obj.empl.empl_id === _this5.editData.driver_vehicle.drivers_id;
+                    }
+
+                    var mi = "";
+
+                    if (obj.empl.middle_name) {
+                      mi = obj.empl.middle_name.charAt(0);
+                    }
+
+                    return {
+                      id: obj.empl.empl_id,
+                      text: "".concat(obj.empl.first_name, " ").concat(mi, ". ").concat(obj.empl.last_name),
+                      dv_id: obj.id,
+                      office_id: obj.empl.department_code,
+                      "selected": _selected
+                    };
+                  });
+
+                  try {
+                    _this5.vehicle_status = response.data[0] ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
+                  } catch (error) {
+                    _this5.vehicle_status = "No status available";
+                  }
+                });
+
+              case 3:
+                if (!_this5.form.date_from) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _context3.next = 6;
+                return _this5.getFuelLimit();
+
+              case 6:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    getFuelLimit: function getFuelLimit() {
+      var _this6 = this;
+
+      axios.post('/travels/get-fuel', {
         vehicles_id: this.form.vehicles_id,
         date_to: this.form.date_to,
         date_from: this.form.date_from
       }).then(function (response) {
-        _this5.drivers = response.data.map(function (obj) {
-          var _selected = false;
-
-          if (_this5.editData != undefined) {
-            _selected = obj.empl.empl_id === _this5.editData.driver_vehicle.drivers_id;
-          }
-
-          var mi = "";
-
-          if (obj.empl.middle_name) {
-            mi = obj.empl.middle_name.charAt(0);
-          }
-
-          return {
-            id: obj.empl.empl_id,
-            text: "".concat(obj.empl.first_name, " ").concat(mi, ". ").concat(obj.empl.last_name),
-            dv_id: obj.id,
-            office_id: obj.empl.department_code,
-            "selected": _selected
-          };
-        });
-
-        try {
-          _this5.vehicle_status = response.data[0] ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
-        } catch (error) {
-          _this5.vehicle_status = "No status available";
-        }
+        _this6.fuelLimit = response.data;
       });
     },
     // checkWeek() {
@@ -394,27 +444,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     officeFiltered: function officeFiltered() {
-      var _this6 = this;
+      var _this7 = this;
 
       return _.filter(this.vehicles, function (o) {
-        if (!_this6.form.is_borrowed_vehicle) {
-          return o.office_id == _this6.auth.user.office_id;
+        if (!_this7.form.is_borrowed_vehicle) {
+          return o.office_id == _this7.auth.user.office_id;
         } else {
-          return _this6.vehicles;
+          return _this7.vehicles;
         }
       });
     }
   },
   watch: {
     'form.rangedDate': function formRangedDate(value) {
-      var _this7 = this;
+      var _this8 = this;
 
       if (value) {
         this.columnFrom = 'col-md-6';
-        this.form.date_to = null;
       } else {
         setTimeout(function () {
-          _this7.columnFrom = 'col-md-12';
+          _this8.form.date_to = null;
+          _this8.columnFrom = 'col-md-12';
         }, 100);
       }
     },
@@ -771,32 +821,37 @@ var _hoisted_69 = {
   key: 5,
   "class": "fs-6 c-red-500"
 };
-
-var _hoisted_70 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_70 = {
   "class": "position-relative"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+};
+
+var _hoisted_71 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Liter/s"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label class=\"position-absolute top-0 end-0\" for=\"\"><strong>{{ form.maxLiters ? `Maximum of: ${form.maxLiters} liters`: \"\" }}</strong></label> ")], -1
+}, "Liter/s", -1
 /* HOISTED */
 );
 
-var _hoisted_71 = {
+var _hoisted_72 = {
+  "class": "position-absolute top-0 end-0",
+  "for": ""
+};
+var _hoisted_73 = {
   key: 6,
   "class": "fs-6 c-red-500"
 };
 
-var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_74 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
 }, "Price", -1
 /* HOISTED */
 );
 
-var _hoisted_73 = ["disabled"];
-var _hoisted_74 = {
+var _hoisted_75 = ["disabled"];
+var _hoisted_76 = {
   key: 7,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_75 = ["disabled"];
+var _hoisted_77 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -1068,7 +1123,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gas_type]]), $data.form.errors.gas_type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gas_type), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [_hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_72, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.fuelLimit != null ? "Maximum of: ".concat($data.fuelLimit, " liters") : ""), 1
+  /* TEXT */
+  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[27] || (_cache[27] = function ($event) {
       return $data.form.total_liters = $event;
@@ -1079,9 +1136,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.total_liters]]), $data.form.errors.total_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.total_liters), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.total_liters]]), $data.form.errors.total_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_73, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.total_liters), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_72, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
     "onUpdate:modelValue": _cache[29] || (_cache[29] = function ($event) {
       return $data.form.price = $event;
@@ -1090,7 +1147,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $props.editData !== undefined
   }, null, 8
   /* PROPS */
-  , _hoisted_73), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.price]]), $data.form.errors.price ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.price), 1
+  , _hoisted_75), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.price]]), $data.form.errors.price ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_76, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.price), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
@@ -1101,7 +1158,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, "Save changes", 8
   /* PROPS */
-  , _hoisted_75)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
+  , _hoisted_77)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
   /* HYDRATE_EVENTS */
   )])])], 64
   /* STABLE_FRAGMENT */
