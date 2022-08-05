@@ -28,6 +28,10 @@ class Vehicle extends Model
     {
         return $this->hasMany(DriverVehicle::class, 'vehicles_id', 'id');
     }
+    public function officeV()
+    {
+        return $this->hasOne(OfficeVehicles::class, 'vehicles_id', 'id')->latest();
+    }
 
     public function getDateAttribute()
     {
