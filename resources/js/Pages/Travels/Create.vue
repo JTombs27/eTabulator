@@ -118,12 +118,13 @@
                     </div>
                     
                     <label v-if="form.showActualDriver">Actual Driver</label>
-                    <Select2 
+                    <input v-if="form.showActualDriver" type="text"  v-model="form.actual_driver" class="form-control">
+                    <!-- <Select2 
                         v-if="form.showActualDriver"
                         v-model="form.actual_driver" 
                         id="actualDriver" 
                         @select="setActualDriver($event)" 
-                    />
+                    /> -->
                     <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
                     
                     <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
@@ -139,11 +140,9 @@
                     <div class="position-relative">
                         <label class="col-md-3" for="">Gasoline Station</label>
                     </div>
-                    <select class="form-select" v-model="form.gasoline_id" @change="fetchPrice()">
+                     <select class="form-select" v-model="form.gasoline_id" @change="fetchPrice()">
                         <option disabled value="">Select Station</option>
-                        <option value="1">Petron</option>
-                        <option value="2">Shell</option>
-                        <option value="3">Sea Oil</option>
+                        <option v-for="item, index in gasoline" :value="item.id">{{ item.text }}</option>
                     </select>
                     <div class="position-relative">
                         <label class="col-md-3" for="">Gas Type</label>
@@ -158,7 +157,7 @@
                     
                     <div class="position-relative">
                         <label for="">Liter/s</label>
-                        <!-- <label class="position-absolute top-0 end-0" for=""><strong>{{ form.maxLiters ? `Maximum of: ${form.maxLiters} liters`: "" }}</strong></label> -->
+                        <label class="position-absolute top-0 end-0" for=""><strong>{{ fuelLimit != null ? `Remaining weekly fuel limit: ${fuelLimit} liters`: "" }}</strong></label>
                     </div>
                     <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                     <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
@@ -224,6 +223,7 @@ export default {
             employees:[],
             drivers:[],
             gasPrice:"",
+            fuelLimit:null,
             gases:[{
                 id:"regular_price",
                 text:"Gasoline(Regular)"
@@ -248,6 +248,7 @@ export default {
     },
 
     async mounted() {
+        await this.loadGasoline()
         // console.log(this.auth.user)
         this.form.balance = this.balance
         if (this.editData !== undefined) {
@@ -295,6 +296,13 @@ export default {
     },
 
     methods:{
+        loadGasoline() {
+            axios.get('/prices/fetch').then((response) => {
+                this.gasoline = response.data;
+
+            })
+        },
+        
         formatOffice(repo) {
             return repo.text
         },
@@ -323,19 +331,17 @@ export default {
             return `<div class="text-success">asaas</div>`;
         },
 
-        fetchPrice() {
-            axios.post('/travels/get-price', 
+        async fetchPrice() {
+            await axios.post('/travels/get-price', 
                 {datefilter:this.form.date_from, gasType:this.form.gas_type, gasoline_id:this.form.gasoline_id}
             ).then((response) => {
                 this.gasPrice = `Price: \u20B1${parseFloat(response.data).toFixed(2)}`;
                 this.form.price =  (Number(response.data) * Number(this.form.total_liters)).toFixed(2);
             })
 
-            // if (this.form.vehicles_id) {
-            //     axios.post('/travels/get-fuel', {}).then((response) => {
-            //         this.form.remaining_fuel = response.data
-            //     })
-            // }
+            if (this.form.vehicles_id) {
+                await this.getFuelLimit();
+            }
 
             // if (this.form.vehicles_id) {
             //     console.log('test')
@@ -384,14 +390,14 @@ export default {
         //     }
         // },
 
-        getVehicleDetails(e) {
+        async getVehicleDetails(e) {
             // console.log(this.editData !== undefined)
             if (this.editData !== undefined) {
                 this.form.type_code = this.editData.driver_vehicle.vehicle.TYPECODE
             } else {
                 this.form.type_code = e.typeCode;
             }
-            axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id, date_to: this.form.date_to, date_from: this.form.date_from})
+            await axios.post('/travels/vehicle-details',{vehicles_id:this.form.vehicles_id, date_to: this.form.date_to, date_from: this.form.date_from})
                 .then((response) => {
                     this.drivers =  response.data.map(obj => {
                         let _selected = false;
@@ -416,7 +422,26 @@ export default {
                         this.vehicle_status = "No status available"   
                     }
                 })
+
+                if (this.form.date_from) {
+                    await this.getFuelLimit();
+                }
            
+        },
+
+        getFuelLimit() {
+            let data = { vehicles_id:this.form.vehicles_id, 
+                        date_to: this.form.date_to, 
+                        date_from: this.form.date_from, 
+                        driver_vehicles_id: this.form.driver_vehicles_id
+                        }
+            if (this.editData !== undefined) {
+                _.assign(data, {id:this.editData.id})
+            }
+             axios.post('/travels/get-fuel',data)
+            .then((response) => {
+                this.fuelLimit = response.data
+            })
         },
         
         // checkWeek() {
@@ -543,21 +568,21 @@ export default {
     },
 
     watch: {
+        'form.total_liters' : _.debounce(function() {
+            this.getFuelLimit();
+        }, 1000), 
+
         'form.rangedDate': function (value) {
             if (value) {
                 this.columnFrom = 'col-md-6'
-                this.form.date_to = null
+                
             } else {
                 setTimeout(() => {
+                    this.form.date_to = null
                     this.columnFrom = 'col-md-12'
                 },100)
             }
         },
-        form:{
-            handler(val) {
-                console.log("test")
-            }
-        }
     }
 }
 </script>

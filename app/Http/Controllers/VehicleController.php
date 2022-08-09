@@ -38,6 +38,15 @@ class VehicleController extends Controller
             })
             ->latest()
             ->simplePaginate(10)
+            // ->through(function($item) {
+                
+            //     // dd($item->officeV->department_code);
+            //     if (request('department_code') && ($item->officeV->department_code != request('department_code'))) {
+                    
+            //     } else {
+            //         return $item;
+            //     }
+            // })
             ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
@@ -53,9 +62,11 @@ class VehicleController extends Controller
 
     public function getFilter($request)
     {
+        
         $index = $this->model->with([
             'vehicle_status',
             'driverassign.empl.office',
+            'officeV.office'
         ]);
         
         if ($request->PLATENO) {
@@ -72,6 +83,11 @@ class VehicleController extends Controller
 
         if ($request->FDESC) {
             $index = $index->where('FDATEACQ', 'like' , '%'.$request->FDESC.'%');
+        }
+        if ($request->department_code) {
+            $index = $index->wherehas('officeV', function($q) use ($request) {
+                $q->where('department_code', $request->department_code)->where('office_owner', 1);
+            });
         }
 
         return $index;

@@ -65,6 +65,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       employees: [],
       drivers: [],
       gasPrice: "",
+      fuelLimit: null,
       gases: [{
         id: "regular_price",
         text: "Gasoline(Regular)"
@@ -94,11 +95,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
+              _context.next = 2;
+              return _this.loadGasoline();
+
+            case 2:
               // console.log(this.auth.user)
               _this.form.balance = _this.balance;
 
               if (!(_this.editData !== undefined)) {
-                _context.next = 32;
+                _context.next = 34;
                 break;
               }
 
@@ -130,34 +135,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 25;
-              return _this.fetchPrice();
-
-            case 25:
               _context.next = 27;
-              return _this.getVehicleDetails();
+              return _this.fetchPrice();
 
             case 27:
               _context.next = 29;
-              return _this.showActualDriver();
+              return _this.getVehicleDetails();
 
             case 29:
+              _context.next = 31;
+              return _this.showActualDriver();
+
+            case 31:
               setTimeout(function () {
                 _this.form.date_to = _this.editData.date_to;
               }, 0);
-              _context.next = 33;
+              _context.next = 35;
               break;
 
-            case 32:
+            case 34:
               _this.pageTitle = "Create";
 
-            case 33:
+            case 35:
               _this.getVehicles(); // $("#actualDriver").select2({
               //   tags: true
               // });
 
 
-            case 34:
+            case 36:
             case "end":
               return _context.stop();
           }
@@ -166,6 +171,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }))();
   },
   methods: {
+    loadGasoline: function loadGasoline() {
+      var _this2 = this;
+
+      axios.get('/prices/fetch').then(function (response) {
+        _this2.gasoline = response.data;
+      });
+    },
     formatOffice: function formatOffice(repo) {
       return repo.text;
     },
@@ -182,30 +194,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return "<div class=\"text-success\">asaas</div>";
     },
     fetchPrice: function fetchPrice() {
-      var _this2 = this;
-
-      axios.post('/travels/get-price', {
-        datefilter: this.form.date_from,
-        gasType: this.form.gas_type,
-        gasoline_id: this.form.gasoline_id
-      }).then(function (response) {
-        _this2.gasPrice = "Price: \u20B1".concat(parseFloat(response.data).toFixed(2));
-        _this2.form.price = (Number(response.data) * Number(_this2.form.total_liters)).toFixed(2);
-      }); // if (this.form.vehicles_id) {
-      //     axios.post('/travels/get-fuel', {}).then((response) => {
-      //         this.form.remaining_fuel = response.data
-      //     })
-      // }
-      // if (this.form.vehicles_id) {
-      //     console.log('test')
-      //     this.getVehicleDetails();
-      // }
-    },
-    getVehicles: function getVehicles(e) {
       var _this3 = this;
 
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post('/travels/get-price', {
+                  datefilter: _this3.form.date_from,
+                  gasType: _this3.form.gas_type,
+                  gasoline_id: _this3.form.gasoline_id
+                }).then(function (response) {
+                  _this3.gasPrice = "Price: \u20B1".concat(parseFloat(response.data).toFixed(2));
+                  _this3.form.price = (Number(response.data) * Number(_this3.form.total_liters)).toFixed(2);
+                });
+
+              case 2:
+                if (!_this3.form.vehicles_id) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                _context2.next = 5;
+                return _this3.getFuelLimit();
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    getVehicles: function getVehicles(e) {
+      var _this4 = this;
+
       axios.post("/vehicles/getVehicles").then(function (response) {
-        _this3.vehicles = response.data;
+        _this4.vehicles = response.data;
       }); // axios.post(`/travels/get-vehicles`).then( (response) => {
       //     this.vehicles = response.data
       //     // let office = this.auth.user.office_id
@@ -221,10 +248,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       // })
     },
     getEmployees: function getEmployees() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get('/employees/getEmployees').then(function (response) {
-        _this4.employees = response.data;
+        _this5.employees = response.data;
       });
     },
     // getMaxLiters() {
@@ -238,47 +265,90 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     //     }
     // },
     getVehicleDetails: function getVehicleDetails(e) {
-      var _this5 = this;
+      var _this6 = this;
 
-      // console.log(this.editData !== undefined)
-      if (this.editData !== undefined) {
-        this.form.type_code = this.editData.driver_vehicle.vehicle.TYPECODE;
-      } else {
-        this.form.type_code = e.typeCode;
-      }
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                // console.log(this.editData !== undefined)
+                if (_this6.editData !== undefined) {
+                  _this6.form.type_code = _this6.editData.driver_vehicle.vehicle.TYPECODE;
+                } else {
+                  _this6.form.type_code = e.typeCode;
+                }
 
-      axios.post('/travels/vehicle-details', {
+                _context3.next = 3;
+                return axios.post('/travels/vehicle-details', {
+                  vehicles_id: _this6.form.vehicles_id,
+                  date_to: _this6.form.date_to,
+                  date_from: _this6.form.date_from
+                }).then(function (response) {
+                  _this6.drivers = response.data.map(function (obj) {
+                    var _selected = false;
+
+                    if (_this6.editData != undefined) {
+                      _selected = obj.empl.empl_id === _this6.editData.driver_vehicle.drivers_id;
+                    }
+
+                    var mi = "";
+
+                    if (obj.empl.middle_name) {
+                      mi = obj.empl.middle_name.charAt(0);
+                    }
+
+                    return {
+                      id: obj.empl.empl_id,
+                      text: "".concat(obj.empl.first_name, " ").concat(mi, ". ").concat(obj.empl.last_name),
+                      dv_id: obj.id,
+                      office_id: obj.empl.department_code,
+                      "selected": _selected
+                    };
+                  });
+
+                  try {
+                    _this6.vehicle_status = response.data[0] ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
+                  } catch (error) {
+                    _this6.vehicle_status = "No status available";
+                  }
+                });
+
+              case 3:
+                if (!_this6.form.date_from) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _context3.next = 6;
+                return _this6.getFuelLimit();
+
+              case 6:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
+    getFuelLimit: function getFuelLimit() {
+      var _this7 = this;
+
+      var data = {
         vehicles_id: this.form.vehicles_id,
         date_to: this.form.date_to,
-        date_from: this.form.date_from
-      }).then(function (response) {
-        _this5.drivers = response.data.map(function (obj) {
-          var _selected = false;
+        date_from: this.form.date_from,
+        driver_vehicles_id: this.form.driver_vehicles_id
+      };
 
-          if (_this5.editData != undefined) {
-            _selected = obj.empl.empl_id === _this5.editData.driver_vehicle.drivers_id;
-          }
-
-          var mi = "";
-
-          if (obj.empl.middle_name) {
-            mi = obj.empl.middle_name.charAt(0);
-          }
-
-          return {
-            id: obj.empl.empl_id,
-            text: "".concat(obj.empl.first_name, " ").concat(mi, ". ").concat(obj.empl.last_name),
-            dv_id: obj.id,
-            office_id: obj.empl.department_code,
-            "selected": _selected
-          };
+      if (this.editData !== undefined) {
+        _.assign(data, {
+          id: this.editData.id
         });
+      }
 
-        try {
-          _this5.vehicle_status = response.data[0] ? "Status: ".concat(response.data[0].vehicle.vehicle_status.condition) : "";
-        } catch (error) {
-          _this5.vehicle_status = "No status available";
-        }
+      axios.post('/travels/get-fuel', data).then(function (response) {
+        _this7.fuelLimit = response.data;
       });
     },
     // checkWeek() {
@@ -394,33 +464,31 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   computed: {
     officeFiltered: function officeFiltered() {
-      var _this6 = this;
+      var _this8 = this;
 
       return _.filter(this.vehicles, function (o) {
-        if (!_this6.form.is_borrowed_vehicle) {
-          return o.office_id == _this6.auth.user.office_id;
+        if (!_this8.form.is_borrowed_vehicle) {
+          return o.office_id == _this8.auth.user.office_id;
         } else {
-          return _this6.vehicles;
+          return _this8.vehicles;
         }
       });
     }
   },
   watch: {
+    'form.total_liters': _.debounce(function () {
+      this.getFuelLimit();
+    }, 1000),
     'form.rangedDate': function formRangedDate(value) {
-      var _this7 = this;
+      var _this9 = this;
 
       if (value) {
         this.columnFrom = 'col-md-6';
-        this.form.date_to = null;
       } else {
         setTimeout(function () {
-          _this7.columnFrom = 'col-md-12';
+          _this9.form.date_to = null;
+          _this9.columnFrom = 'col-md-12';
         }, 100);
-      }
-    },
-    form: {
-      handler: function handler(val) {
-        console.log("test");
       }
     }
   }
@@ -719,84 +787,71 @@ var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-  value: "1"
-}, "Petron", -1
-/* HOISTED */
-);
-
-var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-  value: "2"
-}, "Shell", -1
-/* HOISTED */
-);
-
-var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-  value: "3"
-}, "Sea Oil", -1
-/* HOISTED */
-);
-
-var _hoisted_62 = [_hoisted_58, _hoisted_59, _hoisted_60, _hoisted_61];
-var _hoisted_63 = {
+var _hoisted_59 = ["value"];
+var _hoisted_60 = {
   "class": "position-relative"
 };
 
-var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "col-md-3",
   "for": ""
 }, "Gas Type", -1
 /* HOISTED */
 );
 
-var _hoisted_65 = {
+var _hoisted_62 = {
   "class": "position-absolute top-0 end-0",
   "for": ""
 };
 
-var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
+var _hoisted_63 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
   value: "",
   disabled: ""
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_67 = {
+var _hoisted_64 = {
   key: 0,
   disabled: "",
   value: ""
 };
-var _hoisted_68 = ["value"];
-var _hoisted_69 = {
+var _hoisted_65 = ["value"];
+var _hoisted_66 = {
   key: 5,
   "class": "fs-6 c-red-500"
 };
-
-var _hoisted_70 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_67 = {
   "class": "position-relative"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+};
+
+var _hoisted_68 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
-}, "Liter/s"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label class=\"position-absolute top-0 end-0\" for=\"\"><strong>{{ form.maxLiters ? `Maximum of: ${form.maxLiters} liters`: \"\" }}</strong></label> ")], -1
+}, "Liter/s", -1
 /* HOISTED */
 );
 
-var _hoisted_71 = {
+var _hoisted_69 = {
+  "class": "position-absolute top-0 end-0",
+  "for": ""
+};
+var _hoisted_70 = {
   key: 6,
   "class": "fs-6 c-red-500"
 };
 
-var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_71 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "for": ""
 }, "Price", -1
 /* HOISTED */
 );
 
-var _hoisted_73 = ["disabled"];
-var _hoisted_74 = {
+var _hoisted_72 = ["disabled"];
+var _hoisted_73 = {
   key: 7,
   "class": "fs-6 c-red-500"
 };
-var _hoisted_75 = ["disabled"];
+var _hoisted_74 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -829,7 +884,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* STABLE */
 
   })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("form", {
-    onSubmit: _cache[31] || (_cache[31] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+    onSubmit: _cache[30] || (_cache[30] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
       return $options.submit();
     }, ["prevent"]))
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [_hoisted_9, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
@@ -996,31 +1051,28 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.showActualDriver]]), _hoisted_50])]), $data.form.showActualDriver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_51, "Actual Driver")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.showActualDriver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Select2, {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.showActualDriver]]), _hoisted_50])]), $data.form.showActualDriver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_51, "Actual Driver")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.showActualDriver ? (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("input", {
     key: 3,
-    modelValue: $data.form.actual_driver,
+    type: "text",
     "onUpdate:modelValue": _cache[18] || (_cache[18] = function ($event) {
       return $data.form.actual_driver = $event;
     }),
-    id: "actualDriver",
-    onSelect: _cache[19] || (_cache[19] = function ($event) {
-      return $options.setActualDriver($event);
-    })
-  }, null, 8
-  /* PROPS */
-  , ["modelValue"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.form.errors.actual_driver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.actual_driver), 1
+    "class": "form-control"
+  }, null, 512
+  /* NEED_PATCH */
+  )), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.actual_driver]]) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <Select2 \r\n                        v-if=\"form.showActualDriver\"\r\n                        v-model=\"form.actual_driver\" \r\n                        id=\"actualDriver\" \r\n                        @select=\"setActualDriver($event)\" \r\n                    /> "), $data.form.errors.actual_driver ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.actual_driver), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" v-model=\"form.actual_driver\" class=\"form-control\" v-if=\"form.showActualDriver\"> "), _hoisted_53, _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     "class": "form-control",
     cols: "3",
-    "onUpdate:modelValue": _cache[20] || (_cache[20] = function ($event) {
+    "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
       return $data.form.official_passenger = $event;
     })
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.official_passenger]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <input type=\"text\" v-model=\"form.official_passenger\" class=\"form-control\"> "), _hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
+    "onUpdate:modelValue": _cache[20] || (_cache[20] = function ($event) {
       return $data.form.place_to_visit = $event;
     }),
     "class": "form-control"
@@ -1028,7 +1080,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.place_to_visit]]), _hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
+    "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
       return $data.form.purpose = $event;
     }),
     "class": "form-control"
@@ -1036,72 +1088,82 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.purpose]]), _hoisted_57, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select",
-    "onUpdate:modelValue": _cache[23] || (_cache[23] = function ($event) {
+    "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
       return $data.form.gasoline_id = $event;
     }),
-    onChange: _cache[24] || (_cache[24] = function ($event) {
+    onChange: _cache[23] || (_cache[23] = function ($event) {
       return $options.fetchPrice();
     })
-  }, _hoisted_62, 544
+  }, [_hoisted_58, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.gasoline, function (item, index) {
+    return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
+      value: item.id
+    }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.text), 9
+    /* TEXT, PROPS */
+    , _hoisted_59);
+  }), 256
+  /* UNKEYED_FRAGMENT */
+  ))], 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gasoline_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [_hoisted_64, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_65, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.gasPrice), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gasoline_id]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_60, [_hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.gasPrice), 1
   /* TEXT */
   )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select",
-    "onUpdate:modelValue": _cache[25] || (_cache[25] = function ($event) {
+    "onUpdate:modelValue": _cache[24] || (_cache[24] = function ($event) {
       return $data.form.gas_type = $event;
     }),
-    onChange: _cache[26] || (_cache[26] = function ($event) {
+    onChange: _cache[25] || (_cache[25] = function ($event) {
       return $options.fetchPrice();
     })
-  }, [_hoisted_66, !$data.form.gasoline_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", _hoisted_67, "Select Gasoline Station first")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+  }, [_hoisted_63, !$data.form.gasoline_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", _hoisted_64, "Select Gasoline Station first")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     key: 1
   }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.gases, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       value: item.id
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.text), 9
     /* TEXT, PROPS */
-    , _hoisted_68);
+    , _hoisted_65);
   }), 256
   /* UNKEYED_FRAGMENT */
   ))], 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gas_type]]), $data.form.errors.gas_type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gas_type), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gas_type]]), $data.form.errors.gas_type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gas_type), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_67, [_hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_69, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.fuelLimit != null ? "Remaining weekly fuel limit: ".concat($data.fuelLimit, " liters") : ""), 1
+  /* TEXT */
+  )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[27] || (_cache[27] = function ($event) {
+    "onUpdate:modelValue": _cache[26] || (_cache[26] = function ($event) {
       return $data.form.total_liters = $event;
     }),
     "class": "form-control",
-    onKeyup: _cache[28] || (_cache[28] = function ($event) {
+    onKeyup: _cache[27] || (_cache[27] = function ($event) {
       return $options.fetchPrice();
     })
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.total_liters]]), $data.form.errors.total_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.total_liters), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.total_liters]]), $data.form.errors.total_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_70, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.total_liters), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_72, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",
-    "onUpdate:modelValue": _cache[29] || (_cache[29] = function ($event) {
+    "onUpdate:modelValue": _cache[28] || (_cache[28] = function ($event) {
       return $data.form.price = $event;
     }),
     "class": "form-control",
     disabled: $props.editData !== undefined
   }, null, 8
   /* PROPS */
-  , _hoisted_73), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.price]]), $data.form.errors.price ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_74, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.price), 1
+  , _hoisted_72), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.price]]), $data.form.errors.price ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_73, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.price), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
-    onClick: _cache[30] || (_cache[30] = function ($event) {
+    onClick: _cache[29] || (_cache[29] = function ($event) {
       return $options.submit();
     }),
     disabled: $data.form.processing
   }, "Save changes", 8
   /* PROPS */
-  , _hoisted_75)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
+  , _hoisted_74)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
   /* HYDRATE_EVENTS */
   )])])], 64
   /* STABLE_FRAGMENT */

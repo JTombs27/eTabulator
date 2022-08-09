@@ -14,6 +14,7 @@ class OfficeVehicles extends Model
         'department_code',
         'plate_no',
         'effective_date',
+        'office_owner'
     ];
 
     public function vehicle()
@@ -24,6 +25,11 @@ class OfficeVehicles extends Model
     public function office()
     {
         return $this->belongsTo(Office::class, 'department_code', 'department_code');
+    }
+    public function update_owner()
+    {
+        $this->office_owner = 0; 
+        $this->save();
     }
 
 }

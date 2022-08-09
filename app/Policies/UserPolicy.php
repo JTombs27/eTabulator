@@ -16,7 +16,7 @@ class UserPolicy
 
     public function canDeleteUser(User $user)
     {
-        return $user->permissions()->where('permission_name', 'can_delete_travel')->exists();
+        return $user->permissions()->where('permission_name', 'can_delete_user')->exists();
     }
 
     public function canCreateTravel(User $user)

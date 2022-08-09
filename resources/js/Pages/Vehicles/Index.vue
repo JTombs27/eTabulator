@@ -34,6 +34,10 @@
 
             <label>Description</label>
             <input type="text" v-model="filter1.FDESC" class="form-control">
+
+            <label>Office Vehicles</label>
+            <Select2 v-model="filter1.department_code" :options="offices"></Select2>
+
             
             <div class="col pt-2 mt-2"></div>
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
@@ -107,7 +111,9 @@
                             <td style="text-align: center"> {{vehicle.fuel_limit}}</td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
-                            <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
+                            <!-- <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
+                            <td v-else></td> -->
+                            <td v-if="vehicle.office_v != null"> {{vehicle.office_v.office.short_name}}</td>
                             <td v-else></td>
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
@@ -337,7 +343,8 @@ export default ({
                 PLATENO:"",
                 TYPECODE:"",
                 FDATEACQ:"",
-                FDESC:""
+                FDESC:"",
+                department_code:""
             }),
 
             noProject:false,
@@ -345,8 +352,13 @@ export default ({
             projectDescription:"",
             projectPurpose:"",
             borrowMun:"",
-            borrowBrgy:""
+            borrowBrgy:"",
+
+            
         }
+    },
+    mounted() {
+        this.loadOffice()
     },
     computed: {
         mi() {
@@ -439,6 +451,12 @@ export default ({
         reset () {
             this.$inertia.get('/vehicles')
 
+        },
+        loadOffice() 
+        { 
+            axios.get('/offices/fetch').then((response) => {
+                this.offices = response.data
+            })
         },
         setStatus () {
             axios.post('/vehicles/set-status', {

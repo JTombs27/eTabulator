@@ -31,11 +31,15 @@ class OfficeVehiclesController extends Controller
     
     public function store(Request $request)
     {
+        // dd($request->all());
+        $vehicles = $this->officevehicles->where('vehicles_id', $request->vehicles_id);
+        $vehicles->update(['office_owner' => false]);
         $attributes = $request->validate([
             'department_code' => 'required',
-            'effective_date' => 'required',
+            // 'effective_date' => 'required',
             
         ]);
+        $request['office_owner'] = 1;
         $this->officevehicles->create($request->all());
         return redirect('/vehicles')->with('message', 'Vehicle status added!');
     }
@@ -64,7 +68,7 @@ class OfficeVehiclesController extends Controller
     {
         $attributes = $request->validate([
             'department_code' => 'required',
-            'effective_date' => 'required',
+            // 'effective_date' => 'required',
             
         ]);
         $data = $this->officevehicles->findOrFail($request->id);

@@ -108,10 +108,11 @@ class HomeController extends Controller
                         
         $travels = $travels->map(function($item)  
                     {
-                        $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-                        $total      = $this->prices->when($checkPrice, function($q) use ($item) {
-                                        $q->whereDate('date', $item->date_from);
-                                    })->latest()->first($item->gas_type);
+                        $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                        $total      =$this->prices->when($checkPrice, function($q) use ($item) 
+                                                {
+                                                    $q->whereDate('date', $item->date_from);
+                                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
                         return [
                             'price' => ($total[$item->gas_type] * $item->total_liters),
                             'date' => $item->date_from
@@ -127,13 +128,11 @@ class HomeController extends Controller
 
         $fuelConsumed = $fuelConsumed->map(function($item)  
         {
-            $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
-            $total      = $this->prices
-                            ->when($checkPrice, function($q) use ($item) 
-                                {
-                                    $q->whereDate('date', $item->date_from);
-                                })
-                            ->latest()->first($item->gas_type);
+            $checkPrice =  $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+            $total      = $this->prices->when($checkPrice, function($q) use ($item) 
+                                        {
+                                            $q->whereDate('date', $item->date_from);
+                                        })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
             return [
                 'price' => ($total[$item->gas_type] * $item->total_liters),
                 'office_short_name' => $item->office->short_name
