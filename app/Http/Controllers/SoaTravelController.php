@@ -211,8 +211,10 @@ class SoaTravelController extends Controller
                                 travels.*,
                                 offices.short_name,
                                 offices.office,
-                                soa_travels.invoice_no'))
+                                soa_travels.invoice_no,
+                                gasolines.name'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
+                            ->leftJoin('gasolines', 'travels.gasoline_id', 'gasolines.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('soa_travels', 'travels.soa_travel', 'soa_travels.id')
                             ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
@@ -234,7 +236,8 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
-                                    'invoice_no' =>$item->invoice_no
+                                    'invoice_no' =>$item->invoice_no,
+                                    'gasoline_name' => $item->name
                                     
                                 ]; 
                 });
