@@ -41,7 +41,7 @@ class SoaTravelController extends Controller
             "soaTravel" => $soatravel
             	->with('travels')
             	->when($request->search, function ($query, $searchItem) {
-                    $query->where('cafoa_number', 'like', '%' . $searchItem . '%');
+                    $query->where('invoice_no', 'like', '%' . $searchItem . '%');
                 })
                 ->latest()
                 ->simplePaginate(10)
@@ -51,7 +51,8 @@ class SoaTravelController extends Controller
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
                     'total_liters' => $item->travels->sum('total_liters'),
-                    'totalPrice' => number_format($item->travels->sum('totalPrice'),2)
+                    'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
+                    'invoice_no' => $item->invoice_no
                 ])
                 ,
             "filters" => $request->only(['search']),
@@ -152,6 +153,7 @@ class SoaTravelController extends Controller
         $attributes = $request->validate([
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
+            'invoice_no' => 'required'
         ]);
 
         //transactions are functions that are used when you want to CRUD multiple table simultaneously
@@ -160,7 +162,7 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
-        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id'));
+        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','invoice_no'));
         		foreach ($request->travels as $key ) {
         			$travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
         		}
@@ -199,6 +201,48 @@ class SoaTravelController extends Controller
         $data->delete();
 
         return redirect('/soatravels')->with('message', 'Soa Travel deleted');
+    }
+
+    public function statement_of_account(Request $request)
+    {
+        $soa = DB::table('travels')
+                            ->select(DB::raw('vehicles.PLATENO,
+                                vehicles.FDESC,
+                                travels.*,
+                                offices.short_name,
+                                offices.office,
+                                soa_travels.invoice_no,
+                                gasolines.name'))
+                            ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
+                            ->leftJoin('gasolines', 'travels.gasoline_id', 'gasolines.id')
+                            ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
+                            ->leftJoin('soa_travels', 'travels.soa_travel', 'soa_travels.id')
+                            ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
+                            ->where('travels.soa_travel', $request->soa_travel)
+                            ->orderByRaw("offices.office ASC, travels.ticket_number ASC")
+                            ->get()->map(function($item) {
+                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                                $total = $this->price->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                    })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                    return [
+                                    'PLATENO' => $item->PLATENO,
+                                    'ticket_number' => $item->ticket_number,
+                                    'date_from' => $item->date_from,
+                                    'date_to' => $item->date_to,
+                                    'gas_type' => $item->gas_type,
+                                    'unit_price' => $total[$item->gas_type],
+                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+                                    'total_liters' => $item->total_liters,
+                                    'short_name' =>$item->short_name,
+                                    'office' => $item->office,
+                                    'invoice_no' =>$item->invoice_no,
+                                    'gasoline_name' => $item->name
+                                    
+                                ]; 
+                });
+
+        return $soa;
     }
 
 }

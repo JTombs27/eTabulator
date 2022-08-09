@@ -108,4 +108,9 @@ class Travel extends Model
         return $this->belongsTo(Office::class, 'office_id', 'department_code');                                                                                                                                                                                                                                                                                                                                                                                    
     }
 
+    public function gasoline()
+    {
+        return $this->belongsTo(Gasoline::class, 'gasoline_id', 'id');
+    }
+
 }

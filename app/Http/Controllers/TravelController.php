@@ -34,7 +34,7 @@ class TravelController extends Controller
         // dd($request->all());
         return inertia('Travels/Index',[
             "travels" => $this->model
-                            ->with('driverVehicle.empl', 'driverVehicle.vehicle')
+                            ->with('driverVehicle.empl', 'driverVehicle.vehicle','gasoline')
                             ->when(strtolower(auth()->user()->role) == 'ro' || strtolower(auth()->user()->role) == 'pg-head' || strtolower(auth()->user()->role) == 'pgso',
                                 function($q) {
                                     $q->where('office_id', auth()->user()->office_id);
@@ -85,8 +85,9 @@ class TravelController extends Controller
                                     'purpose'           =>$item->purpose,
                                     'official_passenger'=>$item->official_passenger,
                                     'is_carpool'        =>$item->is_carpool,
-                                         'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
-                                         'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
+                                    'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
+                                    'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
+                                    'gasoline_station' => $item->gasoline->name
                                      ]; 
                                  }),
              "can" => [
