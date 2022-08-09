@@ -92,7 +92,7 @@
                             <th scope="col">Fuel Limit</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col">Acquisition</th>
-                            <th scope="col" >Office</th>
+                            <th scope="col" >Office Assignment</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right"> Action</th>
