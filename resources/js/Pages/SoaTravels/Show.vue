@@ -17,6 +17,13 @@
                     </div>
                     <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
                 </div>
+                <div class="peer mR-5">
+                    <div class="input-group">
+                        <span class="input-group-text">Invoice No.</span>
+                        <input type="text" v-model="form.invoice_no" class="form-control">
+                    </div>
+                    <div class="fs-6 c-red-500" v-if="form.errors.invoice_no">{{ form.errors.invoice_no }}</div>
+                </div>
                 <div class="peer mR-2">
                     <button class="btn btn-primary text-white" @click="submit()" :disabled="form.travels == 0">Merge</button>
                 </div>
@@ -104,6 +111,7 @@ export default {
             form: useForm({
                 date_from: "",
                 date_to: "",
+                invoice_no:"",
                 travels: [],
                 user_id: this.auth.user.id,
                 office_id: this.auth.user.office_id,
@@ -124,20 +132,23 @@ export default {
                     .filter(item => {
                     let travelDateFrom = item.date_from
                     let travelDateTo = item.date_to
-            
+                
 
                 if ( startDate && endDate ) {
                 
-                    return  (startDate  <= travelDateFrom  && endDate >= travelDateTo) || ( startDate <= travelDateFrom &&  endDate  >= travelDateFrom) || ( startDate <= travelDateTo &&  endDate  >= travelDateTo);
+                    return  (startDate  <= travelDateFrom  && endDate >= travelDateFrom) ;
                     
+                }
+
+                if ( startDate && !endDate ) {
+                    return startDate <= travelDateFrom;
                 }
                     return this.temp2;
                 })
 
+
             }      
-                /*if ( startDate && !endDate ) {
-                    return startDate <= travelDateFrom;
-                }
+                /*
                 if ( !startDate && endDate ) {
                     return travelDateTo <= endDate;
                 }*/

@@ -224,6 +224,7 @@ Route::prefix('/reports')->group(function() {
     Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
     Route::get('/travel', [ReportController::class, 'travels']);
     Route::get('/soa_travel', [ReportController::class, 'soa_travels']);
+    Route::get('/statement_of_account', [SoaTravelController::class, 'statement_of_account']);
 });
 
 Route::prefix('/travelTicket')->group(function() {
