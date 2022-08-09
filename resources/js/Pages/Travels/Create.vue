@@ -118,7 +118,7 @@
                     </div>
                     
                     <label v-if="form.showActualDriver">Actual Driver</label>
-                    <input type="text"  v-model="form.actual_driver" class="form-control">
+                    <input v-if="form.showActualDriver" type="text"  v-model="form.actual_driver" class="form-control">
                     <!-- <Select2 
                         v-if="form.showActualDriver"
                         v-model="form.actual_driver" 
