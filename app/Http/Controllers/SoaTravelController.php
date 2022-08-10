@@ -91,7 +91,8 @@ class SoaTravelController extends Controller
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
                                     'actual_prices' => $total[$item->gas_type],
-                                    'price' => ($total[$item->gas_type] * $item->total_liters)
+                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+                                    'invoice_no' => $item->invoice_no
                                 ]; 
                 }),
         ]);
@@ -141,7 +142,8 @@ class SoaTravelController extends Controller
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
-                                    'price' => ($total[$item->gas_type] * $item->total_liters)
+                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+                                    'invoice_no' => $item->invoice_no
                                 ]; 
                             }),
             "filters" => $request->only(['search']),
