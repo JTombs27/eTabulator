@@ -5,9 +5,9 @@
     </Head>
 
     <div class="row gap-20 masonry pos-r">
-        <div class="masonry-item w-100">
-            <div class="row gap-20">
-                <div class="col-md-3" v-for="(vehicle,index) in vehicles" :key="index">
+        <div class="masonry-item w-100" v-if="isAdmin !== null">
+            <div class="row gap-20" >
+                <div class="col-md-3"  v-for="(vehicle,index) in vehicles" :key="index">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1" v-if="vehicle.TYPECODE == 1">Total Motorcyle</h6>
