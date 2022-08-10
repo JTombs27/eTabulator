@@ -153,7 +153,6 @@ class SoaTravelController extends Controller
         $attributes = $request->validate([
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
-            'invoice_no' => 'required'
         ]);
 
         //transactions are functions that are used when you want to CRUD multiple table simultaneously
@@ -162,7 +161,7 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
-        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','invoice_no'));
+        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id'));
         		foreach ($request->travels as $key ) {
         			$travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
         		}
@@ -236,7 +235,6 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
-                                    'invoice_no' =>$item->invoice_no,
                                     'gasoline_name' => $item->name
                                     
                                 ]; 

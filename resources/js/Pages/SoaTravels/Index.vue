@@ -30,7 +30,6 @@
                         <tr>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
-                            <th scope="col">Invoice No</th>
                             <th scope="col" style="text-align: right">Total Liters</th>
                             <th scope="col" style="text-align: right">Total Price</th>
                             <th scope="col" style="text-align: right">Action</th>
@@ -40,7 +39,6 @@
                         <tr v-for="(soaTravels, index) in soaTravel.data" :key="index">
                             <td>{{ soaTravels.date_from }}</td>
                             <td>{{ soaTravels.date_to }}</td>
-                            <td>{{ soaTravels.invoice_no }}</td>
                             <td class="text-end">{{ soaTravels.total_liters }}</td>
                             <td class="text-end">{{ soaTravels.totalPrice }}</td>
                             <td style="text-align: right">
