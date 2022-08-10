@@ -242,6 +242,7 @@ class SoaTravelController extends Controller
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
                                     'gasoline_name' => $item->name,
+                                    'invoice_no' => $item->invoice_no,
                                     'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y'))
                                     
                                 ]; 
