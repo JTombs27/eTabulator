@@ -17,13 +17,13 @@
                     </div>
                     <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
                 </div>
-                <div class="peer mR-5">
+                <!-- <div class="peer mR-5">
                     <div class="input-group">
                         <span class="input-group-text">Invoice No.</span>
                         <input type="text" v-model="form.invoice_no" class="form-control">
                     </div>
                     <div class="fs-6 c-red-500" v-if="form.errors.invoice_no">{{ form.errors.invoice_no }}</div>
-                </div>
+                </div> -->
                 <div class="peer mR-2">
                     <button class="btn btn-primary text-white" @click="submit()" :disabled="form.travels == 0">Merge</button>
                 </div>
@@ -111,7 +111,6 @@ export default {
             form: useForm({
                 date_from: "",
                 date_to: "",
-                invoice_no:"",
                 travels: [],
                 user_id: this.auth.user.id,
                 office_id: this.auth.user.office_id,
