@@ -48,25 +48,6 @@ __webpack_require__.r(__webpack_exports__);
     }, 300)
   },
   methods: {
-    station: function station(gasoline_id) {
-      switch (gasoline_id) {
-        case 1:
-          return "<span>Petron</span>";
-          break;
-
-        case 2:
-          return "<span>Shell</span>";
-          break;
-
-        case 3:
-          return "<span>Sea Oil</span>";
-          break;
-
-        default:
-          return "";
-          break;
-      }
-    },
     editprice: function editprice(id) {
       this.$inertia.get("/prices/" + id + "/edit/");
     },
@@ -274,7 +255,9 @@ var _hoisted_27 = {
 var _hoisted_28 = {
   "class": "text-end"
 };
-var _hoisted_29 = ["innerHTML"];
+var _hoisted_29 = {
+  "class": "text-center"
+};
 var _hoisted_30 = {
   key: 0,
   style: {
@@ -450,12 +433,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       maximumFractionDigits: 2
     })), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-      "class": "text-center",
-      innerHTML: $options.station(prices.gasoline_id)
-    }, null, 8
-    /* PROPS */
-    , _hoisted_29), $props.can.canEditPrice || $props.can.canDeletePrice ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"user.can.edit\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_33, [$props.can.canEditPrice ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_29, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(prices.gasoline.name), 1
+    /* TEXT */
+    ), $props.can.canEditPrice || $props.can.canDeletePrice ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("td", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" v-if=\"user.can.edit\" "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_33, [$props.can.canEditPrice ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_34, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
       "class": "dropdown-item",
       title: "Edit Price!",
       onClick: function onClick($event) {

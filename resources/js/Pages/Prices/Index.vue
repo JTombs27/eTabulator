@@ -48,7 +48,7 @@
                             <td class="text-end">{{ Number(prices.engine_oil_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td class="text-end">{{ Number(prices.brake_oil_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td class="text-end">{{ Number(prices.greases_price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
-                            <td class="text-center" v-html="station(prices.gasoline_id)"></td>
+                            <td class="text-center" >{{ prices.gasoline.name }}</td>
                             <td style="text-align: right" v-if="can.canEditPrice || can.canDeletePrice">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
@@ -130,22 +130,6 @@ export default {
         }, 300),
     },
     methods: {
-        station (gasoline_id) {
-            switch(gasoline_id) {
-                case 1:
-                    return "<span>Petron</span>";
-                    break
-                case 2:
-                    return "<span>Shell</span>";
-                    break
-                case 3:
-                    return "<span>Sea Oil</span>";
-                    break
-                default:
-                    return ""
-                    break
-            }
-        },
         editprice(id)
         {
             this.$inertia.get("/prices/"+id+"/edit/");

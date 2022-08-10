@@ -706,7 +706,7 @@ var _hoisted_71 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Department");
+var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Department");
 
 var _hoisted_73 = {
   key: 3
@@ -1134,7 +1134,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         options: _ctx.offices
       }, null, 8
       /* PROPS */
-      , ["modelValue", "options"]), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label> Vehicle Status</label>\r\n            <select v-model=\"filter1.condition\" class=\"form-select md\">\r\n                    <option disabled value=\"\">Select Status</option>\r\n                    <option value=\"Good Condition\">Good Condition</option>\r\n                    <option value=\"On-Repair\">On-repair</option>\r\n                    <option value=\"Wasted\">Wasted</option>\r\n                 </select> "), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "btn btn-sm btn-primary mT-5 text-white",
         onClick: _cache[7] || (_cache[7] = function ($event) {
           return $options.runFilter();

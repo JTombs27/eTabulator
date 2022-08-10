@@ -118,12 +118,13 @@
                     </div>
                     
                     <label v-if="form.showActualDriver">Actual Driver</label>
-                    <Select2 
+                    <input v-if="form.showActualDriver" type="text"  v-model="form.actual_driver" class="form-control">
+                    <!-- <Select2 
                         v-if="form.showActualDriver"
                         v-model="form.actual_driver" 
                         id="actualDriver" 
                         @select="setActualDriver($event)" 
-                    />
+                    /> -->
                     <div class="fs-6 c-red-500" v-if="form.errors.actual_driver">{{ form.errors.actual_driver }}</div>
                     
                     <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
@@ -139,11 +140,9 @@
                     <div class="position-relative">
                         <label class="col-md-3" for="">Gasoline Station</label>
                     </div>
-                    <select class="form-select" v-model="form.gasoline_id" @change="fetchPrice()">
+                     <select class="form-select" v-model="form.gasoline_id" @change="fetchPrice()">
                         <option disabled value="">Select Station</option>
-                        <option value="1">Petron</option>
-                        <option value="2">Shell</option>
-                        <option value="3">Sea Oil</option>
+                        <option v-for="item, index in gasoline" :value="item.id">{{ item.text }}</option>
                     </select>
                     <div class="position-relative">
                         <label class="col-md-3" for="">Gas Type</label>
@@ -249,6 +248,7 @@ export default {
     },
 
     async mounted() {
+        await this.loadGasoline()
         // console.log(this.auth.user)
         this.form.balance = this.balance
         if (this.editData !== undefined) {
@@ -296,6 +296,13 @@ export default {
     },
 
     methods:{
+        loadGasoline() {
+            axios.get('/prices/fetch').then((response) => {
+                this.gasoline = response.data;
+
+            })
+        },
+        
         formatOffice(repo) {
             return repo.text
         },

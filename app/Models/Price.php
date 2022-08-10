@@ -11,8 +11,8 @@ class Price extends Model
     
     protected $guarded = [];
 
-    public function getPrice()
+    public function gasoline()
     {
-        
+        return $this->belongsTo(Gasoline::class, 'gasoline_id', 'id');
     }
 }

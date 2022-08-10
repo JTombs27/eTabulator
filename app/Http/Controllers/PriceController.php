@@ -20,6 +20,7 @@ class PriceController extends Controller
         return inertia('Prices/Index', [
             //returns an array of users with name field only
             "price" => $this->model
+                ->with('gasoline')
             	->when($request->search, function ($query, $searchItem) {
                     $q->where('gas_type', 'like', '%' . $searchItem . '%');
                     
