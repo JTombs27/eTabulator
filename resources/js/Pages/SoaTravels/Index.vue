@@ -28,6 +28,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th scope="col">Ticket Number</th>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
                             <th scope="col" style="text-align: right">Total Liters</th>
@@ -37,6 +38,7 @@
                     </thead>
                     <tbody>
                         <tr v-for="(soaTravels, index) in soaTravel.data" :key="index">
+                            <td>{{ soaTravels.ticket_no }}</td>
                             <td>{{ soaTravels.date_from }}</td>
                             <td>{{ soaTravels.date_to }}</td>
                             <td class="text-end">{{ soaTravels.total_liters }}</td>
