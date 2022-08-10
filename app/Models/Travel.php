@@ -21,6 +21,7 @@ class Travel extends Model
         'purpose',
         'actual_driver',
         'ticket_number',
+        'invoice_no',
         'gas_type',
         'soa_travel',
         'user_id',

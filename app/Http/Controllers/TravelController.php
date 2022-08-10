@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Validation\Rule;
 
 class TravelController extends Controller
 {
@@ -87,7 +87,8 @@ class TravelController extends Controller
                                     'is_carpool'        =>$item->is_carpool,
                                     'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
-                                    'gasoline_station' => $item->gasoline->name
+                                    'gasoline_station' => $item->gasoline->name,
+                                    'invoice' => $item->invoice_no
                                      ]; 
                                  }),
              "can" => [
@@ -422,5 +423,35 @@ class TravelController extends Controller
         }
 
         return ($fuel_limit * 7) - $consumedFuel;
+    }
+
+    public function checkInvoice(Request $request)
+    {
+        $request->invoice_no = $request->invoice_no ? $request->invoice_no : "";
+        $current_invoice = $this->model->find($request->id)->invoice_no;
+        $response = $this->model
+                        ->when($request->invoice_no, function($q) use($request) {
+                            $q->where('invoice_no', $request->invoice_no);
+                        })->exists();
+
+        return !$response || ($request->invoice_no == $current_invoice);
+    }
+
+    public function updateInvoice(Request $request)
+    {
+        $current_invoice = $this->model->find($request->id)->invoice_no;
+        
+        $request->validate([
+            'invoice' => ['required', Rule::when($current_invoice != $request->invoice, ['unique:travels,invoice_no'])],
+        ]);
+
+        $travel = $this->model->findOrFail($request->id);
+
+        $travel->update([
+            'invoice_no' => $request->invoice
+        ]);
+
+        return redirect('/travels');
+        
     }
 }
