@@ -39,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3  mt-3">
+                <!-- <div class="col-md-3  mt-3">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">SOA Reports</h6>
@@ -60,7 +60,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div> 
     </div>

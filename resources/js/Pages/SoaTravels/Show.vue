@@ -5,6 +5,16 @@
             <div class="peers fxw-nw jc-sb ai-c">
                 <div class="peer mR-5">
                     <div class="input-group">
+                        <span class="input-group-text">Station</span>
+                        <select v-model="form.gasoline_id" class="form-control">
+                            <option disabled value="">Select Station</option>
+                            <option v-for="item, index in gasoline" :value="item.id">{{ item.text }}</option>
+                        </select>
+                    </div>
+                    <div class="fs-6 c-red-500" v-if="form.errors.gasoline_id">{{ form.errors.gasoline_id }}</div>
+                </div>
+                <div class="peer mR-5">
+                    <div class="input-group">
                         <span class="input-group-text">From</span>
                         <input type="date" v-model="form.date_from" @change="date_from()" class="form-control">
                     </div>
@@ -17,13 +27,6 @@
                     </div>
                     <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
                 </div>
-                <!-- <div class="peer mR-5">
-                    <div class="input-group">
-                        <span class="input-group-text">Invoice No.</span>
-                        <input type="text" v-model="form.invoice_no" class="form-control">
-                    </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.invoice_no">{{ form.errors.invoice_no }}</div>
-                </div> -->
                 <div class="peer mR-2">
                     <button class="btn btn-primary text-white" @click="submit()" :disabled="form.travels == 0">Merge</button>
                 </div>
@@ -111,10 +114,12 @@ export default {
             form: useForm({
                 date_from: "",
                 date_to: "",
+                gasoline_id:"",
                 travels: [],
                 user_id: this.auth.user.id,
                 office_id: this.auth.user.office_id,
             }),
+            gasoline:[],
             temp2:[],
         }
     },
@@ -123,11 +128,13 @@ export default {
             
             let startDate = this.form.date_from;
             let endDate = this.form.date_to;
+            let Station = this.form.gasoline_id;
+            
 
             if (startDate == "") {
                 this.temp2 = []
             } else {
-                this.temp2 = this.Travels.filter(item => item.soa_travel === null)
+                this.temp2 = this.Travels.filter(item => item.gasoline_id == Station)
                     .filter(item => {
                     let travelDateFrom = item.date_from
                     let travelDateTo = item.date_to
@@ -169,6 +176,7 @@ export default {
     },
     mounted(){
         this.getData();
+        this.loadGasoline()
     },
     methods:{
         back() {
@@ -210,6 +218,13 @@ export default {
         submit() {
                 this.form.post("/soatravels", this.form);
         },
+
+        loadGasoline() {
+            axios.get('/prices/fetch').then((response) => {
+                this.gasoline = response.data;
+
+            })
+        }
 
         /* fetchPrice(soa_travel,gas_type,total_liters) {
            

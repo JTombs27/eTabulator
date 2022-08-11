@@ -72,8 +72,6 @@ export default {
     
     mounted() {
        // this.plate_no = this.id
-      
-       
          if(this.editData) {
             this.plate_no = this.vehicle.vehicle.PLATENO
             this.pageTitle = "Edit Vehicle Status"
@@ -83,14 +81,12 @@ export default {
           
             this.form.condition = this.vehicle.condition
             this.vehicleid = this.vehicle.vehicles_id
-          
         } else {
             this.plate_no = this.vehicle.PLATENO
             this.pageTitle = "Add Vehicle Status"
             this.form.vehicles_id = this.vehicle.id
             this.vehicleid = this.vehicle.id
         }
-            
     },
     methods: {
         submit() {
