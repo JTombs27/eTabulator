@@ -137,6 +137,8 @@
                     <input type="text" v-model="form.place_to_visit" class="form-control">
                     <label for="">Purpose of Travel</label>
                     <input type="text" v-model="form.purpose" class="form-control">
+                    <label for="">Fuel Tank Balance</label>
+                    <input type="text" v-model="form.tank_balance" class="form-control">
                     <div class="position-relative">
                         <label class="col-md-3" for="">Gasoline Station</label>
                     </div>
@@ -164,6 +166,8 @@
                     <label for="">Price</label>
                     <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
                     <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
+                    <label for="">Deduct used during the trip</label>
+                    <input type="text" v-model="form.consumed_fuel" class="form-control">
                     <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save changes</button>
                 </span>
             </form>
@@ -215,7 +219,9 @@ export default {
                 borrowing_office:null,
                 remaining_fuel:null,
                 maxLiters:"",
-                gasoline_id:null
+                gasoline_id:null,
+                tank_balance:null,
+                consumed_fuel:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -257,6 +263,8 @@ export default {
             this.pageTitle = "Edit"
             this.form.place_to_visit = this.editData.place_to_visit
             this.form.gas_type = this.editData.gas_type
+            this.form.tank_balance = this.editData.tank_balance
+            this.form.consumed_fuel = this.editData.consumed_fuel
             this.form.time_arrival = this.editData.time_arrival
             this.form.time_departure = this.editData.time_departure
             this.form.total_liters = this.editData.total_liters

@@ -21,6 +21,7 @@ class Travel extends Model
         'purpose',
         'actual_driver',
         'ticket_number',
+        'invoice_no',
         'gas_type',
         'soa_travel',
         'user_id',
@@ -30,7 +31,9 @@ class Travel extends Model
         'is_borrowed_fuel',
         'is_borrowed_vehicle',
         'borrowing_office',
-        'gasoline_id'
+        'gasoline_id',
+        'consumed_fuel',
+        'tank_balance'
         
 
     ];
@@ -104,6 +107,11 @@ class Travel extends Model
     public function office()
     {
         return $this->belongsTo(Office::class, 'office_id', 'department_code');                                                                                                                                                                                                                                                                                                                                                                                    
+    }
+
+    public function gasoline()
+    {
+        return $this->belongsTo(Gasoline::class, 'gasoline_id', 'id');
     }
 
 }

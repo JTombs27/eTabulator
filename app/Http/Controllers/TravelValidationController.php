@@ -22,37 +22,15 @@ class TravelValidationController extends Controller
 
     public function index(Request $request)
     {
-        // $data = DB::table('travels')
-        // ->select(
-        //     'vehicles.PLATENO',
-        //     'vehicles.FDESC',
-        //     'employees.first_name',
-        //     'employees.middle_name',
-        //     'employees.last_name',
-        //     'travels.date_from',
-        //     'travels.date_to',
-        //     'travels.actual_driver',
-        //     'travels.id',
-        //     'travels.status',
-        //     'travels.total_liters',
-        //     'travels.gas_type'
-        // )
-        // ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
-        // ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
-        // ->leftJoin('employees', 'driver_vehicles.drivers_id', 'employees.empl_id')
-        
-        // ->where('travels.id', $request->id)
-        // ->first();
-
         $data = $this->model
-            ->with('driverVehicle.empl', 'driverVehicle.vehicle')
+            ->with('driverVehicle.empl', 'driverVehicle.vehicle','gasoline')
             ->where('travels.id', $request->id)
             ->simplePaginate(10)
             ->through(function ($item) {
-                $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
                     $q->whereDate('date', $item->date_from);
-                })->latest()->first($item->gas_type);
+                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
                 return [
                     'first_name' => $item->driverVehicle->empl->first_name,
                     'middle_name' => $item->driverVehicle->empl->middle_name,
@@ -69,6 +47,7 @@ class TravelValidationController extends Controller
                     'office_id' => $item->office_id,
                     'gas_type'=>$item->gas_type,
                     'price' => number_format($total[$item->gas_type],2),
+                    'gasoline_station' => $item->gasoline->name
                 ]; 
             });
         return view("travelvalidation",compact("data"));

@@ -24,6 +24,7 @@
             <tr><td>Plate Number</td><td>:</td><td><b>{{$data[0]['PLATENO']}}</b></td></tr>
             <tr><td>Travel Date</td><td>:</td><td><b>{{$data[0]['date_to'] != null ? $data[0]['date_from'].' To '.$data[0]['date_to']:$data[0]['date_from']}}</b></td></tr>
             <tr><td>Allowed Liter/s </td><td>:</td><td><b>{{$data[0]['liters']}} Liter/s</b></td></tr>
+            <tr><td>Gasoline Station </td><td>:</td><td><b>{{$data[0]['gasoline_station']}}</b></td></tr>
             <tr><td>Gas Type </td><td>:</td><td><b>
                 
                     @switch ($data[0]['gas_type'])
