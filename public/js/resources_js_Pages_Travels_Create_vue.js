@@ -235,21 +235,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getVehicles: function getVehicles(e) {
       var _this4 = this;
 
-      axios.post("/vehicles/getVehicles").then(function (response) {
-        _this4.vehicles = response.data;
-      }); // axios.post(`/travels/get-vehicles`).then( (response) => {
+      // axios.post(`/vehicles/getVehicles`).then( (response) => {
       //     this.vehicles = response.data
-      //     // let office = this.auth.user.office_id
-      //     // try {
-      //     //     if (e.target.checked) {
-      //     //         this.vehicles = response.data
-      //     //     } else {
-      //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
-      //     //     }
-      //     // } catch (error) {
-      //     //     this.vehicles = response.data
-      //     // }
       // })
+      axios.post("/travels/get-vehicles").then(function (response) {
+        _this4.vehicles = response.data;
+        var office = _this4.auth.user.office_id;
+
+        try {
+          if (e.target.checked) {
+            _this4.vehicles = response.data;
+          } else {
+            _this4.vehicles = _.filter(response.data, function (o) {
+              return o.office_id == office;
+            });
+          }
+        } catch (error) {
+          _this4.vehicles = response.data;
+        }
+      });
     },
     getEmployees: function getEmployees() {
       var _this5 = this;

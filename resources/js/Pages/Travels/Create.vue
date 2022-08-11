@@ -362,22 +362,22 @@ export default {
 
         getVehicles(e){
             
-            axios.post(`/vehicles/getVehicles`).then( (response) => {
-                this.vehicles = response.data
-            })
-            // axios.post(`/travels/get-vehicles`).then( (response) => {
+            // axios.post(`/vehicles/getVehicles`).then( (response) => {
             //     this.vehicles = response.data
-            //     // let office = this.auth.user.office_id
-            //     // try {
-            //     //     if (e.target.checked) {
-            //     //         this.vehicles = response.data
-            //     //     } else {
-            //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
-            //     //     }
-            //     // } catch (error) {
-            //     //     this.vehicles = response.data
-            //     // }
             // })
+            axios.post(`/travels/get-vehicles`).then( (response) => {
+                this.vehicles = response.data
+                let office = this.auth.user.office_id
+                try {
+                    if (e.target.checked) {
+                        this.vehicles = response.data
+                    } else {
+                        this.vehicles = _.filter(response.data, (o) => o.office_id == office)
+                    }
+                } catch (error) {
+                    this.vehicles = response.data
+                }
+            })
         },
 
         getEmployees() {
