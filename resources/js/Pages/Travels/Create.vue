@@ -78,7 +78,7 @@
                         <label class="col-md-3" for="">Vehicle Name</label>
                         <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                     </div>
-                    <Select2 v-model="form.vehicles_id" :options="vehicles" @select="getVehicleDetails($event)" />
+                    <Select2 v-model="form.vehicles_id" :options="officeFiltered" @select="getVehicleDetails($event)" />
                     <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
                     <div class="col-md-12">
                         <br>
@@ -159,7 +159,7 @@
                     
                     <div class="position-relative">
                         <label for="">Liter/s</label>
-                        <label class="position-absolute top-0 end-0" for=""><strong>{{ fuelLimit != null ? `Remaining weekly fuel limit: ${fuelLimit} liters`: "" }}</strong></label>
+                        <label class="position-absolute top-0 end-0" for=""><strong>{{ fuelMaxLimit }}</strong></label>
                     </div>
                     <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                     <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
@@ -572,6 +572,15 @@ export default {
                     return this.vehicles
                 }
             })
+        },
+        fuelMaxLimit() {
+            let display = "";
+            if (this.fuelLimit == 'Unlimited') {
+                display = "No fuel limit"
+            } else if (this.fuelLimit != null && this.fuelLimit != 'Unlimited') {
+                display = `Remaining weekly fuel limit: ${this.fuelLimit} liters`;
+            }
+            return display;
         }
     },
 

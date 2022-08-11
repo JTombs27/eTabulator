@@ -80,6 +80,7 @@ class Travel extends Model
     public function setStatus($value)
     {
         $this->status = $value;
+        $this->status_user_id = auth()->user()->id;
         $this->save();
         if ($value == 'Disapproved') {
             return 'error';

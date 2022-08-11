@@ -376,7 +376,7 @@ class TravelController extends Controller
     {
         
         return $this->officeVehicles
-                    ->with('vehicle.vehicle_latest_status')
+                    ->whereHas('vehicle.vehicle_latest_status')
                     ->get()
                     ->map(fn($item) => [
                         'id' => $item->vehicles_id,
@@ -402,7 +402,7 @@ class TravelController extends Controller
         $weekStartDate = Carbon::parse($request->date_from)->startOfWeek()->format('Y-m-d');
         $weekEndDate = Carbon::parse($request->date_from)->endOfWeek()->format('Y-m-d');
         $fuel_limit = $this->vehicles->find($request->vehicles_id)->fuel_limit;
-       
+        
         $fuel = $this->model
                     ->whereBetween('date_from', [$weekStartDate,$weekEndDate])
                     ->with(['driverVehicle' => function($q) use ($request) {
@@ -421,8 +421,10 @@ class TravelController extends Controller
             $currentLitters = $this->model->find($request->id)->total_liters;
             $consumedFuel = $consumedFuel - $currentLitters;
         }
-
-        return ($fuel_limit * 7) - $consumedFuel;
+        if ($fuel_limit == 0) {
+            return 'Unlimited';
+        }
+        return ($fuel_limit * 5) - $consumedFuel;
     }
 
     public function checkInvoice(Request $request)
