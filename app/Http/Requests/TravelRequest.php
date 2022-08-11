@@ -44,7 +44,7 @@ class TravelRequest extends FormRequest
                                 // new ValidateWeek($this->date_from, $this->date_to)
                             ])
                         ], 
-            'total_liters' => Rule::when($valid,
+            'total_liters' => Rule::when($valid && $fuel_limit->fuel_limit != 0,
                         ['numeric',
                             // function($attr, $value, $fail) {
 

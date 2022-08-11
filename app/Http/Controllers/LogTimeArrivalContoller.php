@@ -6,28 +6,54 @@ use App\Models\DriverVehicle;
 use App\Models\Employee;
 use App\Models\LogTimeArrival;
 use App\Models\Travel;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class LogTimeArrivalContoller extends Controller
 {
-    public function __construct(LogTimeArrival $model,Travel $travel,DriverVehicle $drivervehicle,Employee $employee)
+    public function __construct(LogTimeArrival $model,Travel $travel,DriverVehicle $drivervehicle,Employee $employee, User $user)
     {
         $this->model = $model;
         $this->travel = $travel;
         $this->drivervehicle = $drivervehicle;
         $this->employee = $employee;
+        $this->user = $user;
     }
     public function index()
     {
-        return inertia('LogTimeArrival/Index',[
-            '_logTimeArrival' =>  $this->travel
+        $isAdmin = $this->user
+        ->where('id', auth()->user()->id)
+        ->where(function($query){
+            $query->where('role', 'Admin')
+                 ->orWhere('role', 'PGO');
+        })
+        ->first();
+
+        if(!$isAdmin)
+        {
+            $travels = $this->travel
+            ->with("logTimeArrival")
+            ->where([
+                'status' => 'Approved',
+                'office_id' => auth()->user()->office_id
+                ])
+            ->latest()
+            ->simplePaginate(10);
+        }
+        else{
+            $travels = $this->travel
             ->with("logTimeArrival")
             ->where([
                 'status' => 'Approved',
                 ])
             ->latest()
-            ->simplePaginate(10),
+            ->simplePaginate(10);
+        }
+       
+
+        return inertia('LogTimeArrival/Index',[
+            '_logTimeArrival' =>  $travels,
         ]);
     }
 
