@@ -215,6 +215,8 @@ __webpack_require__.r(__webpack_exports__);
           return "Pending";
         } else if (value == "Disapproved") {
           return "Disapproved";
+        } else if (value == "Fueled") {
+          return "Fueled";
         }
       };
     }
