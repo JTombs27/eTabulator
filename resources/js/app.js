@@ -2,6 +2,7 @@ require('./bootstrap');
 import { createApp, h } from 'vue'
 import { createInertiaApp, Head, Link } from '@inertiajs/inertia-vue3'
 import Layout  from "./Shared/Layout"
+import SimpleLayout  from "./Layout/SimpleLayout"
 import Modal  from "./Shared/Modal"
 import BackButton from "./Shared/BackButton"
 import Notification  from "./Shared/Notification"
@@ -32,7 +33,13 @@ createInertiaApp({
   resolve: async name => {
     let page = (await import(`./Pages/${name}`)).default;
     
-    page.layout ??= Layout
+    if(location.pathname == '/travelTicket')
+    {
+      page.layout ??= SimpleLayout
+    }
+    else{
+      page.layout ??= Layout
+    }
 
     return page;
   },

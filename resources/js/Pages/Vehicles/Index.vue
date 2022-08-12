@@ -38,7 +38,14 @@
             <label>Office Vehicles</label>
             <Select2 v-model="filter1.department_code" :options="offices"></Select2>
 
-            
+            <!-- <label> Vehicle Status</label>
+            <select v-model="filter1.condition" class="form-select md">
+                    <option disabled value="">Select Status</option>
+                    <option value="Good Condition">Good Condition</option>
+                    <option value="On-Repair">On-repair</option>
+                    <option value="Wasted">Wasted</option>
+                 </select> -->
+
             <div class="col pt-2 mt-2"></div>
             <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -92,7 +99,7 @@
                             <th scope="col">Fuel Limit</th>
                             <th scope="col">Date Acquired</th>
                             <th scope="col">Acquisition</th>
-                            <th scope="col" >Office</th>
+                            <th scope="col" >Office Assignment</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Description</th>
                             <th scope="col" style="text-align: right"> Action</th>
@@ -108,7 +115,7 @@
                             <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
                             <td v-if="!!vehicle.vehicle_status" v-html="code(vehicle.TYPECODE, vehicle.vehicle_status.condition)"></td>
                             <td v-else v-html="code(vehicle.TYPECODE, null)"></td>
-                            <td style="text-align: center"> {{vehicle.fuel_limit}}</td>
+                            <td style="text-align: center" v-html="fuel(vehicle.fuel_limit)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
                             <!-- <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
@@ -118,7 +125,7 @@
                             <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
-                            <td style="text-align: right">
+                            <td style="text-align: right" >
                                 <div class="dropdown downstart">
                                     <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
@@ -145,7 +152,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
                                             <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
-                                        </svg>&nbsp;Department</Link></li>
+                                        </svg>Department</Link></li>
 
                                         <li v-if="can.canCreateDriver"><Link class="dropdown-item" @click="driverVehicle(vehicle.id)">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
@@ -344,7 +351,7 @@ export default ({
                 TYPECODE:"",
                 FDATEACQ:"",
                 FDESC:"",
-                department_code:""
+                department_code:"",
             }),
 
             noProject:false,
@@ -396,6 +403,17 @@ export default ({
                     break
                 default:
                     return ""
+                    break
+            }
+        },
+
+        fuel (fuel) {
+            switch(fuel) {
+                case '0.00':
+                    return "<span>Unlimited Fuel</span>"
+                    break
+                default:
+                    return fuel
                     break
             }
         },

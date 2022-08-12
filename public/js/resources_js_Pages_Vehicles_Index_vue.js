@@ -110,6 +110,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           break;
       }
     },
+    fuel: function fuel(_fuel) {
+      switch (_fuel) {
+        case '0.00':
+          return "<span>Unlimited Fuel</span>";
+          break;
+
+        default:
+          return _fuel;
+          break;
+      }
+    },
     status: function status(_status) {
       if (_status == "Good Condition") {
         return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-success'> ✔ </span></small>";
@@ -551,7 +562,7 @@ var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
   scope: "col"
 }, "Acquisition"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
-}, "Office"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
+}, "Office Assignment"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
 }, "Driver"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   scope: "col"
@@ -571,11 +582,7 @@ var _hoisted_46 = ["value", "id"];
 var _hoisted_47 = ["for"];
 var _hoisted_48 = ["innerHTML"];
 var _hoisted_49 = ["innerHTML"];
-var _hoisted_50 = {
-  style: {
-    "text-align": "center"
-  }
-};
+var _hoisted_50 = ["innerHTML"];
 var _hoisted_51 = {
   style: {
     "text-align": "right"
@@ -706,7 +713,7 @@ var _hoisted_71 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" Department");
+var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Department");
 
 var _hoisted_73 = {
   key: 3
@@ -1134,7 +1141,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         options: _ctx.offices
       }, null, 8
       /* PROPS */
-      , ["modelValue", "options"]), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label> Vehicle Status</label>\r\n            <select v-model=\"filter1.condition\" class=\"form-select md\">\r\n                    <option disabled value=\"\">Select Status</option>\r\n                    <option value=\"Good Condition\">Good Condition</option>\r\n                    <option value=\"On-Repair\">On-repair</option>\r\n                    <option value=\"Wasted\">Wasted</option>\r\n                 </select> "), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "btn btn-sm btn-primary mT-5 text-white",
         onClick: _cache[7] || (_cache[7] = function ($event) {
           return $options.runFilter();
@@ -1203,9 +1210,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       innerHTML: $options.code(vehicle.TYPECODE, null)
     }, null, 8
     /* PROPS */
-    , _hoisted_49)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.fuel_limit), 1
-    /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.date), 1
+    , _hoisted_49)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      style: {
+        "text-align": "center"
+      },
+      innerHTML: $options.fuel(vehicle.fuel_limit)
+    }, null, 8
+    /* PROPS */
+    , _hoisted_50), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.date), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number(vehicle.FACQCOST).toLocaleString(undefined, {
       minimumFractionDigits: 2
