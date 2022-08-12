@@ -110,6 +110,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           break;
       }
     },
+    fuel: function fuel(_fuel) {
+      switch (_fuel) {
+        case '0.00':
+          return "<span>Unlimited Fuel</span>";
+          break;
+
+        default:
+          return _fuel;
+          break;
+      }
+    },
     status: function status(_status) {
       if (_status == "Good Condition") {
         return "<small style='margin-left: 5px'><span class='badge rounded-pill bg-success'> ✔ </span></small>";
@@ -571,11 +582,7 @@ var _hoisted_46 = ["value", "id"];
 var _hoisted_47 = ["for"];
 var _hoisted_48 = ["innerHTML"];
 var _hoisted_49 = ["innerHTML"];
-var _hoisted_50 = {
-  style: {
-    "text-align": "center"
-  }
-};
+var _hoisted_50 = ["innerHTML"];
 var _hoisted_51 = {
   style: {
     "text-align": "right"
@@ -1203,9 +1210,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       innerHTML: $options.code(vehicle.TYPECODE, null)
     }, null, 8
     /* PROPS */
-    , _hoisted_49)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.fuel_limit), 1
-    /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.date), 1
+    , _hoisted_49)), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+      style: {
+        "text-align": "center"
+      },
+      innerHTML: $options.fuel(vehicle.fuel_limit)
+    }, null, 8
+    /* PROPS */
+    , _hoisted_50), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(vehicle.date), 1
     /* TEXT */
     ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number(vehicle.FACQCOST).toLocaleString(undefined, {
       minimumFractionDigits: 2
