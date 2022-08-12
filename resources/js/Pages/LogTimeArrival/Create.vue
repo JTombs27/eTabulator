@@ -17,6 +17,9 @@
                 <label for="">Time Of Arrival</label>
                 <input type="datetime-local" v-model="form.time_arrival" class="form-control" autocomplete="chrome-off">
                 <div class="fs-6 c-red-500" v-if="form.errors.time_arrival">{{ form.errors.time_arrival }}</div>
+                <label for="">Odo Reading</label>
+                <input type="text" v-model="form.odometer" class="form-control" autocomplete="chrome-off">
+                <div class="fs-6 c-red-500" v-if="form.errors.odometer">{{ form.errors.odometer }}</div>
                 <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">save</button>
             </form>
         </div>
@@ -42,6 +45,7 @@ export default {
             form: useForm({
                 travel_id:'',
                 time_arrival:'',
+                odometer:'',
             }),
             ticket_number:'',
             pageTitle: "Log Arrival",

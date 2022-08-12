@@ -81,6 +81,7 @@ class LogTimeArrivalContoller extends Controller
             $validated = $request->validate([
                 'ticket_number' => 'required',
                 'time_arrival' => 'required',
+                'odometer' => 'required',
             ]);
           
             try{
@@ -142,6 +143,7 @@ class LogTimeArrivalContoller extends Controller
             $validated = $request->validate([
                 'ticket_number' => 'required',
                 'time_arrival' => 'required',
+                'odometer' => 'required',
             ]);
 
             // dd($request->time_arrival);
@@ -210,6 +212,7 @@ class LogTimeArrivalContoller extends Controller
         $attributes = $request->validate([
             'travel_id' => 'required',
             'time_arrival' => 'required',
+            'odometer' => 'required',
         ]);
         try{
             $log = $this->travel->where('id',$request->travel_id)->first();
@@ -243,6 +246,7 @@ class LogTimeArrivalContoller extends Controller
         $attributes = $request->validate([
             'travel_id' => 'required',
             'time_arrival' => 'required',
+            'odometer' => 'required',
         ]);
         
          $log = $this->travel->where('id',$request->travel_id);

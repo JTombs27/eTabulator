@@ -99,6 +99,13 @@
                     <div class="fs-6 c-red-500">{{ $message }}</div>
                 @enderror
             </div>
+            <div class="mb-3" style="margin-top:4px !important;">
+                <label for="odometer" class="form-label">Odo Reading</label>
+                <input type="text" class="form-control @error('odometer') is-invalid @enderror" value="{{ old('odometer') }}" name="odometer" id="odometer" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                @error('odometer')
+                    <div class="fs-6 c-red-500">{{ $message }}</div>
+                @enderror
+            </div>
             <input type="text" name="action" value="confirm" style="display:none !important">
             <div class="input-group input-group-lg" style="margin-top:4px;">
                 <button  type="submit" class="form-control btn btn-success btn-block">Submit</button>
