@@ -26,7 +26,8 @@ class TravelValidationController extends Controller
             ->with('driverVehicle.empl', 'driverVehicle.vehicle','gasoline')
             ->where('travels.id', $request->id)
             ->simplePaginate(10)
-            ->through(function ($item) {
+            ->through(function ($item) 
+            {
                 $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
                     $q->whereDate('date', $item->date_from);
@@ -50,6 +51,22 @@ class TravelValidationController extends Controller
                     'gasoline_station' => $item->gasoline->name
                 ]; 
             });
-        return view("travelvalidation",compact("data"));
+        return inertia("TravelValidations/Index",["TravelData" => $data]);
+    }
+
+    public function update(Request $request){
+        try {
+            //code...
+            $data = $this->model->findOrFail($request->id);
+            $data->update([
+                'status'=> 'Fueled'
+            ]);
+            
+            return 'success';
+        } catch (\Exception $th) 
+        {
+            //throw $th;
+            return 'error';
+        } 
     }
 }
