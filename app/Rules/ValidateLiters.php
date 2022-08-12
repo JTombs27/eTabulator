@@ -50,44 +50,19 @@ class ValidateLiters implements Rule
                     ->get();
         
         $consumed = $fuel->sum('total_liters');
-        $remainingPerWeek = ($this->fuel_limit * 7) - $consumed;
-        // dd($remainingPerWeek);
-  
-        if (request('date_from') && request('date_to')) {
+        $remainingPerWeek = ($this->fuel_limit * 5) - $consumed;
+                    
+        if ($this->attributes->id) {
 
-            if ($this->attributes->id) {
+            $currentLiters = Travel::findOrFail($this->attributes->id);
 
-                $currentLiters = Travel::findOrFail($this->attributes->id);
-                $remainingPerWeek = $remainingPerWeek + $currentLiters->total_liters; 
+            $remainingPerWeek = $remainingPerWeek + $currentLiters->total_liters; 
 
-            }
-            // $allowedFuel = $this->fuel_limit - $consumed;
-         
-            return $this->validateWithRange($remainingPerWeek, $value);
-            
-        } elseif(request('date_from') && !request('date_to')) {
-            $allowedFuel = $this->fuel_limit;
-            if ($this->attributes->id) {
-
-                $currentLiters = Travel::findOrFail($this->attributes->id);
-
-                $remainingPerWeek = $remainingPerWeek + $currentLiters->total_liters; 
-
-
-                // return $this->validateFuel($allowable, $value);
-
-            }
-
-            // $allowedFuel = ($this->fuel_limit * 7) - $consumed;
-            
-
-            if ($remainingPerWeek < $allowedFuel) {
-                $allowedFuel = $remainingPerWeek;
-                
-            }
-
-            return $this->validateFuel($allowedFuel, $value);
         }
+
+
+        return $this->weeklyValidate($remainingPerWeek, $value);
+        
    
     }
 
@@ -101,9 +76,10 @@ class ValidateLiters implements Rule
         if ($this->totalLiters < 1) {
             return "This vehicle reached out the maximum weekly limit of fuel.";
         }
-        return "Maximum liters available: ". $this->totalLiters." liters per Trip Ticket";
+        return "Maximum liters available: ". $this->totalLiters." liters per week";
     }
     
+
     protected function validateWithRange($remainingPerWeek, $value)
     {
         $different_days = date_diff(Carbon::parse(request('date_from')."00:00:00"),Carbon::parse(request('date_to')."24:00:00"))->days;
@@ -133,5 +109,10 @@ class ValidateLiters implements Rule
         // dd($allowable);
         $this->totalLiters = floatval($allowable);
         return $allowable >= $value;
+    }
+
+    protected function weeklyValidate($remainingPerWeek, $value)
+    {
+        return $this->validateFuel($remainingPerWeek, $value);
     }
 }

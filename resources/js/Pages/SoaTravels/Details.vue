@@ -22,6 +22,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Ticket Number</th>
+                            <th scope="col">Invoice #</th>
                             <th scope="col">Travel Date</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
@@ -32,6 +33,7 @@
                     <tbody>
                         <tr v-for="(detailTravels, index) in travels.data" :key="index">
                             <td>{{ detailTravels.ticket_number }}</td>
+                            <td>{{ detailTravels.invoice_no }}</td>
                             <td>{{ detailTravels.travelDate}}</td>
                             <td>{{ detailTravels.gas_type }}</td>
                             <td>{{ detailTravels.total_liters }}</td>

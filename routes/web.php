@@ -154,7 +154,8 @@ Route::middleware('auth')->group(function() {
         Route::post('get-fuel', [TravelController::class, 'getFuel'])->name('getFuel');
         Route::post('check-week', [TravelController::class, 'checkWeek'])->name('checkWeek');
         Route::delete('/{id}', [TravelController::class, 'destroy'])->name('destroy');
-        
+        Route::post('/checkInvoice', [TravelController::class, 'checkInvoice'])->name('checkInvoice');
+        Route::post('/updateInvoice', [TravelController::class, 'updateInvoice'])->name('updateInvoice');
     });
 
     Route::prefix('sync')->group(function() {

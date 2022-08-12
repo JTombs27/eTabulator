@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-
+use Illuminate\Validation\Rule;
 
 class TravelController extends Controller
 {
@@ -87,7 +87,8 @@ class TravelController extends Controller
                                     'is_carpool'        =>$item->is_carpool,
                                     'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
-                                    'gasoline_station' => $item->gasoline->name
+                                    'gasoline_station' => $item->gasoline->name,
+                                    'invoice' => $item->invoice_no
                                      ]; 
                                  }),
              "can" => [
@@ -339,14 +340,16 @@ class TravelController extends Controller
                                 head.position_title_short as position_short,
                                 offices.short_name,
                                 offices.office,
-                                offices.designation'))
+                                offices.designation,
+                                users.cats'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
                             ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
+                            ->leftJoin('users', 'travels.status_user_id', 'users.id')
                             ->leftJoin('employees as head', function($join)
                                  {
-                                     $join->on('offices.empl_id', '=', 'head.empl_id');
+                                     $join->on('users.cats', '=', 'head.empl_id');
                                  })
                             ->where('travels.id', $request->id)
                             ->first();
@@ -375,7 +378,7 @@ class TravelController extends Controller
     {
         
         return $this->officeVehicles
-                    ->with('vehicle.vehicle_latest_status')
+                    ->whereHas('vehicle.vehicle_latest_status')
                     ->get()
                     ->map(fn($item) => [
                         'id' => $item->vehicles_id,
@@ -401,7 +404,7 @@ class TravelController extends Controller
         $weekStartDate = Carbon::parse($request->date_from)->startOfWeek()->format('Y-m-d');
         $weekEndDate = Carbon::parse($request->date_from)->endOfWeek()->format('Y-m-d');
         $fuel_limit = $this->vehicles->find($request->vehicles_id)->fuel_limit;
-       
+        
         $fuel = $this->model
                     ->whereBetween('date_from', [$weekStartDate,$weekEndDate])
                     ->with(['driverVehicle' => function($q) use ($request) {
@@ -420,7 +423,39 @@ class TravelController extends Controller
             $currentLitters = $this->model->find($request->id)->total_liters;
             $consumedFuel = $consumedFuel - $currentLitters;
         }
+        if ($fuel_limit == 0) {
+            return 'Unlimited';
+        }
+        return ($fuel_limit * 5) - $consumedFuel;
+    }
 
-        return ($fuel_limit * 7) - $consumedFuel;
+    public function checkInvoice(Request $request)
+    {
+        $request->invoice_no = $request->invoice_no ? $request->invoice_no : "";
+        $current_invoice = $this->model->find($request->id)->invoice_no;
+        $response = $this->model
+                        ->when($request->invoice_no, function($q) use($request) {
+                            $q->where('invoice_no', $request->invoice_no);
+                        })->exists();
+
+        return !$response || ($request->invoice_no == $current_invoice);
+    }
+
+    public function updateInvoice(Request $request)
+    {
+        $current_invoice = $this->model->find($request->id)->invoice_no;
+        
+        $request->validate([
+            'invoice' => ['required', Rule::when($current_invoice != $request->invoice, ['unique:travels,invoice_no'])],
+        ]);
+
+        $travel = $this->model->findOrFail($request->id);
+
+        $travel->update([
+            'invoice_no' => $request->invoice
+        ]);
+
+        return redirect('/travels');
+        
     }
 }

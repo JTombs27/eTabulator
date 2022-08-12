@@ -235,21 +235,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getVehicles: function getVehicles(e) {
       var _this4 = this;
 
-      axios.post("/vehicles/getVehicles").then(function (response) {
-        _this4.vehicles = response.data;
-      }); // axios.post(`/travels/get-vehicles`).then( (response) => {
+      // axios.post(`/vehicles/getVehicles`).then( (response) => {
       //     this.vehicles = response.data
-      //     // let office = this.auth.user.office_id
-      //     // try {
-      //     //     if (e.target.checked) {
-      //     //         this.vehicles = response.data
-      //     //     } else {
-      //     //         this.vehicles = _.filter(response.data, (o) => o.office_id == office)
-      //     //     }
-      //     // } catch (error) {
-      //     //     this.vehicles = response.data
-      //     // }
       // })
+      axios.post("/travels/get-vehicles").then(function (response) {
+        _this4.vehicles = response.data;
+        var office = _this4.auth.user.office_id;
+
+        try {
+          if (e.target.checked) {
+            _this4.vehicles = response.data;
+          } else {
+            _this4.vehicles = _.filter(response.data, function (o) {
+              return o.office_id == office;
+            });
+          }
+        } catch (error) {
+          _this4.vehicles = response.data;
+        }
+      });
     },
     getEmployees: function getEmployees() {
       var _this5 = this;
@@ -477,6 +481,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           return _this8.vehicles;
         }
       });
+    },
+    fuelMaxLimit: function fuelMaxLimit() {
+      var display = "";
+
+      if (this.fuelLimit == 'Unlimited') {
+        display = "No fuel limit";
+      } else if (this.fuelLimit != null && this.fuelLimit != 'Unlimited') {
+        display = "Remaining weekly fuel limit: ".concat(this.fuelLimit, " liters");
+      }
+
+      return display;
     }
   },
   watch: {
@@ -1002,7 +1017,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
       return $data.form.vehicles_id = $event;
     }),
-    options: $data.vehicles,
+    options: $options.officeFiltered,
     onSelect: _cache[11] || (_cache[11] = function ($event) {
       return $options.getVehicleDetails($event);
     })
@@ -1153,7 +1168,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* HYDRATE_EVENTS, NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gas_type]]), $data.form.errors.gas_type ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gas_type), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [_hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_70, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.fuelLimit != null ? "Remaining weekly fuel limit: ".concat($data.fuelLimit, " liters") : ""), 1
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [_hoisted_69, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_70, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("strong", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.fuelMaxLimit), 1
   /* TEXT */
   )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "text",

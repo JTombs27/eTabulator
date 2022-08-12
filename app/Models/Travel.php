@@ -21,6 +21,7 @@ class Travel extends Model
         'purpose',
         'actual_driver',
         'ticket_number',
+        'invoice_no',
         'gas_type',
         'soa_travel',
         'user_id',
@@ -79,6 +80,7 @@ class Travel extends Model
     public function setStatus($value)
     {
         $this->status = $value;
+        $this->status_user_id = auth()->user()->id;
         $this->save();
         if ($value == 'Disapproved') {
             return 'error';
