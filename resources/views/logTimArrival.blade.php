@@ -67,6 +67,7 @@
                     <input type="text" name="view"  value="confirm" style="display:none !important">
                     <input type="text" name="ticket_number" id="ticket_number" value="{{$ticket_number}}" style="display:none !important">
                     <input type="datetime-local" name="time_arrival" value="{{$time_arrival}}" style="display:none !important">
+                    <input type="text" name="odometer" value="{{$odometer}}" style="display:none !important">
                     <div class="input-group input-group-lg" style="margin-top:4px;">
                         <button  type="submit" name="btnsubmit" class="form-control btn btn-success btn-block">Confirm</button>
                     </div>

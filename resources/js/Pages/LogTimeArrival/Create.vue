@@ -61,12 +61,15 @@ export default {
                 this.form.travel_id = this._logTimeArrival.id
                 this.form.time_arrival = this._logTimeArrival.log_time_arrival.time_arrival
                 this.ticket_number = this._logTimeArrival.ticket_number
+                this.form.odometer = this._logTimeArrival.log_time_arrival.odometer
+             
             }
             else
             {
                 this.form.travel_id = this._logTimeArrival.id
                 this.ticket_number = this._logTimeArrival.ticket_number
             }
+            
     },
     methods: {
         submit() {
