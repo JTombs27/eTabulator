@@ -185,9 +185,11 @@ __webpack_require__.r(__webpack_exports__);
         var classText = "";
 
         if (item.status == "Approved") {
-          classText = "badge bg-success";
+          classText = "badge bg-primary";
         } else if (item.status == "Disapproved") {
           classText = "badge bg-danger";
+        } else if (item.status == "Fueled") {
+          classText = "badge bg-success";
         } else {
           classText = "badge bg-secondary";
         }
