@@ -227,9 +227,10 @@ Route::prefix('/reports')->group(function() {
     Route::get('/statement_of_account', [SoaTravelController::class, 'statement_of_account']);
 });
 
-Route::prefix('/travelTicket')->group(function() {
-    Route::get('/validate-travel/{id}', [TravelValidationController::class, 'index']);
-});
+
+Route::get('/travelTicket', [TravelValidationController::class, 'index']);
+Route::patch('/travelTicket/{id}', [TravelValidationController::class, 'update']);
+
 Route::prefix('/logArrivalTime')->group(function() {
      Route::get('/', [LogTimeArrivalContoller::class, 'logtime']);
      Route::post('/updateLog', [LogTimeArrivalContoller::class, 'updateLog']);
