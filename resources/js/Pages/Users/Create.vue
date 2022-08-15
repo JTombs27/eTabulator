@@ -18,14 +18,6 @@
         
         <div class="col-md-8">
             <form @submit.prevent="submit()">
-                <label for="">Names</label>
-                <Select2 v-model="form.name" id="emp_name" @select="selectName($event)"/>
-                <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
-
-                <label for="">Office</label>
-                <Select2 v-model="form.office_id" id="office" />
-                <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
-
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
 
@@ -35,8 +27,18 @@
                     <option value="RO">Requestioning Office</option>
                     <option value="PGSO">PGSO</option>
                     <option value="peo-motorpool">PEO Motorpool</option>
+                    <option value="gasoline-station">Gasoline Station</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
+
+                <label for="">Names</label>
+                <input type="text" class="form-control" v-model="form.name" v-if="form.permission == 'gasoline-station'">
+                <Select2 v-model="form.name" :class="{'d-none':form.permission == 'gasoline-station'}" id="emp_name" @select="selectName($event)"/>
+                <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
+                
+                <label for="">Office</label>
+                <Select2 v-model="form.office_id" id="office" />
+                <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
 
                 <label for="">Username</label>
                 <input type="text" v-model="form.username" class="form-control" autocomplete="chrome-off">
