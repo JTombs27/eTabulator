@@ -126,6 +126,7 @@ class UserController extends Controller
         $validated['office_id'] = $request->office_id;
         $validated['username'] = $request->username;
         $validated['name'] = $request->name;
+        $validated['cats'] = $request->cats;
         $validated['role'] = $request->permission;
         if ($request->password) {
             $validated['password'] = bcrypt($request->password);
