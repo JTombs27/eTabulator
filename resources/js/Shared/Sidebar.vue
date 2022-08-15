@@ -35,7 +35,7 @@
             </div>
             <!-- ### $Sidebar Menu ### -->
             <ul class="sidebar-menu scrollable pos-r">
-                <li class="nav-item mT-30 actived" v-if="$page.props.auth.user.role != 'peo-motorpool'">
+                <li class="nav-item mT-30 actived"  v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/" :class="{'active': $page.url === '/'}"><span
                         class="icon-holder"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
@@ -67,7 +67,7 @@
                     </span><span class="title">Travels</span></Link>
                 </li>
                 <li class="nav-item"
-                    v-if="$page.props.auth.user.role !== 'peo-motorpool'">
+                     v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/logTimeArrival"
                         :class="{'active': $page.url.startsWith('/logTimeArrival')}">
                     <span class="icon-holder">
@@ -95,7 +95,7 @@
                     </span><span class="title">Vehicles</span></Link>
                 </li>
 
-                <li class="nav-item" v-if="$page.props.auth.user.role !== 'peo-motorpool'">
+                <li class="nav-item"  v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/soatravels" :class="{'active': $page.url.startsWith('/soatravels')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
@@ -106,7 +106,7 @@
                         </svg>
                     </span><span class="title">Statement of Accounts</span></Link>
                 </li>
-                <li class="nav-item" v-if="$page.props.auth.user.role != 'peo-motorpool'">
+                <li class="nav-item"  v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/charges" :class="{'active': $page.url.startsWith('/charges')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-wallet-fill" viewBox="0 0 16 16">
@@ -124,7 +124,7 @@
                     </svg>
                     </span><span class="title">Gasoline Stations</span></Link>
                 </li>
-                <li class="nav-item" v-if="$page.props.auth.user.role != 'peo-motorpool'">
+                <li class="nav-item" v-if="$page.props.auth.user.role == 'gasoline-station' || $page.props.auth.user.role == 'PGSO'">
                     <Link class="sidebar-link" href="/prices" :class="{'active': $page.url.startsWith('/prices')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-tags" viewBox="0 0 16 16">
@@ -227,7 +227,7 @@
                         </svg>
                     </span><span class="title">Projects</span></Link>
                 </li>
-                <li class="nav-item" v-if="$page.props.auth.user.role != 'peo-motorpool'">
+                <li class="nav-item" v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/reports"
                         ><span class="icon-holder"
                             >
