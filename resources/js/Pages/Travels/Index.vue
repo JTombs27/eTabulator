@@ -271,7 +271,7 @@
                 <input type="text" class="form-control" id="invoice" autocomplete="off" v-model="form.invoice" @keyup="checkInvoice()">
                 <span>
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-if="invoice_loader"></span>
-                    <span class="ml-2" :class="invoiceMessageClass">{{ invoiceMessage }}</span>
+                    <span class="ml-2" :class="invoiceMessageClass"> {{ invoiceMessage }} </span>
                 </span>
             </div>
        </form>
@@ -469,9 +469,11 @@ export default {
             } else {
                 let classText = "";
                 if (item.status == "Approved") {
-                    classText = "badge bg-success";
+                    classText = "badge bg-primary";
                 } else if (item.status == "Disapproved") {
                     classText = "badge bg-danger";
+                } else if(item.status == "Fueled") {
+                    classText = "badge bg-success";
                 } else {
                     classText = "badge bg-secondary";
                 }
@@ -496,6 +498,8 @@ export default {
                     return "Pending"
                 } else if(value == "Disapproved") {
                     return "Disapproved"
+                } else if(value == "Fueled") {
+                    return "Fueled";
                 }
             }
         }

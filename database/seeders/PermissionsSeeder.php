@@ -58,5 +58,6 @@ class PermissionsSeeder extends Seeder
         // [6,25,26] pg head
         // [4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31,33,34,35] pgso
         // [18,19]
+        // [20,21,22] gasoline station
     }
 }

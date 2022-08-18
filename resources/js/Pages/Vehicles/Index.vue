@@ -115,7 +115,7 @@
                             <td><label style="width:100%;height:100%;" :for="vehicle.id" class="disable-select"> {{vehicle.PLATENO}}</label></td>
                             <td v-if="!!vehicle.vehicle_status" v-html="code(vehicle.TYPECODE, vehicle.vehicle_status.condition)"></td>
                             <td v-else v-html="code(vehicle.TYPECODE, null)"></td>
-                            <td style="text-align: center"> {{vehicle.fuel_limit}}</td>
+                            <td style="text-align: center" v-html="fuel(vehicle.fuel_limit)"></td>
                             <td> {{vehicle.date}}</td>
                             <td style="text-align: right"> {{ Number(vehicle.FACQCOST).toLocaleString(undefined, {minimumFractionDigits: 2})}}</td>
                             <!-- <td v-if="vehicle.driverassign[0]!= null"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.office.short_name}` }}</td>
@@ -403,6 +403,17 @@ export default ({
                     break
                 default:
                     return ""
+                    break
+            }
+        },
+
+        fuel (fuel) {
+            switch(fuel) {
+                case '0.00':
+                    return "<span>Unlimited Fuel</span>"
+                    break
+                default:
+                    return fuel
                     break
             }
         },

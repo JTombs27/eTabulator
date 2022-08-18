@@ -43,21 +43,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Status_vue_vue_type_template_id_7ffe06a8__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Status.vue?vue&type=template&id=7ffe06a8 */ "./resources/js/Pages/VehicleStatus/Status.vue?vue&type=template&id=7ffe06a8");
 /* harmony import */ var _Status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Status.vue?vue&type=script&lang=js */ "./resources/js/Pages/VehicleStatus/Status.vue?vue&type=script&lang=js");
-<<<<<<< HEAD
-/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
-=======
-/* harmony import */ var C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
->>>>>>> b8feb2abb3cb0b312b8abb36203dccfe5f29fc8d
+/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-<<<<<<< HEAD
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Status_vue_vue_type_template_id_7ffe06a8__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/VehicleStatus/Status.vue"]])
-=======
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Status_vue_vue_type_template_id_7ffe06a8__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/VehicleStatus/Status.vue"]])
->>>>>>> b8feb2abb3cb0b312b8abb36203dccfe5f29fc8d
+const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Status_vue_vue_type_template_id_7ffe06a8__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/VehicleStatus/Status.vue"]])
 /* hot reload */
 if (false) {}
 

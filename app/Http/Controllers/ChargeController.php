@@ -151,4 +151,23 @@ class ChargeController extends Controller
         }
        
     }
+
+    public function sampleCharge(Request $request)
+    {
+        $charges = DB::connection('fms')->table('raaods')
+                    ->leftJoin('ooes', 'ooes.recid', '=', 'raaods.idooe')
+                    ->leftJoin('raaohs', 'raaohs.recid', '=', 'raaods.idraao')
+                    ->select(DB::raw('raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod,raaohs.fraodesc, ooes.fooedesc,
+                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+                    ->where(DB::raw('raaohs.tyear'),now()->year)
+                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                    ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'))
+                    ->get();
+
+        return $charges;
+    }
+
+
 }

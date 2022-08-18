@@ -193,6 +193,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [ChargeController::class, 'edit']);
         Route::patch('/{id}', [ChargeController::class, 'update']);
         Route::delete('/{id}', [ChargeController::class, 'destroy']);
+        Route::get('/sample_charge', [ChargeController::class, 'sampleCharge']);
     });
 
      //for Price
@@ -238,3 +239,4 @@ Route::prefix('/logArrivalTime')->group(function() {
      Route::get('/return', [LogTimeArrivalContoller::class, 'return']);
     
 });
+

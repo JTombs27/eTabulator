@@ -68,19 +68,22 @@ class LogTimeArrivalContoller extends Controller
 
     public function updateLog(Request $request)
     {
-    
+       
         if($request->action == "confirm")
         {
+           
+          
             $iswithactualdriver = false;
             $actualdrivername = "";
             $assigndrivername = "";
             $assigndrivercats =  "";
             $ticketnumber = "";
             $timearrival = "";
-    
+            $odometer ="";
             $validated = $request->validate([
                 'ticket_number' => 'required',
                 'time_arrival' => 'required',
+                'odometer' => 'required',
             ]);
           
             try{
@@ -104,6 +107,7 @@ class LogTimeArrivalContoller extends Controller
                         }
                         $ticketnumber = $request->ticket_number;
                         $timearrival = $request->time_arrival;
+                        $odometer =$request->odometer;
                    }
                    else
                    {
@@ -124,6 +128,7 @@ class LogTimeArrivalContoller extends Controller
                  'data' => 'confirm'
                 ,'ticket_number' =>  $ticketnumber
                 ,'time_arrival'=> $timearrival
+                ,'odometer'=> $odometer
                 ,'iswith_actualdriver' => $iswithactualdriver
                 ,'actual_drivername' =>  $actualdrivername 
                 ,'assign_drivercats' =>  $assigndrivercats 
@@ -133,7 +138,7 @@ class LogTimeArrivalContoller extends Controller
         }
         else{
           
-             
+           
            if($request->view == "cancel")
            {
                 return view("logTimArrival",['data' => 'alert','message' => 'Canceled','type'=>'danger']);
@@ -142,9 +147,10 @@ class LogTimeArrivalContoller extends Controller
             $validated = $request->validate([
                 'ticket_number' => 'required',
                 'time_arrival' => 'required',
+                'odometer' => 'required',
             ]);
 
-            // dd($request->time_arrival);
+          
             try{
                 $log = $this->travel->where('ticket_number',$request->ticket_number)->first();
                                    
@@ -155,18 +161,21 @@ class LogTimeArrivalContoller extends Controller
                         if($log2)
                         {
                             $log2->update([
-                                'time_arrival' => $request->time_arrival
+                                'time_arrival' => $request->time_arrival,
+                                 'odometer' => $request->odometer,
                             ]);
                         }
                         else{
                             $this->model->create([
                                 'time_arrival' => $request->time_arrival,
                                 'travel_id' => $log->id,
+                                'odometer' => $request->odometer,
                             ]);
                         }
-                        $log->update([
-                            'time_arrival' => $request->time_arrival
-                        ]);
+                        // $log->update([
+                        //     'time_arrival' => $request->time_arrival,
+                        //     'odometer' => $request->odometer,
+                        // ]);
                    }
                    else
                    {
@@ -210,14 +219,15 @@ class LogTimeArrivalContoller extends Controller
         $attributes = $request->validate([
             'travel_id' => 'required',
             'time_arrival' => 'required',
+            'odometer' => 'required',
         ]);
         try{
-            $log = $this->travel->where('id',$request->travel_id)->first();
-            if ($log) {
-                $log->update([
-                    'time_arrival' => $request->time_arrival
-                ]);
-            } 
+            // $log = $this->travel->where('id',$request->travel_id)->first();
+            // if ($log) {
+            //     $log->update([
+            //         'time_arrival' => $request->time_arrival
+            //     ]);
+            // } 
 
             $log2 = $this->model->where('travel_id',$request->travel_id)->first(); 
             
@@ -243,18 +253,21 @@ class LogTimeArrivalContoller extends Controller
         $attributes = $request->validate([
             'travel_id' => 'required',
             'time_arrival' => 'required',
+            'odometer' => 'required',
         ]);
         
-         $log = $this->travel->where('id',$request->travel_id);
+        //  $log = $this->travel->where('id',$request->travel_id);
 
-         $log->update([
-            'time_arrival' => $request->time_arrival
-          ]);
+        //  $log->update([
+        //     'time_arrival' => $request->time_arrival,
+        //     'odometer' => $request->odometer
+        //   ]);
 
          $log2 = $this->model->where('travel_id',$request->travel_id);
       
          $log2->update([
-          'time_arrival' => $request->time_arrival
+          'time_arrival' => $request->time_arrival,
+          'odometer' => $request->odometer
         ]);
         return redirect('/logTimeArrival')->with('message', 'Your arrival log is successfully updated!');
     }

@@ -67,6 +67,7 @@
                     <input type="text" name="view"  value="confirm" style="display:none !important">
                     <input type="text" name="ticket_number" id="ticket_number" value="{{$ticket_number}}" style="display:none !important">
                     <input type="datetime-local" name="time_arrival" value="{{$time_arrival}}" style="display:none !important">
+                    <input type="text" name="odometer" value="{{$odometer}}" style="display:none !important">
                     <div class="input-group input-group-lg" style="margin-top:4px;">
                         <button  type="submit" name="btnsubmit" class="form-control btn btn-success btn-block">Confirm</button>
                     </div>
@@ -96,6 +97,13 @@
                 <label for="time_arrival" class="form-label">Time Of Arrival</label>
                 <input type="datetime-local" class="form-control @error('time_arrival') is-invalid @enderror" value="{{ old('time_arrival') }}" name="time_arrival" id="time_arrival" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
                 @error('time_arrival')
+                    <div class="fs-6 c-red-500">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3" style="margin-top:4px !important;">
+                <label for="odometer" class="form-label">Odo Reading</label>
+                <input type="text" class="form-control @error('odometer') is-invalid @enderror" value="{{ old('odometer') }}" name="odometer" id="odometer" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+                @error('odometer')
                     <div class="fs-6 c-red-500">{{ $message }}</div>
                 @enderror
             </div>
