@@ -30,15 +30,31 @@
                     <option value="gasoline-station">Gasoline Station</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
+                
+              <span v-if="form.permission == 'gasoline-station'">
+                  <label for="">Gasoline Station</label>
+                  <select class="form-select" v-model="form.gasoline_id">
+                        <option value="" readonly disabled>Select station</option>
+                        <option 
+                          v-for="item in stations" 
+                          :value="item.id"
+                          :key="item.id">
+                              {{item.name}}
+                        </option>
+                  </select>
+                  <div class="fs-6 c-red-500" v-if="form.errors.gasoline_id">{{ form.errors.gasoline_id }}</div>
+              </span>
 
                 <label for="">Names</label>
                 <input type="text" class="form-control" v-model="form.name" v-if="form.permission == 'gasoline-station'">
                 <Select2 v-model="form.name" :class="{'d-none':form.permission == 'gasoline-station'}" id="emp_name" @select="selectName($event)"/>
                 <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
                 
-                <label for="">Office</label>
-                <Select2 v-model="form.office_id" id="office" />
-                <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
+                <span :class="{'d-none':form.permission == 'gasoline-station'}">
+                    <label for="">Office</label>
+                    <Select2 v-model="form.office_id" id="office" />
+                    <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
+                </span>
 
                 <label for="">Username</label>
                 <input type="text" v-model="form.username" class="form-control" autocomplete="chrome-off">
@@ -76,6 +92,7 @@ export default {
     data() {
         return {
             form: useForm({
+                gasoline_id:null,
                 permission: "",
                 name: "",
                 citymunCode:"",
@@ -89,7 +106,7 @@ export default {
                 id: null,
                 office_id:null,
             }),
-            
+            stations:[],
             municipals:[],
             barangays:[],
             offices:[],
@@ -103,6 +120,7 @@ export default {
         };
     },
     mounted() {
+        this.getGasolineStations();
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
@@ -110,6 +128,7 @@ export default {
             this.form.username = this.editData.username
             this.form.email = this.editData.email
             this.form.id = this.editData.id
+            this.form.gasoline_id = this.editData.gasoline_id
             this.form.cats = this.editData.cats
             this.form.office_id = this.editData.office_id
             this.form.permission = this.editData.role
@@ -200,6 +219,13 @@ export default {
                     selected:true
                 }]
             })
+        },
+
+        getGasolineStations() {
+            axios.post('/travels/gasoline-station')
+                .then((response) => {
+                    this.stations = response.data;
+                });
         },
         
         formatOffice(repo) {
@@ -303,6 +329,12 @@ export default {
                 this.passwordType = 'text'
             } else {
                 this.passwordType = 'password'
+            }
+        },
+
+        'form.permission': function(value) {
+            if (value != 'gasoline-station') {
+                this.form.gasoline_id = null
             }
         }
     }
