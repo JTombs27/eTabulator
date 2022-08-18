@@ -238,3 +238,6 @@ Route::prefix('/logArrivalTime')->group(function() {
      Route::get('/return', [LogTimeArrivalContoller::class, 'return']);
     
 });
+
+
+Route::get('/sample_charge', [ChargeController::class, 'sampleCharge']);
