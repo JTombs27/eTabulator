@@ -29,9 +29,10 @@ class TravelRequest extends FormRequest
      */
     public function rules()
     {
+      
         // dd($this->type_code);
         $fuel_limit = Vehicle::where('id', $this->vehicles_id)->first(['fuel_limit']);
-        // dd($fuel_limit->fuel_limit);
+        // dd($this->vehicles_id);
         $valid = auth()->user()->office_id != '01';
         // dd($valid);
         return [
@@ -40,10 +41,10 @@ class TravelRequest extends FormRequest
                             [
                                 'required', 
                                 'after:date_from', 
-                                new ValidateWeek($this->date_from, $this->date_to)
+                                // new ValidateWeek($this->date_from, $this->date_to)
                             ])
                         ], 
-            'total_liters' => Rule::when($valid,
+            'total_liters' => Rule::when($valid && $fuel_limit->fuel_limit != 0,
                         ['numeric',
                             // function($attr, $value, $fail) {
 

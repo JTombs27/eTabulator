@@ -47,10 +47,10 @@ class DriverVehicleController extends Controller
 
     public function store(Request $request, $id)
     {
-        $attributes = $request->validate([
-            'date_from' => "required|date",
-            'date_to' => "required|date|after_or_equal:date_from", 
-        ]);
+        // $attributes = $request->validate([
+        //     'date_from' => "required|date",
+        //     'date_to' => "required|date|after_or_equal:date_from", 
+        // ]);
 
         $data = $this->model->where('vehicles_id',$request->vehicles_id)
         ->where(function ($query) use($request){

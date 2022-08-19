@@ -154,7 +154,8 @@ Route::middleware('auth')->group(function() {
         Route::post('get-fuel', [TravelController::class, 'getFuel'])->name('getFuel');
         Route::post('check-week', [TravelController::class, 'checkWeek'])->name('checkWeek');
         Route::delete('/{id}', [TravelController::class, 'destroy'])->name('destroy');
-        
+        Route::post('/checkInvoice', [TravelController::class, 'checkInvoice'])->name('checkInvoice');
+        Route::post('/updateInvoice', [TravelController::class, 'updateInvoice'])->name('updateInvoice');
     });
 
     Route::prefix('sync')->group(function() {
@@ -192,6 +193,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [ChargeController::class, 'edit']);
         Route::patch('/{id}', [ChargeController::class, 'update']);
         Route::delete('/{id}', [ChargeController::class, 'destroy']);
+        Route::get('/sample_charge', [ChargeController::class, 'sampleCharge']);
     });
 
      //for Price
@@ -224,14 +226,17 @@ Route::prefix('/reports')->group(function() {
     Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
     Route::get('/travel', [ReportController::class, 'travels']);
     Route::get('/soa_travel', [ReportController::class, 'soa_travels']);
+    Route::get('/statement_of_account', [SoaTravelController::class, 'statement_of_account']);
 });
 
-Route::prefix('/travelTicket')->group(function() {
-    Route::get('/validate-travel/{id}', [TravelValidationController::class, 'index']);
-});
+
+Route::get('/travelTicket', [TravelValidationController::class, 'index']);
+Route::patch('/travelTicket/{id}', [TravelValidationController::class, 'update']);
+
 Route::prefix('/logArrivalTime')->group(function() {
      Route::get('/', [LogTimeArrivalContoller::class, 'logtime']);
      Route::post('/updateLog', [LogTimeArrivalContoller::class, 'updateLog']);
      Route::get('/return', [LogTimeArrivalContoller::class, 'return']);
     
 });
+

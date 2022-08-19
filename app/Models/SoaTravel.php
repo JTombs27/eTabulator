@@ -12,6 +12,13 @@ class SoaTravel extends Model
     protected $table = "soa_travels";
     protected $guarded = [];
 
+    public function updateTicketNo()
+    {   
+        $series = 'SOA-'.date('y').'-'.sprintf('%06d', $this->id);
+        $this->ticket_no = $series;
+        $this->save();
+    }
+
     public function travels()
     {
         return $this->hasMany(Travel::class,"soa_travel","id");

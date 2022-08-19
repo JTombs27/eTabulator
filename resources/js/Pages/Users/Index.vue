@@ -113,7 +113,7 @@
         @closeModal="closeModal"
         @saveModal="updatePermissions">
         <div class="row pb-3">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-check">
                   <input class="form-check-input " type="checkbox" @change="selectOption($event, 'all')" id="flexCheckDefault">
                   <label class="form-check-label disable-select" for="flexCheckDefault">
@@ -122,7 +122,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="form-check">
                     <input class="form-check-input " type="checkbox" @change="selectOption($event,'pghead')" id="pgheadPermission">
                     <label class="form-check-label disable-select" for="pgheadPermission">
@@ -131,7 +131,7 @@
                 </div>
             </div>
 
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-check">
                     <input class="form-check-input " type="checkbox"  @change="selectOption($event,'pgo')" id="pgoPermission">
                     <label class="form-check-label disable-select" for="pgoPermission">
@@ -139,7 +139,7 @@
                     </label>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-check">
                     <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'ro')" id="roPermission">
                     <label class="form-check-label disable-select" for="roPermission">
@@ -148,11 +148,19 @@
                 </div>
             </div>
             
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-check">
                     <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'pgso')" id="pgsoPermission">
                     <label class="form-check-label disable-select" for="pgsoPermission">
                         PGSO 
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-check">
+                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'gasoline-station')" id="gasoline-station">
+                    <label class="form-check-label disable-select" for="gasoline-station">
+                        Gasoline Station 
                     </label>
                 </div>
             </div>
@@ -272,7 +280,7 @@ export default {
                     this.selectedPermissions = newArr;
                 } else if (Permission_type == 'pgo') {
 
-                    this.selectedPermissions = [5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26,31];
+                    this.selectedPermissions = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,25,26,31];
 
                 } else if (Permission_type == 'ro') {
 
@@ -284,11 +292,15 @@ export default {
 
                 } else if (Permission_type == 'pgso') {
 
-                    this.selectedPermissions = [4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31];
+                    this.selectedPermissions = [4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31,33,34,35];
 
                 } else if (Permission_type == 'peo-motorpool') {
 
                     this.selectedPermissions = [18, 19];
+
+                } else if (Permission_type == 'gasoline-station') {
+
+                    this.selectedPermissions = [20,21,22];
 
                 }
 

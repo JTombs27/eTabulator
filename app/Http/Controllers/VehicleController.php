@@ -38,24 +38,35 @@ class VehicleController extends Controller
             })
             ->latest()
             ->simplePaginate(10)
+            // ->through(function($item) {
+                
+            //     // dd($item->officeV->department_code);
+            //     if (request('department_code') && ($item->officeV->department_code != request('department_code'))) {
+                    
+            //     } else {
+            //         return $item;
+            //     }
+            // })
             ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
-                'canCreateVehicle' => auth()->user()->can('canCreateVehicle', User::class),
-                'canEditVehicle' => auth()->user()->can('canEditVehicle', User::class),
-                'canDeleteVehicle' => auth()->user()->can('canDeleteVehicle', User::class),
-                'canCreateDriver' => auth()->user()->can('canCreateDriver', User::class ),
-                'canCreateOfficeVehicles' => auth()->user()->can('canCreateOfficeVehicles', User::class),
-                'canViewWhereAbouts' => auth()->user()->can('canViewWhereAbouts', User::class)
+                'canCreateVehicle'          => auth()->user()->can('canCreateVehicle', User::class),
+                'canEditVehicle'            => auth()->user()->can('canEditVehicle', User::class),
+                'canDeleteVehicle'          => auth()->user()->can('canDeleteVehicle', User::class),
+                'canCreateDriver'           => auth()->user()->can('canCreateDriver', User::class ),
+                'canCreateOfficeVehicles'   => auth()->user()->can('canCreateOfficeVehicles', User::class),
+                'canViewWhereAbouts'        => auth()->user()->can('canViewWhereAbouts', User::class)
             ]
         ]);
     }
 
     public function getFilter($request)
     {
+        
         $index = $this->model->with([
             'vehicle_status',
             'driverassign.empl.office',
+            'officeV.office'
         ]);
         
         if ($request->PLATENO) {
@@ -73,6 +84,16 @@ class VehicleController extends Controller
         if ($request->FDESC) {
             $index = $index->where('FDATEACQ', 'like' , '%'.$request->FDESC.'%');
         }
+        if ($request->department_code) {
+            $index = $index->wherehas('officeV', function($q) use ($request) {
+                $q->where('department_code', $request->department_code)->where('office_owner', 1);
+            });
+        }
+        // if ($request->condition) {
+        //     $index = $index->wherehas('vehicle_status', function($c) use ($request) {
+        //         $c->where('condition', $request->condition);
+        //     });
+        // }
 
         return $index;
     }
