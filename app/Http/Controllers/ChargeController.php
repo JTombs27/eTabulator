@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Office;
 use App\Models\User;
 use App\Models\Charge;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class ChargeController extends Controller
 {
-    public function __construct(Charge $model, User $user)
+    public function __construct(Charge $model, User $user, Office $office)
     {
         $this->model = $model;
         $this->user = $user;
+        $this->office = $office;
     }
 
     public function index(Request $request)
@@ -25,21 +28,48 @@ class ChargeController extends Controller
                     })
                     ->first();
 
-        $charge =  $this->model;
-                                
+        /*$url = env('MIX_API_URL');
+        $employees = Http::get("http://192.168.6.155:8080/sample_charge")->collect();
+        $arrayOfEmployees = [];
+            foreach ($employees as $value) {
+                $data = [
+                    'idraao' => $value['idraao'],
+                    'idooe' => $value['idooe'],
+                    'fraotype' => $value['fraotype'],
+                    'ffunccod' => $value['ffunccod'],
+                    'fraodesc' => $value['fraodesc'],
+                    'fooedesc' => $value['fooedesc'],
+                    'balance1' => $value['balance1'],
+                    'balance2' => $value['balance2'],
+                ];
+                array_push($arrayOfEmployees, $data);
+            }
+            $emp = array_chunk($arrayOfEmployees, 200);*/
+        
+       
+
+        $charge = DB::connection('fms')->table('raaods')
+                    ->leftJoin('ooes', 'ooes.recid', '=', 'raaods.idooe')
+                    ->leftJoin('raaohs', 'raaohs.recid', '=', 'raaods.idraao')
+                    ->select(DB::raw('raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod,raaohs.fraodesc, ooes.fooedesc,
+                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+                    ->where(DB::raw('raaohs.tyear'),now()->year)
+                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                    ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
         if(!$isAdmin){
-            $charge = $this->model->where('office_id', auth()->user()->office_id);
+            $charge = $charge->where('ffunccod', auth()->user()->office->ffunccod);
         }
 
         return inertia('Charges/Index', [
             //returns an array of users with name field only
 
-            "charge" => $charge->with('office')
+            "charge" => $charge
                 ->when($request->search, function ($query, $searchItem) {
-                    $query->whereHas('office', function($q) use ($searchItem){
-                        $q->where('office', 'like', '%' . $searchItem . '%');
-                    });
+                    $query->where('ffunccod', 'like', '%' . $searchItem . '%');
+                   
                 })
                 ->simplePaginate(10)
                 ->withQueryString(),
