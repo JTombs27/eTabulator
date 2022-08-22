@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TravelRequest;
 use App\Models\Charge;
 use App\Models\DriverVehicle;
+use App\Models\Gasoline;
 use App\Models\OfficeVehicles;
 use App\Models\Price;
 use App\Models\Travel;
@@ -19,7 +20,7 @@ use Illuminate\Validation\Rule;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles, Vehicle $vehicles)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles, Vehicle $vehicles, Gasoline $station)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
@@ -27,6 +28,7 @@ class TravelController extends Controller
         $this->prices = $prices;
         $this->officeVehicles = $officeVehicles;
         $this->vehicles = $vehicles;
+        $this->station = $station;
     }    
 
     public function index(Request $request)
@@ -456,6 +458,13 @@ class TravelController extends Controller
         ]);
 
         return redirect('/travels');
+        
+    }
+
+    public function getGasolineStation(Request $request)
+    {
+       
+        return $this->station->get();
         
     }
 }
