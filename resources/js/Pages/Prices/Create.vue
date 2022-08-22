@@ -8,7 +8,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8 p-20 bd">
                 <form @submit.prevent="submit()" id="mainForm">
-                        <div class="col-12 mt-2">
+                        <div class="col-12 mt-2" v-if="user.role !== 'gasoline-station'">
                             <div class="input-group">
                                 <span class="input-group-text">Station</span>
 
@@ -118,6 +118,7 @@ export default {
                 gasoline_id:''
             }),
             gasoline:[],
+            user:this.$attrs.auth.user,
             pageTitle: "",
             disablegasType:false,
             loading:false,
@@ -136,12 +137,24 @@ export default {
             this.form.engine_oil_price       = this.editData.engine_oil_price;
             this.form.brake_oil_price       = this.editData.brake_oil_price;
             this.form.greases_price       = this.editData.greases_price;
-            this.form.gasoline_id       = this.editData.gasoline_id;
             this.form.id            = this.editData.id;   
             this.disablegasType = true;
+
+            if (this.user.role !== 'gasoline-station') {
+                this.form.gasoline_id = this.editData.gasoline_id;
+             } else {
+                this.form.gasoline_id = this.user.gasoline_id;
+             }
         } else {
+
             this.pageTitle = "Add";
             this.disablegasType = false;
+
+            if (this.user.role !== 'gasoline-station') {
+                this.form.gasoline_id = this.editData.gasoline_id;
+             } else {
+                this.form.gasoline_id = this.user.gasoline_id;
+             }
         }
 
         this.loadGasoline()

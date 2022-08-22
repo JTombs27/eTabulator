@@ -50,7 +50,8 @@ class HandleInertiaRequests extends Middleware
                         //'photo' => $profile ? $profile->getUrl() : ''
                         'photo' => auth()->user()->user_photo,
                         'role' => auth()->user()->role,
-                        'office_id' => auth()->user()->office_id
+                        'office_id' => auth()->user()->office_id,
+                        'gasoline_id' => auth()->user()->gasoline_id
                     ]
                 ] : null,
                 'flash' => [

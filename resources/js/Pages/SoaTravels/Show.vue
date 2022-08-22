@@ -5,13 +5,13 @@
             <div class="peers fxw-nw jc-sb ai-c">
                 <div class="peer mR-5">
                     <div class="input-group">
-                        <span class="input-group-text">Station</span>
-                        <select v-model="form.gasoline_id" class="form-control">
-                            <option disabled value="">Select Station</option>
-                            <option v-for="item, index in gasoline" :value="item.id">{{ item.text }}</option>
+                        <span class="input-group-text">Office</span>
+                        <select v-model="form.office_id" class="form-control">
+                            <option disabled value="">Select Offices</option>
+                            <option v-for="item, index in offices" :value="item.id">{{ item.text }}</option>
                         </select>
                     </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.gasoline_id">{{ form.errors.gasoline_id }}</div>
+                    <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
                 </div>
                 <div class="peer mR-5">
                     <div class="input-group">
@@ -46,6 +46,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Ticket Number</th>
+                            <th scope="col">Invoice Number</th>
                             <th scope="col">Travel Date</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
@@ -57,6 +58,7 @@
                     <tbody>
                         <tr v-for="soa_travel in sortedEmp">
                             <td>{{ soa_travel.ticket_number }}</td>
+                            <td>{{ soa_travel.invoice_no }}</td>
                             <td>{{ soa_travel.travelDate}}</td>
                             <td>{{ soa_travel.gas_type }}</td>
                             <td>{{ soa_travel.total_liters }}</td>
@@ -114,12 +116,12 @@ export default {
             form: useForm({
                 date_from: "",
                 date_to: "",
-                gasoline_id:"",
+                gasoline_id:this.auth.user.gasoline_id,
                 travels: [],
                 user_id: this.auth.user.id,
-                office_id: this.auth.user.office_id,
+                office_id: "",
             }),
-            gasoline:[],
+            offices:[],
             temp2:[],
         }
     },
@@ -128,13 +130,13 @@ export default {
             
             let startDate = this.form.date_from;
             let endDate = this.form.date_to;
-            let Station = this.form.gasoline_id;
+            let office = this.form.office_id;
             
 
             if (startDate == "") {
                 this.temp2 = []
             } else {
-                this.temp2 = this.Travels.filter(item => item.gasoline_id == Station)
+                this.temp2 = this.Travels.filter(item => item.office_id == office)
                     .filter(item => {
                     let travelDateFrom = item.date_from
                     let travelDateTo = item.date_to
@@ -176,7 +178,7 @@ export default {
     },
     mounted(){
         this.getData();
-        this.loadGasoline()
+        this.loadOffices()
     },
     methods:{
         back() {
@@ -219,9 +221,9 @@ export default {
                 this.form.post("/soatravels", this.form);
         },
 
-        loadGasoline() {
-            axios.get('/prices/fetch').then((response) => {
-                this.gasoline = response.data;
+        loadOffices() {
+            axios.get('/offices/fetch').then((response) => {
+                this.offices = response.data;
 
             })
         }

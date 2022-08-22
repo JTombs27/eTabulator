@@ -33,7 +33,8 @@ class SoaTravelController extends Controller
                                 
 
         if(!$isAdmin){
-            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id);
+            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id)
+                                        ->orWhere('user_id',auth()->user()->id);
         }
 
         return inertia('SoaTravels/Index', [
@@ -67,7 +68,7 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Show', [
             //returns an array of users with name field only
             "travel" => $this->model
-            	->where('office_id', auth()->user()->office_id)
+            	
                 ->where('status','Approved')
                 ->where('soa_travel',null)
             	->orderBy('date_from', 'asc')
@@ -112,7 +113,8 @@ class SoaTravelController extends Controller
                                 
 
         if(!$isAdmin){
-            $travels = $this->model->where('office_id', auth()->user()->office_id);
+            $travels = $this->model->where('office_id', auth()->user()->office_id)
+                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);;
         }
 
 
@@ -143,7 +145,8 @@ class SoaTravelController extends Controller
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'invoice_no' => $item->invoice_no
+                                    'invoice_no' => $item->invoice_no,
+                                    'gasoline_id' => $item->gasoline_id
                                 ]; 
                             }),
             "filters" => $request->only(['search']),
