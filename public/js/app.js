@@ -2192,6 +2192,21 @@ var map = {
 		9,
 		"resources_js_Pages_Travels_Index_vue"
 	],
+	"./Travels/Invoice": [
+		"./resources/js/Pages/Travels/Invoice.js",
+		9,
+		"resources_js_Pages_Travels_Invoice_js"
+	],
+	"./Travels/Invoice.js": [
+		"./resources/js/Pages/Travels/Invoice.js",
+		9,
+		"resources_js_Pages_Travels_Invoice_js"
+	],
+	"./Travels/Invoice.vue": [
+		"./resources/js/Pages/Travels/Invoice.vue",
+		9,
+		"resources_js_Pages_Travels_Invoice_vue"
+	],
 	"./Users/ChangePassword": [
 		"./resources/js/Pages/Users/ChangePassword.vue",
 		9,
