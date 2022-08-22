@@ -17,6 +17,14 @@ class PriceController extends Controller
 
     public function index(Request $request)
     {
+
+        $isAdmin =  User::
+                    where('id', auth()->user()->id)
+                    ->where(function($query){
+                        $query->where('role','gasoline-station');
+                    })
+                    ->first();
+
         return inertia('Prices/Index', [
             //returns an array of users with name field only
             "price" => $this->model

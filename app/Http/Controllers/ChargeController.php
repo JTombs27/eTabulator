@@ -29,7 +29,7 @@ class ChargeController extends Controller
                     ->first();
 
         /*$url = env('MIX_API_URL');
-        $employees = Http::get("http://192.168.6.155:8080/sample_charge")->collect();
+        $employees = Http::get("http://192.168.6.22:8077/sample_charge")->collect();
         $arrayOfEmployees = [];
             foreach ($employees as $value) {
                 $data = [
@@ -44,14 +44,21 @@ class ChargeController extends Controller
                 ];
                 array_push($arrayOfEmployees, $data);
             }
-            $emp = array_chunk($arrayOfEmployees, 200);*/
-        
-       
 
+    
+
+        foreach ($employees as $key => $value) {
+            //dd($employees);
+            $office = DB::table('offices')->select(DB::raw('offices.office'))->where(DB::raw('offices.ffunccod'), $value['ffunccod'])
+                    ->get();   
+            dd($office);
+        }*/
+        
         $charge = DB::connection('fms')->table('raaods')
                     ->leftJoin('ooes', 'ooes.recid', '=', 'raaods.idooe')
                     ->leftJoin('raaohs', 'raaohs.recid', '=', 'raaods.idraao')
-                    ->select(DB::raw('raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod,raaohs.fraodesc, ooes.fooedesc,
+                    ->leftJoin('functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
+                    ->select(DB::raw('functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, ooes.ffunccod as other_alloc,raaohs.fraodesc, ooes.fooedesc,
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
@@ -60,7 +67,8 @@ class ChargeController extends Controller
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
         if(!$isAdmin){
-            $charge = $charge->where('ffunccod', auth()->user()->office->ffunccod);
+            $charge = $charge->where(DB::raw('raaohs.ffunccod'), auth()->user()->office->ffunccod)
+                             ->orWhere(DB::raw('ooes.ffunccod'), auth()->user()->office->ffunccod);
         }
 
         return inertia('Charges/Index', [
