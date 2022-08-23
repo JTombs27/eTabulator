@@ -329,7 +329,7 @@ class TravelController extends Controller
 
     public function tripTicket(Request $request)
     {
-        $travel = DB::table('travels')
+        $travel = collect(DB::table('travels')
                             ->select(DB::raw('vehicles.PLATENO,
                                 vehicles.FDESC,
                                 driver.first_name,
@@ -355,8 +355,62 @@ class TravelController extends Controller
                                  {
                                      $join->on('users.cats', '=', 'head.empl_id');
                                  })
+                            
                             ->where('travels.id', $request->id)
-                            ->first();
+                            ->get()->toArray())->map(function ($item){
+                                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                                $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                return [
+                                    'PLATENO' => $item->PLATENO,
+                                    'FDESC' => $item->FDESC,
+                                    'first_name' => $item->first_name,
+                                    'middle_name' => $item->middle_name,
+                                    'last_name' => $item->last_name,
+                                    'id' => $item->id,
+                                    'driver_vehicles_id' => $item->driver_vehicles_id,
+                                    'ticket_number' => $item->ticket_number,
+                                    'invoice_no' => $item->invoice_no,
+                                    'is_carpool' => $item->is_carpool,
+                                    'is_borrowed_fuel' => $item->is_borrowed_fuel,
+                                    'is_borrowed_vehicle' => $item->is_borrowed_vehicle,
+                                    'borrowing_office' => $item->borrowing_office,
+                                    'date_from' => $item->date_from,
+                                    'date_to' => $item->date_to,
+                                    'place_to_visit' => $item->place_to_visit,
+                                    'purpose' => $item->purpose,
+                                    'time_departure' => $item->time_departure,
+                                    'time_arrival' => $item->time_arrival,
+                                    'gasoline_id' => $item->gasoline_id,
+                                    'gas_type' => $item->gas_type,
+                                    'price' => number_format($total[$item->gas_type],2),
+                                    'total_liters' => $item->total_liters,
+                                    'tank_balance' => $item->tank_balance,
+                                    'consumed_fuel' => $item->consumed_fuel,
+                                    'user_id' => $item->user_id,
+                                    'office_id' => $item->office_id,
+                                    'official_passenger' => $item->official_passenger,
+                                    'soa_travel' => $item->soa_travel,
+                                    'idraoo' => $item->idraoo,
+                                    'idooe' => $item->idooe,
+                                    'actual_driver' => $item->actual_driver,
+                                    'status' => $item->status,
+                                    'status_user_id' => $item->status_user_id,
+                                    'created_at' => $item->created_at,
+                                    'updated_at' => $item->updated_at,
+                                    'departure' => $item->departure,
+                                    'arrival' => $item->arrival,
+                                    'head_first_name' => $item->head_first_name,
+                                    'head_middle_name' => $item->head_middle_name,
+                                    'head_last_name' => $item->head_last_name,
+                                    'position_short' => $item->position_short,
+                                    'office' => $item->office,
+                                    'designation' => $item->designation,
+                                    'cats' => $item->cats,
+                                    'name' => $item->name,
+                                ]; 
+                            });
         return $travel;
     }
 
