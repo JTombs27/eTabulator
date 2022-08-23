@@ -343,12 +343,14 @@ class TravelController extends Controller
                                 offices.short_name,
                                 offices.office,
                                 offices.designation,
-                                users.cats'))
+                                users.cats,
+                                gasolines.name'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
                             ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->leftJoin('users', 'travels.status_user_id', 'users.id')
+                            ->leftJoin('gasolines', 'gasolines.id', 'travels.gasoline_id')
                             ->leftJoin('employees as head', function($join)
                                  {
                                      $join->on('users.cats', '=', 'head.empl_id');
