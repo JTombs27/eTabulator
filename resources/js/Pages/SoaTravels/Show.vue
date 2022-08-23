@@ -65,7 +65,7 @@
                             <td class="text-end">{{ Number(soa_travel.actual_prices).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td class="text-end">{{ Number(soa_travel.price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td>
-                                <button class="dropdown-item" @click="invoice(item)">
+                                <button class="dropdown-item" @click="invoice(soa_travel)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-receipt" viewBox="0 0 16 16">
                                     <path d="M1.92.506a.5.5 0 0 1 .434.14L3 1.293l.646-.647a.5.5 0 0 1 .708 0L5 1.293l.646-.647a.5.5 0 0 1 .708 0L7 1.293l.646-.647a.5.5 0 0 1 .708 0L9 1.293l.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .801.13l.5 1A.5.5 0 0 1 15 2v12a.5.5 0 0 1-.053.224l-.5 1a.5.5 0 0 1-.8.13L13 14.707l-.646.647a.5.5 0 0 1-.708 0L11 14.707l-.646.647a.5.5 0 0 1-.708 0L9 14.707l-.646.647a.5.5 0 0 1-.708 0L7 14.707l-.646.647a.5.5 0 0 1-.708 0L5 14.707l-.646.647a.5.5 0 0 1-.708 0L3 14.707l-.646.647a.5.5 0 0 1-.801-.13l-.5-1A.5.5 0 0 1 1 14V2a.5.5 0 0 1 .053-.224l.5-1a.5.5 0 0 1 .367-.27zm.217 1.338L2 2.118v11.764l.137.274.51-.51a.5.5 0 0 1 .707 0l.646.647.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.646.646.646-.646a.5.5 0 0 1 .708 0l.509.509.137-.274V2.118l-.137-.274-.51.51a.5.5 0 0 1-.707 0L12 1.707l-.646.647a.5.5 0 0 1-.708 0L10 1.707l-.646.647a.5.5 0 0 1-.708 0L8 1.707l-.646.647a.5.5 0 0 1-.708 0L6 1.707l-.646.647a.5.5 0 0 1-.708 0L4 1.707l-.646.647a.5.5 0 0 1-.708 0l-.509-.51z"/>
                                     <path d="M3 4.5a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 1 1 0 1h-6a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm8-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"/>
@@ -89,7 +89,11 @@
             </div>
         </div>
     </div>
-
+    <invoice 
+        v-if="invoiceOpen"
+        :item="invoiceItem"
+        @closeModal="save"
+    ></invoice>
 </template>
 
 <script>
@@ -97,11 +101,12 @@ import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { computed } from 'vue'
+import Invoice from "@/Pages/Travels/Invoice.vue";
 
 
 export default {
     name: 'Soa Travel',
-    components: { Pagination, Filtering },
+    components: { Pagination, Filtering , Invoice },
     props: {
         travel: Array,
         auth: Object
@@ -109,6 +114,8 @@ export default {
 
     data(){
         return{
+            invoiceItem:{},
+            invoiceOpen:false,
             Travels: [],
             currentSort:'name',
             currentSortDir:'asc',
@@ -154,8 +161,6 @@ export default {
                 }
                     return this.temp2;
                 })
-
-
             }      
                 /*
                 if ( !startDate && endDate ) {
@@ -227,6 +232,30 @@ export default {
                 this.offices = response.data;
 
             })
+        },
+
+        invoice(item) {
+
+            /**
+             * if using component use the code below
+             * 
+             * this.invoiceItem = item; create an array data named invoiceItem
+             * this.invoiceOpen = true create boolean data named invoiceOpen
+             */
+            this.invoiceItem = item;
+            this.invoiceOpen = true
+        },
+
+        save(_refresh){
+            this.invoiceOpen=false
+            this.$inertia.visit("/soatravels/merge", {
+                preserveState: true,
+                onFinish:() => {
+                    this.Travels = this.travel
+                    this.temp2 = this.Travels
+                }
+            });
+
         },
 
         gas (gas_type) {

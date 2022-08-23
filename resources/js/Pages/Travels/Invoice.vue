@@ -107,7 +107,7 @@ export default {
                     $('body').removeClass('modal-open');
                     $('body').css("overflow","scroll");
                     $('.modal-backdrop').remove();
-                    this.$emit('closeModal')
+                    this.$emit('closeModal',"save")
                 },
                 onError: (e) => {
                     this.invoice_loader = false;

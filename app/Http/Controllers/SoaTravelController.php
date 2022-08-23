@@ -69,7 +69,7 @@ class SoaTravelController extends Controller
             //returns an array of users with name field only
             "travel" => $this->model
             	
-                ->where('status','Approved')
+                ->where('status','fueled')
                 ->where('soa_travel',null)
             	->orderBy('date_from', 'asc')
             	->get()->map(function($item) {
@@ -220,12 +220,14 @@ class SoaTravelController extends Controller
                                 offices.office,
                                 gasolines.name,
                                 soa_travels.date_from AS soa_date_from,
-                                soa_travels.date_to AS soa_date_to'))
+                                soa_travels.date_to AS soa_date_to,
+                                users.name'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('gasolines', 'travels.gasoline_id', 'gasolines.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('soa_travels', 'travels.soa_travel', 'soa_travels.id')
                             ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
+                            ->leftJoin('users', 'users.id', 'soa_travels.user_id')
                             ->where('travels.soa_travel', $request->soa_travel)
                             ->orderByRaw("offices.office ASC, travels.ticket_number ASC")
                             ->get()->map(function($item) {
@@ -246,7 +248,8 @@ class SoaTravelController extends Controller
                                     'office' => $item->office,
                                     'gasoline_name' => $item->name,
                                     'invoice_no' => $item->invoice_no,
-                                    'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y'))
+                                    'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y')),
+                                    'prepared_by' => $item->name
                                     
                                 ]; 
                 });

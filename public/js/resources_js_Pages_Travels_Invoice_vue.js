@@ -104,7 +104,7 @@ __webpack_require__.r(__webpack_exports__);
           $('body').css("overflow", "scroll");
           $('.modal-backdrop').remove();
 
-          _this2.$emit('closeModal');
+          _this2.$emit('closeModal', "save");
         },
         onError: function onError(e) {
           _this2.invoice_loader = false;

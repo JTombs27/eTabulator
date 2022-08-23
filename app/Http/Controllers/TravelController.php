@@ -457,7 +457,7 @@ class TravelController extends Controller
             'invoice_no' => $request->invoice
         ]);
 
-        return redirect('/travels');
+        return redirect()->back();
         
     }
 
