@@ -58,7 +58,7 @@ class ChargeController extends Controller
                     ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
                     ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
                     ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
-                    ->leftJoin('fuel_monitoring.offices', 'offices.department_code', '=', 'functions.department_code')
+                    ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
                     ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, ooes.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
