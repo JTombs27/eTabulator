@@ -82,11 +82,11 @@ class TravelController extends Controller
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'soa_travel'        => $item->soa_travel,
-                                    'place_to_visit'    =>$item->place_to_visit,
-                                    'purpose'           =>$item->purpose,
+                                    'soa_travel' => $item->soa_travel,
+                                    'place_to_visit' =>$item->place_to_visit,
+                                    'purpose' =>$item->purpose,
                                     'official_passenger'=>$item->official_passenger,
-                                    'is_carpool'        =>$item->is_carpool,
+                                    'is_carpool' =>$item->is_carpool,
                                     'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                     'gasoline_station' => $item->gasoline->name,
@@ -117,14 +117,24 @@ class TravelController extends Controller
            $amount = $amount->sum('amount');
         //    $amount = number_format($amount->sum('amount'), 2);
         }
-
         
+        // ->with('soa')
+        // ->whereHas('soa', function($q){
+        //     $q->whereNull('cafoa_number');
+        // })
         $travels = $this->model
+                        ->with(['soa' => function($q) {
+                            $q->whereNull('cafoa_number');
+                        }])
+                        ->whereHas('soa', function($q) {
+                            $q->whereNull('cafoa_number');
+                        })
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
                         ->where('status', '<>', 'Disapproved')
+                        ->whereNull('invoice_no')
                         ->get();
-                        
+                                  
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
             $total = $this->prices

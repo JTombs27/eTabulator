@@ -98,7 +98,10 @@ class Travel extends Model
         return $this->belongsTo(LogTimeArrival::class, 'id', 'travel_id');
     }
 
-    
+    public function soa()
+    {
+        return $this->belongsTo(SoaTravel::class,'soa_travel', 'id');
+    }
 
     public function charge()
     {
