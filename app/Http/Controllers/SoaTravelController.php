@@ -34,7 +34,7 @@ class SoaTravelController extends Controller
 
         if(!$isAdmin){
             $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id)
-                                        ->orWhere('user_id',auth()->user()->id);
+                                        ->orWhere('gasoline_id',auth()->user()->gasoline_id);
         }
 
         return inertia('SoaTravels/Index', [
@@ -168,7 +168,7 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
-        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id'));
+        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','gasoline_id'));
                 $soaTravel->updateTicketNo();
         		foreach ($request->travels as $key ) {
         			$travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
