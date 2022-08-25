@@ -69,7 +69,7 @@ class SoaTravelController extends Controller
             //returns an array of users with name field only
             "travel" => $this->model
             	
-                ->where('status','fueled')
+                ->where('status','Fueled')
                 ->where('soa_travel',null)
             	->orderBy('date_from', 'asc')
             	->get()->map(function($item) {
