@@ -5,7 +5,9 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3> 
-            <h3>Balance: <u>{{`\u20B1${Number(balance).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</u></h3>
+            <h3>
+                Balance: <u>{{`\u20B1${Number(balance).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</u>
+            </h3>
             <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -15,6 +17,12 @@
                     d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
             </svg>
             </Link>
+        </div>
+        <div class="row">
+            <div class="col-md-4 offset-md-5 offset-4 col-4">
+                <h3 class="ms-5 ">From:</h3>
+                <input type="text" cl/>
+            </div>
         </div>
         <div class="col-md-8">
             <form @submit.prevent="submit()">
@@ -36,6 +44,11 @@
                             <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
                         </div>
                     <br>
+                    </div>
+                    <div>
+                        <select type="text" class="form-select">
+                            
+                        </select>
                     </div>
                     <hr>
                     <div :class="[columnFrom]">
