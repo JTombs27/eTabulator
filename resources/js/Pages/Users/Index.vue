@@ -30,6 +30,7 @@
                         <tr>
                             <th scope="col">Active</th>
                             <th scope="col">Name</th>
+                            <th scope="col">Office</th>
                             <th scope="col">Role</th>
                             <th scope="col" style="width: 30%">Permissions</th>
                             <th scope="col" style="text-align: right">Action</th>
@@ -63,6 +64,9 @@
                                         <p class="notification-title mb-1">{{ user.name }}</p>
                                     </div>
                                 </div>
+                            </td>
+                            <td>
+                                {{ user.office }}
                             </td>
                             <td>
                                 {{ user.role }}
