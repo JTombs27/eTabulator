@@ -39,7 +39,7 @@ class UserController extends Controller
                 ->through(fn($user) => [
                     'id' => $user->id,
                     'permissions' => $user->permissions,
-                    'office' => $user->office->office,
+                    'office' => $user->office ? $user->office->office : '',
                     'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
@@ -132,6 +132,7 @@ class UserController extends Controller
         $validated['name'] = $request->name;
         $validated['cats'] = $request->cats;
         $validated['role'] = $request->permission;
+        $validated['gasoline_id'] = $request->gasoline_id;
         if ($request->password) {
             $validated['password'] = bcrypt($request->password);
         } else {
