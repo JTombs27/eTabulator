@@ -448,7 +448,7 @@ class TravelController extends Controller
                                     'office_id' => $item->office_id,
                                     'official_passenger' => $item->official_passenger,
                                     'soa_travel' => $item->soa_travel,
-                                    'idraoo' => $item->idraoo,
+                                    'idraoo' => $item->idraao,
                                     'idooe' => $item->idooe,
                                     'actual_driver' => $item->actual_driver,
                                     'status' => $item->status,
