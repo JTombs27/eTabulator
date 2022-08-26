@@ -61,7 +61,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         tank_balance: null,
         consumed_fuel: null,
         idooe: null,
-        idraao: null
+        idraao: null,
+        charge: null
       }),
       pageTitle: "Create",
       columnFrom: "col-md-12",
@@ -104,7 +105,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 2:
               if (!(_this.editData !== undefined)) {
-                _context.next = 35;
+                _context.next = 36;
                 break;
               }
 
@@ -112,6 +113,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 current_liters: _this.editData.total_liters
               });
 
+              _this.form.charge = "".concat(_this.editData.idraao, "-").concat(_this.editData.idooe);
               _this.loading = true;
               _this.pageTitle = "Edit";
               _this.form.place_to_visit = _this.editData.place_to_visit;
@@ -138,34 +140,34 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 28;
+              _context.next = 29;
               return _this.fetchPrice();
 
-            case 28:
-              _context.next = 30;
+            case 29:
+              _context.next = 31;
               return _this.getVehicleDetails();
 
-            case 30:
-              _context.next = 32;
+            case 31:
+              _context.next = 33;
               return _this.showActualDriver();
 
-            case 32:
+            case 33:
               setTimeout(function () {
                 _this.form.date_to = _this.editData.date_to;
               }, 0);
-              _context.next = 36;
+              _context.next = 37;
               break;
 
-            case 35:
+            case 36:
               _this.pageTitle = "Create";
 
-            case 36:
+            case 37:
               _this.getVehicles(); // $("#actualDriver").select2({
               //   tags: true
               // });
 
 
-            case 37:
+            case 38:
             case "end":
               return _context.stop();
           }
@@ -174,14 +176,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }))();
   },
   methods: {
-    test: function test(e) {
+    selectChargeDetails: function selectChargeDetails(e) {
       var chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, function (obj) {
         return obj.value;
-      }); // console.log(chargeAttributes);
+      });
 
-
+      console.log(chargeAttributes);
       this.form.idraao = chargeAttributes[0];
       this.form.idooe = chargeAttributes[1];
+      this.form.balance = chargeAttributes[2];
     },
     loadGasoline: function loadGasoline() {
       var _this2 = this;
@@ -612,7 +615,7 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_16 = ["idraoo", "idooe", "value"];
+var _hoisted_16 = ["idraoo", "idooe", "value", "balance1"];
 var _hoisted_17 = {
   key: 0,
   "class": "fs-6 c-red-500"
@@ -977,17 +980,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.is_borrowed_fuel]])]), _hoisted_13]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select",
     "onUpdate:modelValue": _cache[4] || (_cache[4] = function ($event) {
-      return $data.form.balance = $event;
+      return $data.form.charge = $event;
     }),
     onChange: _cache[5] || (_cache[5] = function ($event) {
-      return $options.test($event);
+      return $options.selectChargeDetails($event);
     })
   }, [_hoisted_15, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.charges, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       key: index,
       idraoo: item.idraao,
       idooe: item.idooe,
-      value: item.balance1
+      value: "".concat(item.idraao, "-").concat(item.idooe),
+      balance1: item.balance1
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.fooedesc), 9
     /* TEXT, PROPS */
     , _hoisted_16);
@@ -995,7 +999,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* KEYED_FRAGMENT */
   ))], 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.balance]]), $data.form.errors.balance ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.balance), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.charge]]), $data.form.errors.balance ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.balance), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([$data.columnFrom])

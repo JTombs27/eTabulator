@@ -51,7 +51,7 @@ class ValidateLiters implements Rule
         
         $consumed = $fuel->sum('total_liters');
         $remainingPerWeek = ($this->fuel_limit * 5) - $consumed;
-                    
+                
         if ($this->attributes->id) {
 
             $currentLiters = Travel::findOrFail($this->attributes->id);
@@ -106,7 +106,7 @@ class ValidateLiters implements Rule
 
     protected function validateFuel($allowable, $value)
     {
-        // dd($allowable);
+        
         $this->totalLiters = floatval($allowable);
         return $allowable >= $value;
     }

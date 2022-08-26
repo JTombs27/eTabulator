@@ -186,7 +186,24 @@ class TravelController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+        
+        $amount = DB::table('fms.raaods')
+                            ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
+                            ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
+                            ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
+                            ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
+                            ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, ooes.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
+                                ROUND((SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))), 2) as balance1,
+                                round((sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))), 2) as balance2'))
+                            ->where(DB::raw('raaohs.tyear'),now()->year)
+                            ->where(DB::raw('ooes.factcode'),'50203090')
+                            ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                            ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
+
+        if (auth()->user()->role != 'admin') {
+            $amount = $amount->where(DB::raw('functions.department_code'), auth()->user()->office_id)
+                            ->orWhere(DB::raw('ooes.ffunccod'), auth()->user()->office->ffunccod);
+        }
 
         $travels = $this->model
                         ->whereYear('date_from', date("Y"))
@@ -208,17 +225,18 @@ class TravelController extends Controller
                         'date' => $item->date_from
                         ];
                     });
-        
-        if(!$amount) {
-            $amount = 0.00;
-        } else {
-           $amount = $amount->sum('amount');
-        //    $amount = number_format($amount->sum('amount'), 2);
-        }
+      
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
+        $total_expense = $travels->sum('price');
         return inertia('Travels/Create', [
             'editData' => $editData,
-            'balance' => $amount - $travels->sum('price')
+            'charges' => $amount->get()
+                            ->map(fn($item) => [
+                                'balance1' => ($item->balance1 - $total_expense),
+                                'idooe' => $item->idooe,
+                                'idraao' => $item->idraao,
+                                'fooedesc' => $item->fooedesc
+                            ])
         ]);
         
     }

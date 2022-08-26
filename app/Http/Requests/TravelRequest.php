@@ -32,7 +32,7 @@ class TravelRequest extends FormRequest
       
         // dd($this->price < 1);
         $fuel_limit = Vehicle::where('id', $this->vehicles_id)->first(['fuel_limit']);
-       
+        // dd($fuel_limit->fuel_limit);
         // dd($this->vehicles_id);
         $valid = auth()->user()->office_id != '01';
         // dd($valid);

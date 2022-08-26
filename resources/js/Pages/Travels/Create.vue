@@ -49,14 +49,15 @@
                     </div>
                     <div>
                         <label for="">Charge</label>
-                        <select class="form-select" v-model="form.balance" @change="test($event)">
+                        <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)">
                             <option readonly disabled>Select Charge</option>
                             <option 
                             v-for="(item, index) in charges" 
                             :key="index" 
                             :idraoo="item.idraao" 
                             :idooe="item.idooe"
-                            :value="item.balance1"
+                            :value="`${item.idraao}-${item.idooe}`"
+                            :balance1="item.balance1"
                             >{{item.fooedesc}}</option>
                         </select>
                         <div class="fs-6 c-red-500" v-if="form.errors.balance">{{ form.errors.balance }}</div>
@@ -250,7 +251,8 @@ export default {
                 tank_balance:null,
                 consumed_fuel:null,
                 idooe:null,
-                idraao:null
+                idraao:null,
+                charge:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -288,6 +290,7 @@ export default {
         // this.form.balance = this.balance
         if (this.editData !== undefined) {
             _.assign(this.form, {current_liters:this.editData.total_liters})
+            this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
             this.loading = true
             this.pageTitle = "Edit"
             this.form.place_to_visit = this.editData.place_to_visit
@@ -333,14 +336,15 @@ export default {
     },
 
     methods:{
-        test(e) {
+        selectChargeDetails(e) {
             const chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, (obj) => {
                 return obj.value;
             }) 
             
-            // console.log(chargeAttributes);
+            console.log(chargeAttributes);
             this.form.idraao = chargeAttributes[0]
             this.form.idooe = chargeAttributes[1]
+            this.form.balance = chargeAttributes[2]
         },
 
         loadGasoline() {
