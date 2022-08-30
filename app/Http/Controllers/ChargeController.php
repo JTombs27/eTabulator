@@ -79,7 +79,7 @@ class ChargeController extends Controller
 
             "charge" => $charge
                 ->when($request->search, function ($query, $searchItem) {
-                    $query->where('ffunccod', 'like', '%' . $searchItem . '%');
+                    $query->where(DB::raw('f.ffunccod'), 'like', '%' . $searchItem . '%');
                    
                 })
                 ->simplePaginate(10)
