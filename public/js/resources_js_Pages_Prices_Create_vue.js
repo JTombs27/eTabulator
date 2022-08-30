@@ -34,6 +34,7 @@ __webpack_require__.r(__webpack_exports__);
         gasoline_id: ''
       }),
       gasoline: [],
+      user: this.$attrs.auth.user,
       pageTitle: "",
       disablegasType: false,
       loading: false,
@@ -50,12 +51,21 @@ __webpack_require__.r(__webpack_exports__);
       this.form.engine_oil_price = this.editData.engine_oil_price;
       this.form.brake_oil_price = this.editData.brake_oil_price;
       this.form.greases_price = this.editData.greases_price;
-      this.form.gasoline_id = this.editData.gasoline_id;
       this.form.id = this.editData.id;
       this.disablegasType = true;
+
+      if (this.user.role !== 'gasoline-station') {
+        this.form.gasoline_id = this.editData.gasoline_id;
+      } else {
+        this.form.gasoline_id = this.user.gasoline_id;
+      }
     } else {
       this.pageTitle = "Add";
       this.disablegasType = false;
+
+      if (this.user.role == 'gasoline-station') {
+        this.form.gasoline_id = this.user.gasoline_id;
+      }
     }
 
     this.loadGasoline();
@@ -118,6 +128,7 @@ var _hoisted_4 = {
   "class": "col-md-8 p-20 bd"
 };
 var _hoisted_5 = {
+  key: 0,
   "class": "col-12 mt-2"
 };
 var _hoisted_6 = {
@@ -338,7 +349,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.submit();
     }, ["prevent"])),
     id: "mainForm"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  }, [$data.user.role !== 'gasoline-station' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select md",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.form.gasoline_id = $event;
@@ -356,7 +367,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gasoline_id]])]), $data.form.errors.gasoline_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gasoline_id), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.date = $event;
@@ -467,13 +478,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Create_vue_vue_type_template_id_c8ef71b0__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=c8ef71b0 */ "./resources/js/Pages/Prices/Create.vue?vue&type=template&id=c8ef71b0");
 /* harmony import */ var _Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js */ "./resources/js/Pages/Prices/Create.vue?vue&type=script&lang=js");
-/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_c8ef71b0__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Prices/Create.vue"]])
+const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_c8ef71b0__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Prices/Create.vue"]])
 /* hot reload */
 if (false) {}
 

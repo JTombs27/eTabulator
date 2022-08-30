@@ -33,7 +33,8 @@ class SoaTravelController extends Controller
                                 
 
         if(!$isAdmin){
-            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id);
+            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id)
+                                        ->orWhere('gasoline_id',auth()->user()->gasoline_id);
         }
 
         return inertia('SoaTravels/Index', [
@@ -67,8 +68,8 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Show', [
             //returns an array of users with name field only
             "travel" => $this->model
-            	->where('office_id', auth()->user()->office_id)
-                ->where('status','Approved')
+            	
+                ->where('status','Fueled')
                 ->where('soa_travel',null)
             	->orderBy('date_from', 'asc')
             	->get()->map(function($item) {
@@ -112,7 +113,8 @@ class SoaTravelController extends Controller
                                 
 
         if(!$isAdmin){
-            $travels = $this->model->where('office_id', auth()->user()->office_id);
+            $travels = $this->model->where('office_id', auth()->user()->office_id)
+                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);;
         }
 
 
@@ -143,7 +145,8 @@ class SoaTravelController extends Controller
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'invoice_no' => $item->invoice_no
+                                    'invoice_no' => $item->invoice_no,
+                                    'gasoline_id' => $item->gasoline_id
                                 ]; 
                             }),
             "filters" => $request->only(['search']),
@@ -165,7 +168,7 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
-        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id'));
+        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','gasoline_id'));
                 $soaTravel->updateTicketNo();
         		foreach ($request->travels as $key ) {
         			$travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
@@ -215,14 +218,16 @@ class SoaTravelController extends Controller
                                 travels.*,
                                 offices.short_name,
                                 offices.office,
-                                gasolines.name,
+                                gasolines.name AS gasstation,
                                 soa_travels.date_from AS soa_date_from,
-                                soa_travels.date_to AS soa_date_to'))
+                                soa_travels.date_to AS soa_date_to,
+                                users.name'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('gasolines', 'travels.gasoline_id', 'gasolines.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('soa_travels', 'travels.soa_travel', 'soa_travels.id')
                             ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
+                            ->leftJoin('users', 'users.id', 'soa_travels.user_id')
                             ->where('travels.soa_travel', $request->soa_travel)
                             ->orderByRaw("offices.office ASC, travels.ticket_number ASC")
                             ->get()->map(function($item) {
@@ -241,9 +246,10 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
-                                    'gasoline_name' => $item->name,
+                                    'gasoline_name' => $item->gasstation,
                                     'invoice_no' => $item->invoice_no,
-                                    'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y'))
+                                    'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y')),
+                                    'prepared_by' => $item->name
                                     
                                 ]; 
                 });

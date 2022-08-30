@@ -95,7 +95,7 @@
                     </span><span class="title">Vehicles</span></Link>
                 </li>
 
-                <li class="nav-item"  v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
+                <li class="nav-item"  v-if="$page.props.auth.user.role !== 'PGSO'">
                     <Link class="sidebar-link" href="/soatravels" :class="{'active': $page.url.startsWith('/soatravels')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-receipt-cutoff" viewBox="0 0 16 16">
@@ -124,7 +124,7 @@
                     </svg>
                     </span><span class="title">Gasoline Stations</span></Link>
                 </li>
-                <li class="nav-item" v-if="$page.props.auth.user.role == 'gasoline-station' || $page.props.auth.user.role == 'PGSO'">
+                <li class="nav-item">
                     <Link class="sidebar-link" href="/prices" :class="{'active': $page.url.startsWith('/prices')}"><span class="icon-holder"><svg
                             xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                             class="bi bi-tags" viewBox="0 0 16 16">

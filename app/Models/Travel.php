@@ -33,7 +33,9 @@ class Travel extends Model
         'borrowing_office',
         'gasoline_id',
         'consumed_fuel',
-        'tank_balance'
+        'tank_balance',
+        'idooe',
+        'idraao',
         
 
     ];
@@ -98,7 +100,10 @@ class Travel extends Model
         return $this->belongsTo(LogTimeArrival::class, 'id', 'travel_id');
     }
 
-    
+    public function soa()
+    {
+        return $this->belongsTo(SoaTravel::class,'soa_travel', 'id');
+    }
 
     public function charge()
     {

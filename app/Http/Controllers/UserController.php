@@ -29,7 +29,7 @@ class UserController extends Controller
         return inertia('Users/Index', [
             //returns an array of users with name field only
             "users" => $this->model
-                ->with('permissions')
+                ->with('permissions','office')
                 ->when($request->search, function ($query, $searchItem) {
                     $query->where('name', 'like', '%' . $searchItem . '%');
                 })
@@ -39,11 +39,13 @@ class UserController extends Controller
                 ->through(fn($user) => [
                     'id' => $user->id,
                     'permissions' => $user->permissions,
+                    'office' => $user->office ? $user->office->office : '',
                     'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
                     'role' => $user->role,
                     'photo' => $user->user_photo,
+                    'gasoline_id' => $user->gasoline_id,
                     "can" => [
                         'delete' => Travel::where('user_id', $user->id)->exists()
                     ],
@@ -130,6 +132,7 @@ class UserController extends Controller
         $validated['name'] = $request->name;
         $validated['cats'] = $request->cats;
         $validated['role'] = $request->permission;
+        $validated['gasoline_id'] = $request->gasoline_id;
         if ($request->password) {
             $validated['password'] = bcrypt($request->password);
         } else {

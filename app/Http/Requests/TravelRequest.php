@@ -30,13 +30,16 @@ class TravelRequest extends FormRequest
     public function rules()
     {
       
-        // dd($this->type_code);
+        // dd($this->price < 1);
         $fuel_limit = Vehicle::where('id', $this->vehicles_id)->first(['fuel_limit']);
+        // dd($fuel_limit->fuel_limit);
         // dd($this->vehicles_id);
         $valid = auth()->user()->office_id != '01';
         // dd($valid);
         return [
+            'vehicles_id' => 'required',
             'date_from' =>['required','date'],
+            'balance' => 'required',
             'date_to' => [Rule::when($this->rangedDate,
                             [
                                 'required', 
@@ -72,9 +75,15 @@ class TravelRequest extends FormRequest
                         ]),
             'gas_type' => 'required',
             'driver_vehicles_id' => 'required',
-            'vehicles_id' => 'required',
+            
             'actual_driver' => 'required_if:showActualDriver,true',
-            'price' => 'lt:balance',
+            'price' => [
+                        function($attribute, $value, $fail) {
+                            if (!$this->balance) {
+                                $fail('Please select charge first.');
+                            }
+                        },
+                        'lte:balance'],
             'borrowing_office' => Rule::requiredIf($this->is_borrowed_fuel || $this->is_borrowed_vehicle)
         ];
     }
@@ -84,11 +93,12 @@ class TravelRequest extends FormRequest
         return [
             'date_to.required_if' => 'This field is required for multiple dates',
             'date_from.required' => 'This field is required',
+            'balance.required' => 'Please select charge.',
             'driver_vehicles_id.required' => 'This field is required',
             'vehicles_id.required' => 'This field is required',
             'actual_driver.required_if' => 'Actual Driver is Required if the above option is checked',
             'borrowing_office.required' => 'Please select a borrowing office',
-            'price.lt' => 'The price must be less than total balance.'
+            'price.lt' => 'The price must be less than total balance.',
         ];
     }
 }

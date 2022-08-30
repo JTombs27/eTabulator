@@ -28,7 +28,8 @@ class UserRequest extends FormRequest
             'name' => 'required',
             'username' => ['required','alpha', Rule::when(!$this->id,['min:6|unique:users'])],
             'password' => ['confirmed', Rule::when(!$this->id,['required', 'alpha_num', 'min:8'])],
-            'permission' => [Rule::when(!$this->id, ['required'])]
+            'permission' => [Rule::when(!$this->id, ['required'])],
+            'gasoline_id' => [Rule::requiredIf($this->permission == 'gasoline-station')]
         ];
     }
 
@@ -36,6 +37,7 @@ class UserRequest extends FormRequest
     {
         return [
             'permission.required' => 'Permission is required.',
+            'gasoline_id.required' => 'Gasoline station is required.'
         ];
     }
 }
