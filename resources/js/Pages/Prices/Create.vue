@@ -150,9 +150,7 @@ export default {
             this.pageTitle = "Add";
             this.disablegasType = false;
 
-            if (this.user.role !== 'gasoline-station') {
-                this.form.gasoline_id = this.editData.gasoline_id;
-             } else {
+            if (this.user.role == 'gasoline-station') {
                 this.form.gasoline_id = this.user.gasoline_id;
              }
         }

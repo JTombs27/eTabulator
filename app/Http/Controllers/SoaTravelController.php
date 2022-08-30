@@ -218,7 +218,7 @@ class SoaTravelController extends Controller
                                 travels.*,
                                 offices.short_name,
                                 offices.office,
-                                gasolines.name,
+                                gasolines.name AS gasstation,
                                 soa_travels.date_from AS soa_date_from,
                                 soa_travels.date_to AS soa_date_to,
                                 users.name'))
@@ -246,7 +246,7 @@ class SoaTravelController extends Controller
                                     'total_liters' => $item->total_liters,
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
-                                    'gasoline_name' => $item->name,
+                                    'gasoline_name' => $item->gasstation,
                                     'invoice_no' => $item->invoice_no,
                                     'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y')),
                                     'prepared_by' => $item->name
