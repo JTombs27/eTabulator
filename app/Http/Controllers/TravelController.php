@@ -148,15 +148,13 @@ class TravelController extends Controller
                         ->with(['soa' => function($q) {
                             $q->whereNull('cafoa_number');
                         }])
-                        ->whereHas('soa', function($q) {
-                            $q->whereNull('cafoa_number');
-                        })
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
-                        ->where('status', '<>', 'Disapproved')
-                        ->whereNull('invoice_no')
+                        ->where(function($q) {
+                            $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
+                        })
                         ->get();
-                                  
+        
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
             $total = $this->prices
@@ -173,13 +171,14 @@ class TravelController extends Controller
         });
       
         $total_expense = $travels->sum('price');
+        // dd($total_expense);
         return inertia('Travels/Create',[
            'charges' => $amount->get()
                             ->map(fn($item) => [
                                 'balance1' => ($item->balance1 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => $item->fooedesc
+                                'fooedesc' => "$item->fooedesc ($item->ffunccod)",
                             ])
         ]);
     }
