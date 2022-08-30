@@ -149,15 +149,13 @@ class TravelController extends Controller
                         ->with(['soa' => function($q) {
                             $q->whereNull('cafoa_number');
                         }])
-                        ->whereHas('soa', function($q) {
-                            $q->whereNull('cafoa_number');
-                        })
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
-                        ->where('status', '<>', 'Disapproved')
-                        ->whereNull('invoice_no')
+                        ->where(function($q) {
+                            $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
+                        })
                         ->get();
-                                  
+        
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
             $total = $this->prices
@@ -174,13 +172,14 @@ class TravelController extends Controller
         });
       
         $total_expense = $travels->sum('price');
+        // dd($total_expense);
         return inertia('Travels/Create',[
            'charges' => $amount->get()
                             ->map(fn($item) => [
                                 'balance1' => ($item->balance1 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => $item->fooedesc
+                                'fooedesc' => "$item->fooedesc ($item->ffunccod)",
                             ])
         ]);
     }
@@ -188,22 +187,23 @@ class TravelController extends Controller
     public function edit(Request $request, $id)
     {
         
-        $amount = DB::table('fms.raaods')
-                            ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
-                            ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
-                            ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
-                            ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
-                            ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, ooes.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
-                                ROUND((SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))), 2) as balance1,
-                                round((sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))), 2) as balance2'))
-                            ->where(DB::raw('raaohs.tyear'),now()->year)
-                            ->where(DB::raw('ooes.factcode'),'50203090')
-                            ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
-                            ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
+        $amount = DB::table('fms.raaods as raaods')
+                    ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
+                    ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
+                    ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
+                    ->leftJoin('fms.functions as f', 'f.ffunccod', '=', 'ooes.ffunccod')
+                    ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
+                    ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, f.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
+                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+                    ->where(DB::raw('raaohs.tyear'),now()->year)
+                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                    ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
         if (auth()->user()->role != 'admin') {
-            $amount = $amount->where(DB::raw('functions.department_code'), auth()->user()->office_id)
-                            ->orWhere(DB::raw('ooes.ffunccod'), auth()->user()->office->ffunccod);
+            $amount =  $amount->where(DB::raw('functions.department_code'), auth()->user()->office_id)
+            ->orWhere(DB::raw('f.department_code'), auth()->user()->office_id);
         }
 
         $travels = $this->model
@@ -236,7 +236,7 @@ class TravelController extends Controller
                                 'balance1' => ($item->balance1 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => $item->fooedesc
+                                'fooedesc' => "$item->fooedesc ($item->ffunccod)",
                             ])
         ]);
         

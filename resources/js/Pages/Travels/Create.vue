@@ -319,6 +319,7 @@ export default {
             await this.fetchPrice();
             await this.getVehicleDetails();
             await this.showActualDriver();
+            await this.selectChargeDetails();
             setTimeout(() => {
                 this.form.date_to = this.editData.date_to
             }, 0);

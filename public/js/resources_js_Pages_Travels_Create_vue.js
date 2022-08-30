@@ -105,7 +105,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 2:
               if (!(_this.editData !== undefined)) {
-                _context.next = 36;
+                _context.next = 38;
                 break;
               }
 
@@ -152,22 +152,26 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               return _this.showActualDriver();
 
             case 33:
+              _context.next = 35;
+              return _this.selectChargeDetails();
+
+            case 35:
               setTimeout(function () {
                 _this.form.date_to = _this.editData.date_to;
               }, 0);
-              _context.next = 37;
+              _context.next = 39;
               break;
 
-            case 36:
+            case 38:
               _this.pageTitle = "Create";
 
-            case 37:
+            case 39:
               _this.getVehicles(); // $("#actualDriver").select2({
               //   tags: true
               // });
 
 
-            case 38:
+            case 40:
             case "end":
               return _context.stop();
           }
