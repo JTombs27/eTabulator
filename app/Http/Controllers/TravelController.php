@@ -112,22 +112,23 @@ class TravelController extends Controller
         // ]);
         // $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
 
-        $amount = $amount = DB::table('fms.raaods')
-                            ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
-                            ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
-                            ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
-                            ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
-                            ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, ooes.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
-                                ROUND((SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))), 2) as balance1,
-                                round((sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))), 2) as balance2'))
-                            ->where(DB::raw('raaohs.tyear'),now()->year)
-                            ->where(DB::raw('ooes.factcode'),'50203090')
-                            ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
-                            ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
+        $amount = $amount = DB::table('fms.raaods as raaods')
+                    ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
+                    ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
+                    ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
+                    ->leftJoin('fms.functions as f', 'f.ffunccod', '=', 'ooes.ffunccod')
+                    ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
+                    ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, f.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
+                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+                    ->where(DB::raw('raaohs.tyear'),now()->year)
+                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                    ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
         if (auth()->user()->role != 'admin') {
             $amount = $amount->where(DB::raw('functions.department_code'), auth()->user()->office_id)
-                            ->orWhere(DB::raw('ooes.ffunccod'), auth()->user()->office->ffunccod);
+                            ->orWhere(DB::raw('f.department_code'), auth()->user()->office_id);
         }
 
         // dd($amount->get());

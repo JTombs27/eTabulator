@@ -54,12 +54,13 @@ class ChargeController extends Controller
             dd($office);
         }*/
         
-        $charge = DB::table('fms.raaods')
+        $charge = DB::table('fms.raaods as raaods')
                     ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
                     ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
                     ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
+                    ->leftJoin('fms.functions as f', 'f.ffunccod', '=', 'ooes.ffunccod')
                     ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
-                    ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, ooes.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
+                    ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, f.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
@@ -69,7 +70,8 @@ class ChargeController extends Controller
     
         if(!$isAdmin){
             $charge = $charge->where(DB::raw('functions.department_code'), auth()->user()->office_id)
-                             ->orWhere(DB::raw('ooes.ffunccod'), auth()->user()->office->ffunccod);
+                            ->orWhere(DB::raw('f.department_code'), auth()->user()->office_id);
+                             
         }
 
         return inertia('Charges/Index', [

@@ -29,6 +29,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Office</th>
+                            <th scope="col">FUNCCOD</th>
                             <th scope="col">Description(RAAOH)</th>
                             <th scope="col">Description(OOE)</th>
                             <th scope="col" style="text-align: right">Amount</th>
@@ -38,6 +39,7 @@
                     <tbody>
                         <tr v-for="(charges, index) in charge.data" :key="index">
                             <td>{{ charges.office }}</td>
+                            <td>{{ charges.ffunccod }}</td>
                             <td>{{ charges.fraodesc }}</td>
                             <td>{{ charges.fooedesc }}</td>
                             <td class="text-end">{{ Number(charges.balance1).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
