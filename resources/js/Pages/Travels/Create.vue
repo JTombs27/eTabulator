@@ -49,7 +49,7 @@
                     </div>
                     <div>
                         <label for="">Charge</label>
-                        <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)">
+                        <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)" id="charge" ref="select_charge">
                             <option readonly disabled>Select Charge</option>
                             <option 
                             v-for="(item, index) in charges" 
@@ -58,6 +58,7 @@
                             :idooe="item.idooe"
                             :value="`${item.idraao}-${item.idooe}`"
                             :balance1="item.balance1"
+                            :selected="form.charge == `${item.idraao}-${item.idooe}`"
                             >{{item.fooedesc}}</option>
                         </select>
                         <div class="fs-6 c-red-500" v-if="form.errors.balance">{{ form.errors.balance }}</div>
@@ -252,7 +253,7 @@ export default {
                 consumed_fuel:null,
                 idooe:null,
                 idraao:null,
-                charge:null
+                charge:"4899-50"
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -290,7 +291,8 @@ export default {
         // this.form.balance = this.balance
         if (this.editData !== undefined) {
             _.assign(this.form, {current_liters:this.editData.total_liters})
-            this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
+            // this.form.charge = `4899-50`;
+            // this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
             this.loading = true
             this.pageTitle = "Edit"
             this.form.place_to_visit = this.editData.place_to_visit
@@ -316,6 +318,7 @@ export default {
                 this.form.rangedDate = true
                 
             }
+            await this.getVehicles();
             await this.fetchPrice();
             await this.getVehicleDetails();
             await this.showActualDriver();
@@ -326,8 +329,8 @@ export default {
             
         } else {
             this.pageTitle = "Create"
+            this.getVehicles();
         }
-        this.getVehicles();
         
 
        
@@ -337,15 +340,25 @@ export default {
     },
 
     methods:{
-        selectChargeDetails(e) {
-            const chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, (obj) => {
-                return obj.value;
-            }) 
-            
-            console.log(chargeAttributes);
-            this.form.idraao = chargeAttributes[0]
-            this.form.idooe = chargeAttributes[1]
-            this.form.balance = chargeAttributes[2]
+        selectChargeDetails(e) {   
+            var chargeAttr = $('#charge').find(":selected");
+           
+            if (e !== undefined) {
+                
+                const chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, (obj) => {
+                    return obj.value;
+                }) 
+                
+                // console.log(e);
+                this.form.idraao = chargeAttributes[0]
+                this.form.idooe = chargeAttributes[1]
+                this.form.balance = chargeAttributes[2]
+            } else {
+                console.log(chargeAttr[0].attributes)
+                this.form.idraao = chargeAttr[0].attributes[0].value
+                this.form.idooe = chargeAttr[0].attributes[1].value
+                this.form.balance = chargeAttr[0].attributes[2].value
+            }
         },
 
         loadGasoline() {
@@ -507,7 +520,6 @@ export default {
         // },
 
         showActualDriver(e) {
-            console.log(e)
             if (true){
 
                 $('#actualDriver').select2({
