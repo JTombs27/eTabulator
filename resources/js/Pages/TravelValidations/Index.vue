@@ -30,7 +30,7 @@
                     </b></td></tr>
                 <tr><td>Price</td><td>:</td><td><b>₱ {{ TravelData.data[0].price}}</b></td></tr>
                 <tr><td colspan="3">Drivers Name:</td></tr>
-                <tr><td colspan="3" style="padding-left: 20px;"><b>{{ TravelData.data[0].first_name+' '+TravelData.data[0].middle_name+' '+ TravelData.data[0].last_name}}</b></td></tr>
+                <tr><td colspan="3" style="padding-left: 20px;"><b>{{  (TravelData.data[0].actual_driver == null || TravelData.data[0].actual_driver == "") ? TravelData.data[0].first_name+' '+TravelData.data[0].middle_name+' '+ TravelData.data[0].last_name:TravelData.data[0].actual_driver}}</b></td></tr>
                 <tr><td colspan="3">Vehicle Description:</td></tr>
                 <tr><td colspan="3" style="padding-left: 20px;"><b>{{ TravelData.data[0].FDESC}}</b></td></tr>
             </tbody>
