@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TravelRequest;
 use App\Models\Charge;
 use App\Models\DriverVehicle;
+use App\Models\Gasoline;
 use App\Models\OfficeVehicles;
 use App\Models\Price;
 use App\Models\Travel;
@@ -19,7 +20,7 @@ use Illuminate\Validation\Rule;
 
 class TravelController extends Controller
 {
-    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles, Vehicle $vehicles)
+    public function __construct(Travel $model, DriverVehicle $driverVehicle, Charge $charges, Price $prices, OfficeVehicles $officeVehicles, Vehicle $vehicles, Gasoline $station)
     {
         $this->model = $model;
         $this->driverVehicle = $driverVehicle;
@@ -27,6 +28,7 @@ class TravelController extends Controller
         $this->prices = $prices;
         $this->officeVehicles = $officeVehicles;
         $this->vehicles = $vehicles;
+        $this->station = $station;
     }    
 
     public function index(Request $request)
@@ -80,11 +82,11 @@ class TravelController extends Controller
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
                                     'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'soa_travel'        => $item->soa_travel,
-                                    'place_to_visit'    =>$item->place_to_visit,
-                                    'purpose'           =>$item->purpose,
+                                    'soa_travel' => $item->soa_travel,
+                                    'place_to_visit' =>$item->place_to_visit,
+                                    'purpose' =>$item->purpose,
                                     'official_passenger'=>$item->official_passenger,
-                                    'is_carpool'        =>$item->is_carpool,
+                                    'is_carpool' =>$item->is_carpool,
                                     'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                     'gasoline_station' => $item->gasoline->name,
@@ -108,21 +110,52 @@ class TravelController extends Controller
         //         'error' => "Ews"
         //     ]
         // ]);
-        $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
-        if(!$amount) {
-            $amount = 0.00;
-        } else {
-           $amount = $amount->sum('amount');
-        //    $amount = number_format($amount->sum('amount'), 2);
+        // $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+
+        $amount = $amount = DB::table('fms.raaods as raaods')
+                    ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
+                    ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
+                    ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
+                    ->leftJoin('fms.functions as f', 'f.ffunccod', '=', 'ooes.ffunccod')
+                    ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
+                    ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, f.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
+                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+                    ->where(DB::raw('raaohs.tyear'),now()->year)
+                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                    ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
+
+        if (auth()->user()->role != 'admin') {
+            $amount = $amount->where(DB::raw('functions.department_code'), auth()->user()->office_id)
+                            ->orWhere(DB::raw('f.department_code'), auth()->user()->office_id);
         }
 
+        // dd($amount->get());
+        // dd($amount->get());
+        // if(!$amount) {
+        //     // $amount = 0.00;
+        // } else {
+        // //    $amount = $amount->sum('amount');
+        // //    $amount = number_format($amount->sum('amount'), 2);
+        // }
         
+        
+        // ->with('soa')
+        // ->whereHas('soa', function($q){
+        //     $q->whereNull('cafoa_number');
+        // })
         $travels = $this->model
+                        ->with(['soa' => function($q) {
+                            $q->whereNull('cafoa_number');
+                        }])
                         ->whereYear('date_from', date("Y"))
                         ->where('office_id', auth()->user()->office_id)
-                        ->where('status', '<>', 'Disapproved')
+                        ->where(function($q) {
+                            $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
+                        })
                         ->get();
-                        
+        
         $travels = $travels->map(function($item)  {
             $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
             $total = $this->prices
@@ -138,15 +171,40 @@ class TravelController extends Controller
             ];
         });
       
-
+        $total_expense = $travels->sum('price');
+        // dd($total_expense);
         return inertia('Travels/Create',[
-           'balance' => $amount - $travels->sum('price')
+           'charges' => $amount->get()
+                            ->map(fn($item) => [
+                                'balance1' => ($item->balance1 - $total_expense),
+                                'idooe' => $item->idooe,
+                                'idraao' => $item->idraao,
+                                'fooedesc' => "$item->fooedesc ($item->ffunccod)",
+                            ])
         ]);
     }
 
     public function edit(Request $request, $id)
     {
-        $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
+        
+        $amount = DB::table('fms.raaods as raaods')
+                    ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
+                    ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
+                    ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
+                    ->leftJoin('fms.functions as f', 'f.ffunccod', '=', 'ooes.ffunccod')
+                    ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
+                    ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, f.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
+                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+                    ->where(DB::raw('raaohs.tyear'),now()->year)
+                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                    ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
+
+        if (auth()->user()->role != 'admin') {
+            $amount =  $amount->where(DB::raw('functions.department_code'), auth()->user()->office_id)
+            ->orWhere(DB::raw('f.department_code'), auth()->user()->office_id);
+        }
 
         $travels = $this->model
                         ->whereYear('date_from', date("Y"))
@@ -168,17 +226,18 @@ class TravelController extends Controller
                         'date' => $item->date_from
                         ];
                     });
-        
-        if(!$amount) {
-            $amount = 0.00;
-        } else {
-           $amount = $amount->sum('amount');
-        //    $amount = number_format($amount->sum('amount'), 2);
-        }
+      
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
+        $total_expense = $travels->sum('price');
         return inertia('Travels/Create', [
             'editData' => $editData,
-            'balance' => $amount - $travels->sum('price')
+            'charges' => $amount->get()
+                            ->map(fn($item) => [
+                                'balance1' => ($item->balance1 - $total_expense),
+                                'idooe' => $item->idooe,
+                                'idraao' => $item->idraao,
+                                'fooedesc' => "$item->fooedesc ($item->ffunccod)",
+                            ])
         ]);
         
     }
@@ -327,7 +386,7 @@ class TravelController extends Controller
 
     public function tripTicket(Request $request)
     {
-        $travel = DB::table('travels')
+        $travel = collect(DB::table('travels')
                             ->select(DB::raw('vehicles.PLATENO,
                                 vehicles.FDESC,
                                 driver.first_name,
@@ -341,18 +400,74 @@ class TravelController extends Controller
                                 offices.short_name,
                                 offices.office,
                                 offices.designation,
-                                users.cats'))
+                                users.cats,
+                                gasolines.name'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
                             ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->leftJoin('users', 'travels.status_user_id', 'users.id')
+                            ->leftJoin('gasolines', 'gasolines.id', 'travels.gasoline_id')
                             ->leftJoin('employees as head', function($join)
                                  {
                                      $join->on('users.cats', '=', 'head.empl_id');
                                  })
+                            
                             ->where('travels.id', $request->id)
-                            ->first();
+                            ->get()->toArray())->map(function ($item){
+                                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                                $total = $this->prices->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                return [
+                                    'PLATENO' => $item->PLATENO,
+                                    'FDESC' => $item->FDESC,
+                                    'first_name' => $item->first_name,
+                                    'middle_name' => $item->middle_name,
+                                    'last_name' => $item->last_name,
+                                    'id' => $item->id,
+                                    'driver_vehicles_id' => $item->driver_vehicles_id,
+                                    'ticket_number' => $item->ticket_number,
+                                    'invoice_no' => $item->invoice_no,
+                                    'is_carpool' => $item->is_carpool,
+                                    'is_borrowed_fuel' => $item->is_borrowed_fuel,
+                                    'is_borrowed_vehicle' => $item->is_borrowed_vehicle,
+                                    'borrowing_office' => $item->borrowing_office,
+                                    'date_from' => $item->date_from,
+                                    'date_to' => $item->date_to,
+                                    'place_to_visit' => $item->place_to_visit,
+                                    'purpose' => $item->purpose,
+                                    'time_departure' => $item->time_departure,
+                                    'time_arrival' => $item->time_arrival,
+                                    'gasoline_id' => $item->gasoline_id,
+                                    'gas_type' => $item->gas_type,
+                                    'price' => number_format($total[$item->gas_type],2),
+                                    'total_liters' => $item->total_liters,
+                                    'tank_balance' => $item->tank_balance,
+                                    'consumed_fuel' => $item->consumed_fuel,
+                                    'user_id' => $item->user_id,
+                                    'office_id' => $item->office_id,
+                                    'official_passenger' => $item->official_passenger,
+                                    'soa_travel' => $item->soa_travel,
+                                    'idraoo' => $item->idraao,
+                                    'idooe' => $item->idooe,
+                                    'actual_driver' => $item->actual_driver,
+                                    'status' => $item->status,
+                                    'status_user_id' => $item->status_user_id,
+                                    'created_at' => $item->created_at,
+                                    'updated_at' => $item->updated_at,
+                                    'departure' => $item->departure,
+                                    'arrival' => $item->arrival,
+                                    'head_first_name' => $item->head_first_name,
+                                    'head_middle_name' => $item->head_middle_name,
+                                    'head_last_name' => $item->head_last_name,
+                                    'position_short' => $item->position_short,
+                                    'office' => $item->office,
+                                    'designation' => $item->designation,
+                                    'cats' => $item->cats,
+                                    'name' => $item->name,
+                                ]; 
+                            });
         return $travel;
     }
 
@@ -455,7 +570,14 @@ class TravelController extends Controller
             'invoice_no' => $request->invoice
         ]);
 
-        return redirect('/travels');
+        return redirect()->back();
+        
+    }
+
+    public function getGasolineStation(Request $request)
+    {
+       
+        return $this->station->get();
         
     }
 }

@@ -5,7 +5,9 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3> 
-            <h3>Balance: <u>{{`\u20B1${Number(balance).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</u></h3>
+            <h3>
+                Balance:    <u>{{`\u20B1${Number(form.balance ? form.balance : 0).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</u>
+            </h3>
             <Link href="/travels">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                 viewBox="0 0 16 16">
@@ -16,6 +18,14 @@
             </svg>
             </Link>
         </div>
+        <!-- <div class="row">
+            <div class="col-md-4 offset-md-5 offset-4 col-4">
+                <h3 class="ms-5 ">From:</h3>
+                <select class="form-select">
+                    
+                </select>
+            </div>
+        </div> -->
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <div class="row">
@@ -36,6 +46,21 @@
                             <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
                         </div>
                     <br>
+                    </div>
+                    <div>
+                        <label for="">Charge</label>
+                        <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)">
+                            <option readonly disabled>Select Charge</option>
+                            <option 
+                            v-for="(item, index) in charges" 
+                            :key="index" 
+                            :idraoo="item.idraao" 
+                            :idooe="item.idooe"
+                            :value="`${item.idraao}-${item.idooe}`"
+                            :balance1="item.balance1"
+                            >{{item.fooedesc}}</option>
+                        </select>
+                        <div class="fs-6 c-red-500" v-if="form.errors.balance">{{ form.errors.balance }}</div>
                     </div>
                     <hr>
                     <div :class="[columnFrom]">
@@ -102,6 +127,8 @@
                         </transition>
                     </div>
                     <hr>
+                </span>
+                <span v-if="form.date_from && form.vehicles_id">
                     <label>Authorized Driver</label>
                     <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
                     <!-- <input type="text" class="form-control" v-model="driverName"> -->
@@ -170,6 +197,7 @@
                     <input type="text" v-model="form.consumed_fuel" class="form-control">
                     <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save changes</button>
                 </span>
+                
             </form>
 
 
@@ -185,7 +213,7 @@ export default {
 
     props: {
         editData: Object,
-        balance:Number,
+        charges:Object,
         auth:Object
     },
 
@@ -221,7 +249,10 @@ export default {
                 maxLiters:"",
                 gasoline_id:null,
                 tank_balance:null,
-                consumed_fuel:null
+                consumed_fuel:null,
+                idooe:null,
+                idraao:null,
+                charge:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -256,9 +287,10 @@ export default {
     async mounted() {
         await this.loadGasoline()
         // console.log(this.auth.user)
-        this.form.balance = this.balance
+        // this.form.balance = this.balance
         if (this.editData !== undefined) {
             _.assign(this.form, {current_liters:this.editData.total_liters})
+            this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
             this.loading = true
             this.pageTitle = "Edit"
             this.form.place_to_visit = this.editData.place_to_visit
@@ -287,6 +319,7 @@ export default {
             await this.fetchPrice();
             await this.getVehicleDetails();
             await this.showActualDriver();
+            await this.selectChargeDetails();
             setTimeout(() => {
                 this.form.date_to = this.editData.date_to
             }, 0);
@@ -304,6 +337,17 @@ export default {
     },
 
     methods:{
+        selectChargeDetails(e) {
+            const chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, (obj) => {
+                return obj.value;
+            }) 
+            
+            console.log(chargeAttributes);
+            this.form.idraao = chargeAttributes[0]
+            this.form.idooe = chargeAttributes[1]
+            this.form.balance = chargeAttributes[2]
+        },
+
         loadGasoline() {
             axios.get('/prices/fetch').then((response) => {
                 this.gasoline = response.data;

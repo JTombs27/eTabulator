@@ -6,15 +6,15 @@
     <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Charges</h3>
-            <div class="peers">
+            <!-- <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
-                <div class="peer"  v-if="can.canCreateCharge">
+                </div> -->
+                <!-- <div class="peer"  v-if="can.canCreateCharge">
                     <Link class="btn btn-primary btn-sm" href="/charges/create">Add</Link>
-                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
-                </div>
-            </div>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                </div> -->
+            <!-- </div> -->
         </div>
 
         <filtering v-if="filter" @closeFilter="filter=false">
@@ -29,19 +29,23 @@
                     <thead>
                         <tr>
                             <th scope="col">Office</th>
+                            <th scope="col">FUNCCOD</th>
+                            <th scope="col">Description(RAAOH)</th>
+                            <th scope="col">Description(OOE)</th>
                             <th scope="col" style="text-align: right">Amount</th>
-                            <th scope="col" >Created On</th>
-                            <th scope="col" style="text-align: right" v-if="can.canEditCharge || can.canCreateCharge">Action</th>
+                            <!-- <th scope="col" style="text-align: right" v-if="can.canEditCharge || can.canCreateCharge">Action</th> -->
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(charges, index) in charge.data" :key="index">
-                            <td>{{ charges.office.office }}</td>
-                            <td class="text-end">{{ Number(charges.amount).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
-                            <td>{{ new Date(charges.created_at).toLocaleDateString(undefined, {year: 'numeric', month: 'long', day: 'numeric' }) }}</td>
-                            <td style="text-align: right" v-if="can.canEditCharge || can.canCreateCharge">
+                            <td>{{ charges.office }}</td>
+                            <td>{{ charges.ffunccod }}</td>
+                            <td>{{ charges.fraodesc }}</td>
+                            <td>{{ charges.fooedesc }}</td>
+                            <td class="text-end">{{ Number(charges.balance1).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <!-- <td style="text-align: right" v-if="can.canEditCharge || can.canCreateCharge"> -->
                                 <!-- v-if="user.can.edit" -->
-                                <div class="dropdown dropstart" v-if="can.canEditCharge || can.canCreateCharge">
+                                <!-- <div class="dropdown dropstart" v-if="can.canEditCharge || can.canCreateCharge">
                                   <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
                                       <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
@@ -65,8 +69,8 @@
                                         </Link>
                                     </li>
                                   </ul>
-                                </div>
-                            </td>
+                                </div> -->
+                            <!-- </td> -->
                         </tr>
                     </tbody>
                 </table>

@@ -4,22 +4,38 @@ namespace App\Http\Controllers;
 
 use App\Models\Gasoline;
 use App\Models\Price;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PriceController extends Controller
 {
-    public function __construct(Price $model, Gasoline $gas)
+    public function __construct(Price $model, Gasoline $gas, User $user)
     {
         $this->model = $model;
         $this->gas = $gas;
+        $this->user = $user;
     }
 
     public function index(Request $request)
     {
+
+        $isGasoline =  User::
+                    where('id', auth()->user()->id)
+                    ->where(function($query){
+                        $query->where('role','gasoline-station');
+                    })
+                    ->first();
+
+        $index = $this->model;
+
+        if($isGasoline) {
+            $index = $index->where('gasoline_id',auth()->user()->gasoline_id);
+        }
+
         return inertia('Prices/Index', [
             //returns an array of users with name field only
-            "price" => $this->model
+            "price" => $index
                 ->with('gasoline')
             	->when($request->search, function ($query, $searchItem) {
                     $q->where('gas_type', 'like', '%' . $searchItem . '%');

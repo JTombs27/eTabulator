@@ -15,11 +15,13 @@ import {
     CategoryScale,
     Plugin
 } from 'chart.js'
+
 ChartJS.register(Title, Tooltip, Legend, ArcElement, CategoryScale)
 export default defineComponent({
     name: 'DoughnutChart',
     components: {
         Doughnut
+        
     },
     props: {
         chartId: {
@@ -56,7 +58,50 @@ export default defineComponent({
         },
         chartColor:{
             type:String,
-            default: () => []
+            default: () => [
+                    '#ff0000',
+                    '#ff4000',
+                    '#ff8000',
+                    '#ffbf00',
+                    '#ffff00',
+                    '#bfff00',
+                    '#80ff00',
+                    '#40ff00',
+                    '#00ff00',
+                    '#00ff40',
+                    '#00ff80',
+                    '#00ffbf',
+                    '#00ffff',
+                    '#00bfff',
+                    '#0080ff',
+                    '#0040ff',
+                    '#0000ff',
+                    '#4000ff',
+                    '#8000ff',
+                    '#bf00ff',
+                    '#ff00ff',
+                    '#ff00bf',
+                    '#ff0080',
+                    '#ff0040',
+                    '#ff0000',
+                    '#0d6efd',
+                    '#6f42c1',
+                    '#d63384',
+                    '#dc3545',
+                    '#fd7e14',
+                    '#ffc107',
+                    '#198754',
+                    '#20c997',
+                    '#0dcaf0',
+                    '#6c757d',
+                    '#343a40',
+                    '#0d6efd',
+                    '#198754',
+                    '#0dcaf0',
+                    '#ffc107',
+                    '#dc3545',
+                    '#212529']
+                    
         },
         CharLegelPosition:{
             type:String,
@@ -73,24 +118,35 @@ export default defineComponent({
                     backgroundColor: props.chartColor
                 }
             ]
+            
         }
 
         const chartOptions = {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                 
-                 datalabels: 
-                 {
-                    display:true,
-                   formatter: function (value, context) {
-                            return context.chart.data.labels[ontext.dataIndex];
-                        },
-                    color:"white",
-                },
                 legend:{
-                    position: props.CharLegelPosition
+                    position: props.CharLegelPosition,
+                    align:'start',
+                    labels:{
+                        usePointStyle:true,
+                        pointStyle:'rectRounded',
+                        font: {
+                                size: 10,
+                                style:'normal',
+                            }
+                    }
+                },
+                datalabels: {
+                display: true,
+                align: 'bottom',
+                backgroundColor: '#ccc',
+                borderRadius: 3,
+                font: {
+                size: 18,
                 }
+            },
+                
             }
         }
 

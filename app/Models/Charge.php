@@ -9,7 +9,6 @@ class Charge extends Model
 {
     use HasFactory;
 
-    protected $table = "charges";
     protected $guarded = [];
 
     public function office()

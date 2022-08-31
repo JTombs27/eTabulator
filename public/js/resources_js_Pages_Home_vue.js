@@ -241,7 +241,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
     chartColor: {
       type: String,
       "default": function _default() {
-        return [];
+        return ['#ff0000', '#ff4000', '#ff8000', '#ffbf00', '#ffff00', '#bfff00', '#80ff00', '#40ff00', '#00ff00', '#00ff40', '#00ff80', '#00ffbf', '#00ffff', '#00bfff', '#0080ff', '#0040ff', '#0000ff', '#4000ff', '#8000ff', '#bf00ff', '#ff00ff', '#ff00bf', '#ff0080', '#ff0040', '#ff0000', '#0d6efd', '#6f42c1', '#d63384', '#dc3545', '#fd7e14', '#ffc107', '#198754', '#20c997', '#0dcaf0', '#6c757d', '#343a40', '#0d6efd', '#198754', '#0dcaf0', '#ffc107', '#dc3545', '#212529'];
       }
     },
     CharLegelPosition: {
@@ -261,15 +261,26 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
+        legend: {
+          position: props.CharLegelPosition,
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rectRounded',
+            font: {
+              size: 10,
+              style: 'normal'
+            }
+          }
+        },
         datalabels: {
           display: true,
-          formatter: function formatter(value, context) {
-            return context.chart.data.labels[ontext.dataIndex];
-          },
-          color: "white"
-        },
-        legend: {
-          position: props.CharLegelPosition
+          align: 'bottom',
+          backgroundColor: '#ccc',
+          borderRadius: 3,
+          font: {
+            size: 18
+          }
         }
       }
     };
@@ -430,8 +441,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Pages_Charts_SomeChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Pages/Charts/SomeChart */ "./resources/js/Pages/Charts/SomeChart.vue");
 /* harmony import */ var _Pages_Charts_LineChart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Pages/Charts/LineChart */ "./resources/js/Pages/Charts/LineChart.vue");
 /* harmony import */ var _Pages_Charts_PieChart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Pages/Charts/PieChart */ "./resources/js/Pages/Charts/PieChart.vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-
 
 
 
@@ -459,7 +468,7 @@ __webpack_require__.r(__webpack_exports__);
       chargesChartData: {
         Labels: [],
         Data: [],
-        Colors: ['rgb(13 110 253)', 'rgb(25 135 84)', 'rgb(220 53 69)', 'rgb(255 193 7)', 'rgb(13 202 240)']
+        Colors: []
       },
       pieChartData: {
         Labels: [],
@@ -470,6 +479,9 @@ __webpack_require__.r(__webpack_exports__);
         Labels: [],
         Data: []
       },
+      r: "",
+      g: "",
+      b: "",
       barTitle: "Number Of Travels Per Office"
     };
   },
@@ -494,7 +506,7 @@ __webpack_require__.r(__webpack_exports__);
           if (vm.charges.length > 0) {
             vm.chargesChartData.Labels.push(vm.charges[0].office_short_name + ' Balance');
             vm.chargesChartData.Labels.push(vm.charges[0].office_short_name + ' Consumed');
-            vm.chargesChartData.Data.push(vm.balance - vm.consume);
+            vm.chargesChartData.Data.push(vm.charges[0].office_charges_amount);
             vm.chargesChartData.Data.push(vm.consume);
           }
         }
@@ -857,7 +869,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [_hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number($props.TotalCharge).toLocaleString(undefined, {
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_30, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_31, [_hoisted_32, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_33, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_34, [_hoisted_35, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_36, [_hoisted_37, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_38, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(Number($props.TotalCharge[0].balance1).toLocaleString(undefined, {
     minimumFractionDigits: 2
   })), 1
   /* TEXT */
@@ -867,12 +879,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* TEXT */
   )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_some_chart, {
     chartData: $data.chargesChartData.Data,
-    CharLegelPosition: $props.isAdmin == null ? 'top' : 'left',
-    chartLabel: $data.chargesChartData.Labels,
-    chartColor: $data.chargesChartData.Colors
+    CharLegelPosition: $props.isAdmin == null ? 'left' : 'right',
+    chartLabel: $data.chargesChartData.Labels
   }, null, 8
   /* PROPS */
-  , ["chartData", "CharLegelPosition", "chartLabel", "chartColor"])])])], 2
+  , ["chartData", "CharLegelPosition", "chartLabel"])])])], 2
   /* CLASS */
   ), $props.isAdmin !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,

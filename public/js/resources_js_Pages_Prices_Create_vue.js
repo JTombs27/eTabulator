@@ -34,6 +34,7 @@ __webpack_require__.r(__webpack_exports__);
         gasoline_id: ''
       }),
       gasoline: [],
+      user: this.$attrs.auth.user,
       pageTitle: "",
       disablegasType: false,
       loading: false,
@@ -50,12 +51,21 @@ __webpack_require__.r(__webpack_exports__);
       this.form.engine_oil_price = this.editData.engine_oil_price;
       this.form.brake_oil_price = this.editData.brake_oil_price;
       this.form.greases_price = this.editData.greases_price;
-      this.form.gasoline_id = this.editData.gasoline_id;
       this.form.id = this.editData.id;
       this.disablegasType = true;
+
+      if (this.user.role !== 'gasoline-station') {
+        this.form.gasoline_id = this.editData.gasoline_id;
+      } else {
+        this.form.gasoline_id = this.user.gasoline_id;
+      }
     } else {
       this.pageTitle = "Add";
       this.disablegasType = false;
+
+      if (this.user.role == 'gasoline-station') {
+        this.form.gasoline_id = this.user.gasoline_id;
+      }
     }
 
     this.loadGasoline();
@@ -118,6 +128,7 @@ var _hoisted_4 = {
   "class": "col-md-8 p-20 bd"
 };
 var _hoisted_5 = {
+  key: 0,
   "class": "col-12 mt-2"
 };
 var _hoisted_6 = {
@@ -338,7 +349,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.submit();
     }, ["prevent"])),
     id: "mainForm"
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
+  }, [$data.user.role !== 'gasoline-station' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [_hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("select", {
     "class": "form-select md",
     "onUpdate:modelValue": _cache[0] || (_cache[0] = function ($event) {
       return $data.form.gasoline_id = $event;
@@ -356,7 +367,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_8), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelSelect, $data.form.gasoline_id]])]), $data.form.errors.gasoline_id ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_11, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.gasoline_id), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
       return $data.form.date = $event;

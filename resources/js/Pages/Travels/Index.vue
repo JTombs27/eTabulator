@@ -257,34 +257,23 @@
             </table>
         </div>
     </Modal>
-    <Modal 
-        v-if="showInvoice"
-        @closeModal="invoice()"
-        :showSaveButton="true"
-        @saveModal="saveInvoice()"
-        :modalTitle="'Invoice'"
+
+    <Invoice
+        v-if="invoiceOpen"
+        :item="invoiceItem"
+        @closeModal="invoiceOpen=false"
     >
-       
-       <form @submit.prevent="saveInvoice()">
-            <div class="mb-3">
-                <label for="invoice" class="form-label">Invoice #</label>
-                <input type="text" class="form-control" id="invoice" autocomplete="off" v-model="form.invoice" @keyup="checkInvoice()">
-                <span>
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-if="invoice_loader"></span>
-                    <span class="ml-2" :class="invoiceMessageClass"> {{ invoiceMessage }} </span>
-                </span>
-            </div>
-       </form>
-    </Modal>
+    </Invoice>
 </template>
 
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import { useForm } from "@inertiajs/inertia-vue3";
+import Invoice from "./Invoice.vue";
 
 export default {
-    components: { Pagination, Filtering },
+    components: { Pagination, Filtering, Invoice },
     props: {
         can: Object,
         travels:Object,
@@ -294,11 +283,9 @@ export default {
     data() {
         
         return {
-            invoice_loader:false,
-            invoiceMessage:"",
-            invoiceMessageClass:"",
+            invoiceItem:{},
+            invoiceOpen:false,
             loader:false,
-            showInvoice:false,
             itemId:"",
             dropdownOption:"outside",
             filter:false,
@@ -342,17 +329,15 @@ export default {
         },
 
         invoice(item) {
-            this.invoiceMessageClass = '';
-            this.invoiceMessage = '';
-            if (item) {
-                this.showInvoice = true;
-                this.form.id = item.id;
-                this.form.invoice = item.invoice;
-            } else {
-                this.showInvoice = false;
-                this.form.id = null;
-                this.form.invoice = null;
-            }
+
+            /**
+             * if using component use the code below
+             * 
+             * this.invoiceItem = item; create an array data named invoiceItem
+             * this.invoiceOpen = true create boolean data named invoiceOpen
+             */
+            this.invoiceItem = item;
+            this.invoiceOpen = true
         },
 
         checkInvoice() {
