@@ -179,7 +179,7 @@ class TravelController extends Controller
                                 'balance1' => ($item->balance1 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => "$item->fooedesc ($item->ffunccod)",
+                                'fooedesc' => "$item->fraodesc ($item->ffunccod)",
                             ])
         ]);
     }
@@ -193,7 +193,16 @@ class TravelController extends Controller
                     ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
                     ->leftJoin('fms.functions as f', 'f.ffunccod', '=', 'ooes.ffunccod')
                     ->leftJoin('fuel.offices', 'offices.department_code', '=', 'functions.department_code')
-                    ->select(DB::raw('offices.office ,functions.FFUNCTION,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.ffunccod, f.ffunccod as other_alloc, raaohs.fraodesc,raaohs.fraodesc, ooes.fooedesc,
+                    ->select(
+                        DB::raw('offices.office ,
+                        functions.FFUNCTION,
+                        raaods.idraao, 
+                        raaods.idooe,
+                        raaohs.fraotype,
+                        raaohs.ffunccod, 
+                        f.ffunccod as other_alloc, 
+                        raaohs.fraodesc,
+                        raaohs.fraodesc, ooes.fooedesc,
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
@@ -236,7 +245,7 @@ class TravelController extends Controller
                                 'balance1' => ($item->balance1 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => "$item->fooedesc ($item->ffunccod)",
+                                'fooedesc' => "$item->fraodesc ($item->ffunccod)",
                             ])
         ]);
         

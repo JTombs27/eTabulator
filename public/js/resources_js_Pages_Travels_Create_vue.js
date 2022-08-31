@@ -62,7 +62,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         consumed_fuel: null,
         idooe: null,
         idraao: null,
-        charge: null
+        charge: "4899-50"
       }),
       pageTitle: "Create",
       columnFrom: "col-md-12",
@@ -105,15 +105,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 2:
               if (!(_this.editData !== undefined)) {
-                _context.next = 38;
+                _context.next = 39;
                 break;
               }
 
               _.assign(_this.form, {
                 current_liters: _this.editData.total_liters
-              });
+              }); // this.form.charge = `4899-50`;
+              // this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
 
-              _this.form.charge = "".concat(_this.editData.idraao, "-").concat(_this.editData.idooe);
+
               _this.loading = true;
               _this.pageTitle = "Edit";
               _this.form.place_to_visit = _this.editData.place_to_visit;
@@ -140,38 +141,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 29;
+              _context.next = 28;
+              return _this.getVehicles();
+
+            case 28:
+              _context.next = 30;
               return _this.fetchPrice();
 
-            case 29:
-              _context.next = 31;
+            case 30:
+              _context.next = 32;
               return _this.getVehicleDetails();
 
-            case 31:
-              _context.next = 33;
+            case 32:
+              _context.next = 34;
               return _this.showActualDriver();
 
-            case 33:
-              _context.next = 35;
+            case 34:
+              _context.next = 36;
               return _this.selectChargeDetails();
 
-            case 35:
+            case 36:
               setTimeout(function () {
                 _this.form.date_to = _this.editData.date_to;
               }, 0);
-              _context.next = 39;
+              _context.next = 41;
               break;
 
-            case 38:
+            case 39:
               _this.pageTitle = "Create";
 
-            case 39:
-              _this.getVehicles(); // $("#actualDriver").select2({
-              //   tags: true
-              // });
+              _this.getVehicles();
 
-
-            case 40:
+            case 41:
             case "end":
               return _context.stop();
           }
@@ -181,14 +182,23 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     selectChargeDetails: function selectChargeDetails(e) {
-      var chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, function (obj) {
-        return obj.value;
-      });
+      var chargeAttr = $('#charge').find(":selected");
 
-      console.log(chargeAttributes);
-      this.form.idraao = chargeAttributes[0];
-      this.form.idooe = chargeAttributes[1];
-      this.form.balance = chargeAttributes[2];
+      if (e !== undefined) {
+        var chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, function (obj) {
+          return obj.value;
+        }); // console.log(e);
+
+
+        this.form.idraao = chargeAttributes[0];
+        this.form.idooe = chargeAttributes[1];
+        this.form.balance = chargeAttributes[2];
+      } else {
+        console.log(chargeAttr[0].attributes);
+        this.form.idraao = chargeAttr[0].attributes[0].value;
+        this.form.idooe = chargeAttr[0].attributes[1].value;
+        this.form.balance = chargeAttr[0].attributes[2].value;
+      }
     },
     loadGasoline: function loadGasoline() {
       var _this2 = this;
@@ -384,8 +394,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     //     }    
     // },
     showActualDriver: function showActualDriver(e) {
-      console.log(e);
-
       if (true) {
         $('#actualDriver').select2({
           ajax: {
@@ -619,7 +627,7 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_16 = ["idraoo", "idooe", "value", "balance1"];
+var _hoisted_16 = ["idraoo", "idooe", "value", "balance1", "selected"];
 var _hoisted_17 = {
   key: 0,
   "class": "fs-6 c-red-500"
@@ -988,14 +996,17 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     onChange: _cache[5] || (_cache[5] = function ($event) {
       return $options.selectChargeDetails($event);
-    })
+    }),
+    id: "charge",
+    ref: "select_charge"
   }, [_hoisted_15, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.charges, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
       key: index,
       idraoo: item.idraao,
       idooe: item.idooe,
       value: "".concat(item.idraao, "-").concat(item.idooe),
-      balance1: item.balance1
+      balance1: item.balance1,
+      selected: $data.form.charge == "".concat(item.idraao, "-").concat(item.idooe)
     }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.fooedesc), 9
     /* TEXT, PROPS */
     , _hoisted_16);
