@@ -45,7 +45,8 @@
                     </span><span class="title">Dashboard</span></Link>
                 </li>
 
-                <li class="nav-item" v-if="$page.props.auth.user.role !== 'peo-motorpool'">
+                <li class="nav-item" 
+                    v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
                     <Link class="sidebar-link" href="/travels" :class="{'active': $page.url.startsWith('/travels')}"><span
                         class="icon-holder">
                         <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="20" height="20"

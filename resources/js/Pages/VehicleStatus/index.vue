@@ -37,7 +37,7 @@
  
  
         <div class="col-12">
-            <div class="bgc-white p-20 bd">
+            <div class="table-responsive bgc-white p-20 bd">
                 
                 <table class="table table-hover">
                     <thead>
