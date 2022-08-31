@@ -229,7 +229,7 @@ class SoaTravelController extends Controller
                             ->leftJoin('offices', 'travels.office_id', 'offices.department_code')
                             ->leftJoin('users', 'users.id', 'soa_travels.user_id')
                             ->where('travels.soa_travel', $request->soa_travel)
-                            ->orderByRaw("offices.office ASC, travels.ticket_number ASC")
+                            ->orderByRaw("travels.gas_type ASC, travels.ticket_number ASC")
                             ->get()->map(function($item) {
                     $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
