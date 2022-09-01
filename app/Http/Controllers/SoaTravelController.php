@@ -221,7 +221,8 @@ class SoaTravelController extends Controller
                                 gasolines.name AS gasstation,
                                 soa_travels.date_from AS soa_date_from,
                                 soa_travels.date_to AS soa_date_to,
-                                users.name'))
+                                users.name
+                                '))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('gasolines', 'travels.gasoline_id', 'gasolines.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
