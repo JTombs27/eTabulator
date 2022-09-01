@@ -184,7 +184,8 @@ class TravelController extends Controller
                                 'balance1' => ($item->balance2 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fraodesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fooedesc' => $item->fooedesc,
                             ])
         ]);
     }
@@ -253,7 +254,8 @@ class TravelController extends Controller
                                 'balance1' => ($item->balance2 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fraodesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fooedesc' => $item->fooedesc,
                             ])
         ]);
         
