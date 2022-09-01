@@ -66,6 +66,8 @@ class ChargeController extends Controller
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.factcode'),'50203090')
                     ->where(DB::raw('ooes.recid'),'!=','1371')
+                    ->where(DB::raw('ooes.recid'),'!=','1332')
+                    ->where(DB::raw('ooes.recid'),'!=','1328')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
     
@@ -204,7 +206,9 @@ class ChargeController extends Controller
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.factcode'),'50203090')
-                     ->where(DB::raw('ooes.recid'),'!=','50203090')
+                    ->where(DB::raw('ooes.recid'),'!=','1371')
+                    ->where(DB::raw('ooes.recid'),'!=','1332')
+                    ->where(DB::raw('ooes.recid'),'!=','1328')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'))
                     ->get();
