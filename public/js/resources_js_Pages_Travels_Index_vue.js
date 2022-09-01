@@ -193,6 +193,13 @@ __webpack_require__.r(__webpack_exports__);
 
         return "<span class=\"".concat(classText, "\">").concat(this.status(item.status), "</span>");
       }
+    },
+    allowEdit: function allowEdit(item) {
+      var text = "WARNING!\nAre you sure you want to allow edit for this travel?";
+
+      if (confirm(text) == true) {
+        this.$inertia.post("/travels/allow-edit", item.id);
+      }
     }
   },
   mounted: function mounted() {
@@ -1339,7 +1346,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }
     }, _hoisted_72, 8
     /* PROPS */
-    , _hoisted_69)]), $props.can.canDeleteTravel && item.status == null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_73, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+    , _hoisted_69)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li v-if=\"can.canDeleteTravel && item.status == null && !item.soa_travel\">\r\n                                        <button class=\"dropdown-item\"  @click=\"allowEdit(item)\" >\r\n                                            <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-credit-card-2-front\" viewBox=\"0 0 16 16\">\r\n                                              <path d=\"M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z\"/>\r\n                                              <path d=\"M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z\"/>\r\n                                            </svg>\r\n                                            Allow Edit\r\n                                        </button>\r\n                                    </li> "), $props.can.canDeleteTravel && item.status == null && !item.soa_travel ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_73, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
       "class": "text-danger dropdown-item",
       onClick: function onClick($event) {
         return $options.deleteTravel(item);

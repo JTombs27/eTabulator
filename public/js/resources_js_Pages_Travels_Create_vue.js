@@ -62,7 +62,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         consumed_fuel: null,
         idooe: null,
         idraao: null,
-        charge: "4899-50"
+        charge: null
       }),
       pageTitle: "Create",
       columnFrom: "col-md-12",
@@ -105,16 +105,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 2:
               if (!(_this.editData !== undefined)) {
-                _context.next = 39;
+                _context.next = 40;
                 break;
               }
 
               _.assign(_this.form, {
                 current_liters: _this.editData.total_liters
               }); // this.form.charge = `4899-50`;
-              // this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
 
 
+              _this.form.charge = "".concat(_this.editData.idraao, "-").concat(_this.editData.idooe);
               _this.loading = true;
               _this.pageTitle = "Edit";
               _this.form.place_to_visit = _this.editData.place_to_visit;
@@ -141,38 +141,38 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 28;
+              _context.next = 29;
               return _this.getVehicles();
 
-            case 28:
-              _context.next = 30;
+            case 29:
+              _context.next = 31;
               return _this.fetchPrice();
 
-            case 30:
-              _context.next = 32;
+            case 31:
+              _context.next = 33;
               return _this.getVehicleDetails();
 
-            case 32:
-              _context.next = 34;
+            case 33:
+              _context.next = 35;
               return _this.showActualDriver();
 
-            case 34:
-              _context.next = 36;
+            case 35:
+              _context.next = 37;
               return _this.selectChargeDetails();
 
-            case 36:
+            case 37:
               setTimeout(function () {
                 _this.form.date_to = _this.editData.date_to;
               }, 0);
-              _context.next = 41;
+              _context.next = 42;
               break;
 
-            case 39:
+            case 40:
               _this.pageTitle = "Create";
 
               _this.getVehicles();
 
-            case 41:
+            case 42:
             case "end":
               return _context.stop();
           }
