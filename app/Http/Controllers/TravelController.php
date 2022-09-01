@@ -371,6 +371,7 @@ class TravelController extends Controller
         // }
 
         $request['office_id'] = auth()->user()->office_id;
+        $request['edit_by'] = auth()->user()->id;
         if (!$request->rangedDate) {
             $request['date_to'] = null;
         }
