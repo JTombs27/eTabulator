@@ -90,7 +90,8 @@ class TravelController extends Controller
                                     'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                     'gasoline_station' => $item->gasoline->name,
-                                    'invoice' => $item->invoice_no
+                                    'invoice' => $item->invoice_no,
+                                    'allow_to_edit' => $item->allow_edit
                                      ]; 
                                  }),
              "can" => [
@@ -98,6 +99,7 @@ class TravelController extends Controller
                  'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
                  'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
                  'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
+                 'canAllowEdit' => auth()->user()->can('canAllowEdit', User::class),
              ]
          ]);
     }
@@ -124,6 +126,8 @@ class TravelController extends Controller
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.factcode'),'50203090')
                     ->where(DB::raw('ooes.recid'),'!=','1371')
+                    ->where(DB::raw('ooes.recid'),'!=','1332')
+                    ->where(DB::raw('ooes.recid'),'!=','1328')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
@@ -209,6 +213,8 @@ class TravelController extends Controller
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.factcode'),'50203090')
                     ->where(DB::raw('ooes.recid'),'!=','1371')
+                    ->where(DB::raw('ooes.recid'),'!=','1332')
+                    ->where(DB::raw('ooes.recid'),'!=','1328')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
@@ -594,6 +600,10 @@ class TravelController extends Controller
 
     public function allowEdit(Request $request)
     {
-        dd($request->all());
+        $travel = $this->model->findOrFail($request->id);
+        $travel->update([
+            'allow_edit' => true
+        ]);
+        return redirect('/travels')->with('message', "Trip ticket # $travel->ticket_number is now allowed to edit");
     }
 }

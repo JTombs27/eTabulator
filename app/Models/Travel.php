@@ -36,6 +36,8 @@ class Travel extends Model
         'tank_balance',
         'idooe',
         'idraao',
+        'allow_edit',
+        'edit_by'
         
 
     ];
