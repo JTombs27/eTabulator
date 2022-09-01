@@ -253,7 +253,7 @@ export default {
                 consumed_fuel:null,
                 idooe:null,
                 idraao:null,
-                charge:"4899-50"
+                charge:null
             }),
             pageTitle:"Create",
             columnFrom:"col-md-12",
@@ -292,7 +292,7 @@ export default {
         if (this.editData !== undefined) {
             _.assign(this.form, {current_liters:this.editData.total_liters})
             // this.form.charge = `4899-50`;
-            // this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
+            this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
             this.loading = true
             this.pageTitle = "Edit"
             this.form.place_to_visit = this.editData.place_to_visit

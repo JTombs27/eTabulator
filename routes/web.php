@@ -157,6 +157,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/checkInvoice', [TravelController::class, 'checkInvoice'])->name('checkInvoice');
         Route::post('/updateInvoice', [TravelController::class, 'updateInvoice'])->name('updateInvoice');
         Route::post('/gasoline-station', [TravelController::class, 'getGasolineStation'])->name('getGasolineStation');
+        Route::post('/allow-edit', [TravelController::class, 'allowEdit'])->name('allowEdit');
     });
 
     Route::prefix('sync')->group(function() {

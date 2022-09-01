@@ -123,6 +123,7 @@ class TravelController extends Controller
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->where(DB::raw('ooes.recid'),'!=','1371')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
@@ -176,7 +177,7 @@ class TravelController extends Controller
         return inertia('Travels/Create',[
            'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance1 - $total_expense),
+                                'balance1' => ($item->balance2 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
                                 'fooedesc' => "$item->fraodesc ($item->ffunccod)",
@@ -207,6 +208,7 @@ class TravelController extends Controller
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->where(DB::raw('ooes.recid'),'!=','1371')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
@@ -242,7 +244,7 @@ class TravelController extends Controller
             'editData' => $editData,
             'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance1 - $total_expense),
+                                'balance1' => ($item->balance2 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
                                 'fooedesc' => "$item->fraodesc ($item->ffunccod)",
@@ -588,5 +590,10 @@ class TravelController extends Controller
        
         return $this->station->get();
         
+    }
+
+    public function allowEdit(Request $request)
+    {
+        dd($request->all());
     }
 }

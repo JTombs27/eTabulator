@@ -50,6 +50,7 @@ class PermissionsSeeder extends Seeder
             array('id' => 33,'permission_name' => 'can_create_gasoline', 'permission_group' => 'Gasoline'),//GSO
             array('id' => 34,'permission_name' => 'can_edit_gasoline', 'permission_group' => 'Gasoline'),//GSO
             array('id' => 35,'permission_name' => 'can_delete_gasoline', 'permission_group' => 'Gasoline'),//GSO 
+            array('id' => 36,'permission_name' => 'can_allow_edit', 'permission_group' => 'Travel'),//PG-head 
             // array('id' => 33,'permission_name' => 'can_create_whereabouts', 'permission_group' => 'Whereabouts'), 
         );
 
