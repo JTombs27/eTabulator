@@ -48,7 +48,7 @@
                     <br>
                     </div>
                     <div>
-                        <label for="">Charge</label>
+                        <label for="">CHARGE</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                         <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)" id="charge" ref="select_charge">
                             <option readonly disabled>Select Charge</option>
                             <option 
@@ -59,19 +59,21 @@
                             :value="`${item.idraao}-${item.idooe}`"
                             :balance1="item.balance1"
                             :selected="form.charge == `${item.idraao}-${item.idooe}`"
-                            >{{item.fooedesc}}</option>
+                            >
+                            {{item.fraodesc}} --- ({{item.fooedesc}})
+                        </option>
                         </select>
                         <div class="fs-6 c-red-500" v-if="form.errors.balance">{{ form.errors.balance }}</div>
                     </div>
                     <hr>
                     <div :class="[columnFrom]">
-                        <label for="">From</label>
+                        <label for="">FROM</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                         <input v-model="form.date_from" type="date" class="form-control" autocomplete="chrome-off" @change="fetchPrice()"/>
                         <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
                     </div>
                     <Transition name="fade"  mode="out-in">
                         <div class="col-md-6" v-if="form.rangedDate">   
-                            <label for="">To</label>
+                            <label for="">TO</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                             <input v-model="form.date_to" type="date" class="form-control" autocomplete="chrome-off"/>
                             <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
                         </div>
@@ -81,7 +83,7 @@
                          <div class="form-check ">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" v-model="form.rangedDate">
                             <label class="form-check-label disable-select" for="flexCheckDefault">
-                                Check ranged date
+                                CHECK FOR RANGE DATE
                             </label>
                         </div>
                     </div>
@@ -91,17 +93,18 @@
                 <span v-if="form.date_from">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="">Travel Departure</label>
+                            <label for="">TRAVEL DEPARTURE</label>
                             <input v-model="form.time_departure" type="time" class="form-control" autocomplete="chrome-off"/>
                         </div>
                         <div class="col-md-6">
-                            <label for="">Travel Arrival</label>
+                            <label for="">TRAVEL ARRIVAL</label>
                             <input v-model="form.time_arrival" type="time" class="form-control" autocomplete="chrome-off"/>
                         </div>
                     </div>
                     <br>
+                    <small class="text-danger"><strong>(Required)</strong></small><br>
                     <div class="position-relative">
-                        <label class="col-md-3" for="">Vehicle Name</label>
+                        <label class="col-md-3" for="">VEHICLE NAME</label>
                         <label class="position-absolute top-0 end-0" for=""><strong>{{ vehicle_status }}</strong></label>
                     </div>
                     <Select2 v-model="form.vehicles_id" :options="officeFiltered" @select="getVehicleDetails($event)" />
@@ -110,7 +113,7 @@
                         <br>
                          <div class="form-check ">
                              <label class="form-check-label disable-select" for="carpool">
-                                 Tag as carpool
+                                 TAG AS CARPOOL
                              </label>
                             <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
                         </div>
@@ -121,7 +124,7 @@
                         <transition name="fade"  mode="out-in">
                             <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
                                 <br>
-                                <label >Borrowed by</label>
+                                <label >BORROWED BY</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                                 <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
                                 <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
                             </span>
@@ -130,7 +133,7 @@
                     <hr>
                 </span>
                 <span v-if="form.date_from && form.vehicles_id">
-                    <label>Authorized Driver</label>
+                    <label>AUTHORIZED DRIVER</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                     <Select2 class="js-data-example-ajax" v-model="form.drivers_id" :options="drivers" @select="setDriverVehicle($event)"/>
                     <!-- <input type="text" class="form-control" v-model="driverName"> -->
                     <div class="fs-6 c-red-500" v-if="form.errors.driver_vehicles_id">{{ form.errors.driver_vehicles_id }}</div>
@@ -140,13 +143,15 @@
                         <div class="form-check ">
                             <input class="form-check-input" type="checkbox" value="" id="actualDriverBox" v-model="form.showActualDriver" @change="showActualDriver($event)">
                             <label class="form-check-label disable-select" for="actualDriverBox" id="labelActual">
-                                Check to set substitute driver
+                                CHECK TO SET SUBSTITUTE DRIVER
                             </label>
                         </div>
                     </div>
-                    
-                    <label v-if="form.showActualDriver">Actual Driver</label>
-                    <input v-if="form.showActualDriver" type="text"  v-model="form.actual_driver" class="form-control">
+                   <span v-if="form.showActualDriver">
+                     
+                     <label >ACTUAL DRIVER</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
+                     <input  type="text"  v-model="form.actual_driver" class="form-control">
+                   </span>
                     <!-- <Select2 
                         v-if="form.showActualDriver"
                         v-model="form.actual_driver" 
@@ -158,24 +163,24 @@
                     <!-- <input type="text" v-model="form.actual_driver" class="form-control" v-if="form.showActualDriver"> -->
                     
                     <hr>
-                    <label for="">Name of Authorized Passenger/s</label>
+                    <label for="">NAME OF AUTHORIZED PASSENGER/s</label>
                     <textarea class="form-control" cols="3" v-model="form.official_passenger"></textarea>
                     <!-- <input type="text" v-model="form.official_passenger" class="form-control"> -->
-                    <label for="">Place to visit</label>
+                    <label for="">PLACE TO VISIT</label>
                     <input type="text" v-model="form.place_to_visit" class="form-control">
-                    <label for="">Purpose of Travel</label>
+                    <label for="">PURPOSE OF TRAVEL</label>
                     <input type="text" v-model="form.purpose" class="form-control">
-                    <label for="">Fuel Tank Balance</label>
+                    <label for="">FUEL TANK BALANCE</label>
                     <input type="text" v-model="form.tank_balance" class="form-control">
-                    <div class="position-relative">
-                        <label class="col-md-3" for="">Gasoline Station</label>
+                    <div class="">
                     </div>
+                    <label for="">GASOLINE STATION</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                      <select class="form-select" v-model="form.gasoline_id" @change="fetchPrice()">
                         <option disabled value="">Select Station</option>
                         <option v-for="item, index in gasoline" :value="item.id">{{ item.text }}</option>
                     </select>
                     <div class="position-relative">
-                        <label class="col-md-3" for="">Gas Type</label>
+                        <label class="col-md-3" for="">GAS TYPE <small class="text-danger"><strong>(Required)</strong></small></label>
                         <label class="position-absolute top-0 end-0" for=""><strong>{{ gasPrice }}</strong></label>
                     </div>
                     <select class="form-select" v-model="form.gas_type"  @change="fetchPrice()">
@@ -186,15 +191,15 @@
                     <div class="fs-6 c-red-500" v-if="form.errors.gas_type">{{ form.errors.gas_type }}</div>
                     
                     <div class="position-relative">
-                        <label for="">Liter/s</label>
+                        <label for="">LITER/s <small class="text-danger"><strong>(Required)</strong></small></label>
                         <label class="position-absolute top-0 end-0" for=""><strong>{{ fuelMaxLimit }}</strong></label>
                     </div>
                     <input type="text" v-model="form.total_liters" class="form-control" @keyup="fetchPrice()">
                     <div class="fs-6 c-red-500" v-if="form.errors.total_liters">{{ form.errors.total_liters }}</div>
-                    <label for="">Price</label>
-                    <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined">
+                    <label for="">PRICE</label><small class="text-danger pull-right"><strong>(Required)</strong></small>
+                    <input type="text" v-model="form.price" class="form-control" :disabled="editData !== undefined" readonly>
                     <div class="fs-6 c-red-500" v-if="form.errors.price">{{ form.errors.price }}</div>
-                    <label for="">Deduct used during the trip</label>
+                    <label for="">DEDUCT USED DURING THE TRIP</label>
                     <input type="text" v-model="form.consumed_fuel" class="form-control">
                     <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save changes</button>
                 </span>
