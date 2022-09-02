@@ -29,6 +29,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         value: 3,
         name: "Heavy Equipment"
+      }, {
+        value: 4,
+        name: "Others"
       }],
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         PLATENO: "",

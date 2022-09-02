@@ -98,6 +98,7 @@ export default ({
                 {value:1, name:"Motorcycle"},
                 {value:2, name:"Light Vehicle"},
                 {value:3, name:"Heavy Equipment"},
+                {value:4, name:"Others"},
             ],
             form: useForm ({
                 PLATENO: "",

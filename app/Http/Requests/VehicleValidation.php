@@ -27,7 +27,8 @@ class VehicleValidation extends FormRequest
             'PLATENO' => 'required|unique:vehicles',
             'TYPECODE' => 'required',
             'FACQCOST'=> 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'fuel_limit' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/'
+            'fuel_limit' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
+            'condition' => 'required'
             
         ];
     }
@@ -39,7 +40,8 @@ class VehicleValidation extends FormRequest
             'PLATENO.unique' => 'Plate Number already exists!',
             'TYPECODE.required' => 'Vehicle Type is required!',
             'FACQCOST.regex' => 'Invalid Format!',
-            'fuel_limit.required' => 'Fuel is required!'
+            'fuel_limit.required' => 'Fuel is required!',
+            'condition.required' => 'Fuel is required!'
 
         ];
     }
