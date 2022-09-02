@@ -2247,6 +2247,16 @@ var map = {
 		9,
 		"resources_js_Pages_Users_Settings_vue"
 	],
+	"./VehicleStatus": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
+	"./VehicleStatus/": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
+		9,
+		"resources_js_Pages_VehicleStatus_index_vue"
+	],
 	"./VehicleStatus/Create": [
 		"./resources/js/Pages/VehicleStatus/Create.vue",
 		9,
@@ -2257,15 +2267,15 @@ var map = {
 		9,
 		"resources_js_Pages_VehicleStatus_Create_vue"
 	],
-	"./VehicleStatus/Index": [
-		"./resources/js/Pages/VehicleStatus/Index.vue",
+	"./VehicleStatus/index": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_Index_vue"
+		"resources_js_Pages_VehicleStatus_index_vue"
 	],
-	"./VehicleStatus/Index.vue": [
-		"./resources/js/Pages/VehicleStatus/Index.vue",
+	"./VehicleStatus/index.vue": [
+		"./resources/js/Pages/VehicleStatus/index.vue",
 		9,
-		"resources_js_Pages_VehicleStatus_Index_vue"
+		"resources_js_Pages_VehicleStatus_index_vue"
 	],
 	"./VehicleStatus/status": [
 		"./resources/js/Pages/VehicleStatus/status.vue",
