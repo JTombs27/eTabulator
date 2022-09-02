@@ -89,7 +89,7 @@
         </div>
 
         <div class="col-12">
-            <div class="table-responsive bgc-white p-20 bd shadow-sm">
+            <div class="table responsive bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
