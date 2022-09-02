@@ -43,7 +43,7 @@ class TravelController extends Controller
                                 }
                             )
                             ->when($request->dateFilterType == 'all', function($q) use ($request) {
-                                $q->orWherebetween('date_from', [$request->date_from,$request->date_to]);
+                                $q->whereBetween('date_from', [$request->date_from,$request->date_to]);
                             })
                             ->when($request->dateFilterType == 'from', function($q) use ($request) {
                                 $q->where('date_from', '>=', $request->date_from);
