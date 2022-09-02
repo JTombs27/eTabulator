@@ -29,24 +29,6 @@
         <div class="col-md-8">
             <form @submit.prevent="submit()">
                 <div class="row">
-                    
-                    <div class="col-md-4">    
-                        <div class="form-check ">
-                            <label class="form-check-label disable-select" for="is_borrowed_vehicle">
-                            Check if borrow vehicle
-                            </label>
-                            <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
-                        </div>
-                    </div>
-                    <div class="col-md-4">    
-                         <div class="form-check">
-                             <label class="form-check-label disable-select" for="is_borrowed_fuel">
-                                Check if borrow fuel
-                             </label>
-                            <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
-                        </div>
-                    <br>
-                    </div>
                     <div>
                         <label for="">CHARGE</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                         <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)" id="charge" ref="select_charge">
@@ -109,15 +91,33 @@
                     </div>
                     <Select2 v-model="form.vehicles_id" :options="officeFiltered" @select="getVehicleDetails($event)" />
                     <div class="fs-6 c-red-500" v-if="form.errors.vehicles_id">{{ form.errors.vehicles_id }}</div>
-                    <div class="col-md-12">
-                        <br>
-                         <div class="form-check ">
-                             <label class="form-check-label disable-select" for="carpool">
-                                 TAG AS CARPOOL
-                             </label>
-                            <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
+                    <div class="col-md-12 mT-10 card card-secondary card-body">
+                        <div class="col-md-12">
+                            <div class="form-check ">
+                                <label class="form-check-label disable-select" for="carpool">
+                                    TAG AS CARPOOL
+                                </label>
+                               <input class="ml-5 form-check-input" type="checkbox" value="" id="carpool" v-model="form.is_carpool">
+                           </div>
                         </div>
-                    
+                       <div class="12">
+                         <div class="col-md-4">    
+                             <div class="form-check ">
+                                 <label class="form-check-label disable-select" for="is_borrowed_vehicle">
+                                 Check if borrow vehicle
+                                 </label>
+                                 <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                             </div>
+                         </div>
+                         <div class="col-md-4">    
+                              <div class="form-check">
+                                  <label class="form-check-label disable-select" for="is_borrowed_fuel">
+                                     Check if borrow fuel
+                                  </label>
+                                 <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
+                             </div>
+                         </div>
+                       </div>
                         
                     
                         
