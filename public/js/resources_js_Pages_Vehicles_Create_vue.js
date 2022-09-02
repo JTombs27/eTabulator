@@ -29,6 +29,9 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         value: 3,
         name: "Heavy Equipment"
+      }, {
+        value: 4,
+        name: "Others"
       }],
       form: (0,_inertiajs_inertia_vue3__WEBPACK_IMPORTED_MODULE_0__.useForm)({
         PLATENO: "",
@@ -41,7 +44,8 @@ __webpack_require__.r(__webpack_exports__);
         condition: "",
         vehicle_status_date: ""
       }),
-      pageTitle: ""
+      pageTitle: "",
+      isDisabled: false
     };
   },
   mounted: function mounted() {
@@ -70,8 +74,10 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         this.form.post("/vehicles", this.form);
       }
-    },
-    addDriver: function addDriver() {}
+    } // addDriver()
+    // {
+    // }
+
   }
 });
 
@@ -117,10 +123,12 @@ var _hoisted_9 = {
   "class": "col"
 };
 var _hoisted_10 = {
-  "class": "col"
+  "class": "col-mb-3"
 };
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", null, "Plate Number", -1
+var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "col-mb-3 col-form-label"
+}, "Plate Number", -1
 /* HOISTED */
 );
 
@@ -252,7 +260,7 @@ var _hoisted_38 = {
 };
 var _hoisted_39 = {
   key: 0,
-  "class": "from-check"
+  "class": "form-check"
 };
 
 var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
@@ -262,6 +270,7 @@ var _hoisted_40 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
+var _hoisted_41 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_back_button = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("back-button");
 
@@ -373,10 +382,13 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.form.checkadd]]), _hoisted_40])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-primary mt-3",
+    disabled: $data.isDisabled,
     onClick: _cache[9] || (_cache[9] = function ($event) {
       return $options.submit();
     })
-  }, "Save")])], 32
+  }, "Save", 8
+  /* PROPS */
+  , _hoisted_41)])], 32
   /* HYDRATE_EVENTS */
   )])])])])]);
 }
@@ -395,13 +407,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Create_vue_vue_type_template_id_f4c3fe6a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=f4c3fe6a */ "./resources/js/Pages/Vehicles/Create.vue?vue&type=template&id=f4c3fe6a");
 /* harmony import */ var _Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js */ "./resources/js/Pages/Vehicles/Create.vue?vue&type=script&lang=js");
-/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_f4c3fe6a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Vehicles/Create.vue"]])
+const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_f4c3fe6a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Vehicles/Create.vue"]])
 /* hot reload */
 if (false) {}
 

@@ -19,8 +19,8 @@
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col">
-                                        <div class="col">
-                                            <label >Plate Number</label>
+                                        <div class="col-mb-3">
+                                            <label class="col-mb-3 col-form-label">Plate Number</label>
                                             <input type="text" v-model="form.PLATENO" class="form-control" autocomplete="chrome-off">
                                             <div class="fs-6 c-red-500" v-if="form.errors.PLATENO">{{ form.errors.PLATENO }}</div>
                                             <div class="fs-6 c-red-500" v-if="form.errors.PLATENOA">{{ form.errors.PLATENOA }}</div>
@@ -69,11 +69,11 @@
                                 </div>
                             </div>
                                 <div class="modal-footer p-1">
-                                    <div class="from-check" v-if="pageTitle === 'Create Vehicles'">
+                                    <div class="form-check" v-if="pageTitle === 'Create Vehicles'">
                                         <input class="form-check-input" type="checkbox" v-model="form.checkadd" name="checkbox" id="checkbox" >
                                         <label class="form-check-label" for="checkbox" > Add Driver Vehicle</label>
                                     </div>
-                                    <button type="button" class="btn btn-primary mt-3" @click="submit()">Save</button>
+                                    <button type="button" class="btn btn-primary mt-3" :disabled="isDisabled" @click="submit()">Save</button>
                                 </div>
                         </form>
                     </div>
@@ -98,6 +98,7 @@ export default ({
                 {value:1, name:"Motorcycle"},
                 {value:2, name:"Light Vehicle"},
                 {value:3, name:"Heavy Equipment"},
+                {value:4, name:"Others"},
             ],
             form: useForm ({
                 PLATENO: "",
@@ -111,6 +112,7 @@ export default ({
                 vehicle_status_date: ""
             }),
         pageTitle: "",
+        isDisabled:false
         }
     },
 
@@ -144,10 +146,10 @@ export default ({
             }
         },
 
-        addDriver()
-        {
+        // addDriver()
+        // {
             
-        }
+        // }
     }
 })
 </script>
