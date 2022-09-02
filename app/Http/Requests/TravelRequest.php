@@ -30,6 +30,7 @@ class TravelRequest extends FormRequest
     public function rules()
     {
       
+        dd($this);
         // dd($this->price < 1);
         $fuel_limit = Vehicle::where('id', $this->vehicles_id)->first(['fuel_limit']);
         // dd($fuel_limit->fuel_limit);

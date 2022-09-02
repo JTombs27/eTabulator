@@ -363,7 +363,7 @@ export default {
             axios.post('/travels/checkInvoice', {id:this.form.id, invoice_no: this.form.invoice})
                 .then((response) => {
                     if (this.form.invoice) {
-                        if ( ) {
+                        if (response.data) {
                             this.invoiceMessage = 'Valid';
                             this.invoiceMessageClass = 'text-success'
                         } else {

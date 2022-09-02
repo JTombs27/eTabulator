@@ -29,6 +29,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Active</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Name</th>
                             <th scope="col">Office</th>
                             <th scope="col">Role</th>
@@ -50,6 +51,9 @@
                                     >
                                     <label class="form-check-label" :for="user.id"></label>
                                 </div>
+                            </td>
+                            <td>
+                                {{ user.username }}
                             </td>
                             <td>
                                 <div class="row g-3 align-items-center">
