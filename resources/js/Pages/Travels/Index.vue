@@ -8,7 +8,7 @@
             <h3>Travels</h3>
             <div class="peers">
                 <div class="peer mR-10">
-                    <!-- <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search..."> -->
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search Trip Ticket...">
                 </div>
                 <div class="peer"  v-if="can.canCreateTravel">
                     <Link class="btn btn-primary btn-sm" href="/travels/create">Add Travel</Link>
@@ -121,7 +121,7 @@
                                     <!-- <li><Link class="dropdown-item" :href="`/travels/set-status`" method="post" :data="item" as="button" v-if="can.canSetStatus">Approve</Link></li> -->
                                     
                                     <li v-if="can.canEditTravel && item.status != 'Approved'"><hr class="dropdown-divider action-divider"></li>
-                                    <li v-if="can.canEditTravel && item.status == null">
+                                    <li v-if="can.canEditTravel && (item.allow_to_edit || item.status == null)">
                                         <Link class="dropdown-item" :href="`/travels/${item.id}/edit`" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                               <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -147,7 +147,18 @@
                                             View Details
                                         </button>
                                     </li>
-                                    <li v-if="can.canDeleteTravel && item.status == null">
+                                   
+                                    <li v-if="can.canAllowEdit && item.status != 'Fueled' && item.allow_to_edit == null">
+                                        <button class="dropdown-item"  @click="allowEdit(item)" >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-credit-card-2-front" viewBox="0 0 16 16">
+                                              <path d="M14 3a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h12zM2 2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H2z"/>
+                                              <path d="M2 5.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-1zm0 3a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0 2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5zm3 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 0 1h-1a.5.5 0 0 1-.5-.5z"/>
+                                            </svg>
+                                            Allow Edit
+                                        </button>
+                                    </li>
+
+                                    <li v-if="can.canDeleteTravel && item.status == null && !item.soa_travel">
                                         <button class="text-danger dropdown-item"  @click="deleteTravel(item)" >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                               <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
@@ -293,8 +304,9 @@ export default {
                 date_from:null,
                 date_to:null,
                 dateFilterType:null,
-                status:null
+                status:null,
             },
+            search:null,
             form:useForm({
                 invoice:null,
                 id:null
@@ -398,6 +410,7 @@ export default {
         approvedStatus(item, status) {
             //   $(`.dropdown-menu#${item.id}`).toggle();
             this.$inertia.post('/travels/set-status', {id:item.id, status:status}, { 
+                preserveScroll:true,
                 onStart: (data) => {
                     this.loader = true
                     this.itemId = item.id
@@ -464,12 +477,29 @@ export default {
                 }
                 return `<span class="${classText}">${this.status(item.status)}</span>`
             }
+        },
+
+        allowEdit(item) {
+            let text = "WARNING!\nAre you sure you want to allow edit for this travel?";
+              if (confirm(text) == true) {
+                this.$inertia.post("/travels/allow-edit", {id:item.id}, {
+                    preserveScroll:true,
+                    preserveState:true
+                });
+              }
         }
     },
 
-    mounted(){
-        console.log()
+    watch:{   
+        search: _.debounce(function(value) {
+            this.$inertia.get('/travels',  {search:value}, {
+                preserveState:true,
+                preserveScroll:true,
+                replace:true
+            })
+        }, 500)
     },
+
     computed: {
         mi() {
             return value => value ? `${value.charAt(0)}.` : "";

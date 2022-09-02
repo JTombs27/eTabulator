@@ -148,7 +148,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         } else if (Permission_type == 'ro') {
           this.selectedPermissions = [5, 7, 10, 11, 12, 13, 14, 15, 25];
         } else if (Permission_type == 'pghead') {
-          this.selectedPermissions = [6, 25, 26];
+          this.selectedPermissions = [6, 25, 26, 36];
         } else if (Permission_type == 'pgso') {
           this.selectedPermissions = [4, 8, 16, 17, 18, 19, 20, 21, 22, 23, 24, 27, 28, 29, 30, 31, 33, 34, 35];
         } else if (Permission_type == 'peo-motorpool') {

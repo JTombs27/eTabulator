@@ -380,7 +380,7 @@ export default ({
                 { search: value },
                 {
                     preserveScroll: true,
-                    preserveState: false,
+                    preserveState: true,
                     replace: true,
                 }
             );

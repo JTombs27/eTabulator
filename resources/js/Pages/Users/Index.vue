@@ -292,7 +292,7 @@ export default {
 
                 } else if (Permission_type == 'pghead') {
 
-                    this.selectedPermissions = [6,25,26];
+                    this.selectedPermissions = [6,25,26,36];
 
                 } else if (Permission_type == 'pgso') {
 

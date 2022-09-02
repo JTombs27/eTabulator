@@ -83,7 +83,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         search: value
       }, {
         preserveScroll: true,
-        preserveState: false,
+        preserveState: true,
         replace: true
       });
     }, 300)
