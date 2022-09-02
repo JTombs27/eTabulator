@@ -8,7 +8,7 @@
             <h3>Travels</h3>
             <div class="peers">
                 <div class="peer mR-10">
-                    <!-- <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search..."> -->
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search Trip Ticket...">
                 </div>
                 <div class="peer"  v-if="can.canCreateTravel">
                     <Link class="btn btn-primary btn-sm" href="/travels/create">Add Travel</Link>
@@ -304,8 +304,9 @@ export default {
                 date_from:null,
                 date_to:null,
                 dateFilterType:null,
-                status:null
+                status:null,
             },
+            search:null,
             form:useForm({
                 invoice:null,
                 id:null
@@ -489,9 +490,16 @@ export default {
         }
     },
 
-    mounted(){
-        console.log()
+    watch:{   
+        search: _.debounce(function(value) {
+            this.$inertia.get('/travels',  {search:value}, {
+                preserveState:true,
+                preserveScroll:true,
+                replace:true
+            })
+        }, 500)
     },
+
     computed: {
         mi() {
             return value => value ? `${value.charAt(0)}.` : "";

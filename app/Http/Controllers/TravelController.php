@@ -58,9 +58,13 @@ class TravelController extends Controller
                             ->when($request->status == 'pending', function($q) {
                                 $q->orWhereNull('status');
                             })
+                            ->when($request->search, function ($query, $searchItem) {
+                                $query->where('ticket_number', 'like', '%' . $searchItem . '%');
+                            })
                             ->orderBy('status')
                             ->orderBy('id','desc')
                             ->simplePaginate(10)
+                            ->withQueryString()
                             ->through(function ($item) {
                                 $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
