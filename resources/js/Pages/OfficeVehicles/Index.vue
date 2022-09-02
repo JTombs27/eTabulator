@@ -142,10 +142,16 @@ export default {
         },
 
         gotoDelete(index) {
-            this.id = this.officevehicle.data[index].id
-
-            this.$inertia.post("/officeVehicles/" + this.id+"/destroy")
+            let text = "Warning! \Are you sure you want to Delete this vehicle assignment with Plate Number " + this.officevehicle.data[index].vehicle.PLATENO +
+            " from " + this.officevehicle.data[index].office.office + " department";
+          
+             if(confirm(text) == true) {
+                  this.id = this.officevehicle.data[index].id
+                  this.$inertia.post("/officeVehicles/" + this.id+"/destroy")
+            }
         },
+
+        
         // loadMunicipals() { 
         //     axios.post('/municipalities').then((response) => {
         //         this.municipals = response.data
