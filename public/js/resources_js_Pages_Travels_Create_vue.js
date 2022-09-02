@@ -1183,7 +1183,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     mode: "out-in"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [$data.form.is_borrowed_vehicle || $data.form.is_borrowed_fuel ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_49, [_hoisted_50, _hoisted_51, _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
+      return [$data.form.is_borrowed_fuel ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_49, [_hoisted_50, _hoisted_51, _hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Select2, {
         "class": "js-data-example-ajax",
         id: "office",
         modelValue: $data.form.borrowing_office,

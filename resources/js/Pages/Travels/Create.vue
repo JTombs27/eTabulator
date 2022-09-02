@@ -122,7 +122,7 @@
                     
                         
                         <transition name="fade"  mode="out-in">
-                            <span v-if="form.is_borrowed_vehicle || form.is_borrowed_fuel">
+                            <span v-if="form.is_borrowed_fuel">
                                 <br>
                                 <label >BORROWED BY</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                                 <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
