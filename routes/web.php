@@ -64,6 +64,7 @@ Route::middleware('auth')->group(function() {
          Route::get('/{id}/edit', [OfficeVehiclesController::class, 'edit']);
          Route::get('/{id}/back', [OfficeVehiclesController::class, 'back']);
          Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
+         Route::post('/{id}/destroy', [OfficeVehiclesController::class, 'destroy']);
         // Route::post('/', [OfficeVehiclesController::class, 'store']);
         // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);
        

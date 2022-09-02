@@ -61,6 +61,7 @@
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item" @click="gotoUpdate(index)">Edit</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoDelete(index)">Delete</Link></li>
                                   </ul>
                                 </div>
                             </td>
@@ -138,6 +139,12 @@ export default {
             this.id = this.officevehicle.data[index].id
 
             this.$inertia.get("/officeVehicles/" + this.id+"/edit")
+        },
+
+        gotoDelete(index) {
+            this.id = this.officevehicle.data[index].id
+
+            this.$inertia.post("/officeVehicles/" + this.id+"/destroy")
         },
         // loadMunicipals() { 
         //     axios.post('/municipalities').then((response) => {
