@@ -27,7 +27,7 @@ class VehicleValidation extends FormRequest
             'PLATENO' => 'required|unique:vehicles',
             'TYPECODE' => 'required',
             'FACQCOST'=> 'nullable|regex:/^\d{1,13}(\.\d{1,4})?$/',
-            'fuel_limit' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/'
+            'fuel_limit' => 'required|regex:/^\d{1,13}(\.\d{1,4})?$/',
             
         ];
     }

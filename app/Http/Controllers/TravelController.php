@@ -43,7 +43,7 @@ class TravelController extends Controller
                                 }
                             )
                             ->when($request->dateFilterType == 'all', function($q) use ($request) {
-                                $q->orWherebetween('date_from', [$request->date_from,$request->date_to]);
+                                $q->whereBetween('date_from', [$request->date_from,$request->date_to]);
                             })
                             ->when($request->dateFilterType == 'from', function($q) use ($request) {
                                 $q->where('date_from', '>=', $request->date_from);
@@ -58,9 +58,13 @@ class TravelController extends Controller
                             ->when($request->status == 'pending', function($q) {
                                 $q->orWhereNull('status');
                             })
+                            ->when($request->search, function ($query, $searchItem) {
+                                $query->where('ticket_number', 'like', '%' . $searchItem . '%');
+                            })
                             ->orderBy('status')
                             ->orderBy('id','desc')
                             ->simplePaginate(10)
+                            ->withQueryString()
                             ->through(function ($item) {
                                 $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
@@ -90,7 +94,8 @@ class TravelController extends Controller
                                     'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                     'gasoline_station' => $item->gasoline->name,
-                                    'invoice' => $item->invoice_no
+                                    'invoice' => $item->invoice_no,
+                                    'allow_to_edit' => $item->allow_edit
                                      ]; 
                                  }),
              "can" => [
@@ -98,6 +103,7 @@ class TravelController extends Controller
                  'canEditTravel' => auth()->user()->can('canCreateTravel', User::class),
                  'canDeleteTravel' => auth()->user()->can('canDeleteTravel', User::class),
                  'canSetStatus' => auth()->user()->can('canSetStatus', User::class),
+                 'canAllowEdit' => auth()->user()->can('canAllowEdit', User::class),
              ]
          ]);
     }
@@ -122,7 +128,7 @@ class TravelController extends Controller
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
-                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->where(DB::raw('ooes.fueltag'),'1')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
@@ -176,10 +182,11 @@ class TravelController extends Controller
         return inertia('Travels/Create',[
            'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance1 - $total_expense),
+                                'balance1' => ($item->balance2 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fraodesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fooedesc' => $item->fooedesc,
                             ])
         ]);
     }
@@ -206,7 +213,7 @@ class TravelController extends Controller
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
-                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->where(DB::raw('ooes.fueltag'),'1')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
 
@@ -242,10 +249,11 @@ class TravelController extends Controller
             'editData' => $editData,
             'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance1 - $total_expense),
+                                'balance1' => ($item->balance2 - $total_expense),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
-                                'fooedesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fraodesc' => "$item->fraodesc ($item->ffunccod)",
+                                'fooedesc' => $item->fooedesc,
                             ])
         ]);
         
@@ -363,6 +371,7 @@ class TravelController extends Controller
         // }
 
         $request['office_id'] = auth()->user()->office_id;
+        $request['edit_by'] = auth()->user()->id;
         if (!$request->rangedDate) {
             $request['date_to'] = null;
         }
@@ -410,7 +419,8 @@ class TravelController extends Controller
                                 offices.office,
                                 offices.designation,
                                 users.cats,
-                                gasolines.name'))
+                                gasolines.name,
+                                raaohs.ffunccod'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
@@ -421,7 +431,12 @@ class TravelController extends Controller
                                  {
                                      $join->on('users.cats', '=', 'head.empl_id');
                                  })
-                            
+                            ->leftJoin('fms.raaods as raaods', function($join)
+                                 {
+                                     $join->on('travels.idraao', '=', 'raaods.idraao');
+                                     $join->on('travels.idooe', '=', 'raaods.idooe');
+                                 })
+                            ->leftJoin('fms.raaohs as raaohs', 'raaohs.recid', 'raaods.idraao')
                             ->where('travels.id', $request->id)
                             ->get()->toArray())->map(function ($item){
                                 $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
@@ -475,6 +490,7 @@ class TravelController extends Controller
                                     'designation' => $item->designation,
                                     'cats' => $item->cats,
                                     'name' => $item->name,
+                                    'ffunccod' => $item->ffunccod
                                 ]; 
                             });
         return $travel;
@@ -588,5 +604,14 @@ class TravelController extends Controller
        
         return $this->station->get();
         
+    }
+
+    public function allowEdit(Request $request)
+    {
+        $travel = $this->model->findOrFail($request->id);
+        $travel->update([
+            'allow_edit' => true
+        ]);
+        return redirect('/travels')->with('message', "Trip ticket # $travel->ticket_number is now allowed to edit");
     }
 }

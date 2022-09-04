@@ -31,7 +31,8 @@ class UserController extends Controller
             "users" => $this->model
                 ->with('permissions','office')
                 ->when($request->search, function ($query, $searchItem) {
-                    $query->where('name', 'like', '%' . $searchItem . '%');
+                    $query->where('name', 'like', '%' . $searchItem . '%')
+                        ->orWhere('username', 'like', '%' . $searchItem . '%');
                 })
                 ->orderBy('name', 'asc')
                 ->simplePaginate(8)
@@ -43,6 +44,7 @@ class UserController extends Controller
                     'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
+                    'username' => $user->username,
                     'role' => $user->role,
                     'photo' => $user->user_photo,
                     'gasoline_id' => $user->gasoline_id,
@@ -89,9 +91,9 @@ class UserController extends Controller
             } elseif ($request->permission == 'PGSO') {
                 $user->permissions()->sync([4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31]);
             } elseif ($request->permission == 'PG-Head') {
-                $user->permissions()->sync([6,25,26]);
+                $user->permissions()->sync([6,25,26,36]);
             } elseif ($request->permission == 'Admin') {
-                $user->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
+                $user->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,31,32,33,34,35,36]);
             } elseif($request->permission == 'peo-motorpool') {
                 $user->permissions()->sync([18,19]);
             }elseif($request->permission == 'gasoline-station') {

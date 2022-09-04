@@ -15,7 +15,7 @@ class PermissionsSeeder extends Seeder
     public function data()
     {
         return array(
-            array('id' => 1,'permission_name' => 'can_edit_user', 'permission_group' => 'User'),
+            /*array('id' => 1,'permission_name' => 'can_edit_user', 'permission_group' => 'User'),
             array('id' => 2,'permission_name' => 'can_create_user', 'permission_group' => 'User'),
             array('id' => 3,'permission_name' => 'can_delete_user', 'permission_group' => 'User'),
             array('id' => 4,'permission_name' => 'can_create_vehicle', 'permission_group' => 'Vehicle'), // GSO
@@ -49,7 +49,8 @@ class PermissionsSeeder extends Seeder
             array('id' => 32,'permission_name' => 'can_view_whereabouts', 'permission_group' => 'Whereabouts'),
             array('id' => 33,'permission_name' => 'can_create_gasoline', 'permission_group' => 'Gasoline'),//GSO
             array('id' => 34,'permission_name' => 'can_edit_gasoline', 'permission_group' => 'Gasoline'),//GSO
-            array('id' => 35,'permission_name' => 'can_delete_gasoline', 'permission_group' => 'Gasoline'),//GSO 
+            array('id' => 35,'permission_name' => 'can_delete_gasoline', 'permission_group' => 'Gasoline'),//GSO*/ 
+            array('id' => 36,'permission_name' => 'can_allow_edit', 'permission_group' => 'Travel'),//PG-head 
             // array('id' => 33,'permission_name' => 'can_create_whereabouts', 'permission_group' => 'Whereabouts'), 
         );
 

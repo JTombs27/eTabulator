@@ -24,11 +24,12 @@
         </filtering>
  
         <div class="col-12">
-            <div class="bgc-white p-20 bd shadow-sm">
+            <div class="table responsive bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Active</th>
+                            <th scope="col">Username</th>
                             <th scope="col">Name</th>
                             <th scope="col">Office</th>
                             <th scope="col">Role</th>
@@ -50,6 +51,9 @@
                                     >
                                     <label class="form-check-label" :for="user.id"></label>
                                 </div>
+                            </td>
+                            <td>
+                                {{ user.username }}
                             </td>
                             <td>
                                 <div class="row g-3 align-items-center">
@@ -292,7 +296,7 @@ export default {
 
                 } else if (Permission_type == 'pghead') {
 
-                    this.selectedPermissions = [6,25,26];
+                    this.selectedPermissions = [6,25,26,36];
 
                 } else if (Permission_type == 'pgso') {
 
