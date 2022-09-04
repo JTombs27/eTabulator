@@ -21,14 +21,15 @@ class FirstUserSeed extends Seeder
     {
         return array(
          array(
-        'id' => 1,
-        'name' => 'Administrator',
-        'cats' => '0828',
-        'is_active' => true,
-        'email' => 'admin@admin.com',
-        'role' => 'Admin',
-        'username'=> 'admin',
-        'password' => bcrypt('12345678')),
+            'id' => 1,
+            'name' => 'Administrator',
+            'cats' => '0828',
+            'is_active' => true,
+            'email' => 'admin@admin.com',
+            'role' => 'Admin',
+            'username'=> 'admin',
+            'password' => bcrypt('12345678')
+        ),
         
         array(
             'id' => 2,
