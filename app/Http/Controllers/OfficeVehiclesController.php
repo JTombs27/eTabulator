@@ -41,7 +41,13 @@ class OfficeVehiclesController extends Controller
         ]);
         $request['office_owner'] = 1;
         $this->officevehicles->create($request->all());
-        return redirect('/vehicles')->with('message', 'Vehicle status added!');
+        return inertia('OfficeVehicles/Index',[
+            'officevehicle' => $this->officevehicles->with(['vehicle','office'])->where('vehicles_id',$request->vehicles_id)
+            ->latest()->simplePaginate(10),
+            'vehicles_id' => $request->vehicles_id
+        ])->with('message', 'Vehicle assigned successfuly');
+        //return redirect()->back()->with('message', 'Vehicle assigned successfuly');
+       
     }
 
 
@@ -72,8 +78,17 @@ class OfficeVehiclesController extends Controller
             
         ]);
         $data = $this->officevehicles->findOrFail($request->id);
+
+        $vehicle_id = $data->vehicles_id;
+
         $data->update($request->all());
-        return redirect('/vehicles')->with('message', 'updated successfuly');
+
+        return inertia('OfficeVehicles/Index',[
+            'officevehicle' => $this->officevehicles->with(['vehicle','office'])->where('vehicles_id', $vehicle_id)
+            ->latest()->simplePaginate(10),
+            'vehicles_id' =>  $vehicle_id 
+        ])->with('message', 'Updated Successfuly');
+        //return redirect()->back()->with('message', 'Updated Successfuly');
     }
     public function edit(Request $request,$id)
     {
@@ -84,9 +99,13 @@ class OfficeVehiclesController extends Controller
     public function destroy(Request $request,$id)
     {
         $data = $this->officevehicles->findOrFail($id);
+
+        //$vid =  $data->vehicles_id; 
+
         $data->delete();
 
-        return redirect('/vehicles')->with('message', 'Deleted Susccessfuly');
+        return redirect()->back()->with('message', 'Deleted Successfuly');
+       
     }
 
 
