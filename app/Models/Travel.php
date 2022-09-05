@@ -18,6 +18,7 @@ class Travel extends Model
         'time_arrival',
         'time_departure',
         'total_liters',
+        'actual_liter',
         'purpose',
         'actual_driver',
         'ticket_number',

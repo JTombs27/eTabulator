@@ -62,9 +62,14 @@
                     <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                     </svg>
                     <h3>PLEASE CONFIRM</h3>
-                    <p>This action will update the travel ticket have been fueled.</p>
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">NO</button> &nbsp;
-                    <button type="button" @click="confirm()" class="btn btn-primary">CONFIRM</button>
+                   <p>This action will update the travel ticket have been fueled.</p>
+                   <div class="row">
+                        <label class="col-7 col-form-label">Enter Actual Liters Fueled: </label>
+                        <div class="col-5">
+                            <input type="number" v-model="actual_liters" class="form-control" autocomplete="chrome-off">
+                        </div>
+                        <label v-if="invalid_actual_liters" class="form-control text-danger text-sm" >Should not be greater than in the travel Ticket.</label>
+                    </div>
                 </div>
                 <div v-if="TravelData.data[0].status == 'Fueled'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2dcf2b" class="bi bi-check-circle" viewBox="0 0 16 16">
@@ -75,7 +80,9 @@
                     <p>Transaction of this travel ticket successfully completed.</p>
                 </div>
             </div>
-            <div class="modal-footer text-center">
+            <div class="modal-footer text-center" v-if="TravelData.data[0].status == 'Approved'">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">NO</button> &nbsp;
+                <button type="button" @click="confirm()" class="btn btn-primary">CONFIRM</button>
             </div>
           </div>
         </div>
@@ -89,7 +96,9 @@ export default {
     },
     data(){
         return{
-            myModal: null
+            myModal: null,
+            actual_liters: 0,
+            invalid_actual_liters:false
         }
     },
     methods:
@@ -97,6 +106,7 @@ export default {
 
         openConfirmation()
         {
+            this.actual_liters = this.TravelData.data[0].liters;
             this.myModal= new window.bootstrap.Modal(document.getElementById('myModal'))
             this.myModal.show()
             // $('body').removeClass('modal-open');
@@ -106,25 +116,34 @@ export default {
         confirm()
         {
             let vm = this;
-            axios.patch('/travelTicket/'+this.TravelData.data[0].id)
-            .then(response=>
+            if(this.actual_liters > this.TravelData.data[0].liters)
             {
-                                
-                if(response.data != null)
+                this.invalid_actual_liters = true;
+            }
+            else{
+                this.invalid_actual_liters = false;
+                axios.patch('/travelTicket/'+this.TravelData.data[0].id+'/'+this.actual_liters)
+                .then(response=>
                 {
-                    if(response.data == "success")
+                                    
+                    if(response.data != null)
                     {
-                      vm.$inertia.reload({only:['TravelData']});
-                      setTimeout(function(){
-                          vm.myModal.hide()
-                      },1500);
-                        
+                        if(response.data == "success")
+                        {
+                        vm.$inertia.reload({only:['TravelData']});
+                        setTimeout(function(){
+                            vm.myModal.hide()
+                        },1500);
+                            
+                        }
+                        else{
+                            //vm.saveMessage = response.data;
+                            alert(response.data);
+                        }
                     }
-                    else{
-                        this.saveMessage = response.data;
-                    }
-                }
-            })
+                })
+            }
+            
         }
     }
 
