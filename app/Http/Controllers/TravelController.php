@@ -564,7 +564,7 @@ class TravelController extends Controller
             $consumedFuel = $consumedFuel - $currentLitters;
         }
         if ($fuel_limit == 0) {
-            return 'Unlimited';
+            return 'eUnlimited';
         }
         return ($fuel_limit * 5) - $consumedFuel;
     }
