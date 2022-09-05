@@ -98,7 +98,7 @@
                                         </button>
                                     </li>
                                     
-                                    <li v-if="item.status == 'Approved'">
+                                    <li v-if="item.status == 'Approved' || $page.props.auth.user.role == 'PG-Head'">
                                         <button as="button" class="dropdown-item" @click="tripTicket(item.id)">
                                             <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-printer me-2" viewBox="0 0 16 16">
                                         <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
