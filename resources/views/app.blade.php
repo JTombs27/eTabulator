@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    
+    <!-- <img src="{{asset('storage/raymart/test.png')}}" alt=""> -->
     @inertia
 </body>
 </html>
