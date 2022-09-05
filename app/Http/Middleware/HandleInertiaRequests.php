@@ -48,7 +48,7 @@ class HandleInertiaRequests extends Middleware
                         $file_path = "storage/profile/employee_$UsrCats";
                         $image = $photo["data"];
                         Storage::disk('profile')->put("employee_$UsrCats/photo.png", base64_decode($image));
-                        User::where("cats",$UsrCats)->update(["user_photo"=> "$file_path"]);
+                        User::where('id', auth()->user()->id)->update(["user_photo"=> "$file_path"]);
                     }
                 } else {
                     User::where('id', auth()->user()->id)

@@ -173,16 +173,19 @@ class TravelController extends Controller
                 ->first($item->gas_type);
             return [
                 'price' => ($total[$item->gas_type] * $item->total_liters),
-                'date' => $item->date_from
+                'date' => $item->date_from,
+                'idooe' => $item->idooe,
+                'idraao' => $item->idraao,
             ];
         });
-      
+        // dd($travels);
         $total_expense = $travels->sum('price');
-        // dd($total_expense);
+       
+        
         return inertia('Travels/Create',[
            'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance2 - $total_expense),
+                                'balance1' => ($item->balance2 - collect($travels)->where('idooe', $item->idooe)->where('idraao', $item->idraao)->sum('price')),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
@@ -242,14 +245,14 @@ class TravelController extends Controller
                         'date' => $item->date_from
                         ];
                     });
-      
+        
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
         $total_expense = $travels->sum('price');
         return inertia('Travels/Create', [
             'editData' => $editData,
             'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance2 - $total_expense),
+                                'balance1' => ($item->balance2 - collect($travels)->where('idooe', $item->idooe)->where('idraao', $item->idraao)->sum('price')),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
@@ -564,7 +567,7 @@ class TravelController extends Controller
             $consumedFuel = $consumedFuel - $currentLitters;
         }
         if ($fuel_limit == 0) {
-            return 'eUnlimited';
+            return 'Unlimited';
         }
         return ($fuel_limit * 5) - $consumedFuel;
     }
