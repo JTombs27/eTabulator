@@ -176,6 +176,7 @@ export default {
         })
 
 
+        
         $('#office').select2({
             ajax: {
                 url: '/offices/fetch',

@@ -64,7 +64,7 @@ class ChargeController extends Controller
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
-                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->where(DB::raw('ooes.fueltag'),'1')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'));
     
@@ -79,7 +79,7 @@ class ChargeController extends Controller
 
             "charge" => $charge
                 ->when($request->search, function ($query, $searchItem) {
-                    $query->where('ffunccod', 'like', '%' . $searchItem . '%');
+                    $query->where(DB::raw('f.ffunccod'), 'like', '%' . $searchItem . '%');
                    
                 })
                 ->simplePaginate(10)
@@ -203,6 +203,9 @@ class ChargeController extends Controller
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->where(DB::raw('ooes.recid'),'!=','1371')
+                    ->where(DB::raw('ooes.recid'),'!=','1332')
+                    ->where(DB::raw('ooes.recid'),'!=','1328')
                     ->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                     ->orderBy(DB::raw('raaohs.ffunccod, raaohs.fraodesc, ooes.fooedesc'))
                     ->get();

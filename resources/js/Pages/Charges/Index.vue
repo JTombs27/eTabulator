@@ -6,15 +6,15 @@
     <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Charges</h3>
-            <div class="peers">
+            <!-- <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div>
+                </div> -->
                 <!-- <div class="peer"  v-if="can.canCreateCharge">
                     <Link class="btn btn-primary btn-sm" href="/charges/create">Add</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div> -->
-            </div>
+            <!-- </div> -->
         </div>
 
         <filtering v-if="filter" @closeFilter="filter=false">
@@ -24,7 +24,7 @@
         </filtering>
  
         <div class="col-12">
-            <div class="bgc-white p-20 bd shadow-sm">
+            <div class="table responsive bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -42,7 +42,7 @@
                             <td>{{ charges.ffunccod }}</td>
                             <td>{{ charges.fraodesc }}</td>
                             <td>{{ charges.fooedesc }}</td>
-                            <td class="text-end">{{ Number(charges.balance1).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
+                            <td class="text-end">{{ Number(charges.balance2).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <!-- <td style="text-align: right" v-if="can.canEditCharge || can.canCreateCharge"> -->
                                 <!-- v-if="user.can.edit" -->
                                 <!-- <div class="dropdown dropstart" v-if="can.canEditCharge || can.canCreateCharge">
