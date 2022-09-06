@@ -627,7 +627,7 @@ export default {
     computed: {
         officeFiltered() {
             return _.filter(this.vehicles, (o) => {
-                if (!this.form.is_borrowed_vehicle) {
+                if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
                     return o.office_id == this.auth.user.office_id 
                 } else {
                     return this.vehicles
