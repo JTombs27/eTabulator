@@ -427,7 +427,9 @@ class TravelController extends Controller
                                 offices.designation,
                                 users.cats,
                                 gasolines.name,
-                                raaohs.ffunccod'))
+                                raaohs.ffunccod,
+                                raaohs.fraodesc,
+                                ooes.fooedesc'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
@@ -444,6 +446,7 @@ class TravelController extends Controller
                                      $join->on('travels.idooe', '=', 'raaods.idooe');
                                  })
                             ->leftJoin('fms.raaohs as raaohs', 'raaohs.recid', 'raaods.idraao')
+                            ->leftJoin('fms.ooes as ooes', 'raaods.idooe', 'ooes.recid')   
                             ->where('travels.id', $request->id)
                             ->get()->toArray())->map(function ($item){
 
@@ -502,7 +505,9 @@ class TravelController extends Controller
                                     'designation' => $item->designation,
                                     'cats' => $item->cats,
                                     'name' => $item->name,
-                                    'ffunccod' => $item->ffunccod
+                                    'ffunccod' => $item->ffunccod,
+                                    'fraodesc' => $item->fraodesc,
+                                    'fooedesc' => $item->fooedesc
                                 ]; 
                             });
         return $travel;

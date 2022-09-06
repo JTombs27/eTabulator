@@ -57,9 +57,12 @@ class TravelValidationController extends Controller
     public function update(Request $request){
         try {
             //code...
+            //dd();
+            $actual_liters = $request->actual_liters;
             $data = $this->model->findOrFail($request->id);
             $data->update([
                 'status'=> 'Fueled'
+                ,'actual_liter'=> $actual_liters
             ]);
             
             return 'success';
