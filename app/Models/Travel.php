@@ -9,6 +9,7 @@ use Carbon;
 class Travel extends Model
 {
     protected $table = 'travels';
+    // protected $connection = 'fms';
     protected $fillable = [
         'date_from',
         'date_to',
@@ -37,7 +38,8 @@ class Travel extends Model
         'idooe',
         'idraao',
         'allow_edit',
-        'edit_by'
+        'edit_by',
+        'actual_liter'
         
 
     ];
