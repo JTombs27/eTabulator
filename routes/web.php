@@ -229,6 +229,7 @@ Route::prefix('/reports')->group(function() {
     Route::get('/travel', [ReportController::class, 'travels']);
     Route::get('/soa_travel', [ReportController::class, 'soa_travels']);
     Route::get('/statement_of_account', [SoaTravelController::class, 'statement_of_account']);
+    Route::get('/total_soa', [SoaTravelController::class, 'total_soa']);
 });
 
 
