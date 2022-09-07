@@ -423,7 +423,7 @@ class TravelController extends Controller
                                 head.middle_name as head_middle_name,
                                 head.last_name as head_last_name,
                                 head.position_title_short as position_short,
-                                offices.short_name,
+                                
                                 offices.office,
                                 offices.designation,
                                 users.cats,

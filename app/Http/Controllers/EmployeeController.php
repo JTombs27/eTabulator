@@ -15,6 +15,7 @@ class EmployeeController extends Controller
     }
     public function _sync()
     {
+        
         try {
             //code...
             DB::table('employees')->truncate();
@@ -25,6 +26,17 @@ class EmployeeController extends Controller
                 // if ($value['empl_id']) {
                     
                 //        return date('Y-m-d',$value['birth_date']) ;
+                // }
+                // return $boardMemberexist;
+                
+                $first = $value['first_name'];
+                $last_name = $value['last_name'];
+                $division =  $this->boardMember($first, $last_name)->pluck('division_code');
+                $division_code = count($division) != 0 ? $division[0] : $value['division_code'];
+                
+
+                // if(count($division)) {
+                //     return $division_code;
                 // }
                 $data = [
                     'empl_id' => $value['empl_id'],
@@ -38,7 +50,11 @@ class EmployeeController extends Controller
                     'position_title_long' => $value['position_long_title'],
                     'position_title_short' => $value['position_short_title'],
                     'birth_date' => date('Y-m-d',strtotime($value['birth_date'])),
-                    'created_at' => now()
+                    'created_at' => now(),
+                    'suffix'=> $value['suffix_name'],
+                    'division_code'=> $division_code,
+                    'postfix'=> $value['postfix_name'],
+                    'courtesy_title'=> $value['courtisy_title'],
                 ];
                 array_push($arrayOfEmployees, $data);
             }
@@ -47,7 +63,7 @@ class EmployeeController extends Controller
                 DB::table('employees')->insert($value);
             }
         } catch (\Throwable $th) {
-            //throw $th;
+            return $th->getMessage();
         }
     }
 
@@ -68,6 +84,28 @@ class EmployeeController extends Controller
     protected function whereEqual($query, $fieldName, $_params)
     {
         return $query->where($fieldName, $_params);
+    }
+
+    protected function boardMember($first_name, $last_name)
+    {
+        // return "hello world";
+        
+        $bmArray = collect([
+            ['name' => 'BM Raul Caballero', 'division_code' => 144, 'first_name' => 'HENRY', 'last_name' => 'LUNA'],
+            ['name' => 'BM Vivencia Secuya', 'division_code' => 145, 'first_name' => 'NELLYGENE', 'last_name' => 'MAGALLANO'],
+            ['name' => 'BM Kristine Mae', 'division_code' => 146, 'first_name' => 'JOSEPHINE', 'last_name' => 'MICABALO'],
+            ['name' => 'BM Renato BASAÑES', 'division_code' => 147, 'first_name' => 'RODRIGO', 'last_name' => 'MANUGAS'],
+            ['name' => 'BM Teodoro Arancon', 'division_code' => 148, 'first_name' => 'JENNIFER', 'last_name' => 'ARANGCON'],
+            ['name' => 'BM Albert Camana', 'division_code' => 149, 'first_name' => 'CHERES', 'last_name' => 'ANGMARA'],
+            ['name' => 'BM Herv Martelle Apsay', 'division_code' => 150, 'first_name' => 'SHERYL', 'last_name' => 'BILLONES'],
+            ['name' => 'BM Ruwina GONZAGA', 'division_code' => 151, 'first_name' => 'LISTLY', 'last_name' => 'PANCIT'],
+            ['name' => 'BM Marie Jude Fuentes-Lopoz', 'division_code' => 152, 'first_name' => 'CHERRYPIE', 'last_name' => 'RIVERA'],
+            ['name' => 'BM Eutropio Jayectin', 'division_code' => 153, 'first_name' => 'ALEXA YSOBEL', 'last_name' => 'PEPITO'],
+            ['name' => 'BM Wilfredo Ang', 'division_code' => 154, 'first_name' => 'EDUARDO', 'last_name' => 'RAPISTA'],
+        ]);
+
+       return $bmArray->where('first_name', $first_name)->where('last_name', $last_name);
+       
     }
 
 }

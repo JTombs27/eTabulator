@@ -19,6 +19,7 @@ use App\Http\Controllers\SoaTravelController;
 use App\Http\Controllers\OfficeController;
 use App\Http\Controllers\OfficeVehiclesController;
 use App\Http\Controllers\ChargeController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\LogTimeArrivalContoller;
 use App\Http\Controllers\ReportController;
@@ -165,6 +166,7 @@ Route::middleware('auth')->group(function() {
         Route::post('employees', [EmployeeController::class, '_sync']);
         Route::post('offices', [OfficeController::class, '_sync']);
         Route::post('offices', [OfficeController::class, '_sync']);
+        Route::post('divisions', [DivisionController::class, '_sync']);
     });
 
     Route::prefix('soatravels')->group(function() {
