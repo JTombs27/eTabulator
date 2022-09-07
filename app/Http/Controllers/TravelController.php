@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class TravelController extends Controller
 {
@@ -498,7 +499,7 @@ class TravelController extends Controller
                                     'departure' => $item->departure,
                                     'arrival' => $item->arrival,
                                     'head_first_name' => $item->head_first_name,
-                                    'head_middle_name' => $item->head_middle_name,
+                                    'head_middle_name' => Str::limit($item->head_middle_name, 1,'.'),
                                     'head_last_name' => $item->head_last_name,
                                     'position_short' => $item->position_short,
                                     'office' => $item->office,
