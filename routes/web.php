@@ -35,9 +35,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [UserController::class, 'index'])->can('canViewUsersIndex', 'App\Model\User');
         Route::post('/', [UserController::class, 'store']);
         Route::get('/create', [UserController::class, 'create'])->can('create', 'App\Model\User');
-        Route::get('/{id}/edit', [UserController::class, 'edit']);
-        Route::delete('/{id}', [UserController::class, 'destroy']);
-        Route::patch('/{id}', [UserController::class, 'update']);
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->can('create', 'App\Model\User');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->can('canDeleteUser', 'App\Model\User');
+        Route::patch('/{id}', [UserController::class, 'update'])->can('create', 'App\Model\User');
         Route::get('/change-password', [UserController::class, 'changePassword']);
         Route::post('/update-password', [UserController::class, 'updatePassword']);
         Route::get('/settings', [UserController::class, 'settings']);
@@ -59,11 +59,11 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/officeVehicles')->group(function() {
          Route::get('/{id}', [OfficeVehiclesController::class, 'index'])->can('canViewVehicleIndex', 'App\Model\User');
-         Route::get('/{id}/create', [OfficeVehiclesController::class, 'create']);
-         Route::post('/', [OfficeVehiclesController::class, 'store']);
-         Route::get('/{id}/edit', [OfficeVehiclesController::class, 'edit']);
+         Route::get('/{id}/create', [OfficeVehiclesController::class, 'create'])->can('canCreateOfficeVehicles', 'App\Model\User');
+         Route::post('/', [OfficeVehiclesController::class, 'store'])->can('canCreateOfficeVehicles', 'App\Model\User');
+         Route::get('/{id}/edit', [OfficeVehiclesController::class, 'edit'])->can('canEditOfficeVehicles', 'App\Model\User');
          Route::get('/{id}/back', [OfficeVehiclesController::class, 'back']);
-         Route::patch('/{id}', [OfficeVehiclesController::class, 'update']);
+         Route::patch('/{id}', [OfficeVehiclesController::class, 'update'])->can('canEditOfficeVehicles', 'App\Model\User');
          Route::post('/{id}/destroy', [OfficeVehiclesController::class, 'destroy']);
         // Route::post('/', [OfficeVehiclesController::class, 'store']);
         // Route::get('/{id}/Create', [OfficeVehiclesController::class, 'Create']);
@@ -82,21 +82,21 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/projects')->group(function() {
         Route::get('/', [ProjectController::class, 'index'])->can('canViewProjectIndex', 'App\Model\User');
-        Route::get('/create', [ProjectController::class, 'create']);
-        Route::get('/create/{id}', [ProjectController::class, 'create']);
-        Route::post('/create-project',[ProjectController::class, 'store']);
-        Route::post('/delete-project', [ProjectController::class, 'destroy']);
-        Route::post('/update-project', [ProjectController::class, 'update']);
+        Route::get('/create', [ProjectController::class, 'create'])->can('canCreateProject', 'App\Model\User');
+        Route::get('/create/{id}', [ProjectController::class, 'create'])->can('canEditProject', 'App\Model\User');
+        Route::post('/create-project',[ProjectController::class, 'store'])->can('canCreateProject', 'App\Model\User');
+        Route::post('/delete-project', [ProjectController::class, 'destroy'])->can('canDeleteProject', 'App\Model\User');
+        Route::post('/update-project', [ProjectController::class, 'update'])->can('canEditProject', 'App\Model\User');
     });
     //Project Vehicles
     Route::prefix('/projects-vehicle')->group(function() {
         Route::get('/{id}/vehicles', [ProjectVehicleController::class, 'index'])->can('canViewProjectVehicleIndex', 'App\Model\User');
-        Route::get('/{id}/create', [ProjectVehicleController::class, 'create']);
-        Route::get('/{id}/edit/{vid}', [ProjectVehicleController::class, 'edit']);
+        Route::get('/{id}/create', [ProjectVehicleController::class, 'create'])->can('canCreateProjectVehicle', 'App\Model\User');
+        Route::get('/{id}/edit/{vid}', [ProjectVehicleController::class, 'edit'])->can('canEditProjectVehicle', 'App\Model\User');
         Route::get('/vehicles', [ProjectVehicleController::class, 'getVehicles']);
-        Route::post('/{id}/store', [ProjectVehicleController::class, 'store']);
-        Route::post('/{id}/update/{vid}', [ProjectVehicleController::class, 'update']);
-        Route::post('/delete', [ProjectVehicleController::class, 'destroy']);
+        Route::post('/{id}/store', [ProjectVehicleController::class, 'store'])->can('canCreateProjectVehicle', 'App\Model\User');
+        Route::post('/{id}/update/{vid}', [ProjectVehicleController::class, 'update'])->can('canEditProjectVehicle', 'App\Model\User');
+        Route::post('/delete', [ProjectVehicleController::class, 'destroy'])->can('canDeleteProjectVehicle', 'App\Model\User');
     });
     
     
@@ -147,14 +147,14 @@ Route::middleware('auth')->group(function() {
         Route::post('get-vehicles', [TravelController::class, 'getVehicles']);
         Route::get('create', [TravelController::class, 'create'])->name('create')->can('canCreateTravel','App\Model\User');
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver'])->name('getVehicleDriver');
-        Route::post('/', [TravelController::class, 'store'])->name('store');
+        Route::post('/', [TravelController::class, 'store'])->name('store')->can('canCreateTravel','App\Model\User');
         Route::post('set-status', [TravelController::class, 'setStatus'])->name('setStatus');
         Route::get('/{id}/edit', [TravelController::class, 'edit'])->name('edit');
         Route::patch('/{id}', [TravelController::class, 'update'])->name('update');
         Route::post('get-price', [TravelController::class, 'getPrice'])->name('getPrice');
         Route::post('get-fuel', [TravelController::class, 'getFuel'])->name('getFuel');
         Route::post('check-week', [TravelController::class, 'checkWeek'])->name('checkWeek');
-        Route::delete('/{id}', [TravelController::class, 'destroy'])->name('destroy');
+        Route::delete('/{id}', [TravelController::class, 'destroy'])->name('destroy')->can('canDeleteTravel','App\Model\User');
         Route::post('/checkInvoice', [TravelController::class, 'checkInvoice'])->name('checkInvoice');
         Route::post('/updateInvoice', [TravelController::class, 'updateInvoice'])->name('updateInvoice');
         Route::post('/gasoline-station', [TravelController::class, 'getGasolineStation'])->name('getGasolineStation');
@@ -168,8 +168,8 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('soatravels')->group(function() {
-        Route::get('/', [SoaTravelController::class, 'index']);
-        Route::get('/merge', [SoaTravelController::class, 'show']);
+        Route::get('/', [SoaTravelController::class, 'index'])->can('canViewSOAIndex','App\Model\User');
+        Route::get('/merge', [SoaTravelController::class, 'show'])->can('canCreateSoaTravel','App\Model\User');
         Route::get('/{id}/details', [SoaTravelController::class, 'details']);
         Route::post('/', [SoaTravelController::class, 'store']);
         Route::post('/{id}/remove', [SoaTravelController::class, 'remove']);
@@ -201,22 +201,22 @@ Route::middleware('auth')->group(function() {
      //for Price
     Route::prefix('prices')->group(function () {
         Route::get('/', [PriceController::class, 'index'])->can('canViewPriceIndex', 'App\Model\User');
-        Route::get('/create', [PriceController::class, 'create']);
-        Route::post('/store', [PriceController::class, 'store']);
-        Route::get('/{id}/edit', [PriceController::class, 'edit']);
-        Route::patch('/{id}', [PriceController::class, 'update']);
-        Route::delete('/{id}', [PriceController::class, 'destroy']);
+        Route::get('/create', [PriceController::class, 'create'])->can('canCreatePrice', 'App\Model\User');
+        Route::post('/store', [PriceController::class, 'store'])->can('canCreatePrice', 'App\Model\User');
+        Route::get('/{id}/edit', [PriceController::class, 'edit'])->can('canEditPrice', 'App\Model\User');
+        Route::patch('/{id}', [PriceController::class, 'update'])->can('canEditPrice', 'App\Model\User');
+        Route::delete('/{id}', [PriceController::class, 'destroy'])->can('canDeletePrice', 'App\Model\User');
         Route::get('fetch', [PriceController::class, 'loadGasoline']);
     });
 
     //for Gasoline
     Route::prefix('gasolines')->group(function () {
         Route::get('/', [GasolineController::class, 'index'])->can('canViewGasolineIndex', 'App\Model\User');
-        Route::get('/create', [GasolineController::class, 'create']);
-        Route::post('/store', [GasolineController::class, 'store']);
-        Route::get('/{id}/edit', [GasolineController::class, 'edit']);
-        Route::patch('/{id}', [GasolineController::class, 'update']);
-        Route::delete('/{id}', [GasolineController::class, 'destroy']);
+        Route::get('/create', [GasolineController::class, 'create'])->can('canCreateGasoline', 'App\Model\User');
+        Route::post('/store', [GasolineController::class, 'store'])->can('canCreateGasoline', 'App\Model\User');
+        Route::get('/{id}/edit', [GasolineController::class, 'edit'])->can('canEditGasoline', 'App\Model\User');
+        Route::patch('/{id}', [GasolineController::class, 'update'])->can('canEditGasoline', 'App\Model\User');
+        Route::delete('/{id}', [GasolineController::class, 'destroy'])->can('canDeleteGasoline', 'App\Model\User');
        
     });
     
