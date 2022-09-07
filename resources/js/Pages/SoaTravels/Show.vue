@@ -268,7 +268,7 @@ export default {
                     return "REGULAR";
                     break
                 case 'deisoline_price':
-                    return "DEISOLINE";
+                    return "DIESOLINE";
                     break
                 case 'engine_oil_price':
                     return "ENGINE OIL";

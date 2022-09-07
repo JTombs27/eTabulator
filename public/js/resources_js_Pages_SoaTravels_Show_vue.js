@@ -209,7 +209,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           break;
 
         case 'deisoline_price':
-          return "DEISOLINE";
+          return "DIESOLINE";
           break;
 
         case 'engine_oil_price':

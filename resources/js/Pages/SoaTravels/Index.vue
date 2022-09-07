@@ -29,6 +29,7 @@
                     <thead>
                         <tr>
                             <th scope="col">Ticket Number</th>
+                            <th scope="col">Office</th>
                             <th scope="col">Cafoa Number</th>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
@@ -40,6 +41,7 @@
                     <tbody>
                         <tr v-for="(soaTravels, index) in soaTravel.data" :key="index">
                             <td>{{ soaTravels.ticket_no }}</td>
+                            <td>{{ soaTravels.office }}</td>
                             <td>{{ soaTravels.cafoa_number }}</td>
                             <td>{{ soaTravels.date_from }}</td>
                             <td>{{ soaTravels.date_to }}</td>
