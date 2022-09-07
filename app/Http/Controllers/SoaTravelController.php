@@ -279,19 +279,23 @@ class SoaTravelController extends Controller
                                     
                                 ]; 
                 });
-        $total = $total_soa->groupBy('unit_price','gas_type')->mapWithKeys(fn ($items, $key) => [
+        $total = $total_soa->groupBy('unit_price','gas_type')->map(fn ($items) => [
 
-             collect($items)->first()['id'] =>[
+             
                     'total'=> collect($items)->sum('price'),
                     'gas_type' => collect($items)->first()['gas_type'],
                     'unit_price' => collect($items)->first()['unit_price'],
                     'total_liters' => collect($items)->sum('total_liters'),
-             ],
+             
             
            
         ]);
 
-        dd($total);
+        dd(collect($total));
+        
+        return $total->map(fn ($item) => [
+            $item
+        ]);
     }
 
 }
