@@ -92,7 +92,7 @@ class LogTimeArrivalContoller extends Controller
     
                 if ($log) {
                    
-                   if ($log->status == "Approved"){
+                   if ($log->status == "Approved" || $log->status == "Fueled"){
                   
                          $logdriver = $this->drivervehicle->with('empl')->where('id',$log->driver_vehicles_id)->first();
                          

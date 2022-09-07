@@ -258,4 +258,44 @@ class SoaTravelController extends Controller
         return $soa;
     }
 
+    public function total_soa(Request $request)
+    {
+        $total_soa = DB::table('travels')
+                            ->select(DB::raw('travels.*'))
+                            ->where('travels.soa_travel', $request->soa_travel)
+                            ->get()->map(function($item) {
+                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                                $total = $this->price->when($checkPrice, function($q) use ($item) {
+                                    $q->whereDate('date', $item->date_from);
+                    })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                    
+
+                    return [
+                                    'id' => $item->id,
+                                    'gas_type' => $item->gas_type,
+                                    'unit_price' => $total[$item->gas_type],
+                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+                                    'total_liters' => $item->total_liters
+                                    
+                                ]; 
+                });
+        $total = $total_soa->groupBy('unit_price','gas_type')->map(fn ($items) => [
+
+             
+                    'total'=> collect($items)->sum('price'),
+                    'gas_type' => collect($items)->first()['gas_type'],
+                    'unit_price' => collect($items)->first()['unit_price'],
+                    'total_liters' => collect($items)->sum('total_liters'),
+             
+            
+           
+        ]);
+
+        dd(collect($total));
+        
+        return $total->map(fn ($item) => [
+            $item
+        ]);
+    }
+
 }

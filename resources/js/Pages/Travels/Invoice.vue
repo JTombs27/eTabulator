@@ -15,6 +15,9 @@
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-if="invoice_loader"></span>
                     <span class="ml-2" :class="invoiceMessageClass"> {{ invoiceMessage }} </span>
                 </span>
+                <label for="invoice" class="form-label">Actual Liters</label>
+                <input type="text" class="form-control" id="actual" autocomplete="off" v-model="form.actual_liter">
+                <div class="fs-6 c-red-500" v-if="form.errors.actual_liter">{{ form.errors.actual_liter }}</div>
             </div>
        </form>
     </Modal>
@@ -35,6 +38,7 @@ export default {
         return {
             form:useForm({
                 invoice:null,
+                actual_liter:null,
                 id:null
             }),
             invoice_loader:false,
@@ -46,7 +50,8 @@ export default {
     },
 
     mounted() {
-        this.form.id = this.item.id
+        this.form.id = this.item.id;
+        this.form.actual_liter = this.item.actual_liters;
         this.invoice()
     },
 

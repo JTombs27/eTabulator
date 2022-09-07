@@ -22,42 +22,6 @@
  */
 
 /*!
- * FilePond 4.30.3
- * Licensed under MIT, https://opensource.org/licenses/MIT/
- * Please visit https://pqina.nl/filepond/ for details.
- */
-
-/*!
- * FilePondPluginFileValidateSize 2.2.5
- * Licensed under MIT, https://opensource.org/licenses/MIT/
- * Please visit https://pqina.nl/filepond/ for details.
- */
-
-/*!
- * FilePondPluginFileValidateType 1.2.6
- * Licensed under MIT, https://opensource.org/licenses/MIT/
- * Please visit https://pqina.nl/filepond/ for details.
- */
-
-/*!
- * FilePondPluginImageCrop 2.0.6
- * Licensed under MIT, https://opensource.org/licenses/MIT/
- * Please visit https://pqina.nl/filepond/ for details.
- */
-
-/*!
- * FilePondPluginImagePreview 4.6.11
- * Licensed under MIT, https://opensource.org/licenses/MIT/
- * Please visit https://pqina.nl/filepond/ for details.
- */
-
-/*!
- * FilePondPluginImageTransform 3.8.7
- * Licensed under MIT, https://opensource.org/licenses/MIT/
- * Please visit https://pqina.nl/filepond/ for details.
- */
-
-/*!
  * Select2 4.0.13
  * https://select2.github.io
  *
@@ -74,6 +38,13 @@
  * https://js.foundation/
  *
  * Date: 2021-02-16
+ */
+
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <http://feross.org>
+ * @license  MIT
  */
 
 /*!
@@ -98,15 +69,9 @@
  * http://jquery.org/license
  */
 
-/*!
- * vue-filepond v7.0.3
- * A handy FilePond adapter component for Vue
- * 
- * Copyright (c) 2022 PQINA
- * https://pqina.nl/filepond
- * 
- * Licensed under the MIT license.
- */
+/*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
+
+/*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
 
 /**
  * @license

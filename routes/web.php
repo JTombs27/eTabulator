@@ -149,8 +149,8 @@ Route::middleware('auth')->group(function() {
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver'])->name('getVehicleDriver');
         Route::post('/', [TravelController::class, 'store'])->name('store')->can('canCreateTravel','App\Model\User');
         Route::post('set-status', [TravelController::class, 'setStatus'])->name('setStatus');
-        Route::get('/{id}/edit', [TravelController::class, 'edit'])->name('edit');
-        Route::patch('/{id}', [TravelController::class, 'update'])->name('update');
+        Route::get('/{id}/edit', [TravelController::class, 'edit'])->name('edit')->can('canEditTravel','App\Model\User');
+        Route::patch('/{id}', [TravelController::class, 'update'])->name('update')->can('canEditTravel','App\Model\User');
         Route::post('get-price', [TravelController::class, 'getPrice'])->name('getPrice');
         Route::post('get-fuel', [TravelController::class, 'getFuel'])->name('getFuel');
         Route::post('check-week', [TravelController::class, 'checkWeek'])->name('checkWeek');
@@ -229,6 +229,7 @@ Route::prefix('/reports')->group(function() {
     Route::get('/travel', [ReportController::class, 'travels']);
     Route::get('/soa_travel', [ReportController::class, 'soa_travels']);
     Route::get('/statement_of_account', [SoaTravelController::class, 'statement_of_account']);
+    Route::get('/total_soa', [SoaTravelController::class, 'total_soa']);
 });
 
 

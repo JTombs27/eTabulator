@@ -14,7 +14,7 @@ class AddActualLiterToTravelsTable extends Migration
     public function up()
     {
         Schema::table('travels', function (Blueprint $table) {
-            $table->double('actual_liter', 10, 1)->nullable()->after('total_liters');
+            $table->double('actual_liter', 10, 2)->nullable()->after('total_liters');
         });
     }
 

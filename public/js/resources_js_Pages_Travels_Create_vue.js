@@ -498,7 +498,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this8 = this;
 
       return _.filter(this.vehicles, function (o) {
-        if (!_this8.form.is_borrowed_vehicle) {
+        if (!_this8.form.is_borrowed_vehicle && !_this8.form.is_borrowed_fuel) {
           return o.office_id == _this8.auth.user.office_id;
         } else {
           return _this8.vehicles;
