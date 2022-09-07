@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function() {
     //Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('/users')->group(function() {
-        Route::get('/', [UserController::class, 'index']);
+        Route::get('/', [UserController::class, 'index'])->can('canViewUsersIndex', 'App\Model\User');
         Route::post('/', [UserController::class, 'store']);
         Route::get('/create', [UserController::class, 'create'])->can('create', 'App\Model\User');
         Route::get('/{id}/edit', [UserController::class, 'edit']);
@@ -51,14 +51,14 @@ Route::middleware('auth')->group(function() {
         //return inertia('VehicleStatus');
         Route::post('/', [VehicleStatusController::class, 'store']);
         Route::get('/{id}/Create', [VehicleStatusController::class, 'Create']);
-        Route::get('{id}', [VehicleStatusController::class, 'index']);
+        Route::get('{id}', [VehicleStatusController::class, 'index'])->can('canViewVehicleIndex', 'App\Model\User');
         Route::patch('/{id}', [VehicleStatusController::class, 'update']);
         Route::get('/{id}/edit', [VehicleStatusController::class, 'edit']);
        
     });
 
     Route::prefix('/officeVehicles')->group(function() {
-         Route::get('/{id}', [OfficeVehiclesController::class, 'index']);
+         Route::get('/{id}', [OfficeVehiclesController::class, 'index'])->can('canViewVehicleIndex', 'App\Model\User');
          Route::get('/{id}/create', [OfficeVehiclesController::class, 'create']);
          Route::post('/', [OfficeVehiclesController::class, 'store']);
          Route::get('/{id}/edit', [OfficeVehiclesController::class, 'edit']);
@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('/logTimeArrival')->group(function() {
-        Route::get('/', [LogTimeArrivalContoller::class, 'index']);
+        Route::get('/', [LogTimeArrivalContoller::class, 'index'])->can('canViewLogArivalIndex', 'App\Model\User');
         Route::get('/{id}/create', [LogTimeArrivalContoller::class, 'create']);
         Route::get('/{id}/edit', [LogTimeArrivalContoller::class, 'edit']);
         Route::post('/', [LogTimeArrivalContoller::class, 'store']);
@@ -81,7 +81,7 @@ Route::middleware('auth')->group(function() {
     });
 
     Route::prefix('/projects')->group(function() {
-        Route::get('/', [ProjectController::class, 'index']);
+        Route::get('/', [ProjectController::class, 'index'])->can('canViewProjectIndex', 'App\Model\User');
         Route::get('/create', [ProjectController::class, 'create']);
         Route::get('/create/{id}', [ProjectController::class, 'create']);
         Route::post('/create-project',[ProjectController::class, 'store']);
@@ -90,7 +90,7 @@ Route::middleware('auth')->group(function() {
     });
     //Project Vehicles
     Route::prefix('/projects-vehicle')->group(function() {
-        Route::get('/{id}/vehicles', [ProjectVehicleController::class, 'index']);
+        Route::get('/{id}/vehicles', [ProjectVehicleController::class, 'index'])->can('canViewProjectVehicleIndex', 'App\Model\User');
         Route::get('/{id}/create', [ProjectVehicleController::class, 'create']);
         Route::get('/{id}/edit/{vid}', [ProjectVehicleController::class, 'edit']);
         Route::get('/vehicles', [ProjectVehicleController::class, 'getVehicles']);
@@ -120,8 +120,8 @@ Route::middleware('auth')->group(function() {
 
     //Vehicles
     Route::prefix('vehicles')->group(function() {
-        Route::get('/', [VehicleController::class, 'index']);
-        Route::get('/create', [VehicleController::class, 'create']);
+        Route::get('/', [VehicleController::class, 'index'])->can('canViewVehicleIndex','App\Model\User');
+        Route::get('/create', [VehicleController::class, 'create'])->can('canCreateVehicle','App\Model\User');
         Route::post('/', [VehicleController::class, 'store']);
         Route::post('/set-status', [VehicleController::class, 'setStatus']);
         Route::get('/{id}/edit', [VehicleController::class, 'edit']);
@@ -135,7 +135,7 @@ Route::middleware('auth')->group(function() {
 
     // Driver Vehicles
     Route::prefix('/drivers')->group(function() {
-        Route::get('/{id}/vehicles', [DriverVehicleController::class, 'index']);
+        Route::get('/{id}/vehicles', [DriverVehicleController::class, 'index'])->can('canViewVehicleIndex', 'App\Model\User');
         Route::get('/{id}/create', [DriverVehicleController::class, 'create']);
         Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
         Route::delete('/{id}/delete/{did}', [DriverVehicleController::class, 'destroy']);
@@ -143,9 +143,9 @@ Route::middleware('auth')->group(function() {
     
     // Route::post('/sss',  [TravelController::class, 'index']);
     Route::prefix('/travels')->group(function() {
-        Route::get('/', [TravelController::class, 'index'])->name('index');
+        Route::get('/', [TravelController::class, 'index'])->name('index')->can('canViewTravelIndex','App\Model\User');
         Route::post('get-vehicles', [TravelController::class, 'getVehicles']);
-        Route::get('create', [TravelController::class, 'create'])->name('create');
+        Route::get('create', [TravelController::class, 'create'])->name('create')->can('canCreateTravel','App\Model\User');
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver'])->name('getVehicleDriver');
         Route::post('/', [TravelController::class, 'store'])->name('store');
         Route::post('set-status', [TravelController::class, 'setStatus'])->name('setStatus');
@@ -190,7 +190,7 @@ Route::middleware('auth')->group(function() {
 
     //for Charges
     Route::prefix('charges')->group(function () {
-        Route::get('/', [ChargeController::class, 'index']);
+        Route::get('/', [ChargeController::class, 'index'])->can('canViewChargesIndex', 'App\Model\User');
         Route::get('/create', [ChargeController::class, 'create']);
         Route::post('/store', [ChargeController::class, 'store']);
         Route::get('/{id}/edit', [ChargeController::class, 'edit']);
@@ -200,7 +200,7 @@ Route::middleware('auth')->group(function() {
 
      //for Price
     Route::prefix('prices')->group(function () {
-        Route::get('/', [PriceController::class, 'index']);
+        Route::get('/', [PriceController::class, 'index'])->can('canViewPriceIndex', 'App\Model\User');
         Route::get('/create', [PriceController::class, 'create']);
         Route::post('/store', [PriceController::class, 'store']);
         Route::get('/{id}/edit', [PriceController::class, 'edit']);
@@ -211,7 +211,7 @@ Route::middleware('auth')->group(function() {
 
     //for Gasoline
     Route::prefix('gasolines')->group(function () {
-        Route::get('/', [GasolineController::class, 'index']);
+        Route::get('/', [GasolineController::class, 'index'])->can('canViewGasolineIndex', 'App\Model\User');
         Route::get('/create', [GasolineController::class, 'create']);
         Route::post('/store', [GasolineController::class, 'store']);
         Route::get('/{id}/edit', [GasolineController::class, 'edit']);
@@ -224,7 +224,7 @@ Route::middleware('auth')->group(function() {
 
     //for api
 Route::prefix('/reports')->group(function() {
-    Route::get('/', [ReportController::class, 'index']);
+    Route::get('/', [ReportController::class, 'index'])->can('canViewReportIndex', 'App\Model\User');
     Route::get('/tripTicket', [TravelController::class, 'tripTicket']);
     Route::get('/travel', [ReportController::class, 'travels']);
     Route::get('/soa_travel', [ReportController::class, 'soa_travels']);
