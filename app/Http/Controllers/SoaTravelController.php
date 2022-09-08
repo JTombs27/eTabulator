@@ -69,18 +69,21 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Show', [
             //returns an array of users with name field only
             "travel" => $this->model
-            	
+            	->with('user.employee.division')
                 ->where('status','Fueled')
                 ->where('soa_travel',null)
             	->orderBy('date_from', 'asc')
             	->get()->map(function($item) {
-                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
-                                $total = $this->price->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
-                    })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                        $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
+                                    $total = $this->price->when($checkPrice, function($q) use ($item) {
+                                        $q->whereDate('date', $item->date_fueled);
+                        })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type); 
+                    $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
+
                     return [
                                     'id' => $item->id,
                                     'date_from' => $item->date_from,
+                                    'date_fueled' => $item->date_fueled,
                                     'date_to' => $item->date_to,
                                     'time_departure' => $item->time_departure,
                                     'time_arrival' => $item->time_arrival,
@@ -88,13 +91,16 @@ class SoaTravelController extends Controller
                                     'ticket_number' => $item->ticket_number,
                                     'id' => $item->id,
                                     'total_liters' => $item->total_liters,
+                                    'actual_liters' => $item->actual_liter,
                                     'gas_type' => $item->gas_type,
                                     'gasoline_id' => $item->gasoline_id,
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
                                     'actual_prices' => $total[$item->gas_type],
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'invoice_no' => $item->invoice_no
+                                    'price' => ($total[$item->gas_type] * $actual),
+                                    'invoice' => $item->invoice_no,
+                                    'user_id' => $item->user_id,
+                                    'division_code' => $item->user->employee->division
                                 ]; 
                 }),
         ]);

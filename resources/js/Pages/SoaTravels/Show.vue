@@ -3,33 +3,7 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Travels</h3>
             <div class="peers fxw-nw jc-sb ai-c">
-                <div class="peer mR-5">
-                    <div class="input-group">
-                        <span class="input-group-text">Office</span>
-                        <select v-model="form.office_id" class="form-control">
-                            <option disabled value="">Select Offices</option>
-                            <option v-for="item, index in offices" :value="item.id">{{ item.text }}</option>
-                        </select>
-                    </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
-                </div>
-                <div class="peer mR-5">
-                    <div class="input-group">
-                        <span class="input-group-text">From</span>
-                        <input type="date" v-model="form.date_from" @change="date_from()" class="form-control">
-                    </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
-                </div>
-                <div class="peer mR-5">
-                    <div class="input-group">
-                        <span class="input-group-text">To</span>
-                        <input type="date" v-model="form.date_to"  @change="date_to()" class="form-control">
-                    </div>
-                    <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
-                </div>
-                <div class="peer mR-2">
-                    <button class="btn btn-primary text-white" @click="submit()" :disabled="form.travels == 0">Merge</button>
-                </div>
+                
                 <div class="peer">
                    <Link href="/" @click="back">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -41,15 +15,60 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="bgc-white p-20 bd">
+            <div class="row p-20 d-flex justify-content-end">
+                <div class="bgc-white col-md-12 m-0">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text">Office</span>
+                                <select v-model="form.office_id" class="form-control" @change="loadDivisions($event)">
+                                    <option disabled value="">Select Offices</option>
+                                    <option v-for="item, index in offices" :value="item.id">{{ item.short_name }}</option>
+                                </select>
+                            </div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.office_id">{{ form.errors.office_id }}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text">Divisions</span>
+                                <select v-model="form.division_code" class="form-control" >
+                                    <option disabled value="">Select Division</option>
+                                    <option v-for="item, index in divisions" :value="item.id">{{ item.text }}</option>
+                                </select>
+                            </div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.division_code">{{ form.errors.division_code }}</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-text">From</span>
+                                <input type="date" v-model="form.date_from" @change="date_from()" class="form-control">
+                            </div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.date_from">{{ form.errors.date_from }}</div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="input-group">
+                                <span class="input-group-text">To</span>
+                                <input type="date" v-model="form.date_to"  @change="date_to()" class="form-control">
+                            </div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.date_to">{{ form.errors.date_to }}</div>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary text-white" @click="submit()" :disabled="form.travels == 0">Merge</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="bgc-white p-20 bd table table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Ticket Number</th>
                             <th scope="col">Invoice Number</th>
-                            <th scope="col">Travel Date</th>
+                            <th scope="col">Date Fuel</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
+                            <th scope="col">Actual Liters</th>
                             <th scope="col" style="text-align: right">Price</th>
                             <th scope="col" style="text-align: right">total Price</th>
                             <th scope="col">Action</th>
@@ -58,10 +77,11 @@
                     <tbody>
                         <tr v-for="soa_travel in sortedEmp">
                             <td>{{ soa_travel.ticket_number }}</td>
-                            <td>{{ soa_travel.invoice_no }}</td>
-                            <td>{{ soa_travel.travelDate}}</td>
+                            <td>{{ soa_travel.invoice }}</td>
+                            <td>{{ soa_travel.date_fueled}}</td>
                             <td v-html="gas(soa_travel.gas_type)"></td>
                             <td>{{ soa_travel.total_liters }}</td>
+                            <td>{{ soa_travel.actual_liters }}</td>
                             <td class="text-end">{{ Number(soa_travel.actual_prices).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td class="text-end">{{ Number(soa_travel.price).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td>
@@ -128,23 +148,37 @@ export default {
                 travels: [],
                 user_id: this.auth.user.id,
                 office_id: "",
+                division_code: "",
             }),
             offices:[],
+            divisions:[],
             temp2:[],
         }
     },
     computed:{
         sortedEmp:function() {
-            
+            this.tem2 = []
             let startDate = this.form.date_from;
             let endDate = this.form.date_to;
             let office = this.form.office_id;
+            let divisions = this.form.division_code;
             
 
             if (startDate == "") {
                 this.temp2 = []
             } else {
-                this.temp2 = this.Travels.filter(item => item.office_id == office)
+                this.temp2 = this.Travels.filter(function (item) {
+                    if (divisions) {
+                        if(!!item.division_code) {
+
+                            return item.office_id == office && item.division_code.division_code == divisions
+                        }  else {
+                            return item.office_id == office
+                        }
+                    } else {
+                        return item.office_id == office
+                    }
+                } )
                     .filter(item => {
                     let travelDateFrom = item.date_from
                     let travelDateTo = item.date_to
@@ -182,9 +216,17 @@ export default {
             });
         },
     },
+
+    watch: {
+        'form.office_id':function(value) {
+            this.loadDivisions(value)
+        }
+        
+    },
     mounted(){
         this.getData();
         this.loadOffices()
+        
     },
     methods:{
         back() {
@@ -234,8 +276,16 @@ export default {
             })
         },
 
-        invoice(item) {
+        async loadDivisions(value) {
+            var self = this
+            await axios.post('/divisions/fetch', { department_code: value }).then((response) => {
+                self.divisions = response.data;
 
+            })
+        },
+
+        invoice(item) {
+            console.log(item)
             /**
              * if using component use the code below
              * 

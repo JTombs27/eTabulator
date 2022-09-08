@@ -40,7 +40,8 @@ class Travel extends Model
         'idraao',
         'allow_edit',
         'edit_by',
-        'actual_liter'
+        'actual_liter',
+        'date_fueled'
         
 
     ];
@@ -123,6 +124,11 @@ class Travel extends Model
     public function gasoline()
     {
         return $this->belongsTo(Gasoline::class, 'gasoline_id', 'id');
+    }
+
+     public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 }
