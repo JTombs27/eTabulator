@@ -21,7 +21,7 @@ class DivisionController extends Controller
             // DB::table('divisions')->truncate();
             $url = env('MIX_API_URL');
             $divions = Http::post("http://122.54.19.172:91//api/PGDDO_Divisions_tbl")->collect();
-            return $divions;
+            // return $divions;
             $divisionArray = [];
             foreach ($divions as $value) {
                 $data = [
