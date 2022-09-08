@@ -608,12 +608,14 @@ class TravelController extends Controller
         
         $request->validate([
             'invoice' => ['required', Rule::when($current_invoice != $request->invoice, ['unique:travels,invoice_no'])],
+            'actual_liter' => [Rule::when($request->actual_liter, ['numeric'])]
         ]);
 
         $travel = $this->model->findOrFail($request->id);
 
         $travel->update([
-            'invoice_no' => $request->invoice
+            'invoice_no' => $request->invoice,
+            'actual_liter' => $request->actual_liter
         ]);
 
         return redirect()->back();
