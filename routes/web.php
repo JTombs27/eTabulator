@@ -188,6 +188,11 @@ Route::middleware('auth')->group(function() {
     Route::prefix('offices')->group(function () {
         Route::get('fetch', [OfficeController::class, 'loadOffices']);
     });
+
+    //for Divisions
+    Route::prefix('divisions')->group(function () {
+        Route::post('fetch', [DivisionController::class, 'loadDivisions']);
+    });
     
 
     //for Charges

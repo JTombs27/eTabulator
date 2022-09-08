@@ -40,7 +40,7 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
             "soaTravel" => $soatravel
-            	->with('travels')
+            	->with('travels','office','division')
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_no', 'like', '%' . $searchItem . '%');
                 })
@@ -51,9 +51,11 @@ class SoaTravelController extends Controller
                     'id' => $item->id,
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
-                    'total_liters' => $item->travels->sum('total_liters'),
+                    'total_liters' => $item->travels->sum('actual_liter'),
                     'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
-                    'ticket_no' => $item->ticket_no
+                    'ticket_no' => $item->ticket_no,
+                    'office' => $item->office->short_name,
+                    'division' => $item->division
                 ])
                 ,
             "filters" => $request->only(['search']),
@@ -68,18 +70,21 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Show', [
             //returns an array of users with name field only
             "travel" => $this->model
-            	
+            	->with('user.employee.division')
                 ->where('status','Fueled')
                 ->where('soa_travel',null)
             	->orderBy('date_from', 'asc')
             	->get()->map(function($item) {
-                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
-                                $total = $this->price->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
-                    })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                        $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
+                                    $total = $this->price->when($checkPrice, function($q) use ($item) {
+                                        $q->whereDate('date', $item->date_fueled);
+                        })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type); 
+                    $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
+
                     return [
                                     'id' => $item->id,
                                     'date_from' => $item->date_from,
+                                    'date_fueled' => $item->date_fueled,
                                     'date_to' => $item->date_to,
                                     'time_departure' => $item->time_departure,
                                     'time_arrival' => $item->time_arrival,
@@ -87,13 +92,16 @@ class SoaTravelController extends Controller
                                     'ticket_number' => $item->ticket_number,
                                     'id' => $item->id,
                                     'total_liters' => $item->total_liters,
+                                    'actual_liters' => $item->actual_liter,
                                     'gas_type' => $item->gas_type,
                                     'gasoline_id' => $item->gasoline_id,
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
                                     'actual_prices' => $total[$item->gas_type],
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'invoice_no' => $item->invoice_no
+                                    'price' => ($total[$item->gas_type] * $actual),
+                                    'invoice' => $item->invoice_no,
+                                    'user_id' => $item->user_id,
+                                    'division_code' => $item->user->employee->division
                                 ]; 
                 }),
         ]);
@@ -128,12 +136,14 @@ class SoaTravelController extends Controller
             	->where('soa_travel', $id)
             	->simplePaginate(10)
                 ->through(function ($item) {
-                                $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                                $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
+                                    $q->whereDate('date', $item->date_fueled);
                                 })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
                                 return [
                                     'date_from' => $item->date_from,
+                                    'date_fueled' => $item->date_fueled,
                                     'date_to' => $item->date_to,
                                     'time_departure' => $item->time_departure,
                                     'time_arrival' => $item->time_arrival,
@@ -141,10 +151,12 @@ class SoaTravelController extends Controller
                                     'ticket_number' => $item->ticket_number,
                                     'id' => $item->id,
                                     'total_liters' => $item->total_liters,
+                                    'actual_liters' => $item->actual_liter,
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+                                    'actual_prices' => $total[$item->gas_type],
+                                    'price' => ($total[$item->gas_type] * $actual),
                                     'invoice_no' => $item->invoice_no,
                                     'gasoline_id' => $item->gasoline_id
                                 ]; 
@@ -168,10 +180,17 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
-        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','gasoline_id'));
+               
+                $soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','gasoline_id','division_code'));
+                
                 $soaTravel->updateTicketNo();
         		foreach ($request->travels as $key ) {
-        			$travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
+                    if ($key['invoice'] == null) {
+                        return redirect()->back()->with('error','Invoice is Required');
+                    } else {
+
+        			    $travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
+                    }
         		}
         	} else {
         		return redirect('/soatravels')->with('error', 'Travel already Tagged');
@@ -263,6 +282,7 @@ class SoaTravelController extends Controller
         $total_soa = DB::table('travels')
                             ->select(DB::raw('travels.*'))
                             ->where('travels.soa_travel', $request->soa_travel)
+                            ->orderBy('travels.gas_type','desc')
                             ->get()->map(function($item) {
                     $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
@@ -279,23 +299,32 @@ class SoaTravelController extends Controller
                                     
                                 ]; 
                 });
-        $total = $total_soa->groupBy('unit_price','gas_type')->map(fn ($items) => [
-
-             
+        $total = $total_soa->groupBy('unit_price','gas_type')->mapWithKeys(fn ($items, $key) => [
+                collect($items)->first()['unit_price'] => [
                     'total'=> collect($items)->sum('price'),
                     'gas_type' => collect($items)->first()['gas_type'],
                     'unit_price' => collect($items)->first()['unit_price'],
                     'total_liters' => collect($items)->sum('total_liters'),
+                ]
              
             
            
         ]);
 
-        dd(collect($total));
+        $testData = collect([]);
         
-        return $total->map(fn ($item) => [
-            $item
-        ]);
+        $testData = $testData->mergeRecursive(
+            $total->map(fn($item) => [
+                "total" => strVal($item['total']),
+                "gas_type" => $item['gas_type'],
+                "unit_price" => $item['unit_price'],
+                "total_liters" => strVal($item['total_liters'])
+            ])
+        );
+        return $testData->values();
+        
+        
+        
     }
 
 }

@@ -83,5 +83,19 @@ class DivisionController extends Controller
         ])->toArray();
        
     }
+
+    public function loadDivisions(Request $request)
+    {
+        $query = $this->model
+                    ->where('department_code',$request->department_code)
+                    ->get()
+                    ->map(fn($item) => [
+                        'id' => $item->division_code,
+                        'text' => $item->division_name1,
+                        'division_name1' => $item->division_name1
+                    ]);
+
+        return $query;
+    }
     
 }
