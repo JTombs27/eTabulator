@@ -573,13 +573,16 @@ class TravelController extends Controller
                     })
                     ->where(function($q) {
                         // $q->whereNull('status')->orWhere('status', 'Approved');
-                        $q->where('status', '<>', 'Disapproved');
+                        $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
                     ->latest()
-                    ->get();
+                    ->get()
+                    ->map(fn($item) => [
+                        'total_liters' => $item->actual_liter ? $item->actual_liter : $item->total_liters
+                    ]);
 
-        $consumedFuel =  $fuel->sum('total_liters') - $fuel->sum('actual_liter');
-        
+        $consumedFuel =  (clone $fuel)->sum('total_liters');
+        // return $consumedFuel;
         if ($request->id) {
             $currentLitters = $this->model->find($request->id)->total_liters;
             $consumedFuel = $consumedFuel - $currentLitters;

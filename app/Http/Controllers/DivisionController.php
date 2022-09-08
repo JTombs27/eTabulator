@@ -18,9 +18,10 @@ class DivisionController extends Controller
     {
         try {
             //code...
-            DB::table('divisions')->truncate();
+            // DB::table('divisions')->truncate();
             $url = env('MIX_API_URL');
             $divions = Http::post("http://122.54.19.172:91//api/PGDDO_Divisions_tbl")->collect();
+            return $divions;
             $divisionArray = [];
             foreach ($divions as $value) {
                 $data = [
@@ -40,7 +41,7 @@ class DivisionController extends Controller
                 array_push($divisionArray, $data);
             }
             $divisionArray = collect($divisionArray)->merge($this->boardMember())->toArray();
-            DB::table('divisions')->insert($divisionArray);
+            // DB::table('divisions')->insert($divisionArray);
             
         } catch (\Throwable $th) {
             return $th->getMessage();

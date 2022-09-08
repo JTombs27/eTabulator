@@ -44,10 +44,13 @@ class ValidateLiters implements Rule
                     //     $q->whereBetween('date_from', [$weekStartDate,$weekEndDate]);
                     // })
                     ->where(function($q) {
-                        $q->whereNull('status')->orWhere('status', 'Approved');
+                        $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
                     ->latest()
-                    ->get();
+                    ->get()
+                    ->map(fn($item) => [
+                        'total_liters' => $item->actual_liter ? $item->actual_liter : $item->total_liters
+                    ]);
         
         $consumed = $fuel->sum('total_liters');
         $remainingPerWeek = ($this->fuel_limit * 5) - $consumed;
