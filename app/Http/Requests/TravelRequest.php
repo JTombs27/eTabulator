@@ -48,8 +48,15 @@ class TravelRequest extends FormRequest
                                 // new ValidateWeek($this->date_from, $this->date_to)
                             ])
                         ], 
-            'total_liters' => Rule::when($valid && $fuel_limit->fuel_limit != 0,
-                        ['numeric',
+            'total_liters' => 
+                        Rule::when($valid && $fuel_limit->fuel_limit != 0, [
+                            'numeric',
+
+                            function($attribute, $value, $fail) {
+                                if ($this->total_liters <= 0) {
+                                    $fail('Total liters should be greater than zero.');
+                                }
+                            },
                             // function($attr, $value, $fail) {
 
                             //     if ($this->date_from && $this->date_to) {
@@ -72,6 +79,7 @@ class TravelRequest extends FormRequest
                             //     }
                             //     }
                             // },
+
                             new ValidateLiters($this, $fuel_limit->fuel_limit)
                         ]),
             'gas_type' => 'required',
