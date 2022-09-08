@@ -87,8 +87,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             return item.office_id == office;
           }
         }).filter(function (item) {
-          var travelDateFrom = item.date_from;
-          var travelDateTo = item.date_to;
+          var travelDateFrom = item.date_fueled;
 
           if (startDate && endDate) {
             return startDate <= travelDateFrom && endDate >= travelDateFrom;

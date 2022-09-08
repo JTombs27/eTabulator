@@ -40,7 +40,7 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
             "soaTravel" => $soatravel
-            	->with('travels','office')
+            	->with('travels','office','division')
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_no', 'like', '%' . $searchItem . '%');
                 })
@@ -51,10 +51,11 @@ class SoaTravelController extends Controller
                     'id' => $item->id,
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
-                    'total_liters' => $item->travels->sum('total_liters'),
+                    'total_liters' => $item->travels->sum('actual_liter'),
                     'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
                     'ticket_no' => $item->ticket_no,
-                    'office' => $item->office->short_name
+                    'office' => $item->office->short_name,
+                    'division' => $item->division
                 ])
                 ,
             "filters" => $request->only(['search']),
@@ -135,12 +136,14 @@ class SoaTravelController extends Controller
             	->where('soa_travel', $id)
             	->simplePaginate(10)
                 ->through(function ($item) {
-                                $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                                $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
+                                    $q->whereDate('date', $item->date_fueled);
                                 })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
                                 return [
                                     'date_from' => $item->date_from,
+                                    'date_fueled' => $item->date_fueled,
                                     'date_to' => $item->date_to,
                                     'time_departure' => $item->time_departure,
                                     'time_arrival' => $item->time_arrival,
@@ -148,10 +151,12 @@ class SoaTravelController extends Controller
                                     'ticket_number' => $item->ticket_number,
                                     'id' => $item->id,
                                     'total_liters' => $item->total_liters,
+                                    'actual_liters' => $item->actual_liter,
                                     'gas_type' => $item->gas_type,
                                     'soa_travel' => $item->soa_travel,
                                     'office_id' => $item->office_id,
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+                                    'actual_prices' => $total[$item->gas_type],
+                                    'price' => ($total[$item->gas_type] * $actual),
                                     'invoice_no' => $item->invoice_no,
                                     'gasoline_id' => $item->gasoline_id
                                 ]; 
@@ -175,10 +180,12 @@ class SoaTravelController extends Controller
         try {
 
         	if ($request->travels != null) {
-        		$soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','gasoline_id'));
+               
+                $soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','gasoline_id','division_code'));
+                
                 $soaTravel->updateTicketNo();
         		foreach ($request->travels as $key ) {
-                    if ($key['invoice_no'] == null) {
+                    if ($key['invoice'] == null) {
                         return redirect()->back()->with('error','Invoice is Required');
                     } else {
 

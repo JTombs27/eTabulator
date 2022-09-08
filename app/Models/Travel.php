@@ -70,16 +70,16 @@ class Travel extends Model
 
     public function getTotalPriceAttribute()
     {
-        $liters = $this->total_liters;
-        $date_from = $this->date_from;
+        $actual = $this->actual_liter ? $this->actual_liter : $this->total_liters;
+        $date_fueled = $this->date_fueled;
         $gas_type = $this->gas_type;
         $gasoline_id = $this->gasoline_id;
-        $checkPrice = Price::where('gasoline_id', $gasoline_id)->whereDate('date', $date_from)->exists();
-        $total = Price::when($checkPrice, function($q) use ($date_from) {
-                                    $q->whereDate('date', $date_from);
+        $checkPrice = Price::where('gasoline_id', $gasoline_id)->whereDate('date', $date_fueled)->exists();
+        $total = Price::when($checkPrice, function($q) use ($date_fueled) {
+                                    $q->whereDate('date', $date_fueled);
                                 })->where('gasoline_id', $gasoline_id)->latest()->first($gas_type);
 
-        $totalPrice = ($total[$gas_type] * $liters);
+        $totalPrice = ($total[$gas_type] * $actual);
 
         return $totalPrice;
 

@@ -180,10 +180,8 @@ export default {
                     }
                 } )
                     .filter(item => {
-                    let travelDateFrom = item.date_from
-                    let travelDateTo = item.date_to
+                    let travelDateFrom = item.date_fueled
                 
-
                 if ( startDate && endDate ) {
                 
                     return  (startDate  <= travelDateFrom  && endDate >= travelDateFrom) ;

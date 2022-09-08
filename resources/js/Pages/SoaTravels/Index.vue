@@ -30,6 +30,7 @@
                         <tr>
                             <th scope="col">Ticket Number</th>
                             <th scope="col">Office</th>
+                            <th scope="col">Division</th>
                             <th scope="col">Cafoa Number</th>
                             <th scope="col">Date From</th>
                             <th scope="col">Date To</th>
@@ -42,6 +43,8 @@
                         <tr v-for="(soaTravels, index) in soaTravel.data" :key="index">
                             <td>{{ soaTravels.ticket_no }}</td>
                             <td>{{ soaTravels.office }}</td>
+                            <td v-if="soaTravels.division !== null" style="font-size: 11px;">{{ soaTravels.division.division_name1 }}</td>
+                            <td v-else></td>
                             <td>{{ soaTravels.cafoa_number }}</td>
                             <td>{{ soaTravels.date_from }}</td>
                             <td>{{ soaTravels.date_to }}</td>
