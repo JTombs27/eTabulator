@@ -96,6 +96,7 @@ class Travel extends Model
         return 'message';
     }
 
+  
     public function driverVehicle()
     {
         return $this->belongsTo(DriverVehicle::class, 'driver_vehicles_id', 'id');

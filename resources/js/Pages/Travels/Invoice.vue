@@ -24,6 +24,13 @@
                     {{ form.errors.actual_liter }}
                 </div>
             </div>
+            <div>
+                <label for="invoice" class="form-label">Date Fueled</label>
+                <input type="date" class="form-control" id="date_fueled" autocomplete="off" v-model="form.date_fueled">
+                <div class="fs-6 c-red-500" v-if="form.errors.date_fueled">
+                    {{ form.errors.date_fueled }}
+                </div>
+            </div>
             <span class="ml-2" v-if="form.processing">
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Submitting... 
@@ -48,7 +55,8 @@ export default {
             form:useForm({
                 invoice:null,
                 actual_liter:null,
-                id:null
+                id:null,
+                date_fueled:null
             }),
             invoice_loader:false,
             invoiceMessage:"",
@@ -61,6 +69,7 @@ export default {
     mounted() {
         this.form.id = this.item.id;
         this.form.actual_liter = this.item.actual_liters;
+        this.form.date_fueled = this.item.date_fueled;
         this.invoice()
     },
 

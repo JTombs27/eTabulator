@@ -37,7 +37,7 @@ class TravelController extends Controller
         // dd($request->all());
         return inertia('Travels/Index',[
             "travels" => $this->model
-                            ->with('driverVehicle.empl', 'driverVehicle.vehicle','gasoline')
+                            ->with('driverVehicle.empl', 'driverVehicle.vehicle','gasoline', 'office')
                             ->when(strtolower(auth()->user()->role) == 'ro' || strtolower(auth()->user()->role) == 'pg-head' || strtolower(auth()->user()->role) == 'pgso',
                                 function($q) {
                                     $q->where('office_id', auth()->user()->office_id);
@@ -62,6 +62,12 @@ class TravelController extends Controller
                             ->when($request->search, function ($query, $searchItem) {
                                 $query->where('ticket_number', 'like', '%' . $searchItem . '%');
                             })
+                            ->when($request->date_fueled, function ($query, $searchItem) {
+                                $query->where('date_fueled', $searchItem);
+                            })
+                            ->when($request->office_id, function ($query, $searchItem) {
+                                $query->where('office_id', $searchItem);
+                            })
                             ->orderBy('status')
                             ->orderBy('id','desc')
                             ->simplePaginate(10)
@@ -75,6 +81,7 @@ class TravelController extends Controller
                                                 ->first($item->gas_type);
                                 // dd($total[$item->gas_type], $item->total_liters);
                                 $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
+                                // dd($item);
                                 return [
                                     'first_name' => $item->driverVehicle->empl->first_name,
                                     'middle_name' => $item->driverVehicle->empl->middle_name,
@@ -100,7 +107,8 @@ class TravelController extends Controller
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                     'gasoline_station' => $item->gasoline->name,
                                     'invoice' => $item->invoice_no,
-                                    'allow_to_edit' => $item->allow_edit
+                                    'allow_to_edit' => $item->allow_edit,
+                                    'office' => $item->office->short_name
                                      ]; 
                                  }),
              "can" => [
@@ -618,7 +626,8 @@ class TravelController extends Controller
 
         $travel->update([
             'invoice_no' => $request->invoice,
-            'actual_liter' => $request->actual_liter
+            'actual_liter' => $request->actual_liter,
+            'date_fueled' => $request->date_fueled
         ]);
 
         return redirect()->back();

@@ -19,17 +19,25 @@
 
         <transition name="slide-fade" mode="in-out">
             <filtering v-if="filter" @closeFilter="filter=false">
+                <label for="">Office</label>
+                <select class="form-select" v-model="filterData.office_id">
+                    <option disabled readonly>--Select Office--</option>
+                    <option v-for="(item, index) in offices" :key="index" :value="item.id">{{ item.short_name }}</option>
+                </select>
+                <label for="">Status</label>
+                <select class="form-select" v-model="filterData.status">
+                    <option disabled readonly selected value="">Select Status</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Disapproved">Disapproved</option>
+                    <option value="pending">Pending</option>
+                    <option value="Fueled">Fueled</option>
+                </select>
+                <label for="">Date Fueled</label>
+                <input type="date" v-model="filterData.date_fueled" class="form-control">
                 <label for="">From</label>
                 <input type="date" v-model="filterData.date_from" class="form-control">
                 <label for="">To</label>
                 <input type="date" v-model="filterData.date_to" class="form-control">
-                <label for="">Status</label>
-                <select class="form-select" v-model="filterData.status">
-                    <option disabled readonly>Select Status</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Disapproved">Disapproved</option>
-                    <option value="pending">Pending</option>
-                </select>
                 <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -52,6 +60,7 @@
                             <th scope="col">Trip Ticket</th>
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
+                            <th scope="col">Office</th>
                             <th scope="col">Date</th>
                             <th scope="col">Liter/s</th>
                             <th scope="col">Actual Liter/s</th>
@@ -67,6 +76,7 @@
                             <td>{{item.FDESC}} <strong>({{ item.PLATENO}})</strong></td>
                             <td v-if="item.actual_driver">{{item.actual_driver}}</td>
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
+                            <td >{{item.office}}</td>
                             <td v-if="!item.date_to">{{item.date_from}}</td>
                             <td v-else>{{item.date_from}} to {{item.date_to}}</td>
                             <td class="text-center">{{item.liters}}</td>
@@ -303,9 +313,11 @@ export default {
             dropdownOption:"outside",
             filter:false,
             filterData: {
+                office_id:null,
                 date_from:null,
                 date_to:null,
                 dateFilterType:null,
+                date_fueled:null,
                 status:null,
             },
             search:null,
@@ -315,10 +327,22 @@ export default {
             }),
             showModal:false,
             deTailsData:[],
+            offices:[],
         }
     },
 
+    mounted() {
+        this.loadOffice()
+    },
+
     methods:{
+        loadOffice() {
+            axios.get('/offices/fetch')
+                .then((response) => {
+                    this.offices = response.data
+                })
+        },
+
         deleteTravel(item) {
              let text = "WARNING!\nAre you sure you want to delete the record?";
               if (confirm(text) == true) {
