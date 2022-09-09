@@ -152,6 +152,53 @@ class UserPolicy
     {
         return $user->permissions()->where('permission_name', 'can_delete_gasoline')->exists();
     }
+
+    //Added By: Joseph
+    public function canViewTravelIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool'])->where('id', auth()->user()->id)->exists();
+    }
+
+    public function canViewLogArivalIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewVehicleIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PGSO','peo-motorpool'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewSOAIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool','gasoline-station'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewChargesIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewGasolineIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PGSO','gasoline-station'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewPriceIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool','PGSO'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewUsersIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewProjectIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewProjectVehicleIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO'])->where('id', auth()->user()->id)->exists();
+    }
+    public function canViewReportIndex(User $user)
+    {
+        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool'])->where('id', auth()->user()->id)->exists();
+    }
     // public function canDeleteDriver(User $user)
     // {
     //     return $user->permissions()->user('permission_name', 'can_delete_drivers')->exists();

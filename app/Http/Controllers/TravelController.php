@@ -431,6 +431,9 @@ class TravelController extends Controller
                                 head.middle_name as head_middle_name,
                                 head.last_name as head_last_name,
                                 head.position_title_short as position_short,
+                                head.suffix as suffix,
+                                head.postfix as postfix,
+                                head.courtesy_title as courtesy_title,
                                 
                                 offices.office,
                                 offices.designation,
@@ -516,7 +519,10 @@ class TravelController extends Controller
                                     'name' => $item->name,
                                     'ffunccod' => $item->ffunccod,
                                     'fraodesc' => $item->fraodesc,
-                                    'fooedesc' => $item->fooedesc
+                                    'fooedesc' => $item->fooedesc,
+                                    'suffix' => $item->suffix,
+                                    'postfix' => $item->postfix,
+                                    'courtesy_title' => $item->courtesy_title
                                 ]; 
                             });
         return $travel;

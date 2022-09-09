@@ -63,6 +63,7 @@ class TravelValidationController extends Controller
             $data->update([
                 'status'=> 'Fueled'
                 ,'actual_liter'=> $actual_liters
+                ,'date_fueled' => Carbon::now()
             ]);
             
             return 'success';
