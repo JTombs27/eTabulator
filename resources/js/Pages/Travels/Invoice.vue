@@ -24,7 +24,7 @@
                     {{ form.errors.actual_liter }}
                 </div>
             </div>
-            <div>
+            <div v-if="$page.props.auth.user.role == 'gasoline-station' || $page.props.auth.user.role == 'Admin'">
                 <label for="invoice" class="form-label">Date Fueled</label>
                 <input type="date" class="form-control" id="date_fueled" autocomplete="off" v-model="form.date_fueled">
                 <div class="fs-6 c-red-500" v-if="form.errors.date_fueled">
@@ -136,7 +136,12 @@ export default {
 
             })
         },
+
     },
+
+    computed: {
+
+    }
 
 }
 </script>

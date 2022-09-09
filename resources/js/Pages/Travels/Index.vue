@@ -61,7 +61,8 @@
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Office</th>
-                            <th scope="col">Date</th>
+                            <th scope="col">Date Created</th>
+                            <th scope="col">Date Fueled</th>
                             <th scope="col">Liter/s</th>
                             <th scope="col">Actual Liter/s</th>
                             <th scope="col">Price</th>
@@ -79,6 +80,7 @@
                             <td >{{item.office}}</td>
                             <td v-if="!item.date_to">{{item.date_from}}</td>
                             <td v-else>{{item.date_from}} to {{item.date_to}}</td>
+                            <td class="text-center">{{item.date_fueled_text}}</td>
                             <td class="text-center">{{item.liters}}</td>
                             <td class="text-center">{{item.actual_liters}}</td>
                             <td class="text-right">{{`\u20B1${Number(item.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>

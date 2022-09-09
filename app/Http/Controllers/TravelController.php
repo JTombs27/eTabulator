@@ -108,7 +108,9 @@ class TravelController extends Controller
                                     'gasoline_station' => $item->gasoline->name,
                                     'invoice' => $item->invoice_no,
                                     'allow_to_edit' => $item->allow_edit,
-                                    'office' => $item->office->short_name
+                                    'office' => $item->office->short_name,
+                                    'date_fueled_text' => Carbon::parse($item->date_fueled)->format('M d, Y'),
+                                    'date_fueled' => $item->date_fueled
                                      ]; 
                                  }),
              "can" => [
