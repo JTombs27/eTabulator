@@ -33,4 +33,9 @@ class SoaTravel extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');                                                                                                                     
     }
+
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'division_code', 'division_code');                                                                                                                     
+    }
 }

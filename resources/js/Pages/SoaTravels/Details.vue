@@ -23,9 +23,11 @@
                         <tr>
                             <th scope="col">Ticket Number</th>
                             <th scope="col">Invoice #</th>
-                            <th scope="col">Travel Date</th>
+                            <th scope="col">Date Fueled</th>
                             <th scope="col">Gas Type</th>
                             <th scope="col">Liters</th>
+                            <th scope="col">Actual Liters</th>
+                            <th scope="col" style="text-align: right">Price</th>
                             <th scope="col" style="text-align: right">Total Price</th>
                             <!-- <th scope="col">Action</th> -->
                         </tr>
@@ -34,9 +36,11 @@
                         <tr v-for="(detailTravels, index) in travels.data" :key="index">
                             <td>{{ detailTravels.ticket_number }}</td>
                             <td>{{ detailTravels.invoice_no }}</td>
-                            <td>{{ detailTravels.travelDate}}</td>
-                            <td>{{ detailTravels.gas_type }}</td>
+                            <td>{{ detailTravels.date_fueled}}</td>
+                            <td v-html="gas(detailTravels.gas_type)"></td>
                             <td>{{ detailTravels.total_liters }}</td>
+                            <td>{{ detailTravels.actual_liters }}</td>
+                            <td class="text-end">{{ Number(detailTravels.actual_prices).toLocaleString(undefined, { minimumFractionDigits: 2,  maximumFractionDigits: 2 }) }}</td>
                             <td class="text-end">{{ Number(detailTravels.price).toLocaleString(undefined, {minimumFractionDigits: 2}) }}</td>
                             <td v-if="user.gasoline_id === detailTravels.gasoline_id">
                                 <button class="btn btn-secondary btn-sm action-btn" v-if="detailTravels.soa_travel !== null" @click="remove(detailTravels)">
@@ -123,7 +127,34 @@ export default {
               if (confirm(text) == true) {
                 this.$inertia.post("/soatravels/"+this.soaTravelId+"/remove", this.item) ;
               }
-        }
+        },
+
+        gas (gas_type) {
+
+            switch(gas_type) {
+                case 'premium_price':
+                    return "PREMUIM";
+                    break
+                case 'regular_price':
+                    return "REGULAR";
+                    break
+                case 'deisoline_price':
+                    return "DIESOLINE";
+                    break
+                case 'engine_oil_price':
+                    return "ENGINE OIL";
+                    break
+                case 'brake_oil_price':
+                    return "BRAKE OIL";
+                    break
+                case 'greases_price':
+                    return "GREASES";
+                    break
+                default:
+                    return ""
+                    break
+            }
+        },
     },
     
 };

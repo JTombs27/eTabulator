@@ -50,6 +50,12 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
 
     }
 
+    public function employee() {
+
+        return $this->hasOne(Employee::class, 'empl_id', 'cats');
+
+    }
+
     // public function setPasswordAttribute($value)
     // {
     //     $this->attributes['password'] = bcrypt($value);

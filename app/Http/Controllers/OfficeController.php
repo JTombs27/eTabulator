@@ -52,7 +52,8 @@ class OfficeController extends Controller
                     ->map(fn($item) => [
                         'id' => $item->department_code,
                         'text' => $item->office ." (".$item->short_name.")",
-                        'office' => $item->office
+                        'office' => $item->office,
+                        'short_name' => $item->short_name
                     ]);
 
         return $query;

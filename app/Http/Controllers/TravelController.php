@@ -423,7 +423,7 @@ class TravelController extends Controller
                                 head.middle_name as head_middle_name,
                                 head.last_name as head_last_name,
                                 head.position_title_short as position_short,
-                                offices.short_name,
+                                
                                 offices.office,
                                 offices.designation,
                                 users.cats,
@@ -573,13 +573,16 @@ class TravelController extends Controller
                     })
                     ->where(function($q) {
                         // $q->whereNull('status')->orWhere('status', 'Approved');
-                        $q->where('status', '<>', 'Disapproved');
+                        $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
                     ->latest()
-                    ->get();
+                    ->get()
+                    ->map(fn($item) => [
+                        'total_liters' => $item->actual_liter ? $item->actual_liter : $item->total_liters
+                    ]);
 
-        $consumedFuel =  $fuel->sum('total_liters') - $fuel->sum('actual_liter');
-        
+        $consumedFuel =  (clone $fuel)->sum('total_liters');
+        // return $consumedFuel;
         if ($request->id) {
             $currentLitters = $this->model->find($request->id)->total_liters;
             $consumedFuel = $consumedFuel - $currentLitters;
@@ -608,12 +611,14 @@ class TravelController extends Controller
         
         $request->validate([
             'invoice' => ['required', Rule::when($current_invoice != $request->invoice, ['unique:travels,invoice_no'])],
+            'actual_liter' => [Rule::when($request->actual_liter, ['numeric'])]
         ]);
 
         $travel = $this->model->findOrFail($request->id);
 
         $travel->update([
-            'invoice_no' => $request->invoice
+            'invoice_no' => $request->invoice,
+            'actual_liter' => $request->actual_liter
         ]);
 
         return redirect()->back();
