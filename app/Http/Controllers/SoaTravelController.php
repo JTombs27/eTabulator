@@ -73,7 +73,7 @@ class SoaTravelController extends Controller
             	->with('user.employee.division')
                 ->where('status','Fueled')
                 ->where('soa_travel',null)
-            	->orderBy('date_from', 'asc')
+            	->orderBy('date_fueled', 'asc')
             	->get()->map(function($item) {
                         $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
                                     $total = $this->price->when($checkPrice, function($q) use ($item) {
