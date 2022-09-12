@@ -83,7 +83,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         search: value
       }, {
         preserveScroll: true,
-        preserveState: true,
+        preserveState: false,
         replace: true
       });
     }, 300)
@@ -427,9 +427,11 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_19 = {
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col pt-2 mt-2"
-};
+}, null, -1
+/* HOISTED */
+);
 
 var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
@@ -542,7 +544,7 @@ var _hoisted_41 = {
   "class": "col-12"
 };
 var _hoisted_42 = {
-  "class": "table-responsive bgc-white p-20 bd shadow-sm"
+  "class": "bgc-white p-20 bd shadow-sm"
 };
 var _hoisted_43 = {
   "class": "table table-hover"
@@ -1139,7 +1141,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         options: _ctx.offices
       }, null, 8
       /* PROPS */
-      , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label> Vehicle Status</label>\r\n            <select v-model=\"filter1.condition\" class=\"form-select md\">\r\n                    <option disabled value=\"\">Select Status</option>\r\n                    <option value=\"Good Condition\">Good Condition</option>\r\n                    <option value=\"On-Repair\">On-repair</option>\r\n                    <option value=\"Wasted\">Wasted</option>\r\n                 </select> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+      , ["modelValue", "options"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <label> Vehicle Status</label>\r\n            <select v-model=\"filter1.condition\" class=\"form-select md\">\r\n                    <option disabled value=\"\">Select Status</option>\r\n                    <option value=\"Good Condition\">Good Condition</option>\r\n                    <option value=\"On-Repair\">On-repair</option>\r\n                    <option value=\"Wasted\">Wasted</option>\r\n                 </select> "), _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
         "class": "btn btn-sm btn-primary mT-5 text-white",
         onClick: _cache[7] || (_cache[7] = function ($event) {
           return $options.runFilter();
@@ -1149,7 +1151,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         onClick: _cache[8] || (_cache[8] = function ($event) {
           return $options.reset();
         })
-      }, _hoisted_26)])];
+      }, _hoisted_26)];
     }),
     _: 1
     /* STABLE */
