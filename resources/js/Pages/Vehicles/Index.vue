@@ -27,6 +27,7 @@
                 <option value="1">Motorcycle</option>
                 <option value="2">Light Vehicle</option>
                 <option value="3">Heavy Equipment</option>
+                <option value="3">Others</option>
             </select>
 
             <label>Date Acquired</label>
@@ -384,7 +385,7 @@ export default ({
                     replace: true,
                 }
             );
-        }, 300)
+        }, 500)
     },
     methods: {
         code (code,status) {

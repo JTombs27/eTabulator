@@ -88,12 +88,6 @@ class VehicleController extends Controller
                 $q->where('department_code', $request->department_code)->where('office_owner', 1);
             });
         }
-        // if ($request->condition) {
-        //     $index = $index->wherehas('vehicle_status', function($c) use ($request) {
-        //         $c->where('condition', $request->condition);
-        //     });
-        // }
-
         return $index;
     }
 
