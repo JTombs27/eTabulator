@@ -19,17 +19,25 @@
 
         <transition name="slide-fade" mode="in-out">
             <filtering v-if="filter" @closeFilter="filter=false">
+                <label for="">Office</label>
+                <select class="form-select" v-model="filterData.office_id">
+                    <option disabled readonly>--Select Office--</option>
+                    <option v-for="(item, index) in offices" :key="index" :value="item.id">{{ item.short_name }}</option>
+                </select>
+                <label for="">Status</label>
+                <select class="form-select" v-model="filterData.status">
+                    <option disabled readonly selected value="">Select Status</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Disapproved">Disapproved</option>
+                    <option value="pending">Pending</option>
+                    <option value="Fueled">Fueled</option>
+                </select>
+                <label for="">Date Fueled</label>
+                <input type="date" v-model="filterData.date_fueled" class="form-control">
                 <label for="">From</label>
                 <input type="date" v-model="filterData.date_from" class="form-control">
                 <label for="">To</label>
                 <input type="date" v-model="filterData.date_to" class="form-control">
-                <label for="">Status</label>
-                <select class="form-select" v-model="filterData.status">
-                    <option disabled readonly>Select Status</option>
-                    <option value="Approved">Approved</option>
-                    <option value="Disapproved">Disapproved</option>
-                    <option value="pending">Pending</option>
-                </select>
                 <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -52,8 +60,11 @@
                             <th scope="col">Trip Ticket</th>
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
-                            <th scope="col">Date</th>
+                            <th scope="col">Office</th>
+                            <th scope="col">Date Created</th>
+                            <th scope="col">Date Fueled</th>
                             <th scope="col">Liter/s</th>
+                            <th scope="col">Actual Liter/s</th>
                             <th scope="col">Price</th>
                             <th scope="col">Invoice #</th>
                             <th scope="col">Status</th>
@@ -66,9 +77,12 @@
                             <td>{{item.FDESC}} <strong>({{ item.PLATENO}})</strong></td>
                             <td v-if="item.actual_driver">{{item.actual_driver}}</td>
                             <td v-else>{{`${item.first_name} ${mi(item.middle_name)} ${item.last_name}`}}</td>
+                            <td >{{item.office}}</td>
                             <td v-if="!item.date_to">{{item.date_from}}</td>
                             <td v-else>{{item.date_from}} to {{item.date_to}}</td>
+                            <td class="text-center">{{item.date_fueled_text}}</td>
                             <td class="text-center">{{item.liters}}</td>
+                            <td class="text-center">{{item.actual_liters}}</td>
                             <td class="text-right">{{`\u20B1${Number(item.price).toLocaleString(undefined, {minimumFractionDigits: 2})}`}}</td>
                             <td>{{item.invoice}}</td>
                             <td v-html="statusDisplay(item)"></td>
@@ -98,7 +112,7 @@
                                         </button>
                                     </li>
                                     
-                                    <li v-if="item.status == 'Approved'">
+                                    <li v-if="item.status == 'Approved' || $page.props.auth.user.role == 'PG-Head'">
                                         <button as="button" class="dropdown-item" @click="tripTicket(item.id)">
                                             <span><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-printer me-2" viewBox="0 0 16 16">
                                         <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
@@ -242,22 +256,22 @@
                             </svg>
                         </td>
                         <td colspan="2">Tag Borrowed Car 
-                            <svg xmlns="http://www.w3.org/2000/svg"  v-if="deTailsData.is_borrowed_fuel != null && deTailsData.is_borrowed_fuel != false" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg"  v-if="deTailsData.is_borrowed_vehicle != null && deTailsData.is_borrowed_vehicle != false" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
                                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                 <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
                             </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" v-if="deTailsData.is_borrowed_fuel == null || deTailsData.is_borrowed_fuel == false" width="16" height="16" fill="currentColor" class="bi bi-x-square text-danger" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" v-if="deTailsData.is_borrowed_vehicle == null || deTailsData.is_borrowed_vehicle == false" width="16" height="16" fill="currentColor" class="bi bi-x-square text-danger" viewBox="0 0 16 16">
                                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
                            
                         </td>
                         <td colspan="2">Tag Borrowed Fuel 
-                            <svg xmlns="http://www.w3.org/2000/svg"  v-if="deTailsData.is_borrowed_vehicle != null && deTailsData.is_borrowed_vehicle != false" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg"  v-if="deTailsData.is_borrowed_fuel != null && deTailsData.is_borrowed_fuel != false" width="16" height="16" fill="currentColor" class="bi bi-check-square text-success" viewBox="0 0 16 16">
                                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                 <path d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.235.235 0 0 1 .02-.022z"/>
                             </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" v-if="deTailsData.is_borrowed_vehicle == null || deTailsData.is_borrowed_vehicle == false" width="16" height="16" fill="currentColor" class="bi bi-x-square text-danger" viewBox="0 0 16 16">
+                            <svg xmlns="http://www.w3.org/2000/svg" v-if="deTailsData.is_borrowed_fuel == null || deTailsData.is_borrowed_fuel == false" width="16" height="16" fill="currentColor" class="bi bi-x-square text-danger" viewBox="0 0 16 16">
                                 <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                             </svg>
@@ -301,9 +315,11 @@ export default {
             dropdownOption:"outside",
             filter:false,
             filterData: {
+                office_id:null,
                 date_from:null,
                 date_to:null,
                 dateFilterType:null,
+                date_fueled:null,
                 status:null,
             },
             search:null,
@@ -313,10 +329,22 @@ export default {
             }),
             showModal:false,
             deTailsData:[],
+            offices:[],
         }
     },
 
+    mounted() {
+        this.loadOffice()
+    },
+
     methods:{
+        loadOffice() {
+            axios.get('/offices/fetch')
+                .then((response) => {
+                    this.offices = response.data
+                })
+        },
+
         deleteTravel(item) {
              let text = "WARNING!\nAre you sure you want to delete the record?";
               if (confirm(text) == true) {

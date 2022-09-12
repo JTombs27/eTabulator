@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class TravelController extends Controller
 {
@@ -36,7 +37,7 @@ class TravelController extends Controller
         // dd($request->all());
         return inertia('Travels/Index',[
             "travels" => $this->model
-                            ->with('driverVehicle.empl', 'driverVehicle.vehicle','gasoline')
+                            ->with('driverVehicle.empl', 'driverVehicle.vehicle','gasoline', 'office')
                             ->when(strtolower(auth()->user()->role) == 'ro' || strtolower(auth()->user()->role) == 'pg-head' || strtolower(auth()->user()->role) == 'pgso',
                                 function($q) {
                                     $q->where('office_id', auth()->user()->office_id);
@@ -61,6 +62,12 @@ class TravelController extends Controller
                             ->when($request->search, function ($query, $searchItem) {
                                 $query->where('ticket_number', 'like', '%' . $searchItem . '%');
                             })
+                            ->when($request->date_fueled, function ($query, $searchItem) {
+                                $query->where('date_fueled', $searchItem);
+                            })
+                            ->when($request->office_id, function ($query, $searchItem) {
+                                $query->where('office_id', $searchItem);
+                            })
                             ->orderBy('status')
                             ->orderBy('id','desc')
                             ->simplePaginate(10)
@@ -68,9 +75,13 @@ class TravelController extends Controller
                             ->through(function ($item) {
                                 $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
-                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                                    $q->whereDate('date', $item->date_from);
+                                                })->where('gasoline_id', $item->gasoline_id)
+                                                ->latest()
+                                                ->first($item->gas_type);
                                 // dd($total[$item->gas_type], $item->total_liters);
+                                $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
+                                // dd($item);
                                 return [
                                     'first_name' => $item->driverVehicle->empl->first_name,
                                     'middle_name' => $item->driverVehicle->empl->middle_name,
@@ -85,17 +96,21 @@ class TravelController extends Controller
                                     'liters' => $item->total_liters,
                                     'status' => $item->status,
                                     'office_id' => $item->office_id,
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
+                                    'price' => ($total[$item->gas_type] * $actual),
                                     'soa_travel' => $item->soa_travel,
                                     'place_to_visit' =>$item->place_to_visit,
                                     'purpose' =>$item->purpose,
+                                    'actual_liters' =>$item->actual_liter,
                                     'official_passenger'=>$item->official_passenger,
                                     'is_carpool' =>$item->is_carpool,
                                     'is_borrowed_fuel'  =>$item->is_borrowed_fuel,
                                     'is_borrowed_vehicle'=>$item->is_borrowed_vehicle,
                                     'gasoline_station' => $item->gasoline->name,
                                     'invoice' => $item->invoice_no,
-                                    'allow_to_edit' => $item->allow_edit
+                                    'allow_to_edit' => $item->allow_edit,
+                                    'office' => $item->office->short_name,
+                                    'date_fueled_text' => Carbon::parse($item->date_fueled)->format('M d, Y'),
+                                    'date_fueled' => $item->date_fueled
                                      ]; 
                                  }),
              "can" => [
@@ -118,7 +133,7 @@ class TravelController extends Controller
         // ]);
         // $amount = $this->charges->where('office_id', auth()->user()->office_id)->whereYear('created_at', date("Y"))->get();
 
-        $amount = $amount = DB::table('fms.raaods as raaods')
+        $amount = DB::table('fms.raaods as raaods')
                     ->leftJoin('fms.ooes', 'ooes.recid', '=', 'raaods.idooe')
                     ->leftJoin('fms.raaohs', 'raaohs.recid', '=', 'raaods.idraao')
                     ->leftJoin('fms.functions', 'functions.ffunccod', '=', 'raaohs.ffunccod')
@@ -173,16 +188,19 @@ class TravelController extends Controller
                 ->first($item->gas_type);
             return [
                 'price' => ($total[$item->gas_type] * $item->total_liters),
-                'date' => $item->date_from
+                'date' => $item->date_from,
+                'idooe' => $item->idooe,
+                'idraao' => $item->idraao,
             ];
         });
-      
+        // dd($travels);
         $total_expense = $travels->sum('price');
-        // dd($total_expense);
+       
+        
         return inertia('Travels/Create',[
            'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance2 - $total_expense),
+                                'balance1' => ($item->balance2 - collect($travels)->where('idooe', $item->idooe)->where('idraao', $item->idraao)->sum('price')),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
@@ -242,14 +260,14 @@ class TravelController extends Controller
                         'date' => $item->date_from
                         ];
                     });
-      
+        
         $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
-        $total_expense = $travels->sum('price');
+      
         return inertia('Travels/Create', [
             'editData' => $editData,
             'charges' => $amount->get()
                             ->map(fn($item) => [
-                                'balance1' => ($item->balance2 - $total_expense),
+                                'balance1' => ($item->balance2 - collect($travels)->where('idooe', $item->idooe)->where('idraao', $item->idraao)->sum('price')),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
@@ -415,12 +433,17 @@ class TravelController extends Controller
                                 head.middle_name as head_middle_name,
                                 head.last_name as head_last_name,
                                 head.position_title_short as position_short,
-                                offices.short_name,
+                                head.suffix as suffix,
+                                head.postfix as postfix,
+                                head.courtesy_title as courtesy_title,
+                                
                                 offices.office,
                                 offices.designation,
                                 users.cats,
                                 gasolines.name,
-                                raaohs.ffunccod'))
+                                raaohs.ffunccod,
+                                raaohs.fraodesc,
+                                ooes.fooedesc'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
@@ -437,12 +460,18 @@ class TravelController extends Controller
                                      $join->on('travels.idooe', '=', 'raaods.idooe');
                                  })
                             ->leftJoin('fms.raaohs as raaohs', 'raaohs.recid', 'raaods.idraao')
+                            ->leftJoin('fms.ooes as ooes', 'raaods.idooe', 'ooes.recid')   
                             ->where('travels.id', $request->id)
                             ->get()->toArray())->map(function ($item){
+
                                 $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                                
                                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
-                                })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                                                    $q->whereDate('date', $item->date_from);
+                                                })->where('gasoline_id', $item->gasoline_id)
+                                                ->latest()
+                                                ->first($item->gas_type);
+
                                 return [
                                     'PLATENO' => $item->PLATENO,
                                     'FDESC' => $item->FDESC,
@@ -483,14 +512,19 @@ class TravelController extends Controller
                                     'departure' => $item->departure,
                                     'arrival' => $item->arrival,
                                     'head_first_name' => $item->head_first_name,
-                                    'head_middle_name' => $item->head_middle_name,
+                                    'head_middle_name' => Str::limit($item->head_middle_name, 1,'.'),
                                     'head_last_name' => $item->head_last_name,
                                     'position_short' => $item->position_short,
                                     'office' => $item->office,
                                     'designation' => $item->designation,
                                     'cats' => $item->cats,
                                     'name' => $item->name,
-                                    'ffunccod' => $item->ffunccod
+                                    'ffunccod' => $item->ffunccod,
+                                    'fraodesc' => $item->fraodesc,
+                                    'fooedesc' => $item->fooedesc,
+                                    'suffix' => $item->suffix,
+                                    'postfix' => $item->postfix,
+                                    'courtesy_title' => $item->courtesy_title
                                 ]; 
                             });
         return $travel;
@@ -554,11 +588,17 @@ class TravelController extends Controller
                         $q->where('vehicles_id', $request->vehicles_id);
                     })
                     ->where(function($q) {
-                        $q->whereNull('status')->orWhere('status', 'Approved');
+                        // $q->whereNull('status')->orWhere('status', 'Approved');
+                        $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
                     ->latest()
-                    ->get();
-        $consumedFuel = $fuel->sum('total_liters');
+                    ->get()
+                    ->map(fn($item) => [
+                        'total_liters' => $item->actual_liter ? $item->actual_liter : $item->total_liters
+                    ]);
+
+        $consumedFuel =  (clone $fuel)->sum('total_liters');
+        // return $consumedFuel;
         if ($request->id) {
             $currentLitters = $this->model->find($request->id)->total_liters;
             $consumedFuel = $consumedFuel - $currentLitters;
@@ -587,12 +627,15 @@ class TravelController extends Controller
         
         $request->validate([
             'invoice' => ['required', Rule::when($current_invoice != $request->invoice, ['unique:travels,invoice_no'])],
+            'actual_liter' => [Rule::when($request->actual_liter, ['numeric'])]
         ]);
 
         $travel = $this->model->findOrFail($request->id);
 
         $travel->update([
-            'invoice_no' => $request->invoice
+            'invoice_no' => $request->invoice,
+            'actual_liter' => $request->actual_liter,
+            'date_fueled' => $request->date_fueled
         ]);
 
         return redirect()->back();

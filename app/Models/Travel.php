@@ -9,6 +9,7 @@ use Carbon;
 class Travel extends Model
 {
     protected $table = 'travels';
+    // protected $connection = 'fms';
     protected $fillable = [
         'date_from',
         'date_to',
@@ -18,6 +19,7 @@ class Travel extends Model
         'time_arrival',
         'time_departure',
         'total_liters',
+        'actual_liter',
         'purpose',
         'actual_driver',
         'ticket_number',
@@ -37,7 +39,9 @@ class Travel extends Model
         'idooe',
         'idraao',
         'allow_edit',
-        'edit_by'
+        'edit_by',
+        'actual_liter',
+        'date_fueled'
         
 
     ];
@@ -66,16 +70,16 @@ class Travel extends Model
 
     public function getTotalPriceAttribute()
     {
-        $liters = $this->total_liters;
-        $date_from = $this->date_from;
+        $actual = $this->actual_liter ? $this->actual_liter : $this->total_liters;
+        $date_fueled = $this->date_fueled;
         $gas_type = $this->gas_type;
         $gasoline_id = $this->gasoline_id;
-        $checkPrice = Price::where('gasoline_id', $gasoline_id)->whereDate('date', $date_from)->exists();
-        $total = Price::when($checkPrice, function($q) use ($date_from) {
-                                    $q->whereDate('date', $date_from);
+        $checkPrice = Price::where('gasoline_id', $gasoline_id)->whereDate('date', $date_fueled)->exists();
+        $total = Price::when($checkPrice, function($q) use ($date_fueled) {
+                                    $q->whereDate('date', $date_fueled);
                                 })->where('gasoline_id', $gasoline_id)->latest()->first($gas_type);
 
-        $totalPrice = ($total[$gas_type] * $liters);
+        $totalPrice = ($total[$gas_type] * $actual);
 
         return $totalPrice;
 
@@ -92,6 +96,7 @@ class Travel extends Model
         return 'message';
     }
 
+  
     public function driverVehicle()
     {
         return $this->belongsTo(DriverVehicle::class, 'driver_vehicles_id', 'id');
@@ -120,6 +125,11 @@ class Travel extends Model
     public function gasoline()
     {
         return $this->belongsTo(Gasoline::class, 'gasoline_id', 'id');
+    }
+
+     public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
 }

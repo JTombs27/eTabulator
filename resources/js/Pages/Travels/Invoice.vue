@@ -11,11 +11,30 @@
             <div class="mb-3">
                 <label for="invoice" class="form-label">Invoice #</label>
                 <input type="text" class="form-control" id="invoice" autocomplete="off" v-model="form.invoice" @keyup="checkInvoice()">
+                <div class="fs-6 c-red-500" v-if="form.errors.invoice">{{ form.errors.invoice }}</div>
                 <span>
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" v-if="invoice_loader"></span>
                     <span class="ml-2" :class="invoiceMessageClass"> {{ invoiceMessage }} </span>
                 </span>
             </div>
+            <div>
+                <label for="invoice" class="form-label">Actual Liters</label>
+                <input type="text" class="form-control" id="actual" autocomplete="off" v-model="form.actual_liter">
+                <div class="fs-6 c-red-500" v-if="form.errors.actual_liter">
+                    {{ form.errors.actual_liter }}
+                </div>
+            </div>
+            <div v-if="$page.props.auth.user.role == 'gasoline-station' || $page.props.auth.user.role == 'Admin'">
+                <label for="invoice" class="form-label">Date Fueled</label>
+                <input type="date" class="form-control" id="date_fueled" autocomplete="off" v-model="form.date_fueled">
+                <div class="fs-6 c-red-500" v-if="form.errors.date_fueled">
+                    {{ form.errors.date_fueled }}
+                </div>
+            </div>
+            <span class="ml-2" v-if="form.processing">
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Submitting... 
+            </span>
        </form>
     </Modal>
 </template>
@@ -35,7 +54,9 @@ export default {
         return {
             form:useForm({
                 invoice:null,
-                id:null
+                actual_liter:null,
+                id:null,
+                date_fueled:null
             }),
             invoice_loader:false,
             invoiceMessage:"",
@@ -46,13 +67,14 @@ export default {
     },
 
     mounted() {
-        this.form.id = this.item.id
+        this.form.id = this.item.id;
+        this.form.actual_liter = this.item.actual_liters;
+        this.form.date_fueled = this.item.date_fueled;
         this.invoice()
     },
 
     methods: {
         invoice() {
-            console.log(this.item)
             this.invoiceMessageClass = '';
             this.invoiceMessage = '';
             if (this.item) {
@@ -68,6 +90,7 @@ export default {
         },
 
         checkInvoice() {
+            this.form.clearErrors();
             this.invoice_loader = true;
             this.invoiceMessage = "Checking invoice number";
             this.invoiceMessageClass = ''
@@ -95,11 +118,9 @@ export default {
         },500),
 
         saveInvoice() {
-            this.$inertia.post('/travels/updateInvoice', this.form, {
+            this.form.post('/travels/updateInvoice', {
                 onStart:() => {
-                    this.invoice_loader = true;
                     this.invoiceMessageClass = ''
-                    this.invoiceMessage = 'Submitting...';
                 },
                 onSuccess: (e) => {
                     this.showInvoice = false;
@@ -109,15 +130,18 @@ export default {
                     $('.modal-backdrop').remove();
                     this.$emit('closeModal',"save")
                 },
-                onError: (e) => {
+                onFinish: (e) => {
                     this.invoice_loader = false;
-                    this.invoiceMessage = e.invoice;
-                    this.invoiceMessageClass = 'text-danger'
-                }
+                },
 
             })
         },
+
     },
+
+    computed: {
+
+    }
 
 }
 </script>

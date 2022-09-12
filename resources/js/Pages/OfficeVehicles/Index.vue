@@ -61,6 +61,7 @@
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item" @click="gotoUpdate(index)">Edit</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoDelete(index)">Delete</Link></li>
                                   </ul>
                                 </div>
                             </td>
@@ -139,6 +140,18 @@ export default {
 
             this.$inertia.get("/officeVehicles/" + this.id+"/edit")
         },
+
+        gotoDelete(index) {
+            let text = "Warning! \Are you sure you want to Delete this vehicle assignment with Plate Number " + this.officevehicle.data[index].vehicle.PLATENO +
+            " from " + this.officevehicle.data[index].office.office + " department";
+          
+             if(confirm(text) == true) {
+                  this.id = this.officevehicle.data[index].id
+                  this.$inertia.post("/officeVehicles/" + this.id+"/destroy")
+            }
+        },
+
+        
         // loadMunicipals() { 
         //     axios.post('/municipalities').then((response) => {
         //         this.municipals = response.data
