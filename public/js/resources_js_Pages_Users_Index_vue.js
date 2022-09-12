@@ -254,7 +254,7 @@ var _hoisted_11 = {
   "class": "col-12"
 };
 var _hoisted_12 = {
-  "class": "table responsive bgc-white p-20 bd shadow-sm"
+  "class": "tabl-responsive bgc-white p-20 bd shadow-sm"
 };
 var _hoisted_13 = {
   "class": "table table-hover"

@@ -60,11 +60,18 @@
                                                 <option value="On-repair">On Repair</option>
                                                 <option value="Wasted">Wasted</option>
                                             </select>
+                                            <div class="fs-6 c-red-500" v-if="form.errors.condition">{{ form.errors.condition }}</div>
                                         </div>
                                         <div class="col" v-if="pageTitle === 'Create Vehicles'">
                                             <label class="col-mb-3 col-form-label">Date of Vehicle Status Condition</label>
                                             <input type="date" v-model="form.vehicle_status_date" class="form-control" autocomplete="chrome-off">
                                         </div>
+
+                                        <div class="col" v-if="pageTitle === 'Create Vehicles'">
+                                            <label class="col-mb-3 col-form-label">Select Office Assignment</label>
+                                            <Select2 v-model="form.department_code" id="department_code" />
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +116,9 @@ export default ({
                 fuel_limit: "",
                 checkadd: "",
                 condition:"",
-                vehicle_status_date: ""
+                vehicle_status_date: "",
+                department_code: ""
+                
             }),
         pageTitle: "",
         isDisabled:false
@@ -117,6 +126,8 @@ export default ({
     },
 
     mounted() {
+        this.loadOffice()
+
         if( !!this.editData ) {
             this.pageTitle = "Edit Vehicles"
             this.form.PLATENO = this.editData.PLATENO
@@ -129,6 +140,7 @@ export default ({
         } else {
             this.pageTitle = "Create Vehicles"
         }
+
     },
     // watch:{
     //     'form.TYPECODE': function (value){
@@ -144,6 +156,13 @@ export default ({
             } else {
                 this.form.post("/vehicles", this.form);
             }
+        },
+
+        loadOffice() 
+        { 
+            axios.get('/offices/fetch').then((response) => {
+                this.offices = response.data
+            })
         },
 
         // addDriver()
