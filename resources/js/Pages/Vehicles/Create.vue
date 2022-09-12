@@ -35,7 +35,6 @@
                                         <div class="col">
                                             <label class="col-mb-3 col-form-label">Date Acquired</label>
                                             <input type="date" v-model="form.FDATEACQ" class="form-control" autocomplete="chrome-off">
-                                            <!-- <div class="fs-6 c-red-500" v-if="form.errors.FDATEACQ">{{ form.errors.FDATEACQ }}</div> -->
                                         </div>
                                         <div class="col">
                                             <label class="col-mb-3 col-form-label">Acquisition Cost</label>

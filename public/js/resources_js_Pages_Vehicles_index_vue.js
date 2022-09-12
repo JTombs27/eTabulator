@@ -105,6 +105,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           return "<span>Heavy Equipment</span>" + stats;
           break;
 
+        case '4':
+          return "<span>Others</span>" + stats;
+          break;
+
         default:
           return "";
           break;
@@ -542,7 +546,7 @@ var _hoisted_41 = {
   "class": "col-12"
 };
 var _hoisted_42 = {
-  "class": "table responsive bgc-white p-20 bd shadow-sm"
+  "class": "table-responsive bgc-white p-20 bd shadow-sm"
 };
 var _hoisted_43 = {
   "class": "table table-hover"

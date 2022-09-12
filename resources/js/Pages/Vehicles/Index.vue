@@ -401,6 +401,9 @@ export default ({
                 case '3':
                     return "<span>Heavy Equipment</span>"+stats;
                     break
+                case '4':
+                    return "<span>Others</span>"+stats;
+                    break
                 default:
                     return ""
                     break
