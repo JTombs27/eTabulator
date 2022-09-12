@@ -37,6 +37,7 @@ class VehicleController extends Controller
             })
             ->latest()
             ->simplePaginate(10)
+            ->withQueryString(),
             // ->through(function($item) {
                 
             //     // dd($item->officeV->department_code);
@@ -46,7 +47,6 @@ class VehicleController extends Controller
             //         return $item;
             //     }
             // })
-            ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
                 'canCreateVehicle'          => auth()->user()->can('canCreateVehicle', User::class),
@@ -63,10 +63,12 @@ class VehicleController extends Controller
     {
         
         $index = $this->model->with([
-            'vehicle_status',
-            'driverassign.empl.office',
-            'officeV.office'
-        ]);
+                    'vehicle_status',
+                    'driverassign.empl.office',
+                    'officeV.office'
+                ]);
+
+
         
         if ($request->PLATENO) {
             $index = $index->where('PLATENO', 'like' , '%' .$request->PLATENO. '%');

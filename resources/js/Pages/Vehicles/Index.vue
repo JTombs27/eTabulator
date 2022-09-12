@@ -123,7 +123,14 @@
                             <td v-else></td> -->
                             <td v-if="vehicle.office_v != null"> {{vehicle.office_v.office.short_name}}</td>
                             <td v-else></td>
-                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
+                            <template v-if="vehicle.driverassign.length != 0">
+                                <td v-if="vehicle.driverassign[0].empl != null"> 
+                                    <!-- aaaa -->
+                                    <!-- {{vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name}} -->
+                                     {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}
+                                </td>
+                                <td v-else></td>
+                            </template>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right" >
