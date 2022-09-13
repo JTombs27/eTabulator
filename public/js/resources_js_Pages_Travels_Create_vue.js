@@ -484,8 +484,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }
       }
 
-      if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
+      if (!this.form.is_borrowed_fuel) {
         this.form.borrowing_office = null;
+        this.form.borrowing_division = null;
+        this.divisions = [];
       }
 
       if (this.$refs.is_borrowed_fuel.checked) {

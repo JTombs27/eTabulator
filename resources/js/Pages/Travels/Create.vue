@@ -642,8 +642,10 @@ export default {
                     data = {text: this.editData.office_borrowed_fuel.office, id:this.editData.office_borrowed_fuel.id, selected: true}
                 }
             }
-            if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
-                this.form.borrowing_office = null
+            if (!this.form.is_borrowed_fuel) {
+                this.form.borrowing_office = null;
+                this.form.borrowing_division = null;
+                this.divisions = [];
             }
             if (this.$refs.is_borrowed_fuel.checked) {
                 $('#office').select2({
