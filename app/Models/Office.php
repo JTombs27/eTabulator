@@ -26,5 +26,10 @@ class Office extends Model
     {
         return $this->hasMany(Travel::class,"office_id","department_code");
     }
+
+    public function division()
+    {
+        return $this->hasMany(Division::class, 'department_code', 'department_code');
+    }
     
 }

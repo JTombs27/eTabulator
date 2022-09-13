@@ -32,6 +32,7 @@
                             <th scope="col">Username</th>
                             <th scope="col">Name</th>
                             <th scope="col">Office</th>
+                            <th scope="col">division</th>
                             <th scope="col">Role</th>
                             <th scope="col" style="width: 30%">Permissions</th>
                             <th scope="col" style="text-align: right">Action</th>
@@ -71,6 +72,9 @@
                             </td>
                             <td>
                                 {{ user.office }}
+                            </td>
+                            <td>
+                                {{ user.division }}
                             </td>
                             <td>
                                 {{ user.role }}
