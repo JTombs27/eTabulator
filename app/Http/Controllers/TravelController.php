@@ -467,7 +467,7 @@ class TravelController extends Controller
                             ->leftJoin('fms.raaohs as raaohs', 'raaohs.recid', 'raaods.idraao')
                             ->leftJoin('fms.ooes as ooes', 'raaods.idooe', 'ooes.recid')
                             ->leftJoin('users as ro_user', 'ro_user.id', 'travels.user_id')
-                            ->leftJoin('employees as ro_employee', 'ro_employee.empl_id', 'users.cats')
+                            ->leftJoin('employees as ro_employee', 'ro_employee.empl_id', 'ro_user.cats')
                             ->leftJoin('divisions', 'divisions.division_code', 'ro_employee.division_code')   
                             ->where('travels.id', $request->id)
                             ->get()->toArray())->map(function ($item){
