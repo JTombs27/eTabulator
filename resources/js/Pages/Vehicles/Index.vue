@@ -27,6 +27,7 @@
                 <option value="1">Motorcycle</option>
                 <option value="2">Light Vehicle</option>
                 <option value="3">Heavy Equipment</option>
+                <option value="3">Others</option>
             </select>
 
             <label>Date Acquired</label>
@@ -89,7 +90,7 @@
         </div>
 
         <div class="col-12">
-            <div class="table responsive bgc-white p-20 bd shadow-sm">
+            <div class="table-responsive bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -122,7 +123,14 @@
                             <td v-else></td> -->
                             <td v-if="vehicle.office_v != null"> {{vehicle.office_v.office.short_name}}</td>
                             <td v-else></td>
-                            <td v-if="vehicle.driverassign.length != 0"> {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}</td>
+                            <template v-if="vehicle.driverassign.length != 0">
+                                <td v-if="vehicle.driverassign[0].empl != null"> 
+                                    <!-- aaaa -->
+                                    <!-- {{vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name}} -->
+                                     {{`${vehicle.driverassign[vehicle.driverassign.length - 1].empl.first_name} ${mi(vehicle.driverassign[vehicle.driverassign.length - 1].empl.middle_name)} ${vehicle.driverassign[vehicle.driverassign.length - 1].empl.last_name}`}}
+                                </td>
+                                <td v-else></td>
+                            </template>
                             <td v-else></td>
                             <td> {{vehicle.FDESC}}</td>
                             <td style="text-align: right" >
@@ -384,7 +392,7 @@ export default ({
                     replace: true,
                 }
             );
-        }, 300)
+        }, 500)
     },
     methods: {
         code (code,status) {
@@ -400,6 +408,9 @@ export default ({
                     break
                 case '3':
                     return "<span>Heavy Equipment</span>"+stats;
+                    break
+                case '4':
+                    return "<span>Others</span>"+stats;
                     break
                 default:
                     return ""

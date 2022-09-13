@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DriverValidation;
 use Illuminate\Http\Request;
 use App\Models\DriverVehicle;
 use App\Models\Vehicle;
@@ -45,12 +46,13 @@ class DriverVehicleController extends Controller
        
     }
 
-    public function store(Request $request, $id)
+    public function store(DriverValidation $request, $id)
     {
         // $attributes = $request->validate([
         //     'date_from' => "required|date",
         //     'date_to' => "required|date|after_or_equal:date_from", 
         // ]);
+        $request->validated();
 
         $data = $this->model->where('vehicles_id',$request->vehicles_id)
         ->where(function ($query) use($request){

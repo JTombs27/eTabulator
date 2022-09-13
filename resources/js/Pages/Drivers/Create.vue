@@ -18,7 +18,7 @@
             <div class="col-4">
                 <div class="card">
                     <div class="card-body">
-                        <form @submit.prevent="">
+                        <form @submit.prevent="submit()">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col">
@@ -30,6 +30,7 @@
                                         <div class="col">
                                             <label for="" class="col-mb-3 col-form-label">Drivers Name</label>
                                             <Select2 v-model="form.drivers_id" id="emp_name" @select="fetch($event)" />
+                                            <div class="fs-6 c-red-500" v-if="form.errors.drivers_id">{{form.errors.drivers_id}}</div>
                                         </div>
 
                                         <div class="col">
@@ -49,7 +50,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer p-1">
-                                <button type="button" class="btn btn-primary mt-3" @click="submit()">Save</button>
+                                <button class="btn btn-primary mt-3">Save</button>
                             </div>
                         </form>
                     </div>
@@ -123,14 +124,14 @@ export default {
 
     methods: {
       fetch(e){
-        console.log(e);
         this.form.department_code = e.department;
         //this.form.vehicles_id = e.
       },
 
       submit(){
-        this.form.post("/drivers/"+this.Vdriver.id+"/store", this.form);
+        this.form.post("/drivers/"+this.Vdriver.id+"/store");
       },
+
        back()
         {
              this.$inertia.get("/drivers/" + this.Vdriver.id+"/vehicles");
