@@ -26,10 +26,11 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
+       
         return inertia('Users/Index', [
             //returns an array of users with name field only
             "users" => $this->model
-                ->with('permissions','office')
+                ->with('permissions','office.division','employee.division')
                 ->when($request->search, function ($query, $searchItem) {
                     $query->where('name', 'like', '%' . $searchItem . '%')
                         ->orWhere('username', 'like', '%' . $searchItem . '%');
@@ -38,6 +39,7 @@ class UserController extends Controller
                 ->simplePaginate(8)
                 ->withQueryString()
                 ->through(fn($user) => [
+                    'division' => $user->employee->division ? $user->employee->division->division_name1 : '',
                     'id' => $user->id,
                     'permissions' => $user->permissions,
                     'office' => $user->office ? $user->office->office : '',
