@@ -443,7 +443,8 @@ class TravelController extends Controller
                                 gasolines.name,
                                 raaohs.ffunccod,
                                 raaohs.fraodesc,
-                                ooes.fooedesc'))
+                                ooes.fooedesc,
+                                divisions.division_name1'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
@@ -452,7 +453,7 @@ class TravelController extends Controller
                             ->leftJoin('gasolines', 'gasolines.id', 'travels.gasoline_id')
                             ->leftJoin('employees as head', function($join)
                                  {
-                                     $join->on('users.cats', '=', 'head.empl_id');
+                                     $join->on('offices.empl_id', '=', 'head.empl_id');
                                  })
                             ->leftJoin('fms.raaods as raaods', function($join)
                                  {
@@ -460,7 +461,10 @@ class TravelController extends Controller
                                      $join->on('travels.idooe', '=', 'raaods.idooe');
                                  })
                             ->leftJoin('fms.raaohs as raaohs', 'raaohs.recid', 'raaods.idraao')
-                            ->leftJoin('fms.ooes as ooes', 'raaods.idooe', 'ooes.recid')   
+                            ->leftJoin('fms.ooes as ooes', 'raaods.idooe', 'ooes.recid')
+                            ->leftJoin('users as ro_user', 'ro_user.id', 'travels.user_id')
+                            ->leftJoin('employees as ro_employee', 'ro_employee.empl_id', 'users.cats')
+                            ->leftJoin('divisions', 'divisions.division_code', 'ro_employee.division_code')   
                             ->where('travels.id', $request->id)
                             ->get()->toArray())->map(function ($item){
 
@@ -524,7 +528,8 @@ class TravelController extends Controller
                                     'fooedesc' => $item->fooedesc,
                                     'suffix' => $item->suffix,
                                     'postfix' => $item->postfix,
-                                    'courtesy_title' => $item->courtesy_title
+                                    'courtesy_title' => $item->courtesy_title,
+                                    'division' => $item->division_name1
                                 ]; 
                             });
         return $travel;
