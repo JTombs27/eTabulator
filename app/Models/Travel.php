@@ -33,6 +33,7 @@ class Travel extends Model
         'is_borrowed_fuel',
         'is_borrowed_vehicle',
         'borrowing_office',
+        'borrowing_division',
         'gasoline_id',
         'consumed_fuel',
         'tank_balance',
@@ -130,6 +131,11 @@ class Travel extends Model
      public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+     public function divisionBorrowedFuel()
+    {
+        return $this->belongsTo(Division::class, 'borrowing_division', 'division_code');
     }
 
 }

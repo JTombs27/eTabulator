@@ -226,6 +226,12 @@ Route::middleware('auth')->group(function() {
         Route::delete('/{id}', [GasolineController::class, 'destroy'])->can('canDeleteGasoline', 'App\Model\User');
        
     });
+
+    // Divisions
+
+    Route::prefix('/divisions')->group(function () {
+        Route::post('/fetch', [DivisionController::class, 'loadDivisions']);
+    });
     
 });
 

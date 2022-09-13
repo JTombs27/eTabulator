@@ -2,7 +2,41 @@
     <Head>
         <title>{{ pageTitle }} travel</title>
     </Head>
-    <div class="row gap-20 masonry pos-r">
+
+    <div v-if="loader" class="p-0">
+        <!-- <span class="text-secondary placeholder bg-none"></span> -->
+        <span class="text-center text-secondary">Please Wait...</span>
+       
+        <p class="card-text placeholder-glow">
+          <span class="placeholder col-12 placeholder-lg"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-6"></span>
+          <span class="placeholder col-8"></span>
+        </p>
+        <p class="card-text placeholder-glow">
+          <span class="placeholder col-12 placeholder-lg"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-6"></span>
+          <span class="placeholder col-8"></span>
+        </p>
+        <p class="card-text placeholder-glow">
+          <span class="placeholder col-7"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-6"></span>
+          <span class="placeholder col-8"></span>
+        </p>
+        <p class="card-text placeholder-glow">
+          <span class="placeholder col-7"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-4"></span>
+          <span class="placeholder col-6"></span>
+          <span class="placeholder col-8"></span>
+        </p>
+    </div>
+    <div class="row gap-20 masonry pos-r" :class="{'d-none': loader == true}">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Travel</h3> 
             <h3>
@@ -111,10 +145,10 @@
                          </div>
                          <div class="col-md-4">    
                               <div class="form-check">
-                                  <label class="form-check-label disable-select" for="is_borrowed_fuel">
+                                  <label class="form-check-label disable-select" for="is_borrowed_fuel" >
                                      Check if borrow fuel
                                   </label>
-                                 <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
+                                 <input class="ml-5 form-check-input" type="checkbox" ref="is_borrowed_fuel" id="is_borrowed_fuel" v-model="form.is_borrowed_fuel" @change="getOffice($event)">
                              </div>
                          </div>
                        </div>
@@ -124,9 +158,14 @@
                         <transition name="fade"  mode="out-in">
                             <span v-if="form.is_borrowed_fuel">
                                 <br>
-                                <label >BORROWED BY</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
-                                <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office"/>
+                                <label >BORROWED BY(Office)</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
+                                <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office" @select="loadDivision"/>
                                 <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
+                                <label >Division</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
+                                <select v-model="form.borrowing_division" class="form-select">
+                                    <option value="" disabled selected readonly>Select Division</option>
+                                    <option v-for="(item, index) in divisions" :key="index" :value="item.id">{{item.text}}</option>
+                                </select>
                             </span>
                         </transition>
                     </div>
@@ -251,6 +290,7 @@ export default {
                 is_borrowed_vehicle:null,
                 is_borrowed_fuel:null,
                 borrowing_office:null,
+                borrowing_division:'',
                 remaining_fuel:null,
                 maxLiters:"",
                 gasoline_id:null,
@@ -265,6 +305,8 @@ export default {
             vehicle_status:"",
             employees:[],
             drivers:[],
+            divisions:[],
+            offices:[],
             gasPrice:"",
             fuelLimit:null,
             gases:[{
@@ -286,15 +328,16 @@ export default {
                 id:"greases_price",
                 text:"Greases"
             }],
-           
+           loader:true
         }
     },
 
     async mounted() {
         await this.loadGasoline()
-        // console.log(this.auth.user)
         // this.form.balance = this.balance
         if (this.editData !== undefined) {
+            
+            
             _.assign(this.form, {current_liters:this.editData.total_liters})
             // this.form.charge = `4899-50`;
             this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
@@ -303,9 +346,12 @@ export default {
             this.form.place_to_visit = this.editData.place_to_visit
             this.form.gas_type = this.editData.gas_type
             this.form.tank_balance = this.editData.tank_balance
+            this.form.borrowing_office = this.editData.borrowing_office
+            this.form.borrowing_division = this.editData.borrowing_division
             this.form.consumed_fuel = this.editData.consumed_fuel
             this.form.time_arrival = this.editData.time_arrival
             this.form.time_departure = this.editData.time_departure
+            this.form.is_borrowed_fuel = Boolean(this.editData.is_borrowed_fuel)
             this.form.total_liters = this.editData.total_liters
             this.form.vehicles_id = String(this.editData.driver_vehicle.vehicles_id)
             this.form.driver_vehicles_id = this.editData.driver_vehicle.id
@@ -325,16 +371,27 @@ export default {
             }
             await this.getVehicles();
             await this.fetchPrice();
+            
+            // console.log(this.$refs.is_borrowed_fuel.checked)
+            await this.getOffice()
+            if (this.editData.borrowing_division) {
+                this.loadDivision()
+                
+            }
             await this.getVehicleDetails();
             await this.showActualDriver();
             await this.selectChargeDetails();
-            setTimeout(() => {
-                this.form.date_to = this.editData.date_to
+            await this.loadDivision();
+            this.loader = false;
+           
+           setTimeout(() => {
+               this.form.date_to = this.editData.date_to
             }, 0);
             
         } else {
             this.pageTitle = "Create"
             this.getVehicles();
+            this.loader = false;
         }
         
 
@@ -359,7 +416,6 @@ export default {
                 this.form.idooe = chargeAttributes[1]
                 this.form.balance = chargeAttributes[2]
             } else {
-                console.log(chargeAttr[0].attributes)
                 this.form.idraao = chargeAttr[0].attributes[0].value
                 this.form.idooe = chargeAttr[0].attributes[1].value
                 this.form.balance = chargeAttr[0].attributes[2].value
@@ -579,10 +635,17 @@ export default {
         },
 
         getOffice(e) {
+            var data = {};
+            if (this.editData != undefined) {
+                if (this.editData.office) {
+
+                    data = {text: this.editData.office.office, id:this.editData.office.id, selected: true}
+                }
+            }
             if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
                 this.form.borrowing_office = null
             }
-            if (e.target.checked) {
+            if (this.$refs.is_borrowed_fuel.checked) {
                 $('#office').select2({
                     ajax: {
                         url: '/offices/fetch',
@@ -606,12 +669,21 @@ export default {
                         },
                         cache: true
                     },
+                    data:[data],
                     placeholder: 'Search for an office',
                     minimumInputLength: 2,
                     templateResult:this.formatOfficeSelection,
                     templateSelection:this.formatOffice
                 })
             }
+        },
+
+        loadDivision()
+        {
+            axios.post('/divisions/fetch', {department_code:this.form.borrowing_office})
+                .then((response) => {
+                    this.divisions = response.data
+                })
         },
         
         submit() {
@@ -620,7 +692,7 @@ export default {
                 // console.log(this.form)
                 return false;
             }
-            this.form.post("/travels", this.form);
+            this.form.post("/travels");
         }
     },
 
