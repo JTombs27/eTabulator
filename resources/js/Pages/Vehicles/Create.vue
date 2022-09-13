@@ -66,11 +66,6 @@
                                             <input type="date" v-model="form.vehicle_status_date" class="form-control" autocomplete="chrome-off">
                                         </div>
 
-                                        <!-- <div class="col" v-if="pageTitle === 'Create Vehicles'">
-                                            <label class="col-mb-3 col-form-label">Select Office Assignment</label>
-                                            <Select2 v-model="form.department_code" id="department_code" />
-                                        </div> -->
-
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +111,6 @@ export default ({
                 checkadd: "",
                 condition:"",
                 vehicle_status_date: "",
-                // department_code: ""
                 
             }),
         pageTitle: "",

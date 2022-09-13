@@ -93,7 +93,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         id: "greases_price",
         text: "Greases"
       }],
-      loader: false
+      loader: true
     };
   },
   mounted: function mounted() {
@@ -109,7 +109,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 2:
               if (!(_this.editData !== undefined)) {
-                _context.next = 45;
+                _context.next = 49;
                 break;
               }
 
@@ -124,6 +124,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this.form.place_to_visit = _this.editData.place_to_visit;
               _this.form.gas_type = _this.editData.gas_type;
               _this.form.tank_balance = _this.editData.tank_balance;
+              _this.form.borrowing_office = _this.editData.borrowing_office;
+              _this.form.borrowing_division = _this.editData.borrowing_division;
               _this.form.consumed_fuel = _this.editData.consumed_fuel;
               _this.form.time_arrival = _this.editData.time_arrival;
               _this.form.time_departure = _this.editData.time_departure;
@@ -146,46 +148,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 30;
-              return _this.getVehicles();
-
-            case 30:
               _context.next = 32;
-              return _this.fetchPrice();
+              return _this.getVehicles();
 
             case 32:
               _context.next = 34;
-              return _this.getOffice();
+              return _this.fetchPrice();
 
             case 34:
               _context.next = 36;
-              return _this.getVehicleDetails();
+              return _this.getOffice();
 
             case 36:
-              _context.next = 38;
+              if (_this.editData.borrowing_division) {
+                _this.loadDivision();
+              }
+
+              _context.next = 39;
+              return _this.getVehicleDetails();
+
+            case 39:
+              _context.next = 41;
               return _this.showActualDriver();
 
-            case 38:
-              _context.next = 40;
+            case 41:
+              _context.next = 43;
               return _this.selectChargeDetails();
 
-            case 40:
-              _context.next = 42;
+            case 43:
+              _context.next = 45;
               return _this.loadDivision();
 
-            case 42:
+            case 45:
+              _this.loader = false;
               setTimeout(function () {
                 _this.form.date_to = _this.editData.date_to;
               }, 0);
-              _context.next = 47;
+              _context.next = 52;
               break;
 
-            case 45:
+            case 49:
               _this.pageTitle = "Create";
 
               _this.getVehicles();
 
-            case 47:
+              _this.loader = false;
+
+            case 52:
             case "end":
               return _context.stop();
           }
@@ -589,12 +598,8 @@ var _hoisted_1 = {
   "class": "p-0"
 };
 
-var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"text-center text-secondary\">Please Wait...</span><h5 class=\"card-title placeholder-glow\"></h5><p class=\"card-text placeholder-glow\"><span class=\"placeholder col-7\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-6\"></span><span class=\"placeholder col-8\"></span></p><p class=\"card-text placeholder-glow\"><span class=\"placeholder col-7\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-6\"></span><span class=\"placeholder col-8\"></span></p>", 4);
+var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<span class=\"text-center text-secondary\">Please Wait...</span><p class=\"card-text placeholder-glow\"><span class=\"placeholder col-12 placeholder-lg\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-6\"></span><span class=\"placeholder col-8\"></span></p><p class=\"card-text placeholder-glow\"><span class=\"placeholder col-12 placeholder-lg\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-6\"></span><span class=\"placeholder col-8\"></span></p><p class=\"card-text placeholder-glow\"><span class=\"placeholder col-7\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-6\"></span><span class=\"placeholder col-8\"></span></p><p class=\"card-text placeholder-glow\"><span class=\"placeholder col-7\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-4\"></span><span class=\"placeholder col-6\"></span><span class=\"placeholder col-8\"></span></p>", 5);
 
-var _hoisted_6 = {
-  key: 1,
-  "class": "row gap-20 masonry pos-r"
-};
 var _hoisted_7 = {
   "class": "peers fxw-nw jc-sb ai-c"
 };
@@ -1077,7 +1082,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     _: 1
     /* STABLE */
 
-  }), !$data.loader ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span class=\"text-secondary placeholder bg-none\"></span> "), _hoisted_2])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Travel", 1
+  }), $data.loader ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <span class=\"text-secondary placeholder bg-none\"></span> "), _hoisted_2])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["row gap-20 masonry pos-r", {
+      'd-none': $data.loader == true
+    }])
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.pageTitle) + " Travel", 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [_hoisted_8, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("u", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)("\u20B1".concat(Number($data.form.balance ? $data.form.balance : 0).toLocaleString(undefined, {
     minimumFractionDigits: 2
@@ -1435,7 +1444,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , _hoisted_102)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 32
   /* HYDRATE_EVENTS */
-  )])]))], 64
+  )])], 2
+  /* CLASS */
+  )], 64
   /* STABLE_FRAGMENT */
   );
 }
