@@ -198,14 +198,17 @@ class TravelController extends Controller
        
         
         return inertia('Travels/Create',[
-           'charges' => $amount->get()
+            'charges' => $amount->get()
                             ->map(fn($item) => [
                                 'balance1' => ($item->balance2 - collect($travels)->where('idooe', $item->idooe)->where('idraao', $item->idraao)->sum('price')),
                                 'idooe' => $item->idooe,
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
                                 'fooedesc' => $item->fooedesc,
-                            ])
+                            ]),
+            'can' => [
+                'addDivision' => auth()->user()->can('canViewDivisionInTravel', User::class)
+            ]
         ]);
     }
 
