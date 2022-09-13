@@ -442,6 +442,7 @@ class TravelController extends Controller
                                 
                                 offices.office,
                                 offices.designation,
+                                offices.short_name,
                                 users.cats,
                                 gasolines.name,
                                 raaohs.ffunccod,
@@ -532,7 +533,8 @@ class TravelController extends Controller
                                     'suffix' => $item->suffix,
                                     'postfix' => $item->postfix,
                                     'courtesy_title' => $item->courtesy_title,
-                                    'division' => $item->division_name1
+                                    'division' => $item->division_name1,
+                                    'short_name' => $item->short_name
                                 ]; 
                             });
         return $travel;
