@@ -468,7 +468,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
     },
     getOffice: function getOffice(e) {
-      var data = {};
+      var data = data = {
+        text: "",
+        id: "",
+        selected: true
+      };
 
       if (this.editData != undefined) {
         if (this.editData.office) {

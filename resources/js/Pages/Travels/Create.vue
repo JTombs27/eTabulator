@@ -635,7 +635,7 @@ export default {
         },
 
         getOffice(e) {
-            var data = {};
+            var data = data = {text: "", id:"", selected: true};
             if (this.editData != undefined) {
                 if (this.editData.office) {
 
