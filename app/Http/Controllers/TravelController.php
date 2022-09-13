@@ -264,7 +264,7 @@ class TravelController extends Controller
                         ];
                     });
         
-        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle','divisionBorrowedFuel', 'office')->where('id',$id)->first();
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle','divisionBorrowedFuel', 'officeBorrowedFuel')->where('id',$id)->first();
       
         return inertia('Travels/Create', [
             'editData' => $editData,

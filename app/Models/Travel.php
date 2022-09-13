@@ -133,9 +133,14 @@ class Travel extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-     public function divisionBorrowedFuel()
+    public function divisionBorrowedFuel()
     {
         return $this->belongsTo(Division::class, 'borrowing_division', 'division_code');
+    }
+
+    public function officeBorrowedFuel()
+    {
+        return $this->belongsTo(Office::class, 'borrowing_office', 'department_code');
     }
 
 }

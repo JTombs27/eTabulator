@@ -161,7 +161,7 @@
                                 <label >BORROWED BY(Office)</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
                                 <Select2 class="js-data-example-ajax" id="office" v-model="form.borrowing_office" @select="loadDivision"/>
                                 <div class="fs-6 c-red-500" v-if="form.errors.borrowing_office">{{ form.errors.borrowing_office }}</div>
-                                <label >Division</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
+                                <label >Division</label>
                                 <select v-model="form.borrowing_division" class="form-select">
                                     <option value="" disabled selected readonly>Select Division</option>
                                     <option v-for="(item, index) in divisions" :key="index" :value="item.id">{{item.text}}</option>
@@ -639,7 +639,7 @@ export default {
             if (this.editData != undefined) {
                 if (this.editData.office) {
 
-                    data = {text: this.editData.office.office, id:this.editData.office.id, selected: true}
+                    data = {text: this.editData.office_borrowed_fuel.office, id:this.editData.office_borrowed_fuel.id, selected: true}
                 }
             }
             if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
