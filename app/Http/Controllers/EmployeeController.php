@@ -18,7 +18,7 @@ class EmployeeController extends Controller
         
         try {
             //code...
-            DB::table('employees')->truncate();
+            // DB::table('employees')->truncate();
             $url = env('MIX_API_URL');
             $employees = Http::post("http://122.54.19.172:91//api/ListOfEmployees")->collect();
             $arrayOfEmployees = [];
@@ -60,7 +60,25 @@ class EmployeeController extends Controller
             }
             $emp = array_chunk($arrayOfEmployees, 200);
             foreach ($emp as $value) {
-                DB::table('employees')->insert($value);
+                DB::table('employees')->upsert($value,['empl_id'],
+                [
+                    'empl_id',
+                    'first_name',
+                    'middle_name',
+                    'last_name',
+                    'department_code',
+                    'gender',
+                    'is_pghead',
+                    'position_code',
+                    'position_title_long',
+                    'position_title_short',
+                    'birth_date',
+                    'created_at',
+                    'suffix',
+                    'division_code',
+                    'postfix',
+                    'courtesy_title',
+                ]);
             }
         } catch (\Throwable $th) {
             return $th->getMessage();
