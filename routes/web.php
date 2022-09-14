@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/create', [DriverVehicleController::class, 'create']);
         Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
         Route::delete('/{id}/delete/{did}', [DriverVehicleController::class, 'destroy']);
+        Route::post('/fetch', [DriverVehicleController::class, 'fetch']);
     });
     
     // Route::post('/sss',  [TravelController::class, 'index']);

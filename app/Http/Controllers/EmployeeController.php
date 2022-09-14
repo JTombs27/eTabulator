@@ -17,27 +17,14 @@ class EmployeeController extends Controller
     {
         
         try {
-            //code...
-            // DB::table('employees')->truncate();
-            $url = env('MIX_API_URL');
             $employees = Http::post("http://122.54.19.172:91//api/ListOfEmployees")->collect();
             $arrayOfEmployees = [];
             foreach ($employees as $value) {
-                // if ($value['empl_id']) {
-                    
-                //        return date('Y-m-d',$value['birth_date']) ;
-                // }
-                // return $boardMemberexist;
                 
                 $first = $value['first_name'];
                 $last_name = $value['last_name'];
                 $division =  $this->boardMember($first, $last_name)->pluck('division_code');
                 $division_code = count($division) != 0 ? $division[0] : $value['division_code'];
-                
-
-                // if(count($division)) {
-                //     return $division_code;
-                // }
                 $data = [
                     'empl_id' => $value['empl_id'],
                     'first_name' => $value['first_name'],
