@@ -566,7 +566,7 @@ class TravelController extends Controller
                     ->get()
                     ->map(fn($item) => [
                         'id' => $item->vehicles_id,
-                        'text' => $item->plate_no,
+                        'text' => $item->vehicle->PLATENO,
                         'condition' => $item->vehicle->vehicle_latest_status->condition,
                         'typeCode' => $item->vehicle->TYPECODE,
                         'office_id' => $item->department_code

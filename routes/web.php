@@ -181,8 +181,10 @@ Route::middleware('auth')->group(function() {
 
 
     //for employees
-    Route::prefix('employees')->group(function () {
-        Route::get('getEmployees', [EmployeeController::class, 'getEmployees']);
+    Route::prefix('/employees')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index']);
+        Route::get('/create', [EmployeeController::class, 'create']);
+        Route::get('/getEmployees', [EmployeeController::class, 'getEmployees']);
     });
 
     //for Offices

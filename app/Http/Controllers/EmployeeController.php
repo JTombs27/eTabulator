@@ -3,16 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Office;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class EmployeeController extends Controller
 {
-    public function __construct(Employee $employee)
+    public function __construct(Employee $employee, Office $offices)
     {  
         $this->model = $employee;
+        $this->offices = $offices;
     }
+
+    public function index()
+    {
+        $employees = $this->model
+                        ->with(['office'])
+                        ->latest()
+                        ->paginate(10)
+                        ->withQueryString()
+                        ->through(fn($item) => [
+                           'name' => "$item->courtesy_title $item->last_name, $item->first_name ". ($item->middle_name ? $item->middle_name[0].".":''),
+                           'id' => $item->empl_id,
+                           'office' => $item->office->short_name,
+                        ]);
+        return inertia('Employee/Index',[
+            'data' => $employees
+        ]);
+    }
+
+    public function create()
+    {
+        $offices = $this->offices->get()
+                        ->map(fn($item) => [
+                            'short_name' => $item->short_name,
+                            'office_name' => $item->office,
+                            'id' => $item->department_code
+                        ]);
+        return inertia('Employee/Create',[
+            'pageTitle' => 'Create',
+            'offices' => $offices
+        ]);
+    }
+
     public function _sync()
     {
         
