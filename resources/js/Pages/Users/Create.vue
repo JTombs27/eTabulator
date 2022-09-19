@@ -25,14 +25,14 @@
                             <input type="radio" class="btn-check" name="options-outlined" id="capitol" autocomplete="off" value="0" v-model="form.non_capitol">
                             <label class="btn btn-sm btn-outline-success text-nowrap" for="capitol">
                                 <svg v-if="form.non_capitol == false" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-                                Capitol Employee 
+                                Fetch from API 
                             </label>
                         </div>
                         <div class="col-md-3 col-6 d-grid">
                             <input type="radio" class="btn-check" name="options-outlined" id="non-capitol" autocomplete="off" value="1" v-model="form.non_capitol">
                             <label class="btn btn-sm btn-outline-success text-nowrap" for="non-capitol">
                                 <svg v-if="form.non_capitol == true" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-                                Non Capitol Employee
+                                Fetch from database
                             </label>
                         </div>
                     </div>
