@@ -178,15 +178,18 @@ class TravelController extends Controller
                         ->get();
         
         $travels = $travels->map(function($item)  {
-            $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+
+            $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
             $total = $this->prices
+                ->where('gasoline_id', $item->gasoline_id)
                 ->when($checkPrice, function($q) use ($item) {
                     $q->whereDate('date', $item->date_from);
                 })
-                ->where('gasoline_id', $item->gasoline_id)
                 ->latest()
                 ->first($item->gas_type);
+
             return [
+
                 'price' => ($total[$item->gas_type] * $item->total_liters),
                 'date' => $item->date_from,
                 'idooe' => $item->idooe,
@@ -197,6 +200,7 @@ class TravelController extends Controller
         $total_expense = $travels->sum('price');
        
         
+
         return inertia('Travels/Create',[
             'charges' => $amount->get()
                             ->map(fn($item) => [
