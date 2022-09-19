@@ -104,7 +104,7 @@
                     type="text" 
                     class="form-control"
                     placeholder="Please enter your agency"
-                    v-model="form.agency"
+                    v-model="form.department_code"
                 >
                 <div class="text-danger" v-if="form.errors.agency">
                     {{form.errors.agency}}
@@ -194,6 +194,12 @@ export default {
         submit()
         {
             this.form.post('/employees/store');
+        }
+    },
+
+    watch: {
+        'form.non_capitol': function() {
+            this.form.department_code = ""
         }
     }
 }
