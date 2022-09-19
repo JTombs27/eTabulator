@@ -182,7 +182,7 @@
                             </span><span class="title">&nbsp;Users</span></Link>
                         </li>
                         <li>
-                            <Link class="sidebar-link" href="/employees" :class="{'active': $page.url.startsWith('/users')}"><span class="icon-holder"><svg
+                            <Link class="sidebar-link" href="/employees" :class="{'active': $page.url.startsWith('/employees')}"><span class="icon-holder"><svg
                                     xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                                     class="bi bi-people" viewBox="0 0 16 16">
                                     <path

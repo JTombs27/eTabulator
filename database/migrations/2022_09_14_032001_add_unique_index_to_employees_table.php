@@ -15,6 +15,7 @@ class AddUniqueIndexToEmployeesTable extends Migration
     {
         Schema::table('employees', function (Blueprint $table) {
             $table->unique('empl_id', 'unique_empl_id');
+            $table->string('agency')->after('department_code')->nullable();
             $table->boolean('non_capitol')->after('birth_date');
         });
     }
@@ -29,6 +30,7 @@ class AddUniqueIndexToEmployeesTable extends Migration
         Schema::table('employees', function (Blueprint $table) {
             $table->dropUnique('unique_empl_id');
             $table->dropColumn('non_capitol');
+            $table->dropColumn('agency');
         });
     }
 }
