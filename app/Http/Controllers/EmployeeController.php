@@ -27,7 +27,7 @@ class EmployeeController extends Controller
                         ->through(fn($item) => [
                            'name' => "$item->courtesy_title $item->last_name, $item->first_name ". ($item->middle_name ? $item->middle_name[0].".":''),
                            'id' => $item->empl_id,
-                           'office' => $item->office->short_name,
+                           'office' => $item->office ? $item->office->short_name : $item->department_code,
                         ]);
         return inertia('Employee/Index',[
             'data' => $employees
