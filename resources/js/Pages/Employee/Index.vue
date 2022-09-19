@@ -11,10 +11,15 @@
                 </div>
                 <div class="peer">
                     <Link class="btn btn-primary btn-sm" href="/employees/create">Add Employee</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
+                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter = true" >Filter</button>
                 </div>
             </div>
         </div>
+        <transition name="slide-fade" mode="in-out">
+            <Filter v-if="showFilter" @closeFilter="showFilter = false">
+
+            </Filter>
+        </transition>
         <div class="col-md-12 ">
             <div class="table table-responsive bgc-white p-20 bd shadow-sm mh-100">
                 <table class="table table-hover table-striped">
@@ -40,23 +45,22 @@
 </template>
 
 <script>
+import Filter from '../../Shared/Filter.vue';
 
 export default {
     props: {
         data: Object
     },
-
     data() {
         return {
-            search:"",
-        }
+            search: "",
+            showFilter:false
+        };
     },
-
     methods: {
-        showFilter() {
 
-        }
-    }
+    },
+    components: { Filter }
 }
 </script>
 

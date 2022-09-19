@@ -185,6 +185,8 @@ Route::middleware('auth')->group(function() {
         Route::get('/', [EmployeeController::class, 'index']);
         Route::get('/create', [EmployeeController::class, 'create']);
         Route::get('/getEmployees', [EmployeeController::class, 'getEmployees']);
+        Route::get('/fetch', [EmployeeController::class, 'fetch']);
+        Route::post('/store', [EmployeeController::class, 'store']);
     });
 
     //for Offices

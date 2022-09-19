@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
 use App\Models\Office;
 use Illuminate\Http\Request;
@@ -111,7 +112,9 @@ class EmployeeController extends Controller
         if ($request->search) {
             $data = $this->model
                     ->where('empl_id', 'like', "%{$request->search}%")
-                    ->orWhere('last_name', 'like', "%{$request->search}%");
+                    ->orWhere('last_name', 'like', "%{$request->search}%")
+                    ->orWhere('first_name', 'like', "%{$request->search}%")
+                    ;
             return $data->get()->map(fn($item) => [
                 'id' => $item->full_name,
                 'text' => $item->full_name,
@@ -146,5 +149,30 @@ class EmployeeController extends Controller
        return $bmArray->where('first_name', $first_name)->where('last_name', $last_name);
        
     }
+
+    public function store(EmployeeRequest $request)
+    {
+        $this->model->create($request->all());
+        return redirect('/employees')->with('message', 'New employee successfully added');
+    }
+
+    public function fetch(Request $request)
+    {
+        return $this->model
+                    ->where('last_name', 'like', "%$request->filter%")
+                    ->orWhere('first_name', 'like', "%$request->filter%")
+                    ->orWhere('empl_id', 'like', "%$request->filter%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'employee_name' => "$item->last_name, $item->first_name ". ($item->middle_name ? $item->middle_name[0].".":''),
+                        'empl_id' => $item->empl_id,
+                        'position_long_title' => $item->position_title_long,
+                        'department_code' => $item->department_code,
+                        'empl_photo_img' => [
+                            'data' => null
+                        ]
+                    ]);
+    }
+
 
 }
