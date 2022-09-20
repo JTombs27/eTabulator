@@ -241,6 +241,7 @@ class SoaTravelController extends Controller
                                 gasolines.name AS gasstation,
                                 soa_travels.date_from AS soa_date_from,
                                 soa_travels.date_to AS soa_date_to,
+                                soa_travels.ticket_no,
                                 users.name,
                                 divisions.division_name1
                                 '))
@@ -262,6 +263,7 @@ class SoaTravelController extends Controller
                     return [
                                     'PLATENO' => $item->PLATENO,
                                     'ticket_number' => $item->ticket_number,
+                                    'soa_ticket_number' => $item->ticket_no,
                                     'date_from' => $item->date_from,
                                     'date_to' => $item->date_to,
                                     'date_fuel' => $item->date_fueled,
