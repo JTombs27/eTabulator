@@ -199,6 +199,10 @@ class UserPolicy
     {
         return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool'])->where('id', auth()->user()->id)->exists();
     }
+    public function canViewDivisionInTravel(User $user)
+    {
+        return $user->whereIn('office_id', ['02', '19', '16'])->where('id', auth()->user()->id)->exists();
+    }
     // public function canDeleteDriver(User $user)
     // {
     //     return $user->permissions()->user('permission_name', 'can_delete_drivers')->exists();

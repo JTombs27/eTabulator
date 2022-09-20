@@ -140,6 +140,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/create', [DriverVehicleController::class, 'create']);
         Route::post('/{id}/store', [DriverVehicleController::class, 'store']);
         Route::delete('/{id}/delete/{did}', [DriverVehicleController::class, 'destroy']);
+        Route::post('/fetch', [DriverVehicleController::class, 'fetch']);
     });
     
     // Route::post('/sss',  [TravelController::class, 'index']);
@@ -180,8 +181,12 @@ Route::middleware('auth')->group(function() {
 
 
     //for employees
-    Route::prefix('employees')->group(function () {
-        Route::get('getEmployees', [EmployeeController::class, 'getEmployees']);
+    Route::prefix('/employees')->group(function () {
+        Route::get('/', [EmployeeController::class, 'index']);
+        Route::get('/create', [EmployeeController::class, 'create']);
+        Route::get('/getEmployees', [EmployeeController::class, 'getEmployees']);
+        Route::get('/fetch', [EmployeeController::class, 'fetch']);
+        Route::post('/store', [EmployeeController::class, 'store']);
     });
 
     //for Offices
@@ -225,6 +230,12 @@ Route::middleware('auth')->group(function() {
         Route::patch('/{id}', [GasolineController::class, 'update'])->can('canEditGasoline', 'App\Model\User');
         Route::delete('/{id}', [GasolineController::class, 'destroy'])->can('canDeleteGasoline', 'App\Model\User');
        
+    });
+
+    // Divisions
+
+    Route::prefix('/divisions')->group(function () {
+        Route::post('/fetch', [DivisionController::class, 'loadDivisions']);
     });
     
 });

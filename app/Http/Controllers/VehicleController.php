@@ -37,6 +37,7 @@ class VehicleController extends Controller
             })
             ->latest()
             ->simplePaginate(10)
+            ->withQueryString(),
             // ->through(function($item) {
                 
             //     // dd($item->officeV->department_code);
@@ -46,7 +47,6 @@ class VehicleController extends Controller
             //         return $item;
             //     }
             // })
-            ->withQueryString(),
             "filters" => $request->only(['search']),
             "can" => [
                 'canCreateVehicle'          => auth()->user()->can('canCreateVehicle', User::class),
@@ -63,10 +63,12 @@ class VehicleController extends Controller
     {
         
         $index = $this->model->with([
-            'vehicle_status',
-            'driverassign.empl.office',
-            'officeV.office'
-        ]);
+                    'vehicle_status',
+                    'driverassign.empl.office',
+                    'officeV.office'
+                ]);
+
+
         
         if ($request->PLATENO) {
             $index = $index->where('PLATENO', 'like' , '%' .$request->PLATENO. '%');
@@ -88,12 +90,6 @@ class VehicleController extends Controller
                 $q->where('department_code', $request->department_code)->where('office_owner', 1);
             });
         }
-        // if ($request->condition) {
-        //     $index = $index->wherehas('vehicle_status', function($c) use ($request) {
-        //         $c->where('condition', $request->condition);
-        //     });
-        // }
-
         return $index;
     }
 
@@ -112,7 +108,7 @@ class VehicleController extends Controller
 
             $vehicleStatus = $this->status->create(['condition' => $request->condition,
                                                     'vehicles_id' => $vehicle->id,
-                                                    'vehicle_status_date' => $request->vehicle_status_date]);
+                                                    'vehicle_status_date' => $request->vehicle_status_date,]);
         }
 
         if (!!$request->checkadd) {
@@ -134,7 +130,7 @@ class VehicleController extends Controller
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-        $data->update($request->except('checkadd','condition','vehicle_status_date'));
+        $data->update($request->except('checkadd','condition','vehicle_status_date','department_code'));
 
         return redirect('/vehicles')->with('message', 'updated successfuly');
     }

@@ -31,10 +31,25 @@ class Employee extends Model
         return $this->hasOne(DriverVehicle::class, 'department_code', 'department_code');
     }
 
-    public function division() {
-
+    public function division() 
+    {
         return $this->belongsTo(Division::class, 'division_code', 'division_code');
 
+    }
+
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['first_name'] = strtoupper($value);
+    }
+    
+    public function setLastNameAttribute($value)
+    {
+        $this->attributes['last_name'] = strtoupper($value);
+    }
+
+    public function setMiddleNameAttribute($value)
+    {
+        $this->attributes['middle_name'] = strtoupper($value);
     }
 
 }

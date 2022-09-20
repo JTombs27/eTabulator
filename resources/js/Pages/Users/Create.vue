@@ -18,6 +18,25 @@
         
         <div class="col-md-8">
             <form @submit.prevent="submit()">
+                <div class="col-md-12 mT-10  gap-20">
+                    <div class="row">
+                        <label for="" class="col-md-4 col-12 my-auto offset-md-2 text-md-start"><b> Select Agency Type</b><small class="text-danger"><strong>(Required)</strong></small></label>
+                        <div class="col-md-3 col-6 d-grid">
+                            <input type="radio" class="btn-check" name="options-outlined" id="capitol" autocomplete="off" value="0" v-model="form.non_capitol">
+                            <label class="btn btn-sm btn-outline-success text-nowrap" for="capitol">
+                                <svg v-if="form.non_capitol == false" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                                Fetch from API 
+                            </label>
+                        </div>
+                        <div class="col-md-3 col-6 d-grid">
+                            <input type="radio" class="btn-check" name="options-outlined" id="non-capitol" autocomplete="off" value="1" v-model="form.non_capitol">
+                            <label class="btn btn-sm btn-outline-success text-nowrap" for="non-capitol">
+                                <svg v-if="form.non_capitol == true" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                                Fetch from database
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
 
@@ -84,6 +103,7 @@
 <script>
 import { useForm } from "@inertiajs/inertia-vue3";
 import axios from "axios";
+import { computed } from '@vue/runtime-core';
 
 export default {
     props: {
@@ -105,6 +125,7 @@ export default {
                 cats:null,
                 id: null,
                 office_id:null,
+                non_capitol:null
             }),
             stations:[],
             municipals:[],
@@ -141,40 +162,9 @@ export default {
             this.pageTitle = "Create"
         }
 
-        $("#emp_name").select2({
-            ajax : {
-                url: `http://122.54.19.172:91//api/PGDDO_Employees`,
-                dataType:'json',
-                delay:700,
-                data: function(params) {
-                    return {filter: params.term};
-                },
-                processResults: function(data, params) {
-                    params.page = params.page || 1;
-
-                    return {
-                        results: $.map(data, function (obj) {
-                            return { 
-                                id: obj.employee_name, 
-                                text: obj.employee_name, 
-                                cats:obj.empl_id, 
-                                data:obj.empl_photo_img.data,
-                                position:obj.position_long_title,
-                                department_code:obj.department_code,
-                                office:obj.department_proper_name
-                            }
-                        })
-                    };
-                },
-                cache: true
-            },
-            data:[{"text": this.form.name, "id":this.form.name, "selected": true}],
-            placeholder: 'Search for a repository',
-            minimumInputLength: 3,
-            templateResult: this.formatRepo,
-            templateSelection: this.formatRepoSelection
-        })
-
+        
+        
+        
 
         
         $('#office').select2({
@@ -229,6 +219,44 @@ export default {
                 });
         },
         
+        fetchEmployees() {
+            $("#emp_name").select2({
+                ajax : {
+                    url: this.urlEmp,
+                    dataType:'json',
+                    delay:700,
+                    data: function(params) {
+                        return {filter: params.term};
+                    },
+                    processResults: function(data, params) {
+                        params.page = params.page || 1;
+
+                        return {
+                            results: $.map(data, function (obj) {
+                                console.log(obj.empl_photo_img.data)
+                                return { 
+                                    id: obj.employee_name, 
+                                    text: obj.employee_name, 
+                                    cats:obj.empl_id, 
+                                    data:obj.empl_photo_img.data,
+                                    position:obj.position_long_title,
+                                    department_code:obj.department_code,
+                                    office:obj.department_proper_name
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                data:[{"text": this.form.name, "id":this.form.name, "selected": true}],
+                placeholder: 'Search for a repository',
+                minimumInputLength: 3,
+                templateResult: this.formatRepo,
+                templateSelection: this.formatRepoSelection
+            })
+
+        },
+
         formatOffice(repo) {
             return repo.text
         },
@@ -254,34 +282,30 @@ export default {
         },
 
         formatRepo (repo) {
-        if (repo.loading) {
-            return `Searching...`;
-        }
-        var img = "";
-        if(!repo.data){
-            
-            img = `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-person-square bd-placeholder-img flex-shrink-0 me-2 rounded" viewBox="0 0 16 16">
-              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-              <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
-            </svg>`
-        }else{
-            img = ` <img class='bd-placeholder-img flex-shrink-0 me-2 rounded'  width='60' src='data:image/png;base64,${repo.data}'/>`
-        }
-          var $container = $(
-            `<div class="d-flex pt-3">
-               ${img}
-              <p class="pb-3 mb-0 small lh-sm border-bottom">
-                <strong class="d-block">${repo.id}</strong>
-                <strong class="d-block">${repo.cats}</strong>
-                    ${repo.position}
-              </p>
-            </div>
-           `
-        
+            if (repo.loading) {
+                return `Searching...`;
+            }
+            var img = "";
+            if(!repo.data){
+                img = `<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-person-square bd-placeholder-img flex-shrink-0 me-2 rounded" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z"/>
+                    </svg>`
+            } else {
+                
+                img = ` <img class='bd-placeholder-img flex-shrink-0 me-2 rounded'  width='60' src='data:image/png;base64,${repo.data}'/>`
+            }
+            var $container = $(
+                `<div class="d-flex pt-3">
+                    ${img}
+                    <p class="pb-3 mb-0 small lh-sm border-bottom">
+                        <strong class="d-block">${repo.id}</strong>
+                        <strong class="d-block">${repo.cats}</strong>
+                        ${repo.position}
+                    </p>
+                </div>
+                        `        
           );
-
-          
-
           return $container;
         },
 
@@ -336,6 +360,20 @@ export default {
         'form.permission': function(value) {
             if (value != 'gasoline-station') {
                 this.form.gasoline_id = null
+            }
+        },
+
+        'form.non_capitol': function() {
+            this.fetchEmployees();
+        }
+    },
+
+    computed: {
+        urlEmp() {
+            if (this.form.non_capitol == false) {
+                return `http://122.54.19.172:91//api/PGDDO_Employees`
+            } else if(this.form.non_capitol == true) {
+                return `/employees/fetch`
             }
         }
     }

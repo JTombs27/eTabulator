@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DriverValidation;
 use Illuminate\Http\Request;
 use App\Models\DriverVehicle;
+use App\Models\Employee;
 use App\Models\Vehicle;
 use PHPUnit\Framework\Constraint\IsTrue;
 
 class DriverVehicleController extends Controller
 {
-    public function __construct(DriverVehicle $model)
+    public function __construct(DriverVehicle $model, Employee $employee)
     {
         $this->model = $model;
+        $this->employee = $employee;
     }
 
     public function index(Request $request,$id)
@@ -45,12 +48,13 @@ class DriverVehicleController extends Controller
        
     }
 
-    public function store(Request $request, $id)
+    public function store(DriverValidation $request, $id)
     {
         // $attributes = $request->validate([
         //     'date_from' => "required|date",
         //     'date_to' => "required|date|after_or_equal:date_from", 
         // ]);
+        $request->validated();
 
         $data = $this->model->where('vehicles_id',$request->vehicles_id)
         ->where(function ($query) use($request){
@@ -84,6 +88,21 @@ class DriverVehicleController extends Controller
 
 
         return back()->with('message', 'deleted successfuly');
+    }
+
+    public function fetch(Request $request)
+    {
+        return $this->employee
+                    ->where('last_name', 'like', "%$request->filter%")
+                    ->orWhere('first_name', 'like', "%$request->filter%")
+                    ->orWhere('empl_id', 'like', "%$request->filter%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'employee_name' => "$item->last_name, $item->first_name ". ($item->middle_name ? $item->middle_name[0].".":''),
+                        'empl_id' => $item->empl_id,
+                        'position_long_title' => $item->position_title_long,
+                        'department_code' => $item->department_code,
+                    ]);
     }
 
 }
