@@ -72,6 +72,7 @@ class SoaTravelController extends Controller
             "travel" => $this->model
             	->with('user.employee.division')
                 ->where('status','Fueled')
+                ->where('gasoline_id', auth()->user()->gasoline_id)
                 ->where('soa_travel',null)
             	->orderBy('date_fueled', 'asc')
             	->get()->map(function($item) {
