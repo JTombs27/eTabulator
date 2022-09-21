@@ -132,7 +132,8 @@ class SoaTravelController extends Controller
             "travels" => $travels
             	->latest()
             	->when($request->search, function ($query, $searchItem) {
-                    $query->where('ticket_number', 'like', '%' . $searchItem . '%');
+                    $query->where('ticket_number', 'like', '%' . $searchItem . '%')
+                        ->orWhere('invoice_no', 'like', '%' . $searchItem . '%');
                 })
             	->where('soa_travel', $id)
             	->simplePaginate(10)
