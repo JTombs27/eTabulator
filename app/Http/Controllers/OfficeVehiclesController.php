@@ -96,6 +96,8 @@ class OfficeVehiclesController extends Controller
            'officevehicle' => $this->officevehicles->with('office')->where('id',$id)->get(),
        ]);
     }
+
+    
     public function destroy(Request $request,$id)
     {
         $data = $this->officevehicles->findOrFail($id);

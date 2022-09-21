@@ -10,7 +10,7 @@
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search Employee">
                 </div>
                 <div class="peer">
-                    <Link v-if="can.canCreateEmployee" class="btn btn-primary btn-sm" href="/employees/create">Add Employee</Link>
+                    <Link class="btn btn-primary btn-sm" href="/employees/create">Add Employee</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter = true" >Filter</button>
                 </div>
             </div>
@@ -44,8 +44,8 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li v-if="can.canEditEmployee"><Link class="dropdown-item" @click="gotoEdit(index)">Edit</Link></li>
-                                    <li v-if="can.canDeleteEmployee"><Link class="dropdown-item" @click="gotoDelete(index)">Delete</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoEdit(index)">Edit</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoDelete(index)">Delete</Link></li>
                                   </ul>
                                 </div>
                             </td>
@@ -63,15 +63,28 @@ import Filter from '../../Shared/Filter.vue';
 
 export default {
     props: {
-        can:Object,
-        data: Object
+        data: Object,
+        filters: Object
     },
     data() {
         return {
-            search: "",
+            search: this.$props.filters.search,
             showFilter:false,
             employee_id:""
         };
+    },
+    watch: {
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/employees",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 500)
     },
     
     methods: {
@@ -84,11 +97,13 @@ export default {
         },
 
         gotoDelete(index) {
-
-           this.employee_id = this.data.data[index].id
-           console.log(this.employee_id)
+         let text = "Warning! \Are you sure you want to Delete this employee?";
           
-           /*   this.$inertia.get("/logTimeArrival/" + this.travel_id +"/edit"); */
+             if(confirm(text) == true) {
+                  this.employee_id = this.data.data[index].id
+                  this.$inertia.post("/employees/" + this.employee_id+"/destroy")
+            }
+
         },
     },
     components: { Filter }

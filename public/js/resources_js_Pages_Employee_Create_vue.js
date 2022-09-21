@@ -46,6 +46,8 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
+    console.log(this.editData);
+
     if (this.editData) {
       this.disabled_edit = true;
       this.form.empl_id = this._employee.empl_id;
@@ -65,8 +67,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.form.department_code = _this._employee.department_code;
       }, 100);
       console.log(this._employee.department_code);
-    } else {
-      this.disabled_edit = false;
     }
   },
   methods: {

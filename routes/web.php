@@ -189,6 +189,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/store', [EmployeeController::class, 'store']);
         Route::get('/{id}/edit', [EmployeeController::class, 'edit']);
         Route::patch('/{id}', [EmployeeController::class, 'update']);
+        Route::post('/{id}/destroy', [EmployeeController::class, 'destroy']);
     });
 
     //for Offices

@@ -185,6 +185,7 @@ export default {
         }
     },
      mounted() {
+        console.log(this.editData)
         if(this.editData)
         {
              this.disabled_edit = true
@@ -208,10 +209,7 @@ export default {
              console.log(this._employee.department_code)
              
         }
-        else{
-              this.disabled_edit = false
-        }
-        
+       
        
     },
 
