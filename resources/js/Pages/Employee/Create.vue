@@ -20,7 +20,7 @@
     <div class="col-md-8 col-12">
         <form @submit.prevent="submit()">
             <label>Employee ID</label><small class="text-danger"><strong>(Required)</strong></small>
-            <input type="text" class="form-control" :class="{'is-invalid':form.errors.empl_id}" v-model="form.empl_id">
+            <input type="text" class="form-control" :class="{'is-invalid':form.errors.empl_id}" v-model="form.empl_id" :disabled="disabled_edit == 1">
             <div class="text-danger" v-if="form.errors.empl_id">
                 {{form.errors.empl_id}}
             </div>
@@ -155,7 +155,9 @@ export default {
     
     props: {
         pageTitle: String,
-        offices: Array
+        offices: Array,
+        _employee: Object,
+        editData:Object
     },
 
     data() {
@@ -178,8 +180,39 @@ export default {
                 position_title_short:"",
                 
             }),
-            divisions:[]
+            divisions:[],
+            disabled_edit:false
         }
+    },
+     mounted() {
+        if(this.editData)
+        {
+             this.disabled_edit = true
+             this.form.empl_id =  this._employee.empl_id  
+             this.form.courtesy_title =  this._employee.courtesy_title  
+             this.form.first_name =  this._employee.first_name  
+             this.form.last_name =  this._employee.last_name 
+             this.form.middle_name =  this._employee.middle_name 
+             this.form.suffix =  this._employee.suffix  
+             this.form.postfix =  this._employee.postfix  
+             this.form.gender =  this._employee.gender 
+             this.form.birth_date =  this._employee.birth_date  
+             this.form.non_capitol =  this._employee.non_capitol  
+             this.form.division_code =  this._employee.division_code  
+             this.form.position_title_long =  this._employee.position_title_long  
+             this.form.position_title_short =  this._employee.position_title_short 
+             setTimeout(() => {
+                 this.form.department_code =  this._employee.department_code 
+             }, 100)
+            
+             console.log(this._employee.department_code)
+             
+        }
+        else{
+              this.disabled_edit = false
+        }
+        
+       
     },
 
     methods: {
@@ -193,13 +226,22 @@ export default {
 
         submit()
         {
-            this.form.post('/employees/store');
+            if(this.editData){
+                console.log(this.form.empl_id)
+                this.form.patch("/employees/"+this.form.empl_id , this.form);
+               //this.form.patch('/employees/update');
+            } 
+            else{
+                this.form.post('/employees/store');
+            }
         }
     },
 
     watch: {
         'form.non_capitol': function() {
-            this.form.department_code = ""
+            if (!this.editData) {
+                this.form.department_code = ""
+            }
         }
     }
 }
