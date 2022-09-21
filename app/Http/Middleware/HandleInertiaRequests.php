@@ -29,13 +29,20 @@ class HandleInertiaRequests extends Middleware
             //$profile =  User::where('id', auth()->user()->id)->first()->getFirstMedia('avatars');
             $UsrCats = auth()->user()->cats;
             $photo = null;
-
+            
             $UsrPhotoExst = User::where('id', auth()->user()->id)->whereNotNull('user_photo')->exists();
             if (!$UsrPhotoExst) {
                 if (auth()->user()->cats) {
                     $UserPhoto =  Http::get("http://122.54.19.172:91//api/PGDDOEmployeePhoto?empl_id=".$UsrCats)->collect();
-                    $cats = $UserPhoto[0]['empl_id'];
-                    $photo = $UserPhoto[0]['empl_photo_img'];
+                    // $cats = $UserPhoto[0]['empl_id'];
+                    if (count($UserPhoto) != 0) {
+                        $photo = $UserPhoto[0]['empl_photo_img'];
+                    } else {
+                        $photo = [
+                            'IsNull' => true
+                        ];
+                    }
+
                     $photoData = "";
                     if ($photo['IsNull']) {
                        User::where('id', auth()->user()->id)
