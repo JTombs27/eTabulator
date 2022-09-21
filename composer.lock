@@ -8488,6 +8488,7 @@
         },
         {
             "name": "sebastian/type",
+<<<<<<< HEAD
             "version": "3.2.0",
             "source": {
                 "type": "git",
@@ -8498,6 +8499,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/fb3fe09c5f0bae6bc27ef3ce933a1e0ed9464b6e",
                 "reference": "fb3fe09c5f0bae6bc27ef3ce933a1e0ed9464b6e",
+=======
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/type.git",
+                "reference": "fb44e1cc6e557418387ad815780360057e40753e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sebastianbergmann/type/zipball/fb44e1cc6e557418387ad815780360057e40753e",
+                "reference": "fb44e1cc6e557418387ad815780360057e40753e",
+>>>>>>> 635beaa6231a59bac6b863cc746b4b464bbe6b9f
                 "shasum": ""
             },
             "require": {
@@ -8509,7 +8522,11 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
+<<<<<<< HEAD
                     "dev-master": "3.2-dev"
+=======
+                    "dev-master": "3.1-dev"
+>>>>>>> 635beaa6231a59bac6b863cc746b4b464bbe6b9f
                 }
             },
             "autoload": {
@@ -8532,7 +8549,11 @@
             "homepage": "https://github.com/sebastianbergmann/type",
             "support": {
                 "issues": "https://github.com/sebastianbergmann/type/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/sebastianbergmann/type/tree/3.2.0"
+=======
+                "source": "https://github.com/sebastianbergmann/type/tree/3.1.0"
+>>>>>>> 635beaa6231a59bac6b863cc746b4b464bbe6b9f
             },
             "funding": [
                 {
@@ -8540,7 +8561,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
             "time": "2022-09-12T14:47:03+00:00"
+=======
+            "time": "2022-08-29T06:55:37+00:00"
+>>>>>>> 635beaa6231a59bac6b863cc746b4b464bbe6b9f
         },
         {
             "name": "sebastian/version",
