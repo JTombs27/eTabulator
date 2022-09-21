@@ -13,4 +13,9 @@ class Division extends Model
     {
         return $this->belongsTo(Employee::class, 'division_code', 'division_code');
     }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'department_code', 'department_code');
+    }
 }

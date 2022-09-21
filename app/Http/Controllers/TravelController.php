@@ -178,15 +178,18 @@ class TravelController extends Controller
                         ->get();
         
         $travels = $travels->map(function($item)  {
-            $checkPrice = $this->prices->whereDate('date', $item->date_from)->exists();
+
+            $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
             $total = $this->prices
+                ->where('gasoline_id', $item->gasoline_id)
                 ->when($checkPrice, function($q) use ($item) {
                     $q->whereDate('date', $item->date_from);
                 })
-                ->where('gasoline_id', $item->gasoline_id)
                 ->latest()
                 ->first($item->gas_type);
+
             return [
+
                 'price' => ($total[$item->gas_type] * $item->total_liters),
                 'date' => $item->date_from,
                 'idooe' => $item->idooe,
@@ -197,6 +200,7 @@ class TravelController extends Controller
         $total_expense = $travels->sum('price');
        
         
+
         return inertia('Travels/Create',[
             'charges' => $amount->get()
                             ->map(fn($item) => [
@@ -264,7 +268,7 @@ class TravelController extends Controller
                         ];
                     });
         
-        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle')->where('id',$id)->first();
+        $editData = $this->model->with('driverVehicle', 'driverVehicle.empl', 'driverVehicle.vehicle','divisionBorrowedFuel', 'officeBorrowedFuel')->where('id',$id)->first();
       
         return inertia('Travels/Create', [
             'editData' => $editData,
@@ -442,11 +446,13 @@ class TravelController extends Controller
                                 
                                 offices.office,
                                 offices.designation,
+                                offices.short_name,
                                 users.cats,
                                 gasolines.name,
                                 raaohs.ffunccod,
                                 raaohs.fraodesc,
-                                ooes.fooedesc'))
+                                ooes.fooedesc,
+                                divisions.division_name1'))
                             ->leftJoin('driver_vehicles', 'travels.driver_vehicles_id', 'driver_vehicles.id')
                             ->leftJoin('vehicles', 'driver_vehicles.vehicles_id', 'vehicles.id')
                             ->leftJoin('employees as driver', 'driver_vehicles.drivers_id', 'driver.empl_id')
@@ -455,7 +461,7 @@ class TravelController extends Controller
                             ->leftJoin('gasolines', 'gasolines.id', 'travels.gasoline_id')
                             ->leftJoin('employees as head', function($join)
                                  {
-                                     $join->on('users.cats', '=', 'head.empl_id');
+                                     $join->on('offices.empl_id', '=', 'head.empl_id');
                                  })
                             ->leftJoin('fms.raaods as raaods', function($join)
                                  {
@@ -463,7 +469,10 @@ class TravelController extends Controller
                                      $join->on('travels.idooe', '=', 'raaods.idooe');
                                  })
                             ->leftJoin('fms.raaohs as raaohs', 'raaohs.recid', 'raaods.idraao')
-                            ->leftJoin('fms.ooes as ooes', 'raaods.idooe', 'ooes.recid')   
+                            ->leftJoin('fms.ooes as ooes', 'raaods.idooe', 'ooes.recid')
+                            ->leftJoin('users as ro_user', 'ro_user.id', 'travels.user_id')
+                            ->leftJoin('employees as ro_employee', 'ro_employee.empl_id', 'ro_user.cats')
+                            ->leftJoin('divisions', 'divisions.division_code', 'ro_employee.division_code')   
                             ->where('travels.id', $request->id)
                             ->get()->toArray())->map(function ($item){
 
@@ -523,11 +532,16 @@ class TravelController extends Controller
                                     'cats' => $item->cats,
                                     'name' => $item->name,
                                     'ffunccod' => $item->ffunccod,
-                                    'fraodesc' => $item->fraodesc,
-                                    'fooedesc' => $item->fooedesc,
+                                    'fraodesc' => rtrim($item->fraodesc," "),
+                                    'fooedesc' => rtrim($item->fooedesc," "),
                                     'suffix' => $item->suffix,
                                     'postfix' => $item->postfix,
-                                    'courtesy_title' => $item->courtesy_title
+                                    'courtesy_title' => $item->courtesy_title,
+                                    'division' => $item->division_name1,
+                                    'short_name' => $item->short_name,
+                                    'date_approved' => date('M d, Y',strtotime($item->updated_at)),
+                                    'date_range' => date('M d',strtotime($item->date_from))."-".date('d,Y',strtotime($item->date_to)),
+                                    'date_travel' =>date('M d, Y',strtotime($item->date_from))
                                 ]; 
                             });
         return $travel;
@@ -559,7 +573,7 @@ class TravelController extends Controller
                     ->get()
                     ->map(fn($item) => [
                         'id' => $item->vehicles_id,
-                        'text' => $item->plate_no,
+                        'text' => $item->vehicle->PLATENO,
                         'condition' => $item->vehicle->vehicle_latest_status->condition,
                         'typeCode' => $item->vehicle->TYPECODE,
                         'office_id' => $item->department_code

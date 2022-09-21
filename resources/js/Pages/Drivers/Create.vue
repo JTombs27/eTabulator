@@ -93,9 +93,13 @@ export default {
 
         $("#emp_name").select2({
             ajax : {
-                url: "http://122.54.19.172:91//api/PGDDO_Employees",
+                url: "/drivers/fetch",
+                method:'post',
                 dataType:'json',
                 delay:700,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
                 data: function(params) {
                     return {filter: params.term};
                 },
@@ -108,7 +112,6 @@ export default {
                                 id: obj.empl_id, 
                                 text: obj.employee_name, 
                                 cats:obj.empl_id, 
-                                data:obj.empl_photo_img.data,
                                 position:obj.position_long_title,
                                 department:obj.department_code,
                             }

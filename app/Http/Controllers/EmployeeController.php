@@ -2,42 +2,64 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeeRequest;
 use App\Models\Employee;
+use App\Models\Office;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class EmployeeController extends Controller
 {
-    public function __construct(Employee $employee)
+    public function __construct(Employee $employee, Office $offices)
     {  
         $this->model = $employee;
+        $this->offices = $offices;
     }
+
+    public function index()
+    {
+        $employees = $this->model
+                        ->with(['office'])
+                        ->latest()
+                        ->paginate(10)
+                        ->withQueryString()
+                        ->through(fn($item) => [
+                           'name' => "$item->courtesy_title $item->last_name, $item->first_name ". ($item->middle_name ? $item->middle_name[0].".":''),
+                           'id' => $item->empl_id,
+                           'office' => $item->office ? $item->office->short_name : $item->department_code,
+                        ]);
+        return inertia('Employee/Index',[
+            'data' => $employees
+        ]);
+    }
+
+    public function create()
+    {
+        $offices = $this->offices->get()
+                        ->map(fn($item) => [
+                            'short_name' => $item->short_name,
+                            'office_name' => $item->office,
+                            'id' => $item->department_code
+                        ]);
+        return inertia('Employee/Create',[
+            'pageTitle' => 'Create',
+            'offices' => $offices
+        ]);
+    }
+
     public function _sync()
     {
         
         try {
-            //code...
-            DB::table('employees')->truncate();
-            $url = env('MIX_API_URL');
             $employees = Http::post("http://122.54.19.172:91//api/ListOfEmployees")->collect();
             $arrayOfEmployees = [];
             foreach ($employees as $value) {
-                // if ($value['empl_id']) {
-                    
-                //        return date('Y-m-d',$value['birth_date']) ;
-                // }
-                // return $boardMemberexist;
                 
                 $first = $value['first_name'];
                 $last_name = $value['last_name'];
                 $division =  $this->boardMember($first, $last_name)->pluck('division_code');
                 $division_code = count($division) != 0 ? $division[0] : $value['division_code'];
-                
-
-                // if(count($division)) {
-                //     return $division_code;
-                // }
                 $data = [
                     'empl_id' => $value['empl_id'],
                     'first_name' => $value['first_name'],
@@ -60,7 +82,25 @@ class EmployeeController extends Controller
             }
             $emp = array_chunk($arrayOfEmployees, 200);
             foreach ($emp as $value) {
-                DB::table('employees')->insert($value);
+                DB::table('employees')->upsert($value,['empl_id'],
+                [
+                    'empl_id',
+                    'first_name',
+                    'middle_name',
+                    'last_name',
+                    'department_code',
+                    'gender',
+                    'is_pghead',
+                    'position_code',
+                    'position_title_long',
+                    'position_title_short',
+                    'birth_date',
+                    'created_at',
+                    'suffix',
+                    'division_code',
+                    'postfix',
+                    'courtesy_title',
+                ]);
             }
         } catch (\Throwable $th) {
             return $th->getMessage();
@@ -72,7 +112,9 @@ class EmployeeController extends Controller
         if ($request->search) {
             $data = $this->model
                     ->where('empl_id', 'like', "%{$request->search}%")
-                    ->orWhere('last_name', 'like', "%{$request->search}%");
+                    ->orWhere('last_name', 'like', "%{$request->search}%")
+                    ->orWhere('first_name', 'like', "%{$request->search}%")
+                    ;
             return $data->get()->map(fn($item) => [
                 'id' => $item->full_name,
                 'text' => $item->full_name,
@@ -107,5 +149,30 @@ class EmployeeController extends Controller
        return $bmArray->where('first_name', $first_name)->where('last_name', $last_name);
        
     }
+
+    public function store(EmployeeRequest $request)
+    {
+        $this->model->create($request->all());
+        return redirect('/employees')->with('message', 'New employee successfully added');
+    }
+
+    public function fetch(Request $request)
+    {
+        return $this->model
+                    ->where('last_name', 'like', "%$request->filter%")
+                    ->orWhere('first_name', 'like', "%$request->filter%")
+                    ->orWhere('empl_id', 'like', "%$request->filter%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'employee_name' => "$item->last_name, $item->first_name ". ($item->middle_name ? $item->middle_name[0].".":''),
+                        'empl_id' => $item->empl_id,
+                        'position_long_title' => $item->position_title_long,
+                        'department_code' => $item->department_code,
+                        'empl_photo_img' => [
+                            'data' => null
+                        ]
+                    ]);
+    }
+
 
 }

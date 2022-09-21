@@ -39,7 +39,7 @@ class UserController extends Controller
                 ->simplePaginate(8)
                 ->withQueryString()
                 ->through(fn($user) => [
-                    'division' => $user->employee->division ? $user->employee->division->division_name1 : '',
+                    'division' => $user->employee ? ($user->employee->division ? $user->employee->division->division_name1 : '') : '',
                     'id' => $user->id,
                     'permissions' => $user->permissions,
                     'office' => $user->office ? $user->office->office : '',

@@ -51,7 +51,7 @@ class SoaTravelController extends Controller
                     'id' => $item->id,
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
-                    'total_liters' => $item->travels->sum('actual_liter'),
+                    'total_liters' => number_format($item->travels->sum('actual_liter'),2),
                     'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
                     'ticket_no' => $item->ticket_no,
                     'office' => $item->office->short_name,
@@ -72,6 +72,7 @@ class SoaTravelController extends Controller
             "travel" => $this->model
             	->with('user.employee.division')
                 ->where('status','Fueled')
+                ->where('gasoline_id', auth()->user()->gasoline_id)
                 ->where('soa_travel',null)
             	->orderBy('date_fueled', 'asc')
             	->get()->map(function($item) {
@@ -240,6 +241,7 @@ class SoaTravelController extends Controller
                                 gasolines.name AS gasstation,
                                 soa_travels.date_from AS soa_date_from,
                                 soa_travels.date_to AS soa_date_to,
+                                soa_travels.ticket_no,
                                 users.name,
                                 divisions.division_name1
                                 '))
@@ -251,21 +253,24 @@ class SoaTravelController extends Controller
                             ->leftJoin('divisions', 'divisions.division_code', 'soa_travels.division_code')
                             ->leftJoin('users', 'users.id', 'soa_travels.user_id')
                             ->where('travels.soa_travel', $request->soa_travel)
-                            ->orderByRaw("travels.gas_type ASC, travels.ticket_number ASC")
+                            ->orderByRaw("travels.date_fueled ASC,travels.ticket_number ASC")
                             ->get()->map(function($item) {
-                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
+                                    $q->whereDate('date', $item->date_fueled);
                     })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+                    $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
                     return [
                                     'PLATENO' => $item->PLATENO,
                                     'ticket_number' => $item->ticket_number,
+                                    'soa_ticket_number' => $item->ticket_no,
                                     'date_from' => $item->date_from,
                                     'date_to' => $item->date_to,
+                                    'date_fuel' => $item->date_fueled,
                                     'gas_type' => $item->gas_type,
                                     'unit_price' => $total[$item->gas_type],
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'total_liters' => $item->total_liters,
+                                    'price' => ($total[$item->gas_type] * $actual),
+                                    'total_liters' => $actual,
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
                                     'gasoline_name' => $item->gasstation,
@@ -287,27 +292,27 @@ class SoaTravelController extends Controller
                             ->where('travels.soa_travel', $request->soa_travel)
                             ->orderBy('travels.gas_type','desc')
                             ->get()->map(function($item) {
-                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                    $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
                                 $total = $this->price->when($checkPrice, function($q) use ($item) {
-                                    $q->whereDate('date', $item->date_from);
+                                    $q->whereDate('date', $item->date_fueled);
                     })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
-                    
+                    $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
 
                     return [
                                     'id' => $item->id,
                                     'gas_type' => $item->gas_type,
                                     'unit_price' => $total[$item->gas_type],
-                                    'price' => ($total[$item->gas_type] * $item->total_liters),
-                                    'total_liters' => $item->total_liters
+                                    'price' => ($total[$item->gas_type] * $actual),
+                                    'total_liters' => $actual
                                     
                                 ]; 
                 });
         $total = $total_soa->groupBy('unit_price','gas_type')->mapWithKeys(fn ($items, $key) => [
                 collect($items)->first()['unit_price'] => [
-                    'total'=> collect($items)->sum('price'),
+                    'total'=> number_format(collect($items)->sum('price'),2),
                     'gas_type' => collect($items)->first()['gas_type'],
                     'unit_price' => collect($items)->first()['unit_price'],
-                    'total_liters' => collect($items)->sum('total_liters'),
+                    'total_liters' => number_format(collect($items)->sum('total_liters'),2),
                 ]
              
             

@@ -20,7 +20,7 @@
         <filtering v-if="filter" @closeFilter="filter=false">
             <label>Sample Inputs</label>
             <input type="text" class="form-control">
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
+            <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
         </filtering>
  
         <div class="col-12">
