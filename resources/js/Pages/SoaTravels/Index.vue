@@ -69,7 +69,7 @@
                                     </li>
                                     <li><hr class="dropdown-divider action-divider"></li>
                                     <li><Link class="dropdown-item" :href="`/soatravels/${soaTravels.id}/details`">Details</Link></li>
-                                    <li><Link class="text-danger dropdown-item" @click="deleteSoaTravel(soaTravels.id)">Delete</Link></li>
+                                    <li v-if="soaTravels.cafoa_number === null"><Link class="text-danger dropdown-item" @click="deleteSoaTravel(soaTravels.id)">Delete</Link></li>
                                   </ul>
                                 </div>
                             </td>

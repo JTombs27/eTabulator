@@ -262,6 +262,13 @@ class SoaTravelController extends Controller
                                     $q->whereDate('date', $item->date_fueled);
                     })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
                     $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
+                    if ($item->soa_date_from == $item->soa_date_to) {
+
+                        $date = (\Carbon\Carbon::parse($item->soa_date_from)->format('M d, Y'));
+                    } else {
+                        $date = (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y'));
+                    }
+                   
                     return [
                                     'PLATENO' => $item->PLATENO,
                                     'ticket_number' => $item->ticket_number,
@@ -277,7 +284,7 @@ class SoaTravelController extends Controller
                                     'office' => $item->office,
                                     'gasoline_name' => $item->gasstation,
                                     'invoice_no' => $item->invoice_no,
-                                    'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y')),
+                                    'date' => $date,
                                     'prepared_by' => $item->name,
                                     'division_name' => $item->division_name1
                                     
