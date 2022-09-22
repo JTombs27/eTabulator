@@ -399,7 +399,7 @@ class ChargeController extends Controller
             ]
         );
        
-        return $charge2;
+        return $charge2->values();
         
     }
 
