@@ -51,6 +51,7 @@ class SoaTravelController extends Controller
                     'id' => $item->id,
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
+                    'soa_date' =>$item->soaDate,
                     'total_liters' => number_format($item->travels->sum('actual_liter'),2),
                     'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
                     'ticket_no' => $item->ticket_no,

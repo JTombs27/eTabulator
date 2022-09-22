@@ -32,8 +32,7 @@
                             <th scope="col">Office</th>
                             <th scope="col">Division</th>
                             <th scope="col">Cafoa Number</th>
-                            <th scope="col">Date From</th>
-                            <th scope="col">Date To</th>
+                            <th scope="col">Date</th>
                             <th scope="col" style="text-align: right">Total Liters</th>
                             <th scope="col" style="text-align: right">Total Price</th>
                             <th scope="col" style="text-align: right">Action</th>
@@ -46,8 +45,7 @@
                             <td v-if="soaTravels.division !== null" style="font-size: 11px;">{{ soaTravels.division.division_name1 }}</td>
                             <td v-else></td>
                             <td>{{ soaTravels.cafoa_number }}</td>
-                            <td>{{ soaTravels.date_from }}</td>
-                            <td>{{ soaTravels.date_to }}</td>
+                            <td>{{ soaTravels.soa_date }}</td>
                             <td class="text-end">{{ soaTravels.total_liters }}</td>
                             <td class="text-end">{{ soaTravels.totalPrice }}</td>
                             <td style="text-align: right">
