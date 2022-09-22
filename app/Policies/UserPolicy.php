@@ -181,7 +181,7 @@ class UserPolicy
     }
     public function canViewPriceIndex(User $user)
     {
-        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool','PGSO'])->where('id', auth()->user()->id)->exists();
+        return $user->whereIn('role', ['Admin','PGO','PG-HEAD','RO','peo-motorpool','PGSO','gasoline-station'])->where('id', auth()->user()->id)->exists();
     }
     public function canViewUsersIndex(User $user)
     {

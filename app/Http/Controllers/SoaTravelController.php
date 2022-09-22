@@ -55,7 +55,8 @@ class SoaTravelController extends Controller
                     'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
                     'ticket_no' => $item->ticket_no,
                     'office' => $item->office->short_name,
-                    'division' => $item->division
+                    'division' => $item->division,
+                    'cafoa_number' =>$item->cafoa_number,
                 ])
                 ,
             "filters" => $request->only(['search']),
