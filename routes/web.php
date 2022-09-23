@@ -232,6 +232,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [GasolineController::class, 'edit'])->can('canEditGasoline', 'App\Model\User');
         Route::patch('/{id}', [GasolineController::class, 'update'])->can('canEditGasoline', 'App\Model\User');
         Route::delete('/{id}', [GasolineController::class, 'destroy'])->can('canDeleteGasoline', 'App\Model\User');
+        Route::patch('/status/{id}', [GasolineController::class, 'setStatus']);
        
     });
 
