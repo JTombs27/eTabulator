@@ -125,7 +125,6 @@ export default {
                     amount   : "",
                     id          : null
                 }));
-
         },
         removeNode(index){
             this.officeGroup.splice(index,1);

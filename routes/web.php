@@ -147,7 +147,7 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/travels')->group(function() {
         Route::get('/', [TravelController::class, 'index'])->name('index')->can('canViewTravelIndex','App\Model\User');
         Route::post('get-vehicles', [TravelController::class, 'getVehicles']);
-        Route::get('create', [TravelController::class, 'create'])->name('create')->can('canCreateTravel','App\Model\User');
+        Route::get('create', [TravelController::class, 'create'])->can('canCreateTravel','App\Model\User');
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver'])->name('getVehicleDriver');
         Route::post('/', [TravelController::class, 'store'])->name('store')->can('canCreateTravel','App\Model\User');
         Route::post('set-status', [TravelController::class, 'setStatus'])->name('setStatus');
@@ -187,6 +187,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/getEmployees', [EmployeeController::class, 'getEmployees']);
         Route::get('/fetch', [EmployeeController::class, 'fetch']);
         Route::post('/store', [EmployeeController::class, 'store']);
+        Route::get('/{id}/edit', [EmployeeController::class, 'edit']);
+        Route::patch('/{id}', [EmployeeController::class, 'update']);
+        Route::post('/{id}/destroy', [EmployeeController::class, 'destroy']);
     });
 
     //for Offices
@@ -229,6 +232,7 @@ Route::middleware('auth')->group(function() {
         Route::get('/{id}/edit', [GasolineController::class, 'edit'])->can('canEditGasoline', 'App\Model\User');
         Route::patch('/{id}', [GasolineController::class, 'update'])->can('canEditGasoline', 'App\Model\User');
         Route::delete('/{id}', [GasolineController::class, 'destroy'])->can('canDeleteGasoline', 'App\Model\User');
+        Route::patch('/status/{id}', [GasolineController::class, 'setStatus']);
        
     });
 
@@ -262,4 +266,4 @@ Route::prefix('/logArrivalTime')->group(function() {
 });
 
 Route::get('/sample_charge', [ChargeController::class, 'sampleCharge']);
-
+Route::get('/balance', [ChargeController::class, 'balance']);

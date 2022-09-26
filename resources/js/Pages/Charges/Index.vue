@@ -6,15 +6,15 @@
     <div class="row gap-10 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Charges</h3>
-            <!-- <div class="peers">
+            <div class="peers">
                 <div class="peer mR-10">
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
-                </div> -->
+                </div>
                 <!-- <div class="peer"  v-if="can.canCreateCharge">
                     <Link class="btn btn-primary btn-sm" href="/charges/create">Add</Link>
                     <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div> -->
-            <!-- </div> -->
+            </div>
         </div>
 
         <filtering v-if="filter" @closeFilter="filter=false">

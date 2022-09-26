@@ -66,6 +66,11 @@
                                             <input type="date" v-model="form.vehicle_status_date" class="form-control" autocomplete="chrome-off">
                                         </div>
 
+                                        <!-- <div class="col" v-if="pageTitle === 'Create Vehicles'">
+                                            <label>Office Assignment</label>
+                                            <Select2 v-model="form.department_code" id="department_code" @select="loadOffice($event)" />
+                                        </div> -->
+
                                     </div>
                                 </div>
                             </div>
@@ -111,6 +116,7 @@ export default ({
                 checkadd: "",
                 condition:"",
                 vehicle_status_date: "",
+                department_code: ""
                 
             }),
         pageTitle: "",
@@ -134,6 +140,30 @@ export default ({
             this.pageTitle = "Create Vehicles"
         }
 
+        // $('#department_code').select2({
+        //     ajax: {
+        //         url: '/offices/fetch',
+        //         dataType:'json',
+        //         delay:500,
+        //         data: function(filter) {
+        //             return {filter:filter.term};
+        //         },
+        //         processResults: function(data, params) {
+        //             params.page = params.page || 1;
+
+        //             return{
+        //                 results: $.map(data, function(obj) {
+        //                     return {
+        //                         id: obj.id,
+        //                         text: obj.text
+        //                     }
+        //                 })
+        //             };
+        //         },
+        //         cache: true
+        //     },
+        //     minimumInputLength: 2,
+        // })
     },
     // watch:{
     //     'form.TYPECODE': function (value){

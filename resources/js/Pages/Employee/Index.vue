@@ -35,6 +35,20 @@
                             <td>{{ item.id }}</td>
                             <td>{{ item.name }}</td>
                             <td>{{ item.office }}</td>
+                            <td style="text-align: right">
+                                <!-- v-if="user.can.edit" -->
+                                <div class="dropdown dropstart">
+                                  <button class="btn btn-secondary btn-sm action-btn" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots" viewBox="0 0 16 16">
+                                      <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+                                    </svg>
+                                  </button>
+                                  <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
+                                    <li><Link class="dropdown-item" @click="gotoEdit(index)">Edit</Link></li>
+                                    <li><Link class="dropdown-item" @click="gotoDelete(index)">Delete</Link></li>
+                                  </ul>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -49,16 +63,48 @@ import Filter from '../../Shared/Filter.vue';
 
 export default {
     props: {
-        data: Object
+        data: Object,
+        filters: Object
     },
     data() {
         return {
-            search: "",
-            showFilter:false
+            search: this.$props.filters.search,
+            showFilter:false,
+            employee_id:""
         };
     },
+    watch: {
+        search: _.debounce(function (value) {
+            this.$inertia.get(
+                "/employees",
+                { search: value },
+                {
+                    preserveScroll: true,
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 500)
+    },
+    
     methods: {
+         gotoEdit(index) {
+             
+              this.employee_id = this.data.data[index].id
+              console.log(this.employee_id)
+           
+             this.$inertia.get("/employees/" + this.employee_id +"/edit"); 
+        },
 
+        gotoDelete(index) {
+         let text = "Warning! \Are you sure you want to Delete this employee?";
+          
+             if(confirm(text) == true) {
+                  this.employee_id = this.data.data[index].id
+                  this.$inertia.post("/employees/" + this.employee_id+"/destroy")
+            }
+
+        },
     },
     components: { Filter }
 }

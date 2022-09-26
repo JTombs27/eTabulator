@@ -54,7 +54,7 @@ class VehicleController extends Controller
                 'canDeleteVehicle'          => auth()->user()->can('canDeleteVehicle', User::class),
                 'canCreateDriver'           => auth()->user()->can('canCreateDriver', User::class ),
                 'canCreateOfficeVehicles'   => auth()->user()->can('canCreateOfficeVehicles', User::class),
-                'canViewWhereAbouts'        => auth()->user()->can('canViewWhereAbouts', User::class)
+                'canViewWhereAbouts'        => auth()->user()->can('canViewWhereAbouts', User::class),
             ]
         ]);
     }
@@ -102,7 +102,7 @@ class VehicleController extends Controller
     {
         $validated = $request->validated();
 
-        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date'));
+        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date', 'department_code'));
 
         if(!!$request->condition) {
 
@@ -130,7 +130,7 @@ class VehicleController extends Controller
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-        $data->update($request->except('checkadd','condition','vehicle_status_date','department_code'));
+        $data->update($request->except('checkadd','condition','vehicle_status_date'));
 
         return redirect('/vehicles')->with('message', 'updated successfuly');
     }

@@ -143,4 +143,9 @@ class Travel extends Model
         return $this->belongsTo(Office::class, 'borrowing_office', 'department_code');
     }
 
+    public function vehicles()
+    {
+        return $this->belongsTo(Vehicles::class, 'id');
+    }
+
 }

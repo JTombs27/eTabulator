@@ -161,6 +161,7 @@ class PriceController extends Controller
     public function loadGasoline(Request $request)
     {
         $query = $this->gas
+                    ->where('status',1)
                     ->where('name', 'like', "%$request->filter%")
                     ->get()
                     ->map(fn($item) => [

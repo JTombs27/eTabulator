@@ -86,7 +86,7 @@ class GasolineController extends Controller
         } 
     }
 
-     public function destroy(Request $request)
+    public function destroy(Request $request)
     {
         try 
         {
@@ -100,5 +100,16 @@ class GasolineController extends Controller
             return   ["message"=>"error"];
         }
        
+    }
+
+     public function setStatus(Request $request, $id)
+    {
+        $status = $request->is_check ? 'activated':'deactivated';
+        $status1 = $request->is_check ? 'activating':'deactivating';
+        $gas = $this->model->findOrFail($id)->setStatus($request->is_check);
+        if (!$gas) {
+            return redirect('/gasolines')->with('error', "Error while $status1 the Gas Station account");
+        }
+        return redirect('/gasolines')->with('message', "Gas Station account $status ");
     }
 }

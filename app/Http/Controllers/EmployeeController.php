@@ -17,10 +17,17 @@ class EmployeeController extends Controller
         $this->offices = $offices;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $employees = $this->model
                         ->with(['office'])
+                        ->when($request->search, function ($query, $searchItem) {
+                            $query->where('empl_id', 'like', '%'.$searchItem . '%')
+                            ->orWhere('last_name', 'like', '%'.$searchItem . '%')
+                            ->orWhere('first_name', 'like', '%'.$searchItem . '%')
+                            ->orWhere('middle_name', 'like', '%'.$searchItem . '%')
+                            ->orWhere('department_code', 'like', '%'.$searchItem . '%');
+                        })
                         ->latest()
                         ->paginate(10)
                         ->withQueryString()
@@ -30,7 +37,9 @@ class EmployeeController extends Controller
                            'office' => $item->office ? $item->office->short_name : $item->department_code,
                         ]);
         return inertia('Employee/Index',[
-            'data' => $employees
+            'data' => $employees,
+            "filters" => $request->only(['search']),
+            
         ]);
     }
 
@@ -43,6 +52,7 @@ class EmployeeController extends Controller
                             'id' => $item->department_code
                         ]);
         return inertia('Employee/Create',[
+            'editData' => false,
             'pageTitle' => 'Create',
             'offices' => $offices
         ]);
@@ -173,6 +183,90 @@ class EmployeeController extends Controller
                         ]
                     ]);
     }
+
+
+    public function edit(Request $request)
+    {
+        $offices = $this->offices->get()
+                        ->map(fn($item) => [
+                            'short_name' => $item->short_name,
+                            'office_name' => $item->office,
+                            'id' => $item->department_code
+                        ]);
+      
+       
+        return inertia('Employee/Create',[
+            '_employee' => $this->model
+            ->where("empl_id",$request->id)
+            ->first(),
+            'editData' => true,
+            'pageTitle' => 'Edit',
+            'offices' => $offices
+        ]);
+    }
+
+
+    public function update(Request $request,$id)
+    {
+        // dd($request->empl_id);
+       
+        $request->validate([
+            'first_name' => 'required',
+            'empl_id' => 'required',
+            'last_name' => 'required',
+            'gender' => 'required',
+            'birth_date' => 'required',
+            'department_code' => 'required',
+            'non_capitol' => 'required',
+        ]); 
+        
+        try {
+            // dd($id);
+         
+            $data = $this->model->where('empl_id',$id)->first();
+            // dd($data);
+            $data->update([
+                'first_name' => $request->first_name,
+                'middle_name' => $request->middle_name,
+                'last_name' => $request->last_name,
+                'suffix' => $request->suffix,
+                'postfix' => $request->postfix,
+                'gender' => $request->gender,
+                'courtesy_title' => $request->courtesy_title,
+                'department_code' => $request->department_code,
+                'agency' => $request->agency,
+                'division_code' => $request->division_code,
+                'position_title_long' => $request->position_title_long,
+                'position_title_short' => $request->position_title_short,
+                'birth_date' => $request->birth_date,
+                'non_capitol' => $request->non_capitol,
+            ]);
+           
+             
+           
+            return redirect('/employees')->with('message', 'Successfully Updated!');
+        } catch (Exception $th) 
+        {
+            // dd($id);
+            //throw $th;
+            return $th->getMessage();
+            return redirect('/employees')->with('error', 'Please provide required data');
+        } 
+    }
+
+    
+    public function destroy(Request $request,$id)
+    {
+        $data = $this->model->where('empl_id',$id)->first();
+
+        //$vid =  $data->vehicles_id; 
+
+        $data->delete();
+
+        return redirect()->back()->with('message', 'Deleted Successfuly');
+       
+    }
+
 
 
 }
