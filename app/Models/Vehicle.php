@@ -13,6 +13,7 @@ class Vehicle extends Model
     protected $table = "vehicles";
     protected $guarded = [];
     protected $appends = ['date'];
+    protected $primaryKey = "id";
 
     public function vehicle_status()
     {
