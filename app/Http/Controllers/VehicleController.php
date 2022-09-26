@@ -102,7 +102,7 @@ class VehicleController extends Controller
     {
         $validated = $request->validated();
 
-        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date'));
+        $vehicle = $this->model->create($request->except('checkadd','condition','vehicle_status_date', 'department_code'));
 
         if(!!$request->condition) {
 

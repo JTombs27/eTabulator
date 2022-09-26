@@ -29,12 +29,26 @@
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
+                            <th scope="col">Status</th>
                             <th scope="col" style="text-align: right" v-if="can.canEditGasoline || can.canDeleteGasoline">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(gasolines, index) in gasoline.data" :key="index">
                             <td>{{ gasolines.name }}</td>
+                            <td>
+                                <div class="form-check form-switch">
+                                    <input 
+                                        type="checkbox" 
+                                        class="form-check-input" 
+                                        role="switch"
+                                        :id="gasolines.id" 
+                                        :checked="gasolines.status == '1'"
+                                        @change="setStatus($event,gasolines.id)"
+                                    >
+                                    <label class="form-check-label" :for="gasolines.id"></label>
+                                </div>
+                            </td>
                             <td style="text-align: right" v-if="can.canEditGasoline || can.canDeleteGasoline">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
@@ -128,7 +142,10 @@ export default {
         },
         showFilter() {
             this.filter = !this.filter
-        }
+        },
+        setStatus(e, item) {
+            this.$inertia.patch(`/gasolines/status/${item}`, {is_check:e.target.checked})
+        },
     },
 };
 </script>

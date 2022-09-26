@@ -51,11 +51,13 @@ class SoaTravelController extends Controller
                     'id' => $item->id,
                     'date_from' => $item->date_from,
                     'date_to' => $item->date_to,
+                    'soa_date' =>$item->soaDate,
                     'total_liters' => number_format($item->travels->sum('actual_liter'),2),
                     'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
                     'ticket_no' => $item->ticket_no,
                     'office' => $item->office->short_name,
-                    'division' => $item->division
+                    'division' => $item->division,
+                    'cafoa_number' =>$item->cafoa_number,
                 ])
                 ,
             "filters" => $request->only(['search']),
@@ -132,7 +134,8 @@ class SoaTravelController extends Controller
             "travels" => $travels
             	->latest()
             	->when($request->search, function ($query, $searchItem) {
-                    $query->where('ticket_number', 'like', '%' . $searchItem . '%');
+                    $query->where('ticket_number', 'like', '%' . $searchItem . '%')
+                        ->orWhere('invoice_no', 'like', '%' . $searchItem . '%');
                 })
             	->where('soa_travel', $id)
             	->simplePaginate(10)
@@ -260,6 +263,13 @@ class SoaTravelController extends Controller
                                     $q->whereDate('date', $item->date_fueled);
                     })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
                     $actual = $item->actual_liter ? $item->actual_liter : $item->total_liters;
+                    if ($item->soa_date_from == $item->soa_date_to) {
+
+                        $date = (\Carbon\Carbon::parse($item->soa_date_from)->format('M d, Y'));
+                    } else {
+                        $date = (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y'));
+                    }
+                   
                     return [
                                     'PLATENO' => $item->PLATENO,
                                     'ticket_number' => $item->ticket_number,
@@ -275,7 +285,7 @@ class SoaTravelController extends Controller
                                     'office' => $item->office,
                                     'gasoline_name' => $item->gasstation,
                                     'invoice_no' => $item->invoice_no,
-                                    'date' => (\Carbon\Carbon::parse($item->soa_date_from)->format('M d')) ."-". (\Carbon\Carbon::parse($item->soa_date_to)->format('d, Y')),
+                                    'date' => $date,
                                     'prepared_by' => $item->name,
                                     'division_name' => $item->division_name1
                                     

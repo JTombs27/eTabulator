@@ -15,4 +15,15 @@ class Gasoline extends Model
     {
         return $this->hasMany(Travel::class,"gasoline_id","id");
     }
+
+    public function setStatus($value)
+    {
+        try {
+            $this->status = $value;
+            $this->save();
+            return true;
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
