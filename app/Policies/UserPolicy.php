@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Travel;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -27,6 +28,11 @@ class UserPolicy
     public function canEditTravel(User $user)
     {
         return $user->permissions()->where('permission_name', 'can_edit_travels')->exists();
+    }
+
+    public function canAccessEdit(Travel $travel)
+    {
+        $allowedEdit = $travel->whereNull('status')->orWhere('status', '');
     }
 
     public function canAllowEdit(User $user)
