@@ -145,7 +145,7 @@ Route::middleware('auth')->group(function() {
     
     // Route::post('/sss',  [TravelController::class, 'index']);
     Route::prefix('/travels')->group(function() {
-        Route::get('/{id}/vehicles', [TravelController::class, 'index'])->name('index')->can('canViewTravelIndex','App\Model\User');
+        Route::get('/', [TravelController::class, 'index'])->name('index')->can('canViewTravelIndex','App\Model\User');
         Route::post('get-vehicles', [TravelController::class, 'getVehicles']);
         Route::get('create', [TravelController::class, 'create'])->name('create')->can('canCreateTravel','App\Model\User');
         Route::post('vehicle-details', [TravelController::class, 'getVehicleDriver'])->name('getVehicleDriver');
