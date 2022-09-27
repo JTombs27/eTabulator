@@ -65,7 +65,7 @@ class DivisionController extends Controller
             ['name' => 'BM Eutropio Jayectin', 'division_code' => 153],
             ['name' => 'BM Wilfredo Ang', 'division_code' => 154],
             ['name' => 'BM Jammaila Budac', 'division_code' => 155],
-            ['name' => 'BM Charliemaine Bautista', 'division_code' => 156]
+            ['name' => 'BM Charlemagne Bautista', 'division_code' => 156]
         ]);
 
         return $bmArray->map(fn($item) => [

@@ -42,7 +42,10 @@ class SoaTravelController extends Controller
             "soaTravel" => $soatravel
             	->with('travels','office','division')
             	->when($request->search, function ($query, $searchItem) {
-                    $query->where('ticket_no', 'like', '%' . $searchItem . '%');
+                    $query->where('ticket_no', 'like', '%' . $searchItem . '%')
+                          ->orWhereHas('office', function ($q) use ($searchItem) {
+                                    $q->where('short_name','like', '%' . $searchItem . '%');
+                                });
                 })
                 ->latest()
                 ->simplePaginate(10)

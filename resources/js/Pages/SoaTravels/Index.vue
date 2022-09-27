@@ -8,7 +8,7 @@
             <h3>Statement of Accounts</h3>
             <div class="peers">
                 <div class="peer mR-10">
-                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search ticket No.">
+                    <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search">
                 </div>
                 <div class="peer"  v-if="can.canCreateSoaTravel">
                     <Link class="btn btn-primary btn-sm" href="/soatravels/merge">Add Merge</Link>
