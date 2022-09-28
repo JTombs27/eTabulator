@@ -191,7 +191,12 @@ class SoaTravelController extends Controller
                 $soaTravel = $this->soatravel->create($request->only('date_from','date_to','user_id','office_id','gasoline_id','division_code'));
                 
                 $soaTravel->updateTicketNo();
-        		foreach ($request->travels as $key ) {
+                if ( $request->soatravelGroup != null) {
+                    $tripTravel = $request->soatravelGroup;
+                } else {
+                    $tripTravel = $request->travels;
+                }
+        		foreach ($tripTravel as $key ) {
                     if ($key['invoice'] == null) {
                         return redirect()->back()->with('error','Invoice is Required');
                     } else {
@@ -199,6 +204,7 @@ class SoaTravelController extends Controller
         			    $travel = $this->model->where('id', $key['id'])->where('soa_travel', null)->update(['soa_travel' => $soaTravel->id]);
                     }
         		}
+
         	} else {
         		return redirect('/soatravels')->with('error', 'Travel already Tagged');
         	}
