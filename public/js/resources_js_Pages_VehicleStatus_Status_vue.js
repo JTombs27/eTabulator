@@ -41,15 +41,35 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+<<<<<<< HEAD
 /* harmony import */ var _status_vue_vue_type_template_id_492f208c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./status.vue?vue&type=template&id=492f208c */ "./resources/js/Pages/VehicleStatus/status.vue?vue&type=template&id=492f208c");
 /* harmony import */ var _status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.vue?vue&type=script&lang=js */ "./resources/js/Pages/VehicleStatus/status.vue?vue&type=script&lang=js");
 /* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+=======
+<<<<<<< HEAD
+/* harmony import */ var _status_vue_vue_type_template_id_492f208c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./status.vue?vue&type=template&id=492f208c */ "./resources/js/Pages/VehicleStatus/status.vue?vue&type=template&id=492f208c");
+/* harmony import */ var _status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./status.vue?vue&type=script&lang=js */ "./resources/js/Pages/VehicleStatus/status.vue?vue&type=script&lang=js");
+/* harmony import */ var E_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+=======
+/* harmony import */ var _Status_vue_vue_type_template_id_7ffe06a8__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Status.vue?vue&type=template&id=7ffe06a8 */ "./resources/js/Pages/VehicleStatus/Status.vue?vue&type=template&id=7ffe06a8");
+/* harmony import */ var _Status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Status.vue?vue&type=script&lang=js */ "./resources/js/Pages/VehicleStatus/Status.vue?vue&type=script&lang=js");
+/* harmony import */ var F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+>>>>>>> 007ec59cb36f7d2267bef9900d727be55bd787c8
+>>>>>>> fc1b7a6758a758792fa76914962f6bdc88035794
 
 
 
 
 ;
+<<<<<<< HEAD
 const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_status_vue_vue_type_template_id_492f208c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/VehicleStatus/status.vue"]])
+=======
+<<<<<<< HEAD
+const __exports__ = /*#__PURE__*/(0,E_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_status_vue_vue_type_template_id_492f208c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/VehicleStatus/status.vue"]])
+=======
+const __exports__ = /*#__PURE__*/(0,F_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Status_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Status_vue_vue_type_template_id_7ffe06a8__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/VehicleStatus/Status.vue"]])
+>>>>>>> 007ec59cb36f7d2267bef9900d727be55bd787c8
+>>>>>>> fc1b7a6758a758792fa76914962f6bdc88035794
 /* hot reload */
 if (false) {}
 
