@@ -51,7 +51,7 @@ class HomeController extends Controller
                      (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                      (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                      ->where(DB::raw('raaohs.tyear'),now()->year)
-                     ->where(DB::raw('ooes.factcode'),'50203090')
+                     ->where(DB::raw('ooes.fueltag'),'1')
                      //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                      ->groupBy(DB::raw('offices.department_code'))
                      ->orderBy(DB::raw('offices.department_code,raaohs.FFUNCCOD, raaohs.fraodesc, ooes.fooedesc'))
@@ -93,7 +93,7 @@ class HomeController extends Controller
                         (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
                         (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
                         ->where(DB::raw('raaohs.tyear'),now()->year)
-                        ->where(DB::raw('ooes.factcode'),'50203090')
+                        ->where(DB::raw('ooes.fueltag'),'1')
                         ->where('offices.department_code', auth()->user()->office_id)
                      //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
                      ->groupBy(DB::raw('raaohs.FFUNCCOD'))
@@ -123,7 +123,7 @@ class HomeController extends Controller
                     ->join('fms.ooes','ooes.recid', '=', 'raaods.idooe')
                     ->select(DB::raw('(SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1'))
                     ->where(DB::raw('raaohs.tyear'),now()->year)
-                    ->where(DB::raw('ooes.factcode'),'50203090')
+                    ->where(DB::raw('ooes.fueltag'),'1')
                     ->get();
         if(!$amount) {
             $amount = 0.00;
