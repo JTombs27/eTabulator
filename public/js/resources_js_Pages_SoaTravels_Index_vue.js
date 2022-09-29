@@ -298,7 +298,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     type: "text",
     "class": "form-control form-control-sm",
-    placeholder: "Search ticket No."
+    placeholder: "Search"
   }, null, 512
   /* NEED_PATCH */
   ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.search]])]), $props.can.canCreateSoaTravel ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {

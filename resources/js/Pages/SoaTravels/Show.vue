@@ -63,6 +63,7 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
+                            <th></th>
                             <th scope="col">Ticket Number</th>
                             <th scope="col">Invoice Number</th>
                             <th scope="col">Date Fuel</th>
@@ -76,6 +77,11 @@
                     </thead>
                     <tbody>
                         <tr v-for="soa_travel in sortedEmp">
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" :value="soa_travel"  :id="soa_travel" v-model="form.soatravelGroup">
+                                </div>
+                            </td>
                             <td>{{ soa_travel.ticket_number }}</td>
                             <td>{{ soa_travel.invoice }}</td>
                             <td>{{ soa_travel.date_fueled}}</td>
@@ -149,6 +155,7 @@ export default {
                 user_id: this.auth.user.id,
                 office_id: "",
                 division_code: "",
+                soatravelGroup:[],
             }),
             offices:[],
             divisions:[],

@@ -77,7 +77,8 @@
                 </div>
             </div>
         </div>
-        <div class="w-100">
+       
+        <div class="w-100" >
             <div class="row"  v-if="temp">
                 <div :class="isAdmin == null ? 'col-md-4':'col-md-6'" >
                     <div class="layers bd bgc-white p-20">
@@ -97,6 +98,47 @@
                         <div class="col-12">
                             <pie-chart :pieChartData="pieChartData.Data" :pieChartLabels = "pieChartData.Labels"></pie-chart>
                             <!-- <some-chart :chartData="pieChartData.Data" :CharLegelPosition="isAdmin == null ? 'top':'left'" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mT-10" v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO'">
+                    <div class="layers w-100 bgc-white p-20">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                   <h3 class="fw-bold">Fuel Status Report</h3>
+                                </div>
+                                <div class="col-md-6 text-end">
+                                    <button type="button" class="btn btn-outline-success pull-right" @click="print()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                            <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+                                            <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                                        </svg>
+                                        PRINT</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="w-100 table table-responsive overflow-auto p-5" style="height: 250px;">
+                                <table class="table table-bordered">
+                                    <thead class="table-dark">
+                                        <th class="text-center">Office</th>
+                                        <th class="text-center">Fuel Withdrawal</th>
+                                        <th class="text-center">Paid</th>
+                                        <th class="text-center">Unpaid</th>
+                                        <th class="text-center">Balance</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in charge_to" :key="index">
+                                            <td width="46%">  &nbsp;{{item.office_name}}</td>
+                                            <td width="15%" class="text-end">{{ item.amount}}</td>
+                                            <td width="13%" class="text-end">{{ item.amount_paid}}</td>
+                                            <td width="13%" class="text-end">{{ item.unpaid_amount}}</td>
+                                            <td width="13%" class="text-end">{{ item.balance2}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -163,7 +205,8 @@ export default ({
         balance:"",
         isAdmin:"",
         fuelConsumed:Array,
-        TotalCharge:""
+        TotalCharge:"",
+        charge_to:Array
     },
     data() {
         return {
@@ -242,6 +285,12 @@ export default ({
     mounted()
     {
        
-    }
+    },
+     methods: {
+        print() {
+
+            window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fcharge_balance&standAlone=truee&decorate=no", "_blank");
+        }
+     }
 });
 </script>

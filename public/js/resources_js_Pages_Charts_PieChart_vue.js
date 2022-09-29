@@ -67,7 +67,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
     var chartData = {
       labels: props.pieChartLabels,
       datasets: [{
-        backgroundColor: ['#41B883', '#E46651', '#00D8FF', '#DD1B16'],
+        backgroundColor: ['#ff0000', '#ff4000', '#ff8000', '#ffbf00', '#ffff00', '#bfff00', '#80ff00', '#40ff00', '#00ff00', '#00ff40', '#00ff80', '#00ffbf', '#00ffff', '#00bfff', '#0080ff', '#0040ff', '#0000ff', '#4000ff', '#8000ff', '#bf00ff', '#ff00ff', '#ff00bf', '#ff0080', '#ff0040', '#ff0000', '#0d6efd', '#6f42c1', '#d63384', '#dc3545', '#fd7e14', '#ffc107', '#198754', '#20c997', '#0dcaf0', '#6c757d', '#343a40', '#0d6efd', '#198754', '#0dcaf0', '#ffc107', '#dc3545', '#212529'],
         data: props.pieChartData
       }]
     };

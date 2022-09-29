@@ -61,7 +61,7 @@
                             <th scope="col">Vehicle</th>
                             <th scope="col">Driver</th>
                             <th scope="col">Office</th>
-                            <th scope="col">Date Created</th>
+                            <th scope="col">Date Travel</th>
                             <th scope="col">Date Fueled</th>
                             <th scope="col">Liter/s</th>
                             <th scope="col">Actual Liter/s</th>

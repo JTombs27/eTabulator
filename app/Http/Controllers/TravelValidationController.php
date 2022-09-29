@@ -28,9 +28,9 @@ class TravelValidationController extends Controller
             ->simplePaginate(10)
             ->through(function ($item) 
             {
-                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+                $checkPrice = $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', Carbon::now())->exists();
                 $total = $this->prices->when($checkPrice, function($q) use ($item) {
-                    $q->whereDate('date', $item->date_from);
+                    $q->whereDate('date', Carbon::now());
                 })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
                 return [
                     'first_name' => $item->driverVehicle->empl->first_name,

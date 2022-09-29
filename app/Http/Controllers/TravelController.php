@@ -60,7 +60,10 @@ class TravelController extends Controller
                                 $q->orWhereNull('status');
                             })
                             ->when($request->search, function ($query, $searchItem) {
-                                $query->where('ticket_number', 'like', '%' . $searchItem . '%');
+                                $query->where('ticket_number', 'like', '%' . $searchItem . '%')
+                                    ->orWhereHas('driverVehicle.vehicle', function($q) use($searchItem) {
+                                        $q->where('PlATENO', 'like', "%$searchItem%");
+                                    });
                             })
                             ->when($request->date_fueled, function ($query, $searchItem) {
                                 $query->where('date_fueled', $searchItem);
