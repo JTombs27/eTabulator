@@ -130,7 +130,7 @@ class VehicleController extends Controller
     public function update(Request $request)
     {
         $data = $this->model->findOrFail($request->id);
-        $data->update($request->except('checkadd','condition','vehicle_status_date'));
+        $data->update($request->except('checkadd','condition','vehicle_status_date','department_code'));
 
         return redirect('/vehicles')->with('message', 'updated successfuly');
     }
