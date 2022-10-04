@@ -125,7 +125,8 @@ class HomeController extends Controller
                     ->where(DB::raw('raaohs.tyear'),now()->year)
                     ->where(DB::raw('ooes.fueltag'),'1')
                     ->get();
-        if(!$amount) {
+        if(!$amount) 
+        {
             $amount = 0.00;
         } else {
            $amount = $amount->sum('amount');
