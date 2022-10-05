@@ -7,6 +7,12 @@
     <title>Sign In - Your System Name</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.png">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
+    <!-- <style>
+        .strokeme {
+          color: white;
+          text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
+    </style> -->
 </head>
 
 <body class="app">
@@ -16,18 +22,21 @@
     <div class="peers ai-s fxw-nw h-100vh">
         <div class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv"
             style='background-image:url("images/bg.jpg")'>
+            <div class="row mt-3 ms-3" style="color: rgb(52, 52, 52); display: block;">
+                <h1>EQUIPMENT MANAGEMENT SYSTEM</h1>
+            </div>
             <div class="pos-a centerXY">
                 <div class="row text-center">
                     <div>
                         <img class="mw-50" src="images/logo.png" alt="">
                     </div>
                 </div>
-                <div class="row" style="color:white">
-                    <h3>EQUIPMENT MANAGEMENT SYSTEM</h3>
-                </div>
+                <!-- <div class="row" style="color:white;">
+                    <h1 class="strokeme">EQUIPMENT MANAGEMENT SYSTEM</h1>
+                </div> -->
             </div>
         </div>
-        <div class="col-12 col-md-4 peer pX-40 pY-80 h-100 bgc-white scrollable pos-r" style="min-width:320px">
+        <div class="col-12 col-md-3 peer pX-40 pY-80 h-100 scrollable pos-r border-startr" style="min-width:320px; background-color:rgb(218 218 219);">
             <div class="row text-center" id="mobile-logo">
                 <div class="col-offset-5 mb-1">
                     <img class="img-fluid" src="images/logo.png" alt="">
