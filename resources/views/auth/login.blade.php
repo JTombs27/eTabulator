@@ -7,12 +7,13 @@
     <title>Sign In - Your System Name</title>
     <link rel="icon" type="image/x-icon" href="/images/favicon.png">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet" />
-    <!-- <style>
+    <style>
         .strokeme {
-          color: white;
-          text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+          color: #00419b;
+          font-weight: bold;
+          /* text-shadow: -1px -1px 0 #79a6e5, 1px -1px 0 #79a6e5, -1px 1px 0 #79a6e5, 1px 1px 0 #79a6e5; */
         }
-    </style> -->
+    </style>
 </head>
 
 <body class="app">
@@ -21,9 +22,11 @@
     </div>
     <div class="peers ai-s fxw-nw h-100vh">
         <div class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv"
-            style='background-image:url("images/bg.jpg")'>
+            style='background-image:url("images/bg.jpg"); background-size:100% 100%'>
             <div class="row mt-3 ms-3" style="color: rgb(52, 52, 52); display: block;">
-                <h1>EQUIPMENT MANAGEMENT SYSTEM</h1>
+                <div class="col-md-6">
+                <h1 class="strokeme display-5">EQUIPMENT MANAGEMENT SYSTEM</h1>
+                </div>
             </div>
             <div class="pos-a centerXY">
                 <div class="row text-center">
@@ -36,14 +39,14 @@
                 </div> -->
             </div>
         </div>
-        <div class="col-12 col-md-3 peer pX-40 pY-80 h-100 scrollable pos-r border-startr" style="min-width:320px; background-color:rgb(218 218 219);">
+        <div class="col-12 col-md-3 peer pX-40 pY-80 h-100 scrollable pos-r border-startr" style="min-width:320px; background-color:rgb(2 65 150);">
             <div class="row text-center" id="mobile-logo">
                 <div class="col-offset-5 mb-1">
                     <img class="img-fluid" src="images/logo.png" alt="">
                     <h3>EQUIPMENT MANAGEMENT SYSTEM</h3>
                 </div>
             </div>
-            <h4 class="fw-300 c-grey-900 mB-10">Login</h4>
+            <h4 class="fw-300 text-light mB-10">Login</h4>
             @if (count($errors) > 0)
             <div class="alert alert-danger" style="margin-bottom: unset; padding: .3rem;">
                 @foreach($errors->all() as $message)
@@ -63,16 +66,16 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="mb-3">
-                    <label class="text-normal text-dark form-label">Username</label>
+                    <label class="text-normal text-light form-label">Username</label>
                     <input type="text" name="username" class="form-control" value="{{ old('username') }}">
                 </div>
                 <div class="mb-3">
-                    <label class="text-normal text-dark form-label">Password</label>
+                    <label class="text-normal text-light form-label">Password</label>
                     <input type="password" id="password" class="form-control" name="password" value="{{ old('password') }}">
                 </div>
                 <div class="form-check">
                   <input class="form-check-input disable-select" type="checkbox" onchange="showMyPassword(this)" id="showPassword">
-                  <label class="form-check-label" for="showPassword">
+                  <label class="form-check-label text-light" for="showPassword">
                     Show Password
                   </label>
                 </div>
@@ -82,7 +85,7 @@
                             <div class="checkbox checkbox-circle checkbox-info peers ai-c"><input type="checkbox"
                                     id="inputCall1" name="inputCheckboxesCall" class="peer"> <label for="inputCall1"
                                     class="peers peer-greed js-sb ai-c form-label"><span
-                                        class="peer peer-greed">Remember Me</span></label></div>
+                                        class="peer peer-greed text-light">Remember Me</span></label></div>
                         </div>
                         <div class="peer"><button type="submit" class="btn btn-primary btn-color">Login</button></div>
                     </div>
@@ -91,7 +94,7 @@
             <div style="margin-top:10px;">
                 <center>
                     <div class="peers ai-c jc-sb fxw-nw">
-                        <a href="/logArrivalTime">Log your arrival ? - for drivers only.</a>
+                        <a href="/logArrivalTime" class="text-light">Log your arrival ? - for drivers only.</a>
                     </div>
                 </center>
             </div>
