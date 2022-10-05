@@ -13,6 +13,9 @@
           font-weight: bold;
           /* text-shadow: -1px -1px 0 #79a6e5, 1px -1px 0 #79a6e5, -1px 1px 0 #79a6e5, 1px 1px 0 #79a6e5; */
         }
+        a.log:hover{
+            color: yellow !important;
+        }
     </style>
 </head>
 
@@ -94,7 +97,7 @@
             <div style="margin-top:10px;">
                 <center>
                     <div class="peers ai-c jc-sb fxw-nw">
-                        <a href="/logArrivalTime" class="text-light">Log your arrival ? - for drivers only.</a>
+                        <a href="/logArrivalTime" class="text-light log">Log your arrival ? - for drivers only.</a>
                     </div>
                 </center>
             </div>
