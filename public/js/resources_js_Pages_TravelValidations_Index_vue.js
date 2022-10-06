@@ -19,39 +19,86 @@ __webpack_require__.r(__webpack_exports__);
     return {
       myModal: null,
       actual_liters: 0,
-      invalid_actual_liters: false
+      invalid_actual_liters: false,
+      fuelOTP: localStorage.getItem("fuelOTP"),
+      tempOTP: "",
+      invalid_tempOTP: ""
     };
   },
   methods: {
     openConfirmation: function openConfirmation() {
-      this.actual_liters = this.TravelData.data[0].liters;
-      this.myModal = new window.bootstrap.Modal(document.getElementById('myModal'));
-      this.myModal.show(); // $('body').removeClass('modal-open');
-      // $('body').css("overflow","scroll");
-      // $('.modal-backdrop').remove();
-    },
-    confirm: function confirm() {
-      var vm = this;
-
-      if (this.actual_liters > this.TravelData.data[0].liters) {
-        this.invalid_actual_liters = true;
+      if (localStorage.getItem("fuelOTP") === null) {
+        this.invalid_tempOTP = "";
+        this.tempOTP = "";
+        this.actual_liters = this.TravelData.data[0].liters;
+        this.myModal = new window.bootstrap.Modal(document.getElementById('myModal'));
+        this.myModal.show();
       } else {
         this.invalid_actual_liters = false;
-        axios.patch('/travelTicket/' + this.TravelData.data[0].id + '/' + this.actual_liters).then(function (response) {
-          if (response.data != null) {
-            if (response.data == "success") {
-              vm.$inertia.reload({
-                only: ['TravelData']
-              });
-              setTimeout(function () {
-                vm.myModal.hide();
-              }, 1500);
-            } else {
-              //vm.saveMessage = response.data;
-              alert(response.data);
+        var today = new Date();
+        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+
+        if (localStorage.getItem("fuelOTP_date") < date) {
+          this.fuelOTP = null;
+          localStorage.removeItem('fuelOTP');
+          localStorage.removeItem('fuelOTP_date');
+          localStorage.removeItem('fuelOTP_date');
+          this.openConfirmation();
+        } else {
+          this.actual_liters = this.TravelData.data[0].liters;
+          this.myModal = new window.bootstrap.Modal(document.getElementById('myModal'));
+          this.myModal.show();
+        }
+      }
+    },
+    confirm: function confirm() {
+      var _this = this;
+
+      var vm = this;
+
+      if (localStorage.getItem("fuelOTP") === null) {
+        if (this.tempOTP.trim() == "") {
+          this.invalid_tempOTP = "Gasoline OTP is required to continue!";
+        } else {
+          axios.get('/travelTicket/OTP/' + this.TravelData.data[0].gasoline_id + '/' + this.tempOTP).then(function (response) {
+            if (response.data != null) {
+              if (response.data == "success") {
+                var today = new Date();
+                var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                vm.fuelOTP = vm.tempOTP;
+                localStorage.setItem("fuelOTP", vm.tempOTP);
+                localStorage.setItem("fuelOTP_date", date);
+                localStorage.setItem("gasoline_id", vm.TravelData.data[0].gasoline_id);
+                _this.actual_liters = _this.TravelData.data[0].liters;
+              } else {
+                _this.invalid_tempOTP = "You have entered an incorrect OTP!";
+              }
             }
-          }
-        });
+          });
+        }
+      } else if (localStorage.getItem("gasoline_id") == this.TravelData.data[0].gasoline_id) {
+        if (this.actual_liters > this.TravelData.data[0].liters) {
+          this.invalid_actual_liters = true;
+        } else {
+          this.invalid_actual_liters = false;
+          axios.patch('/travelTicket/' + this.TravelData.data[0].id + '/' + this.actual_liters).then(function (response) {
+            if (response.data != null) {
+              if (response.data == "success") {
+                vm.$inertia.reload({
+                  only: ['TravelData']
+                });
+                setTimeout(function () {
+                  vm.myModal.hide();
+                }, 1500);
+              } else {
+                //vm.saveMessage = response.data;
+                alert(response.data);
+              }
+            }
+          });
+        }
+      } else {
+        alert("Mismatch Gasoline Station! \nPLease Double check Gas Station in the ticket.");
       }
     }
   }
@@ -83,7 +130,7 @@ var _hoisted_2 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
     "padding-left": "20px",
     "padding-right": "20px"
   }
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("TRAVEL TICKET VALIDATION "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h1", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "TRAVEL TICKET VALIDATION "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "25",
   height: "25",
@@ -296,36 +343,79 @@ var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "PLEASE CONFIRM", -1
+var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "DAILY GASOLINE STATION OTP CONFIRMATION")], -1
 /* HOISTED */
 );
 
-var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "This action will update the travel ticket have been fueled.", -1
-/* HOISTED */
-);
-
-var _hoisted_47 = {
+var _hoisted_46 = {
   "class": "row"
 };
 
-var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
+  "class": "col-6 text-start col-form-label"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Enter Gasoline OTP: ")], -1
+/* HOISTED */
+);
+
+var _hoisted_48 = {
+  "class": "col-6"
+};
+var _hoisted_49 = {
+  key: 0,
+  "class": "text-danger text-sm text-end"
+};
+var _hoisted_50 = {
+  key: 1
+};
+var _hoisted_51 = {
+  key: 0
+};
+
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "50",
+  height: "50",
+  fill: "currentColor",
+  "class": "bi bi-info-square",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "PLEASE CONFIRM")], -1
+/* HOISTED */
+);
+
+var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "This action will update the travel ticket have been fueled.", -1
+/* HOISTED */
+);
+
+var _hoisted_55 = {
+  "class": "row"
+};
+
+var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", {
   "class": "col-7 col-form-label"
 }, "Enter Actual Liters Fueled: ", -1
 /* HOISTED */
 );
 
-var _hoisted_49 = {
+var _hoisted_57 = {
   "class": "col-5"
 };
-var _hoisted_50 = {
+var _hoisted_58 = {
   key: 0,
-  "class": "form-control text-danger text-sm"
+  "class": "text-danger text-sm text-end"
 };
-var _hoisted_51 = {
+var _hoisted_59 = {
   key: 1
 };
 
-var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_60 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "50",
   height: "50",
@@ -340,21 +430,21 @@ var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "SUCCESSFULLY CONFIRMED", -1
+var _hoisted_61 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, "SUCCESSFULLY CONFIRMED", -1
 /* HOISTED */
 );
 
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "Transaction of this travel ticket successfully completed.", -1
+var _hoisted_62 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", null, "Transaction of this travel ticket successfully completed.", -1
 /* HOISTED */
 );
 
-var _hoisted_55 = [_hoisted_52, _hoisted_53, _hoisted_54];
-var _hoisted_56 = {
+var _hoisted_63 = [_hoisted_60, _hoisted_61, _hoisted_62];
+var _hoisted_64 = {
   key: 0,
   "class": "modal-footer text-center"
 };
 
-var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+var _hoisted_65 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
   type: "button",
   "class": "btn btn-danger",
   "data-bs-dismiss": "modal"
@@ -362,7 +452,7 @@ var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("   ");
+var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("   ");
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [$props.TravelData.data.length >= 1 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [_hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_5, _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", {
@@ -390,18 +480,29 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return $options.openConfirmation();
     }),
     "class": "btn btn-success c-white pull-right"
-  }, _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.TravelData.data.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_33, _hoisted_38)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [$props.TravelData.data[0].status == 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_43, [_hoisted_44, _hoisted_45, _hoisted_46, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_47, [_hoisted_48, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "number",
+  }, _hoisted_32)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.TravelData.data.length == 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_33, _hoisted_38)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_39, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [$data.fuelOTP === null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_43, [_hoisted_44, _hoisted_45, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <p>This action will update the travel ticket have been fueled.</p> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "password",
     "onUpdate:modelValue": _cache[1] || (_cache[1] = function ($event) {
+      return $data.tempOTP = $event;
+    }),
+    "class": "form-control",
+    autocomplete: "chrome-off"
+  }, null, 512
+  /* NEED_PATCH */
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.tempOTP]])]), $data.invalid_tempOTP != '' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_49, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.invalid_tempOTP), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.fuelOTP !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_50, [$props.TravelData.data[0].status == 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_51, [_hoisted_52, _hoisted_53, _hoisted_54, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_55, [_hoisted_56, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+    type: "number",
+    "onUpdate:modelValue": _cache[2] || (_cache[2] = function ($event) {
       return $data.actual_liters = $event;
     }),
     "class": "form-control",
     autocomplete: "chrome-off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.actual_liters]])]), $data.invalid_actual_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_50, "Should not be greater than in the travel Ticket.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.TravelData.data[0].status == 'Fueled' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_51, _hoisted_55)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $props.TravelData.data[0].status == 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_56, [_hoisted_57, _hoisted_58, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.actual_liters]])]), $data.invalid_actual_liters ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_58, "Should not be greater than in the travel Ticket.")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.TravelData.data[0].status == 'Fueled' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_59, _hoisted_63)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), $props.TravelData.data[0].status == 'Approved' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_64, [_hoisted_65, _hoisted_66, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
-    onClick: _cache[2] || (_cache[2] = function ($event) {
+    onClick: _cache[3] || (_cache[3] = function ($event) {
       return $options.confirm();
     }),
     "class": "btn btn-primary"
@@ -424,13 +525,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Index_vue_vue_type_template_id_a4e8fb2c__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Index.vue?vue&type=template&id=a4e8fb2c */ "./resources/js/Pages/TravelValidations/Index.vue?vue&type=template&id=a4e8fb2c");
 /* harmony import */ var _Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Index.vue?vue&type=script&lang=js */ "./resources/js/Pages/TravelValidations/Index.vue?vue&type=script&lang=js");
-/* harmony import */ var C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_a4e8fb2c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/TravelValidations/Index.vue"]])
+const __exports__ = /*#__PURE__*/(0,D_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Index_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Index_vue_vue_type_template_id_a4e8fb2c__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/TravelValidations/Index.vue"]])
 /* hot reload */
 if (false) {}
 
