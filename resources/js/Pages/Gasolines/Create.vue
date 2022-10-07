@@ -3,7 +3,7 @@
     <div class="row gap-20 masonry pos-r">
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>{{ pageTitle }} Station </h3>
-            <back-button :href="backToMyUrl"></back-button>
+            <back-button :href="'/gasolines'"></back-button>
         </div>
         <div class="row justify-content-center">
             <div class="col-md-6 p-20 bd">
@@ -15,6 +15,13 @@
                                     <label for="">Station Name</label>
                                     <input type="text" v-model="form.name" class="form-control" autocomplete="chrome-off">
                                     <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.name }}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <label for="">Fuel OTP</label>
+                                    <input type="text" v-model="form.fuelOTP" class="form-control" autocomplete="chrome-off">
+                                    <div class="fs-6 c-red-500" v-if="form.errors.fuelOTP">{{ form.errors.fuelOTP }}</div>
                                 </div>
                             </div>
                         </div>
@@ -41,6 +48,7 @@ export default {
         return {
             form: useForm({
                 name:'',
+                fuelOTP:'',
                 id:'',
             }),
             /*testValue:"",*/
@@ -54,7 +62,8 @@ export default {
         {
             this.loading            = true;
             this.pageTitle          = "Edit";
-            this.form.name     = this.editData.name;
+            this.form.name          = this.editData.name;
+            this.form.fuelOTP       = this.editData.fuelOTP;
             this.form.id            = this.editData.id;
 
         } else {

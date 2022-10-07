@@ -340,13 +340,13 @@ class HomeController extends Controller
 
                             $charge2 = $charge->groupBy('office_id')->map(fn ($items) =>
                             [
-                                'office_id' => $items[0]['office_id'],
-                                'office_name' => $items[0]['office_name'],
-                                'balance2' => number_format($items->sum('balance2'),2),
-                                'total_liters' => number_format($items->sum('total_liters'),2),
-                                'amount'=> number_format($items->sum('amount'),2),
-                                'amount_paid'=> number_format($items->sum('paid_amount'),2),
-                                'unpaid_amount'=> number_format($items->sum('unpaid_amount'),2),
+                                'office_id'     => $items[0]['office_id'],
+                                'office_name'   => $items[0]['office_name'],
+                                'balance2'      => number_format($items->sum('balance2'),2),
+                                'total_liters'  => number_format($items->sum('total_liters'),2),
+                                'amount'        => number_format($items->sum('amount'),2),
+                                'amount_paid'   => number_format($items->sum('paid_amount'),2),
+                                'unpaid_amount' => number_format($items->sum('unpaid_amount'),2),
                             ]
                             );
 
