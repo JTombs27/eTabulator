@@ -63,7 +63,6 @@ class EmployeeController extends Controller
         
         try {
             $employees = Http::post("http://122.54.19.172:91//api/ListOfEmployees")->collect();
-            return $employees;
             $arrayOfEmployees = [];
             foreach ($employees as $value) {
                 
