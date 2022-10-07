@@ -4,22 +4,21 @@
   
     <div class="row bg-white" v-if="TravelData.data.length >= 1">
         <div class="col-12 text-center bg-white" style="margin-top: 10px !important;padding-left:20px;padding-right:20px">
-            <b><h1>TRAVEL TICKET 
-                VALIDATION 
+            <b><h1><b>TRAVEL TICKET 
+                VALIDATION </b>
                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-truck-front-fill" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M3.5 0A2.5 2.5 0 0 0 1 2.5v9c0 .818.393 1.544 1 2v2a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5V14h6v1.5a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-2c.607-.456 1-1.182 1-2v-9A2.5 2.5 0 0 0 12.5 0h-9ZM3 3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v3.9c0 .625-.562 1.092-1.17.994C10.925 7.747 9.208 7.5 8 7.5c-1.208 0-2.925.247-3.83.394A1.008 1.008 0 0 1 3 6.9V3Zm1 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2Zm-5-2a1 1 0 1 0 0 2h2a1 1 0 1 0 0-2H7Z"/>
             </svg></h1></b>
             
         </div> 
         <div class="col-md-12 p-20 bg-white" >
-            
             <table class="table table-bordered" >
                 <tbody>
                 <tr><td>Travel Status</td><td>:</td><td><b :style="'color:'+(TravelData.data[0].status == 'Approved' || TravelData.data[0].status == 'Fueled'? 'green':'red')">{{TravelData.data[0].status != null ? TravelData.data[0].status:'Pending'}}</b></td></tr>
                 <tr><td>Plate Number</td><td>:</td><td><b>{{TravelData.data[0].PLATENO}}</b></td></tr>
                 <tr><td>Travel Date</td><td>:</td><td><b>{{TravelData.data[0].date_to != null ? TravelData.data[0].date_from+' To '+TravelData.data[0].date_to:TravelData.data[0].date_from}}</b></td></tr>
                 <tr><td>Allowed Liter/s </td><td>:</td><td><b>{{TravelData.data[0].liters}} Liter/s</b></td></tr>
-                <tr><td>Gasoline Station </td><td>:</td><td><b>{{TravelData.data[0].gasoline_station}}</b></td></tr>
+                <tr><td>Gasoline Station </td><td>:</td><td><b>{{TravelData.data[0].gasoline_station}}</b></td></tr> 
                 <tr><td>Gas Type </td><td>:</td><td><b>
                         <span v-if="TravelData.data[0].gas_type == 'premium_price'"> Gasoline (Premium)</span>
                         <span v-if="TravelData.data[0].gas_type == 'breaj_oil_price'"> Break Oil</span>
@@ -56,28 +55,45 @@
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-body text-center">
-                <div v-if="TravelData.data[0].status == 'Approved'">
+                <div v-if="fuelOTP === null">
                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-info-square" viewBox="0 0 16 16">
                     <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                     <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                     </svg>
-                    <h3>PLEASE CONFIRM</h3>
-                   <p>This action will update the travel ticket have been fueled.</p>
-                   <div class="row">
-                        <label class="col-7 col-form-label">Enter Actual Liters Fueled: </label>
-                        <div class="col-5">
-                            <input type="number" v-model="actual_liters" class="form-control" autocomplete="chrome-off">
+                    <h3><b>DAILY GASOLINE STATION OTP CONFIRMATION</b></h3>
+                    <!-- <p>This action will update the travel ticket have been fueled.</p> -->
+                    <div class="row">
+                        <label class="col-6 text-start col-form-label"><b>Enter Gasoline OTP: </b></label>
+                        <div class="col-6">
+                            <input type="password" v-model="tempOTP" class="form-control" autocomplete="chrome-off">
                         </div>
-                        <label v-if="invalid_actual_liters" class="form-control text-danger text-sm" >Should not be greater than in the travel Ticket.</label>
+                        <label v-if="invalid_tempOTP != '' " class="text-danger text-sm text-end" >{{invalid_tempOTP}}</label>
                     </div>
                 </div>
-                <div v-if="TravelData.data[0].status == 'Fueled'">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2dcf2b" class="bi bi-check-circle" viewBox="0 0 16 16">
-                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                    </svg>
-                    <h3>SUCCESSFULLY CONFIRMED</h3>
-                    <p>Transaction of this travel ticket successfully completed.</p>
+                <div v-if="fuelOTP !== null">
+                    <div v-if="TravelData.data[0].status == 'Approved'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-info-square" viewBox="0 0 16 16">
+                        <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                        </svg>
+                        <h3><b>PLEASE CONFIRM</b></h3>
+                    <p>This action will update the travel ticket have been fueled.</p>
+                    <div class="row">
+                            <label class="col-7 col-form-label">Enter Actual Liters Fueled: </label>
+                            <div class="col-5">
+                                <input type="number" v-model="actual_liters" class="form-control" autocomplete="chrome-off">
+                            </div>
+                            <label v-if="invalid_actual_liters" class="text-danger text-sm text-end" >Should not be greater than in the travel Ticket.</label>
+                        </div>
+                    </div>
+                    <div v-if="TravelData.data[0].status == 'Fueled'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="#2dcf2b" class="bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                        </svg>
+                        <h3>SUCCESSFULLY CONFIRMED</h3>
+                        <p>Transaction of this travel ticket successfully completed.</p>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer text-center" v-if="TravelData.data[0].status == 'Approved'">
@@ -98,7 +114,10 @@ export default {
         return{
             myModal: null,
             actual_liters: 0,
-            invalid_actual_liters:false
+            invalid_actual_liters:false,
+            fuelOTP:localStorage.getItem("fuelOTP"),
+            tempOTP:"",
+            invalid_tempOTP:""
         }
     },
     methods:
@@ -106,42 +125,101 @@ export default {
 
         openConfirmation()
         {
-            this.actual_liters = this.TravelData.data[0].liters;
-            this.myModal= new window.bootstrap.Modal(document.getElementById('myModal'))
-            this.myModal.show()
-            // $('body').removeClass('modal-open');
-            // $('body').css("overflow","scroll");
-            // $('.modal-backdrop').remove();
+            if(localStorage.getItem("fuelOTP") === null)
+            {
+                this.invalid_tempOTP    = "";
+                this.tempOTP            = "";
+                this.actual_liters      = this.TravelData.data[0].liters;
+                this.myModal            = new window.bootstrap.Modal(document.getElementById('myModal'))
+                this.myModal.show()
+            }
+            else
+            {
+                    this.invalid_actual_liters = false;
+                    const today = new Date();
+                    const date  = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                    if(localStorage.getItem("fuelOTP_date")  < date)
+                    {
+                        this.fuelOTP = null;
+                        localStorage.removeItem('fuelOTP');
+                        localStorage.removeItem('fuelOTP_date');
+                        localStorage.removeItem('fuelOTP_date');
+                        this.openConfirmation();
+                    }
+                    else
+                    {
+                        this.actual_liters = this.TravelData.data[0].liters;
+                        this.myModal       = new window.bootstrap.Modal(document.getElementById('myModal'))
+                        this.myModal.show()
+                    }
+            }
         },
         confirm()
         {
             let vm = this;
-            if(this.actual_liters > this.TravelData.data[0].liters)
+            if(localStorage.getItem("fuelOTP") === null)
             {
-                this.invalid_actual_liters = true;
+                if(this.tempOTP.trim() == "")
+                {
+                    this.invalid_tempOTP = "Gasoline OTP is required to continue!";
+                }
+                else
+                {
+                    axios.get('/travelTicket/OTP/'+this.TravelData.data[0].gasoline_id+'/'+this.tempOTP)
+                    .then(response=>
+                    {              
+                        if(response.data != null)
+                        {
+                            if(response.data == "success")
+                            {
+                                const today = new Date();
+                                const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                                vm.fuelOTP = vm.tempOTP;
+                                localStorage.setItem("fuelOTP",vm.tempOTP);
+                                localStorage.setItem("fuelOTP_date",date);
+                                localStorage.setItem("gasoline_id",vm.TravelData.data[0].gasoline_id);
+                                this.actual_liters  = this.TravelData.data[0].liters;
+                               
+                            }
+                            else{
+                                this.invalid_tempOTP = "You have entered an incorrect OTP!";
+                            }
+                        }
+                    })
+                }
+            }
+            else if(localStorage.getItem("gasoline_id") == this.TravelData.data[0].gasoline_id)
+            {
+                if(this.actual_liters > this.TravelData.data[0].liters)
+                {
+                    this.invalid_actual_liters = true;
+                }
+                else{
+                    this.invalid_actual_liters = false;
+                    axios.patch('/travelTicket/'+this.TravelData.data[0].id+'/'+this.actual_liters)
+                    .then(response=>
+                    {
+                                        
+                        if(response.data != null)
+                        {
+                            if(response.data == "success")
+                            {
+                            vm.$inertia.reload({only:['TravelData']});
+                            setTimeout(function(){
+                                vm.myModal.hide()
+                            },1500);
+                                
+                            }
+                            else{
+                                //vm.saveMessage = response.data;
+                                alert(response.data);
+                            }
+                        }
+                    })
+                }
             }
             else{
-                this.invalid_actual_liters = false;
-                axios.patch('/travelTicket/'+this.TravelData.data[0].id+'/'+this.actual_liters)
-                .then(response=>
-                {
-                                    
-                    if(response.data != null)
-                    {
-                        if(response.data == "success")
-                        {
-                        vm.$inertia.reload({only:['TravelData']});
-                        setTimeout(function(){
-                            vm.myModal.hide()
-                        },1500);
-                            
-                        }
-                        else{
-                            //vm.saveMessage = response.data;
-                            alert(response.data);
-                        }
-                    }
-                })
+                alert("Mismatch Gasoline Station! \nPLease Double check Gas Station in the ticket.");
             }
             
         }

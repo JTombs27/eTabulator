@@ -28,24 +28,23 @@ class SoaTravelController extends Controller
                      ->orWhere('role', 'PGO');
             })
             ->first();
-
-        $soatravel =  $this->soatravel;
-                                
-
-        if(!$isAdmin){
-            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id)
-                                        ->orWhere('gasoline_id',auth()->user()->gasoline_id);
-        }
+           
 
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
-            "soaTravel" => $soatravel
+            "soaTravel" => $this->soatravel
             	->with('travels','office','division')
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_no', 'like', '%' . $searchItem . '%')
                           ->orWhereHas('office', function ($q) use ($searchItem) {
                                     $q->where('short_name','like', '%' . $searchItem . '%');
                                 });
+                })
+                 ->when(!$isAdmin && auth()->user()->role == 'RO', function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                })
+                ->when(!$isAdmin && auth()->user()->role == 'gasoline-station', function($q) {
+                                    $q->where('gasoline_id', auth()->user()->gasoline_id);
                 })
                 ->latest()
                 ->simplePaginate(10)
@@ -122,23 +121,21 @@ class SoaTravelController extends Controller
                      ->orWhere('role', 'PGO');
             })
             ->first();
-
-        $travels =  $this->model;
                                 
-
-        if(!$isAdmin){
-            $travels = $this->model->where('office_id', auth()->user()->office_id)
-                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);;
-        }
-
 
         return inertia('SoaTravels/Details', [
             //returns an array of users with name field only
-            "travels" => $travels
+            "travels" => $this->model
             	->latest()
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_number', 'like', '%' . $searchItem . '%')
                         ->orWhere('invoice_no', 'like', '%' . $searchItem . '%');
+                })
+                 ->when(!$isAdmin && auth()->user()->role == 'RO', function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                })
+                ->when(!$isAdmin && auth()->user()->role == 'gasoline-station', function($q) {
+                                    $q->where('gasoline_id', auth()->user()->gasoline_id);
                 })
             	->where('soa_travel', $id)
             	->simplePaginate(10)
@@ -251,6 +248,7 @@ class SoaTravelController extends Controller
                                 offices.short_name,
                                 offices.office,
                                 gasolines.name AS gasstation,
+                                gasolines.address AS address,
                                 soa_travels.date_from AS soa_date_from,
                                 soa_travels.date_to AS soa_date_to,
                                 soa_travels.ticket_no,
@@ -293,6 +291,7 @@ class SoaTravelController extends Controller
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
                                     'gasoline_name' => $item->gasstation,
+                                    'gas_address' => $item->address,
                                     'invoice_no' => $item->invoice_no,
                                     'date' => $date,
                                     'prepared_by' => $item->name,

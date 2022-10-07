@@ -257,6 +257,7 @@ Route::prefix('/reports')->group(function() {
 
 Route::get('/travelTicket', [TravelValidationController::class, 'index']);
 Route::patch('/travelTicket/{id}/{actual_liters}', [TravelValidationController::class, 'update']);
+Route::get('/travelTicket/OTP/{gasoline_id}/{fuelOTP}', [TravelValidationController::class, 'validateOTP']);
 
 Route::prefix('/logArrivalTime')->group(function() {
      Route::get('/', [LogTimeArrivalContoller::class, 'logtime']);

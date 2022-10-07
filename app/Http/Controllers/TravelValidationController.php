@@ -7,6 +7,7 @@ use App\Http\Requests\TravelRequest;
 use App\Models\Price;
 use App\Models\Travel;
 use App\Models\User;
+use App\Models\Gasoline;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,10 +15,11 @@ use \Illuminate\Support\Str;
 class TravelValidationController extends Controller
 {
     //
-    public function __construct(Travel $model, Price $price)
+    public function __construct(Travel $model, Price $price,Gasoline $gasoline)
     {
-        $this->model = $model;
-        $this->prices = $price;
+        $this->model    = $model;
+        $this->prices   = $price;
+        $this->gasoline = $gasoline;
     }    
 
     public function index(Request $request)
@@ -48,13 +50,15 @@ class TravelValidationController extends Controller
                     'office_id' => $item->office_id,
                     'gas_type'=>$item->gas_type,
                     'price' => number_format($total[$item->gas_type],2),
-                    'gasoline_station' => $item->gasoline->name
+                    'gasoline_station' => $item->gasoline->name,
+                    'gasoline_id' => $item->gasoline->id
                 ]; 
             });
         return inertia("TravelValidations/Index",["TravelData" => $data]);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         try {
             //code...
             //dd();
@@ -72,5 +76,23 @@ class TravelValidationController extends Controller
             //throw $th;
             return 'error';
         } 
+    }
+
+    public function validateOTP(Request $request)
+    {
+        $otp = $request->fuelOTP;
+        $gasolind_id = $request->gasoline_id;
+        $exists = $this->gasoline
+                    ->where('fuelOTP','=',$otp)
+                    ->where('id','=',$gasolind_id)
+                    ->first();
+        if($exists)
+        {
+            return "success";
+        }
+        else{
+            return $otp.' - '.$gasolind_id;
+        }
+
     }
 }

@@ -30,7 +30,7 @@ class SoaTravel extends Model
 
     public function updateTicketNo()
     {   
-        $series = 'SOA-'.date('y').'-'.sprintf('%06d', $this->id);
+        $series = 'FOL'.date('y').'-'.sprintf('%06d', $this->id);
         $this->ticket_no = $series;
         $this->save();
     }
