@@ -28,18 +28,11 @@ class SoaTravelController extends Controller
                      ->orWhere('role', 'PGO');
             })
             ->first();
-
-        $soatravel =  $this->soatravel;
                                 
-
-        if(!$isAdmin){
-            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id)
-                                        ->orWhere('gasoline_id',auth()->user()->gasoline_id);
-        }
 
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
-            "soaTravel" => $soatravel
+            "soaTravel" => $this->soatravel
             	->with('travels','office','division')
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_no', 'like', '%' . $searchItem . '%')
@@ -47,6 +40,10 @@ class SoaTravelController extends Controller
                                     $q->where('short_name','like', '%' . $searchItem . '%');
                                 });
                 })
+                 ->when(!$isAdmin, function($q) {
+                                    $q->where('office_id', auth()->user()->office_id)
+                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);
+                                })
                 ->latest()
                 ->simplePaginate(10)
                 ->withQueryString()
@@ -122,24 +119,20 @@ class SoaTravelController extends Controller
                      ->orWhere('role', 'PGO');
             })
             ->first();
-
-        $travels =  $this->model;
                                 
-
-        if(!$isAdmin){
-            $travels = $this->model->where('office_id', auth()->user()->office_id)
-                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);;
-        }
-
 
         return inertia('SoaTravels/Details', [
             //returns an array of users with name field only
-            "travels" => $travels
+            "travels" => $this->model
             	->latest()
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_number', 'like', '%' . $searchItem . '%')
                         ->orWhere('invoice_no', 'like', '%' . $searchItem . '%');
                 })
+                ->when(!$isAdmin, function($q) {
+                                    $q->where('office_id', auth()->user()->office_id)
+                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);
+                                })
             	->where('soa_travel', $id)
             	->simplePaginate(10)
                 ->through(function ($item) {
