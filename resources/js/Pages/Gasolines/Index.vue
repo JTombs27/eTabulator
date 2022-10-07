@@ -29,6 +29,8 @@
                     <thead>
                         <tr>
                             <th scope="col">Name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">OTP</th>
                             <th scope="col">Status</th>
                             <th scope="col" style="text-align: right" v-if="can.canEditGasoline || can.canDeleteGasoline">Action</th>
                         </tr>
@@ -36,6 +38,8 @@
                     <tbody>
                         <tr v-for="(gasolines, index) in gasoline.data" :key="index">
                             <td>{{ gasolines.name }}</td>
+                            <td>{{ gasolines.address }}</td>
+                            <td>{{ gasolines.fuelOTP }}</td>
                             <td>
                                 <div class="form-check form-switch">
                                     <input 
