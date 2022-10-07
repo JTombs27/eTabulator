@@ -28,7 +28,7 @@ class SoaTravelController extends Controller
                      ->orWhere('role', 'PGO');
             })
             ->first();
-                                
+           
 
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
@@ -40,10 +40,12 @@ class SoaTravelController extends Controller
                                     $q->where('short_name','like', '%' . $searchItem . '%');
                                 });
                 })
-                 ->when(!$isAdmin, function($q) {
-                                    $q->where('office_id', auth()->user()->office_id)
-                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);
-                                })
+                 ->when(!$isAdmin && auth()->user()->role == 'RO', function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                })
+                ->when(!$isAdmin && auth()->user()->role == 'gasoline-station', function($q) {
+                                    $q->where('gasoline_id', auth()->user()->gasoline_id);
+                })
                 ->latest()
                 ->simplePaginate(10)
                 ->withQueryString()
@@ -129,10 +131,12 @@ class SoaTravelController extends Controller
                     $query->where('ticket_number', 'like', '%' . $searchItem . '%')
                         ->orWhere('invoice_no', 'like', '%' . $searchItem . '%');
                 })
-                ->when(!$isAdmin, function($q) {
-                                    $q->where('office_id', auth()->user()->office_id)
-                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);
-                                })
+                 ->when(!$isAdmin && auth()->user()->role == 'RO', function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                })
+                ->when(!$isAdmin && auth()->user()->role == 'gasoline-station', function($q) {
+                                    $q->where('gasoline_id', auth()->user()->gasoline_id);
+                })
             	->where('soa_travel', $id)
             	->simplePaginate(10)
                 ->through(function ($item) {
