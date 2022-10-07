@@ -46,6 +46,7 @@ class ValidateLiters implements Rule
                     ->where(function($q) {
                         $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
+                    ->where('borrowing_office', auth()->user()->office_id)
                     ->latest()
                     ->get()
                     ->map(fn($item) => [

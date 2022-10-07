@@ -109,7 +109,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
             case 2:
               if (!(_this.editData !== undefined)) {
-                _context.next = 49;
+                _context.next = 50;
                 break;
               }
 
@@ -121,6 +121,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               _this.form.charge = "".concat(_this.editData.idraao, "-").concat(_this.editData.idooe);
               _this.loading = true;
               _this.pageTitle = "Edit";
+              _this.form.is_borrowed_vehicle = _this.editData.is_borrowed_vehicle ? true : false;
               _this.form.place_to_visit = _this.editData.place_to_visit;
               _this.form.gas_type = _this.editData.gas_type;
               _this.form.tank_balance = _this.editData.tank_balance;
@@ -148,53 +149,53 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this.form.rangedDate = true;
               }
 
-              _context.next = 32;
+              _context.next = 33;
               return _this.getVehicles();
 
-            case 32:
-              _context.next = 34;
+            case 33:
+              _context.next = 35;
               return _this.fetchPrice();
 
-            case 34:
-              _context.next = 36;
+            case 35:
+              _context.next = 37;
               return _this.getOffice();
 
-            case 36:
+            case 37:
               if (_this.editData.borrowing_division) {
                 _this.loadDivision();
               }
 
-              _context.next = 39;
+              _context.next = 40;
               return _this.getVehicleDetails();
 
-            case 39:
-              _context.next = 41;
+            case 40:
+              _context.next = 42;
               return _this.showActualDriver();
 
-            case 41:
-              _context.next = 43;
+            case 42:
+              _context.next = 44;
               return _this.selectChargeDetails();
 
-            case 43:
-              _context.next = 45;
+            case 44:
+              _context.next = 46;
               return _this.loadDivision();
 
-            case 45:
+            case 46:
               _this.loader = false;
               setTimeout(function () {
                 _this.form.date_to = _this.editData.date_to;
               }, 0);
-              _context.next = 52;
+              _context.next = 53;
               break;
 
-            case 49:
+            case 50:
               _this.pageTitle = "Create";
 
               _this.getVehicles();
 
               _this.loader = false;
 
-            case 52:
+            case 53:
             case "end":
               return _context.stop();
           }
@@ -392,7 +393,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         vehicles_id: this.form.vehicles_id,
         date_to: this.form.date_to,
         date_from: this.form.date_from,
-        driver_vehicles_id: this.form.driver_vehicles_id
+        driver_vehicles_id: this.form.driver_vehicles_id,
+        is_borrowed_vehicle: this.form.is_borrowed_vehicle
       };
 
       if (this.editData !== undefined) {
@@ -1465,13 +1467,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Create_vue_vue_type_template_id_31abcf8a__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=31abcf8a */ "./resources/js/Pages/Travels/Create.vue?vue&type=template&id=31abcf8a");
 /* harmony import */ var _Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js */ "./resources/js/Pages/Travels/Create.vue?vue&type=script&lang=js");
-/* harmony import */ var C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+/* harmony import */ var E_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
 
 
 
 
 ;
-const __exports__ = /*#__PURE__*/(0,C_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_31abcf8a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Travels/Create.vue"]])
+const __exports__ = /*#__PURE__*/(0,E_xampp_htdocs_fuel_monitoring_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_Create_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_Create_vue_vue_type_template_id_31abcf8a__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/Pages/Travels/Create.vue"]])
 /* hot reload */
 if (false) {}
 
