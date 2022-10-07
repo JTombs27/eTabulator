@@ -343,6 +343,7 @@ export default {
             this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
             this.loading = true
             this.pageTitle = "Edit"
+            this.form.is_borrowed_vehicle = this.editData.is_borrowed_vehicle ? true : false
             this.form.place_to_visit = this.editData.place_to_visit
             this.form.gas_type = this.editData.gas_type
             this.form.tank_balance = this.editData.tank_balance
@@ -559,7 +560,8 @@ export default {
             let data = { vehicles_id:this.form.vehicles_id, 
                         date_to: this.form.date_to, 
                         date_from: this.form.date_from, 
-                        driver_vehicles_id: this.form.driver_vehicles_id
+                        driver_vehicles_id: this.form.driver_vehicles_id,
+                        is_borrowed_vehicle: this.form.is_borrowed_vehicle
                         }
             if (this.editData !== undefined) {
                 _.assign(data, {id:this.editData.id})

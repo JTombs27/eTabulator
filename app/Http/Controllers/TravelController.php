@@ -347,6 +347,9 @@ class TravelController extends Controller
         if (!$request->rangedDate) {
             $request['date_to'] = null;
         }
+        if ($request->is_borrowed_vehicle) {
+            $request['borrowing_office'] = auth()->user()->office_id;
+        }
         
         DB::beginTransaction();
         try {
@@ -406,6 +409,9 @@ class TravelController extends Controller
         if (!$request->showActualDriver) {
             $request['actual_driver'] = null;
             // dd($request->all());
+        }
+        if ($request->is_borrowed_vehicle) {
+            $request['borrowing_office'] = auth()->user()->office_id;
         }
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
@@ -611,12 +617,12 @@ class TravelController extends Controller
                         // $q->whereNull('status')->orWhere('status', 'Approved');
                         $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
+                    ->where('borrowing_office', auth()->user()->office_id)
                     ->latest()
                     ->get()
                     ->map(fn($item) => [
                         'total_liters' => $item->actual_liter ? $item->actual_liter : $item->total_liters
                     ]);
-
         $consumedFuel =  (clone $fuel)->sum('total_liters');
         // return $consumedFuel;
         if ($request->id) {
