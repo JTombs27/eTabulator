@@ -268,3 +268,4 @@ Route::prefix('/logArrivalTime')->group(function() {
 
 Route::get('/sample_charge', [ChargeController::class, 'sampleCharge']);
 Route::get('/balance', [ChargeController::class, 'balance']);
+Route::get('/soaReport', [SoaTravelController::class, 'soaReport']);

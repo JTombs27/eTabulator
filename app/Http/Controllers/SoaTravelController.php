@@ -349,8 +349,30 @@ class SoaTravelController extends Controller
         );
         return $testData->values();
         
-        
-        
+    }
+
+    public function soaReport(Request $request)
+    {
+            $soaReport = $this->soatravel
+                ->with('travels','office','division')
+                ->get()->map(function($item) {
+
+                    return [
+                    'id' => $item->id,
+                    'date_from' => $item->date_from,
+                    'date_to' => $item->date_to,
+                    'soa_date' =>$item->soaDate,
+                    'total_liters' => number_format($item->travels->sum('actual_liter'),2),
+                    'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
+                    'ticket_no' => $item->ticket_no,
+                    'office' => $item->office->short_name,
+                    'division' => $item->division == null ? $item->division: $item->division->division_name1,
+                    'cafoa_number' =>$item->cafoa_number,
+                    ];
+               });           
+
+        return  $soaReport;
+           
     }
 
 }
