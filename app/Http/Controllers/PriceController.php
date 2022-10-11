@@ -29,17 +29,30 @@ class PriceController extends Controller
 
         $index = $this->model;
 
-        if($isGasoline) {
-            $index = $index->where('gasoline_id',auth()->user()->gasoline_id);
-        }
-
         return inertia('Prices/Index', [
             //returns an array of users with name field only
             "price" => $index
                 ->with('gasoline')
             	->when($request->search, function ($query, $searchItem) {
-                    $q->where('gas_type', 'like', '%' . $searchItem . '%');
+                    $query->WhereHas('gasoline', function ($q) use ($searchItem) {
+                                    $q->where('name','like', '%' . $searchItem . '%');
+                                });
                     
+                })
+                ->when($request->dateFilterType == 'all', function($q) use ($request) {
+                                $q->whereBetween('date', [$request->date_from,$request->date_to]);
+                            })
+                ->when($request->dateFilterType == 'from', function($q) use ($request) {
+                                $q->where('date', '>=', $request->date_from);
+                            })
+                ->when($request->dateFilterType == 'to', function($q) use ($request) {
+                                $q->where('date', '<=', $request->date_to);
+                            })
+                ->when($request->gasoline_id, function ($query, $searchItem) {
+                                $query->where('gasoline_id', $searchItem);
+                            })
+                ->when($isGasoline && auth()->user()->role == 'gasoline-station', function($q) {
+                                    $q->where('gasoline_id', auth()->user()->gasoline_id);
                 })
                 ->orderBy('date','desc')
                 ->simplePaginate(10)
