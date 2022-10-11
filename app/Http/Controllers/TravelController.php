@@ -212,6 +212,8 @@ class TravelController extends Controller
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
                                 'fooedesc' => $item->fooedesc,
+                                'text' => "$item->fraodesc ($item->ffunccod) --- $item->fooedesc",
+                                'id' => "$item->idraao-$item->idooe"
                             ]),
             'can' => [
                 'addDivision' => auth()->user()->can('canViewDivisionInTravel', User::class)
@@ -282,6 +284,8 @@ class TravelController extends Controller
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
                                 'fooedesc' => $item->fooedesc,
+                                'text' => "$item->fraodesc ($item->ffunccod) --- $item->fooedesc",
+                                'id' => "$item->idraao-$item->idooe"
                             ])
         ]);
         
