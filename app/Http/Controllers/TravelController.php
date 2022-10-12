@@ -621,7 +621,9 @@ class TravelController extends Controller
                         // $q->whereNull('status')->orWhere('status', 'Approved');
                         $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
-                    ->where('borrowing_office', auth()->user()->office_id)
+                    ->when($request->is_borrowed_vehicle, function($q) {
+                        $q->where('borrowing_office', auth()->user()->office_id);
+                    })
                     ->latest()
                     ->get()
                     ->map(fn($item) => [

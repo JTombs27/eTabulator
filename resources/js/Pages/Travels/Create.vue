@@ -142,7 +142,7 @@
                                  <label class="form-check-label disable-select" for="is_borrowed_vehicle">
                                  Check if borrow vehicle
                                  </label>
-                                 <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                                 <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="changeDriversDetails($event)">
                              </div>
                          </div>
                          <div class="col-md-4">    
@@ -407,6 +407,11 @@ export default {
     },
 
     methods:{
+        changeDriversDetails(e) {
+            this.form.drivers_id = null;
+            this.form.vehicles_id = null;
+        },
+
         selectChargeDetails(e) {   
             var chargeAttr = $('#charge').find(":selected");
            
@@ -722,7 +727,7 @@ export default {
                 if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
                     return o.office_id == this.auth.user.office_id 
                 } else {
-                    return this.vehicles
+                    return o.office_id != this.auth.user.office_id
                 }
             })
         },
