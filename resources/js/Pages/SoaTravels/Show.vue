@@ -57,6 +57,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="bgc-white col-md-12 m-0">
+                    <div class="row mt-2">
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text">Search</span>
+                                <input type="text" v-model="search_control"  class="form-control">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
             </div>
            
             <div class="bgc-white p-20 bd table table-responsive">
@@ -157,6 +168,7 @@ export default {
                 division_code: "",
                 soatravelGroup:[],
             }),
+            search_control:"",
             offices:[],
             divisions:[],
             temp2:[],
@@ -169,6 +181,7 @@ export default {
             let endDate = this.form.date_to;
             let office = this.form.office_id;
             let divisions = this.form.division_code;
+            var search = this.search_control;
             
 
             if (startDate == "") {
@@ -199,7 +212,17 @@ export default {
                     return startDate <= travelDateFrom;
                 }
                     return this.temp2;
+
                 })
+
+                if ( search ) {
+
+                    this.temp2 = this.temp2.filter(function (items) {
+                        return items.ticket_number.match(search)
+                    })
+
+                }        
+
             }      
                 /*
                 if ( !startDate && endDate ) {
