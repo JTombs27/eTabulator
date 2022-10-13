@@ -126,6 +126,7 @@ class SoaTravelController extends Controller
         return inertia('SoaTravels/Details', [
             //returns an array of users with name field only
             "travels" => $this->model
+                ->where('soa_travel', $id)
             	->latest()
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_number', 'like', '%' . $searchItem . '%')
@@ -137,7 +138,6 @@ class SoaTravelController extends Controller
                 ->when(!$isAdmin && auth()->user()->role == 'gasoline-station', function($q) {
                                     $q->where('gasoline_id', auth()->user()->gasoline_id);
                 })
-            	->where('soa_travel', $id)
             	->simplePaginate(10)
                 ->through(function ($item) {
                                 $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
