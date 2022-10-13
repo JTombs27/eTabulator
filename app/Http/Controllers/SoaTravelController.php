@@ -223,7 +223,7 @@ class SoaTravelController extends Controller
     	$travel = $this->model->findOrFail($request->id);
     	$travel->update(['soa_travel' => null]);
 
-    	return redirect('/soatravels/'.$request->soa_travel.'/details')->with('message', 'Tag removed');
+    	return back()->with('message', 'Tag removed');
     }
 
      public function destroy(Request $request)
