@@ -86,7 +86,8 @@
                             <h6 class="lh-1">{{(isAdmin == null ? 'Fuel Utilization': 'Department Charges')}}</h6>
                         </div>
                         <div class="col-12">
-                            <some-chart  :chartData="chargesChartData.Data" :CharLegelPosition="isAdmin == null ? 'left':'right'" :chartLabel="chargesChartData.Labels"></some-chart>
+                            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            <!-- <some-chart  :chartData="chargesChartData.Data" :CharLegelPosition="isAdmin == null ? 'left':'right'" :chartLabel="chargesChartData.Labels"></some-chart> -->
                         </div>
                     </div>
                 </div>
@@ -96,7 +97,7 @@
                             <h6 class="lh-1">Fuel Utilized</h6>
                         </div>
                         <div class="col-12">
-                            <pie-chart :pieChartData="pieChartData.Data" :pieChartLabels = "pieChartData.Labels"></pie-chart>
+                            <!-- <pie-chart :pieChartData="pieChartData.Data" :pieChartLabels = "pieChartData.Labels"></pie-chart> -->
                             <!-- <some-chart :chartData="pieChartData.Data" :CharLegelPosition="isAdmin == null ? 'top':'left'" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart> -->
                         </div>
                     </div>
@@ -225,72 +226,171 @@ export default ({
                 Labels:[],
                 Data:[],
             },
-            r:"",
-            g:"",
-            b:"",
             barTitle:"Number Of Travels Per Office"
         }
     },
     computed:{
         temp(){
 
-             let vm = this;
-             if(vm.officesLabels !== null){
-                    _.forEach(vm.officesLabels, function(value,key) {
-                    vm.barChart.Labels.push(value.short_name);
-                    vm.barChart.Data.push(value.travel_count);
-                });
-             }
+        //      let vm = this;
+        //      if(vm.officesLabels !== null){
+        //             _.forEach(vm.officesLabels, function(value,key) {
+        //             vm.barChart.Labels.push(value.short_name);
+        //             vm.barChart.Data.push(value.travel_count);
+        //         });
+        //      }
              
-            if(vm.chargesChartData !== null)
-            {
-                 if(vm.isAdmin)
-                {
-                    _.forEach(vm.charges,function(value,key){
-                    vm.chargesChartData.Labels.push(value.office_short_name);
-                    vm.chargesChartData.Data.push(value.office_charges_amount);
-                })
-                }
-                else{
-                    if(vm.charges.length >0)
-                    {
-                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
-                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
-                        vm.chargesChartData.Data.push((vm.charges[0].office_charges_amount));
-                        vm.chargesChartData.Data.push(vm.consume);
-                    }
-                }
-            }
+        //     if(vm.chargesChartData !== null)
+        //     {
+        //          if(vm.isAdmin)
+        //         {
+        //             _.forEach(vm.charges,function(value,key){
+        //             vm.chargesChartData.Labels.push(value.office_short_name);
+        //             vm.chargesChartData.Data.push(value.office_charges_amount);
+        //         })
+        //         }
+        //         else{
+        //             if(vm.charges.length >0)
+        //             {
+        //                 vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
+        //                 vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
+        //                 vm.chargesChartData.Data.push((vm.charges[0].office_charges_amount));
+        //                 vm.chargesChartData.Data.push(vm.consume);
+        //             }
+        //         }
+        //     }
            
 
-            _.forEach((_(vm.fuelConsumed)
-            .groupBy('office_short_name')
-            .map((platform, id) => ({
-                office_short_name: id,
-                price: _.sumBy(platform, 'price'),
-            }))
-            .value()),function(value,key){
-                vm.pieChartData.Labels.push(value.office_short_name);
-                vm.pieChartData.Data.push(value.price);
-            })
+        //     _.forEach((_(vm.fuelConsumed)
+        //     .groupBy('office_short_name')
+        //     .map((platform, id) => ({
+        //         office_short_name: id,
+        //         price: _.sumBy(platform, 'price'),
+        //     }))
+        //     .value()),function(value,key){
+        //         vm.pieChartData.Labels.push(value.office_short_name);
+        //         vm.pieChartData.Data.push(value.price);
+        //     })
 
-            var total_consumed = _.sum(vm.pieChartData.Data)
+        //     var total_consumed = _.sum(vm.pieChartData.Data)
 
-            vm.pieChartData.Labels.push('Total Balance');
-            vm.pieChartData.Data.push((vm.TotalCharge - total_consumed))
+        //     vm.pieChartData.Labels.push('Total Balance');
+        //     vm.pieChartData.Data.push((vm.TotalCharge - total_consumed))
           
-            return vm.barChart;
+            return true;
         },
     },
     mounted()
     {
-       
+        //this.loadDepartmentCharges();
     },
      methods: {
-        print() {
-
+        print() 
+        {
             window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fcharge_balance&standAlone=truee&decorate=no", "_blank");
+        },
+
+        loadDepartmentCharges()
+        {
+            let vm = this;
+            axios.get("/load-department-charges").then(response=>{
+                    if(response.data != null)
+                        {
+                            console.log(response.data)
+                            vm.chargesChartData = response.data;
+                            if(vm.chargesChartData !== null)
+                            {
+                                if(vm.isAdmin)
+                                {
+                                    _.forEach(vm.charges,function(value,key){
+                                    vm.chargesChartData.Labels.push(value.office_short_name);
+                                    vm.chargesChartData.Data.push(value.office_charges_amount);
+                                })
+                                }
+                                else{
+                                    if(vm.charges.length >0)
+                                    {
+                                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
+                                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
+                                        vm.chargesChartData.Data.push((vm.charges[0].office_charges_amount));
+                                        vm.chargesChartData.Data.push(vm.consume);
+                                    }
+                                }
+                            }
+                        }
+                });
+
+            
         }
+
+
      }
 });
 </script>
+<style>
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+/** https://loading.io/css/ **/
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 27px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ddd;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 6px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 6px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 26px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 45px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
+}
+</style>

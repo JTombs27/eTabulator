@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
 Auth::routes();
 Route::middleware('auth')->group(function() {
     Route::get('/', [HomeController::class, 'index']);
+    Route::get('/load-department-charges', [HomeController::class, 'loadDepartmentCharges']);
     //Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('/users')->group(function() {

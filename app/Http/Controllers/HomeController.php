@@ -41,34 +41,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        $chartData = DB::table('offices')
-                     ->join('fms.functions','functions.department_code','=','offices.department_code')
-                     ->join('fms.raaohs','fms.raaohs.FFUNCCOD','=','functions.ffunccod')
-                     ->join('fms.raaods','raaods.idraao','=','raaohs.recid')
-                     ->join('fms.ooes','ooes.recid', '=', 'raaods.idooe')
-                     ->select(DB::raw('offices.short_name,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.FFUNCCOD  ,raaohs.fraodesc, ooes.fooedesc,
-                     (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
-                     (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
-                     ->where(DB::raw('raaohs.tyear'),now()->year)
-                     ->where(DB::raw('ooes.fueltag'),'1')
-                     //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
-                     ->groupBy(DB::raw('offices.department_code'))
-                     ->orderBy(DB::raw('offices.department_code,raaohs.FFUNCCOD, raaohs.fraodesc, ooes.fooedesc'))
-                     ->get()
-                     ->map(fn($item) => 
-                            [
-                               'office_charges_amount'=> $item->balance1,
-                               'office_short_name'=> $item->short_name,
-                            ]);
-
-        $isAdmin =  User::
-                    where('id', auth()->user()->id)
-                    ->where(function($query){
-                        $query->where('role','Admin')
-                        ->orWhere('role','PGO');
-                    })
-                    ->first();
         $vehicles = $this->vehicle
                     ->whereIn('TYPECODE',array(1,2,3))
                     ->groupBy('TYPECODE')
@@ -79,33 +51,56 @@ class HomeController extends Controller
                        'TYPECODE'=> $item->TYPECODE,
                        'number_of_type_vehicle'=> $item->number_of_type_vehicle,
                     ]);
-
-       
-
-        if(!$isAdmin)
-        {
-            $chartData = DB::table('offices')
-                        ->join('fms.functions','functions.department_code','=','offices.department_code')
-                        ->join('fms.raaohs','fms.raaohs.FFUNCCOD','=','functions.ffunccod')
-                        ->join('fms.raaods','raaods.idraao','=','raaohs.recid')
-                        ->join('fms.ooes','ooes.recid', '=', 'raaods.idooe')
-                        ->select(DB::raw('offices.short_name,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.FFUNCCOD  ,raaohs.fraodesc, ooes.fooedesc,
-                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
-                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
-                        ->where(DB::raw('raaohs.tyear'),now()->year)
-                        ->where(DB::raw('ooes.fueltag'),'1')
-                        ->where('offices.department_code', auth()->user()->office_id)
-                     //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
-                     ->groupBy(DB::raw('raaohs.FFUNCCOD'))
-                     ->orderBy(DB::raw('offices.department_code,raaohs.FFUNCCOD, raaohs.fraodesc, ooes.fooedesc'))
-                     ->get()
-                     ->map(fn($item) => 
-                            [
-                               'office_charges_amount'=> $item->balance1,
-                               'office_short_name'=> $item->short_name,
-                            ]);
+        $isAdmin =  User::
+                    where('id', auth()->user()->id)
+                    ->where(function($query){
+                        $query->where('role','Admin')
+                        ->orWhere('role','PGO');
+                    })
+                    ->first();
+        // $chartData = DB::table('offices')
+        //              ->join('fms.functions','functions.department_code','=','offices.department_code')
+        //              ->join('fms.raaohs','fms.raaohs.FFUNCCOD','=','functions.ffunccod')
+        //              ->join('fms.raaods','raaods.idraao','=','raaohs.recid')
+        //              ->join('fms.ooes','ooes.recid', '=', 'raaods.idooe')
+        //              ->select(DB::raw('offices.short_name,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.FFUNCCOD  ,raaohs.fraodesc, ooes.fooedesc,
+        //              (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+        //              (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+        //              ->where(DB::raw('raaohs.tyear'),now()->year)
+        //              ->where(DB::raw('ooes.fueltag'),'1')
+        //              //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+        //              ->groupBy(DB::raw('offices.department_code'))
+        //              ->orderBy(DB::raw('offices.department_code,raaohs.FFUNCCOD, raaohs.fraodesc, ooes.fooedesc'))
+        //              ->get()
+        //              ->map(fn($item) => 
+        //                     [
+        //                        'office_charges_amount'=> $item->balance1,
+        //                        'office_short_name'=> $item->short_name,
+        //                     ]);
+        // if(!$isAdmin)
+        // {
+        //     $chartData = DB::table('offices')
+        //                 ->join('fms.functions','functions.department_code','=','offices.department_code')
+        //                 ->join('fms.raaohs','fms.raaohs.FFUNCCOD','=','functions.ffunccod')
+        //                 ->join('fms.raaods','raaods.idraao','=','raaohs.recid')
+        //                 ->join('fms.ooes','ooes.recid', '=', 'raaods.idooe')
+        //                 ->select(DB::raw('offices.short_name,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.FFUNCCOD  ,raaohs.fraodesc, ooes.fooedesc,
+        //                 (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+        //                 (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+        //                 ->where(DB::raw('raaohs.tyear'),now()->year)
+        //                 ->where(DB::raw('ooes.fueltag'),'1')
+        //                 ->where('offices.department_code', auth()->user()->office_id)
+        //              //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+        //              ->groupBy(DB::raw('raaohs.FFUNCCOD'))
+        //              ->orderBy(DB::raw('offices.department_code,raaohs.FFUNCCOD, raaohs.fraodesc, ooes.fooedesc'))
+        //              ->get()
+        //              ->map(fn($item) => 
+        //                     [
+        //                        'office_charges_amount'=> $item->balance1,
+        //                        'office_short_name'=> $item->short_name,
+        //                     ]);
            
-        }
+        // }
         $officesLabels = Models\Office::withCount('officeTravelCount')
                                 ->get()
                                 ->map(fn($item) => [
@@ -151,25 +146,7 @@ class HomeController extends Controller
                         ];
                     });
 
-        $fuelConsumed = $this->model
-                        ->with(['office'=>function($query){
-                            $query->select('short_name','department_code');
-                        }])
-                        ->whereYear('date_from', date("Y"))
-                        ->get();
-
-        $fuelConsumed = $fuelConsumed->map(function($item)  
-        {
-            $checkPrice =  $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
-            $total      = $this->prices->when($checkPrice, function($q) use ($item) 
-                                        {
-                                            $q->whereDate('date', $item->date_from);
-                                        })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
-            return [
-                'price' => ($total[$item->gas_type] * $item->total_liters),
-                'office_short_name' => $item->office->short_name
-            ];
-        });
+        
 
 
         
@@ -352,15 +329,98 @@ class HomeController extends Controller
 
        
         return inertia('Home',[
-            'charges' =>$chartData,
+            //'charges' =>$chartData,
             'officesLabels' => $officesLabels,
             'consume'       => $travels->sum('price'),
             'balance'       => $amount,
             'isAdmin'       => $isAdmin,
-            'fuelConsumed'  => $fuelConsumed,
+            //'fuelConsumed'  => $fuelConsumed,
             'TotalCharge'   => $amountTotal,
             'vehicles'      => $vehicles,
             'charge_to'     => $charge2->values()
         ]);
     }
+
+    public function loadDepartmentCharges()
+    {
+        $chartData = DB::table('offices')
+        ->join('fms.functions','functions.department_code','=','offices.department_code')
+        ->join('fms.raaohs','fms.raaohs.FFUNCCOD','=','functions.ffunccod')
+        ->join('fms.raaods','raaods.idraao','=','raaohs.recid')
+        ->join('fms.ooes','ooes.recid', '=', 'raaods.idooe')
+        ->select(DB::raw('offices.short_name,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.FFUNCCOD  ,raaohs.fraodesc, ooes.fooedesc,
+        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+        ->where(DB::raw('raaohs.tyear'),now()->year)
+        ->where(DB::raw('ooes.fueltag'),'1')
+        //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+        ->groupBy(DB::raw('offices.department_code'))
+        ->orderBy(DB::raw('offices.department_code,raaohs.FFUNCCOD, raaohs.fraodesc, ooes.fooedesc'))
+        ->get()
+        ->map(fn($item) => 
+               [
+                  'office_charges_amount'=> $item->balance1,
+                  'office_short_name'=> $item->short_name,
+               ]);
+        $isAdmin =  User::
+        where('id', auth()->user()->id)
+        ->where(function($query){
+            $query->where('role','Admin')
+            ->orWhere('role','PGO');
+        })
+        ->first();
+
+        if(!$isAdmin)
+        {
+            $chartData = DB::table('offices')
+                        ->join('fms.functions','functions.department_code','=','offices.department_code')
+                        ->join('fms.raaohs','fms.raaohs.FFUNCCOD','=','functions.ffunccod')
+                        ->join('fms.raaods','raaods.idraao','=','raaohs.recid')
+                        ->join('fms.ooes','ooes.recid', '=', 'raaods.idooe')
+                        ->select(DB::raw('offices.short_name,raaods.idraao, raaods.idooe,raaohs.fraotype,raaohs.FFUNCCOD  ,raaohs.fraodesc, ooes.fooedesc,
+                        (SUM(if(entrytype=1 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance1,
+                        (sum(if(entrytype=2 ,raaods.famount,0)) - sum(if(entrytype=3 ,raaods.famount,0))) as balance2'))
+                        ->where(DB::raw('raaohs.tyear'),now()->year)
+                        ->where(DB::raw('ooes.fueltag'),'1')
+                        ->where('offices.department_code', auth()->user()->office_id)
+                        //->groupBy(DB::raw('raaods.idraao,raaods.idooe'))
+                        ->groupBy(DB::raw('raaohs.FFUNCCOD'))
+                        ->orderBy(DB::raw('offices.department_code,raaohs.FFUNCCOD, raaohs.fraodesc, ooes.fooedesc'))
+                        ->get()
+                        ->map(fn($item) => 
+                            [
+                                'office_charges_amount'=> $item->balance1,
+                                'office_short_name'=> $item->short_name,
+                            ]);
+            
+        }
+
+        return $chartData;
+    }
+
+    public function loadUtilize()
+    {
+            $fuelConsumed = $this->model
+                    ->with(['office'=>function($query){
+                        $query->select('short_name','department_code');
+                    }])
+                    ->whereYear('date_from', date("Y"))
+                    ->get();
+
+            $fuelConsumed = $fuelConsumed->map(function($item)  
+            {
+            $checkPrice =  $this->prices->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_from)->exists();
+            $total      = $this->prices->when($checkPrice, function($q) use ($item) 
+                                    {
+                                        $q->whereDate('date', $item->date_from);
+                                    })->where('gasoline_id', $item->gasoline_id)->latest()->first($item->gas_type);
+            return [
+            'price' => ($total[$item->gas_type] * $item->total_liters),
+            'office_short_name' => $item->office->short_name
+            ];
+            });
+        return $fuelConsumed;
+    }
+
+    
 }
