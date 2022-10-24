@@ -80,7 +80,7 @@
        
         <div class="w-100" >
             <div class="row" v-if="temp">
-                <div :class="isAdmin == null ? 'col-md-4':'col-md-6'" >
+                <div v-if="isAdmin !== null" :class="isAdmin == null ? 'col-md-4':'col-md-6'" >
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">{{(isAdmin == null ? 'Fuel Utilization': 'Department Charges')}}</h6>
@@ -150,7 +150,7 @@
                         </div>
                     </div>
                 </div>
-                <div :class="(isAdmin !== null ? 'col-md-12 mT-10':'col-md-8')">
+                <div :class="(isAdmin !== null ? 'col-md-12 mT-10':'col-md-12')">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">{{barTitle}}</h6>
