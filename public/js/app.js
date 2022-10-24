@@ -1975,6 +1975,18 @@ var map = {
 		9,
 		"resources_js_Pages_Charges_Index_vue"
 	],
+	"./Charts/FuelChargeChart": [
+		"./resources/js/Pages/Charts/FuelChargeChart.vue",
+		9,
+		"/js/vendor",
+		"resources_js_Pages_Charts_FuelChargeChart_vue"
+	],
+	"./Charts/FuelChargeChart.vue": [
+		"./resources/js/Pages/Charts/FuelChargeChart.vue",
+		9,
+		"/js/vendor",
+		"resources_js_Pages_Charts_FuelChargeChart_vue"
+	],
 	"./Charts/LineChart": [
 		"./resources/js/Pages/Charts/LineChart.vue",
 		9,

@@ -31,6 +31,8 @@ Auth::routes();
 Route::middleware('auth')->group(function() {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('/load-department-charges', [HomeController::class, 'loadDepartmentCharges']);
+    Route::get('/load-fuel-status', [HomeController::class, 'loadFuelStatusBalance']);
+    Route::get('/load-utilize', [HomeController::class, 'loadUtilize']);
     //Route::get('/home', [HomeController::class, 'index'])->name('home');
 
     Route::prefix('/users')->group(function() {
@@ -269,3 +271,4 @@ Route::prefix('/logArrivalTime')->group(function() {
 
 Route::get('/sample_charge', [ChargeController::class, 'sampleCharge']);
 Route::get('/balance', [ChargeController::class, 'balance']);
+Route::get('/soaReport', [SoaTravelController::class, 'soaReport']);

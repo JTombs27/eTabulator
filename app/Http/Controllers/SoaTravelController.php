@@ -28,24 +28,23 @@ class SoaTravelController extends Controller
                      ->orWhere('role', 'PGO');
             })
             ->first();
-
-        $soatravel =  $this->soatravel;
-                                
-
-        if(!$isAdmin){
-            $soatravel = $this->soatravel->where('office_id', auth()->user()->office_id)
-                                        ->orWhere('gasoline_id',auth()->user()->gasoline_id);
-        }
+           
 
         return inertia('SoaTravels/Index', [
             //returns an array of users with name field only
-            "soaTravel" => $soatravel
+            "soaTravel" => $this->soatravel
             	->with('travels','office','division')
             	->when($request->search, function ($query, $searchItem) {
                     $query->where('ticket_no', 'like', '%' . $searchItem . '%')
                           ->orWhereHas('office', function ($q) use ($searchItem) {
                                     $q->where('short_name','like', '%' . $searchItem . '%');
                                 });
+                })
+                 ->when(!$isAdmin && auth()->user()->role == 'RO', function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                })
+                ->when(!$isAdmin && auth()->user()->role == 'gasoline-station', function($q) {
+                                    $q->where('gasoline_id', auth()->user()->gasoline_id);
                 })
                 ->latest()
                 ->simplePaginate(10)
@@ -122,25 +121,25 @@ class SoaTravelController extends Controller
                      ->orWhere('role', 'PGO');
             })
             ->first();
-
-        $travels =  $this->model;
                                 
-
-        if(!$isAdmin){
-            $travels = $this->model->where('office_id', auth()->user()->office_id)
-                                    ->orWhere('gasoline_id',auth()->user()->gasoline_id);;
-        }
-
 
         return inertia('SoaTravels/Details', [
             //returns an array of users with name field only
-            "travels" => $travels
-            	->latest()
+            "travels" => $this->model
+                ->where('soa_travel', $id)
             	->when($request->search, function ($query, $searchItem) {
-                    $query->where('ticket_number', 'like', '%' . $searchItem . '%')
+                     $query->where(function($q) use ($searchItem) {
+                        $q->where('ticket_number', 'like', '%' . $searchItem . '%')
                         ->orWhere('invoice_no', 'like', '%' . $searchItem . '%');
+                    });
                 })
-            	->where('soa_travel', $id)
+                 ->when(!$isAdmin && auth()->user()->role == 'RO', function($q) {
+                                    $q->where('office_id', auth()->user()->office_id);
+                })
+                ->when(!$isAdmin && auth()->user()->role == 'gasoline-station', function($q) {
+                                    $q->where('gasoline_id', auth()->user()->gasoline_id);
+                })
+                ->orderBy('date_fueled','asc')
             	->simplePaginate(10)
                 ->through(function ($item) {
                                 $checkPrice = $this->price->where('gasoline_id', $item->gasoline_id)->whereDate('date', $item->date_fueled)->exists();
@@ -224,7 +223,7 @@ class SoaTravelController extends Controller
     	$travel = $this->model->findOrFail($request->id);
     	$travel->update(['soa_travel' => null]);
 
-    	return redirect('/soatravels/'.$request->soa_travel.'/details')->with('message', 'Tag removed');
+    	return back()->with('message', 'Tag removed');
     }
 
      public function destroy(Request $request)
@@ -251,6 +250,7 @@ class SoaTravelController extends Controller
                                 offices.short_name,
                                 offices.office,
                                 gasolines.name AS gasstation,
+                                gasolines.address AS address,
                                 soa_travels.date_from AS soa_date_from,
                                 soa_travels.date_to AS soa_date_to,
                                 soa_travels.ticket_no,
@@ -293,6 +293,7 @@ class SoaTravelController extends Controller
                                     'short_name' =>$item->short_name,
                                     'office' => $item->office,
                                     'gasoline_name' => $item->gasstation,
+                                    'gas_address' => $item->address,
                                     'invoice_no' => $item->invoice_no,
                                     'date' => $date,
                                     'prepared_by' => $item->name,
@@ -350,8 +351,30 @@ class SoaTravelController extends Controller
         );
         return $testData->values();
         
-        
-        
+    }
+
+    public function soaReport(Request $request)
+    {
+            $soaReport = $this->soatravel
+                ->with('travels','office','division')
+                ->get()->map(function($item) {
+
+                    return [
+                    'id' => $item->id,
+                    'date_from' => $item->date_from,
+                    'date_to' => $item->date_to,
+                    'soa_date' =>$item->soaDate,
+                    'total_liters' => number_format($item->travels->sum('actual_liter'),2),
+                    'totalPrice' => number_format($item->travels->sum('totalPrice'),2),
+                    'ticket_no' => $item->ticket_no,
+                    'office' => $item->office->short_name,
+                    'division' => $item->division == null ? $item->division: $item->division->division_name1,
+                    'cafoa_number' =>$item->cafoa_number,
+                    ];
+               });           
+
+        return  $soaReport;
+           
     }
 
 }

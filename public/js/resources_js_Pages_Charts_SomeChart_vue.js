@@ -59,7 +59,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
     chartLabel: {
       type: String,
       "default": function _default() {
-        return [];
+        return ['vue', 'js', 'charts'];
       }
     },
     chartColor: {

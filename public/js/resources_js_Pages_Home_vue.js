@@ -156,7 +156,25 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
       maintainAspectRatio: false,
       plugins: {
         legend: {
-          position: 'right'
+          position: 'right',
+          align: 'start',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'rect',
+            font: {
+              size: 10,
+              style: 'normal'
+            }
+          }
+        },
+        datalabels: {
+          display: true,
+          align: 'bottom',
+          backgroundColor: '#ccc',
+          borderRadius: 3,
+          font: {
+            size: 18
+          }
         }
       }
     };
@@ -235,7 +253,7 @@ chart_js__WEBPACK_IMPORTED_MODULE_1__.Chart.register(chart_js__WEBPACK_IMPORTED_
     chartLabel: {
       type: String,
       "default": function _default() {
-        return [];
+        return ['vue', 'js', 'charts'];
       }
     },
     chartColor: {
@@ -441,10 +459,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Pages_Charts_SomeChart__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Pages/Charts/SomeChart */ "./resources/js/Pages/Charts/SomeChart.vue");
 /* harmony import */ var _Pages_Charts_LineChart__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Pages/Charts/LineChart */ "./resources/js/Pages/Charts/LineChart.vue");
 /* harmony import */ var _Pages_Charts_PieChart__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Pages/Charts/PieChart */ "./resources/js/Pages/Charts/PieChart.vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
 
 
+
+var componentKey = (0,vue__WEBPACK_IMPORTED_MODULE_4__.ref)(0);
+var componentKey1 = (0,vue__WEBPACK_IMPORTED_MODULE_4__.ref)(0);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
     TotalUser: _Pages_Charts_TotalUsers__WEBPACK_IMPORTED_MODULE_0__["default"],
@@ -453,19 +475,21 @@ __webpack_require__.r(__webpack_exports__);
     PieChart: _Pages_Charts_PieChart__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
-    charges: Array,
     officesLabels: Array,
     vehicles: Array,
     consume: "",
     balance: "",
     isAdmin: "",
     fuelConsumed: Array,
-    TotalCharge: "",
-    charge_to: Array
+    TotalCharge: ""
   },
   data: function data() {
     return {
+      charge_to: Array,
+      charges: Array,
       totalUser: [10, 20, 50, 6, 525, 85],
+      cData: [],
+      cLabels: [],
       chargesChartData: {
         Labels: [],
         Data: [],
@@ -480,54 +504,36 @@ __webpack_require__.r(__webpack_exports__);
         Labels: [],
         Data: []
       },
-      barTitle: "Number Of Travels Per Office"
+      barTitle: "Number Of Travels Per Office",
+      fuel_status: true,
+      dep_charges: true,
+      pie_data: true
     };
   },
   computed: {
     temp: function temp() {
-      //      let vm = this;
-      //      if(vm.officesLabels !== null){
-      //             _.forEach(vm.officesLabels, function(value,key) {
-      //             vm.barChart.Labels.push(value.short_name);
-      //             vm.barChart.Data.push(value.travel_count);
-      //         });
-      //      }
-      //     if(vm.chargesChartData !== null)
-      //     {
-      //          if(vm.isAdmin)
-      //         {
-      //             _.forEach(vm.charges,function(value,key){
-      //             vm.chargesChartData.Labels.push(value.office_short_name);
-      //             vm.chargesChartData.Data.push(value.office_charges_amount);
-      //         })
-      //         }
-      //         else{
-      //             if(vm.charges.length >0)
-      //             {
-      //                 vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
-      //                 vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
-      //                 vm.chargesChartData.Data.push((vm.charges[0].office_charges_amount));
-      //                 vm.chargesChartData.Data.push(vm.consume);
-      //             }
-      //         }
-      //     }
-      //     _.forEach((_(vm.fuelConsumed)
-      //     .groupBy('office_short_name')
-      //     .map((platform, id) => ({
-      //         office_short_name: id,
-      //         price: _.sumBy(platform, 'price'),
-      //     }))
-      //     .value()),function(value,key){
-      //         vm.pieChartData.Labels.push(value.office_short_name);
-      //         vm.pieChartData.Data.push(value.price);
-      //     })
-      //     var total_consumed = _.sum(vm.pieChartData.Data)
-      //     vm.pieChartData.Labels.push('Total Balance');
-      //     vm.pieChartData.Data.push((vm.TotalCharge - total_consumed))
+      var vm = this;
+
+      if (vm.officesLabels !== null) {
+        _.forEach(vm.officesLabels, function (value, key) {
+          vm.barChart.Labels.push(value.short_name);
+          vm.barChart.Data.push(value.travel_count);
+        });
+      }
+
       return true;
+    },
+    chartDataX: function chartDataX() {
+      return this.chargesChartData.Data;
+    },
+    peiDataX: function peiDataX() {
+      return this.pieChartData.Data;
     }
   },
-  mounted: function mounted() {//this.loadDepartmentCharges();
+  mounted: function mounted() {
+    this.loadDepartmentCharges();
+    this.loadFuelStatus();
+    this.loadFuelUtilize();
   },
   methods: {
     print: function print() {
@@ -537,24 +543,34 @@ __webpack_require__.r(__webpack_exports__);
       var vm = this;
       axios.get("/load-department-charges").then(function (response) {
         if (response.data != null) {
-          console.log(response.data);
-          vm.chargesChartData = response.data;
-
           if (vm.chargesChartData !== null) {
-            if (vm.isAdmin) {
-              _.forEach(vm.charges, function (value, key) {
-                vm.chargesChartData.Labels.push(value.office_short_name);
-                vm.chargesChartData.Data.push(value.office_charges_amount);
-              });
-            } else {
-              if (vm.charges.length > 0) {
-                vm.chargesChartData.Labels.push(vm.charges[0].office_short_name + ' Balance');
-                vm.chargesChartData.Labels.push(vm.charges[0].office_short_name + ' Consumed');
-                vm.chargesChartData.Data.push(vm.charges[0].office_charges_amount);
-                vm.chargesChartData.Data.push(vm.consume);
-              }
-            }
+            vm.dep_charges = false;
+            vm.chargesChartData.Labels = response.data.chartLabel;
+            vm.chargesChartData.Data = response.data.chartData;
+            vm.componentKey += 1;
           }
+        }
+      });
+    },
+    loadFuelStatus: function loadFuelStatus() {
+      var _this = this;
+
+      axios.get("/load-fuel-status").then(function (response) {
+        if (response.data != null) {
+          _this.charge_to = response.data;
+          _this.fuel_status = false;
+        }
+      });
+    },
+    loadFuelUtilize: function loadFuelUtilize() {
+      var vm = this;
+      axios.get("/load-utilize").then(function (response) {
+        if (response.data != null) {
+          console.log(response.data.utilize_data);
+          vm.pie_data = false;
+          vm.pieChartData.Data = response.data.utilize_data;
+          vm.pieChartData.Labels = response.data.utilize_label;
+          vm.componentKey1 += 1;
         }
       });
     }
@@ -839,43 +855,84 @@ var _hoisted_42 = {
 var _hoisted_43 = {
   "class": "lh-1"
 };
-
-var _hoisted_44 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "col-12"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_44 = {
+  "class": "col-12",
+  id: "charges"
+};
+var _hoisted_45 = {
+  key: 0,
   "class": "lds-ellipsis"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div"), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <some-chart  :chartData=\"chargesChartData.Data\" :CharLegelPosition=\"isAdmin == null ? 'left':'right'\" :chartLabel=\"chargesChartData.Labels\"></some-chart> ")], -1
+};
+
+var _hoisted_46 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_45 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_47 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_48 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_49 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_50 = [_hoisted_46, _hoisted_47, _hoisted_48, _hoisted_49];
+var _hoisted_51 = {
   "class": "layers bd bgc-white p-20"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+};
+
+var _hoisted_52 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "layer w-100 mB-10"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", {
   "class": "lh-1"
-}, "Fuel Utilized")]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "col-12"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <pie-chart :pieChartData=\"pieChartData.Data\" :pieChartLabels = \"pieChartData.Labels\"></pie-chart> "), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <some-chart :chartData=\"pieChartData.Data\" :CharLegelPosition=\"isAdmin == null ? 'top':'left'\" :chartLabel=\"pieChartData.Labels\" :chartColor=\"pieChartData.Colors\"></some-chart> ")])], -1
+}, "Fuel Utilized")], -1
 /* HOISTED */
 );
 
-var _hoisted_46 = [_hoisted_45];
-var _hoisted_47 = {
+var _hoisted_53 = {
+  "class": "col-12"
+};
+var _hoisted_54 = {
+  key: 0,
+  "class": "lds-ellipsis"
+};
+
+var _hoisted_55 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_56 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_57 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_58 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_59 = [_hoisted_55, _hoisted_56, _hoisted_57, _hoisted_58];
+var _hoisted_60 = {
   key: 1,
   "class": "col-md-12 mT-10"
 };
-var _hoisted_48 = {
+var _hoisted_61 = {
   "class": "layers w-100 bgc-white p-20"
 };
-var _hoisted_49 = {
+var _hoisted_62 = {
   "class": "col-md-12"
 };
-var _hoisted_50 = {
+var _hoisted_63 = {
   "class": "row"
 };
 
-var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+var _hoisted_64 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "col-md-6"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", {
   "class": "fw-bold"
@@ -883,11 +940,11 @@ var _hoisted_51 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_52 = {
+var _hoisted_65 = {
   "class": "col-md-6 text-end"
 };
 
-var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_66 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "16",
   height: "16",
@@ -902,23 +959,46 @@ var _hoisted_53 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_54 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" PRINT");
+var _hoisted_67 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)(" PRINT");
 
-var _hoisted_55 = [_hoisted_53, _hoisted_54];
-var _hoisted_56 = {
+var _hoisted_68 = [_hoisted_66, _hoisted_67];
+var _hoisted_69 = {
   "class": "col-md-12"
 };
-var _hoisted_57 = {
+var _hoisted_70 = {
   "class": "w-100 table table-responsive overflow-auto p-5",
   style: {
     "height": "250px"
   }
 };
-var _hoisted_58 = {
+var _hoisted_71 = {
+  key: 0,
+  "class": "lds-ellipsis"
+};
+
+var _hoisted_72 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_73 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_74 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_75 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_76 = [_hoisted_72, _hoisted_73, _hoisted_74, _hoisted_75];
+var _hoisted_77 = {
+  key: 1,
   "class": "table table-bordered"
 };
 
-var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
+var _hoisted_78 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", {
   "class": "table-dark"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
   "class": "text-center"
@@ -934,39 +1014,43 @@ var _hoisted_59 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_60 = {
+var _hoisted_79 = {
   width: "46%"
 };
-var _hoisted_61 = {
+var _hoisted_80 = {
   width: "15%",
   "class": "text-end"
 };
-var _hoisted_62 = {
+var _hoisted_81 = {
   width: "13%",
   "class": "text-end"
 };
-var _hoisted_63 = {
+var _hoisted_82 = {
   width: "13%",
   "class": "text-end"
 };
-var _hoisted_64 = {
+var _hoisted_83 = {
   width: "13%",
   "class": "text-end"
 };
-var _hoisted_65 = {
+var _hoisted_84 = {
   "class": "layers bd bgc-white p-20"
 };
-var _hoisted_66 = {
+var _hoisted_85 = {
   "class": "layer w-100 mB-10"
 };
-var _hoisted_67 = {
+var _hoisted_86 = {
   "class": "lh-1"
 };
-var _hoisted_68 = {
+var _hoisted_87 = {
   "class": "col-12"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
+
+  var _component_some_chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("some-chart");
+
+  var _component_pie_chart = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("pie-chart");
 
   var _component_total_user = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("total-user");
 
@@ -998,47 +1082,60 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($props.isAdmin == null ? 'col-md-4' : 'col-md-6')
   }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_41, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_42, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_43, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.isAdmin == null ? 'Fuel Utilization' : 'Department Charges'), 1
   /* TEXT */
-  )]), _hoisted_44])], 2
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_44, [$data.dep_charges ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_45, _hoisted_50)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_some_chart, {
+    CharLegelPosition: $props.isAdmin == null ? 'left' : 'right',
+    chartLabel: $data.chargesChartData.Labels,
+    chartData: $options.chartDataX,
+    key: _ctx.componentKey
+  }, null, 8
+  /* PROPS */
+  , ["CharLegelPosition", "chartLabel", "chartData"]))])])], 2
   /* CLASS */
   ), $props.isAdmin !== null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
     key: 0,
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($props.isAdmin == null ? 'col-md-4' : 'col-md-6')
-  }, _hoisted_46, 2
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_51, [_hoisted_52, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_53, [$data.pie_data ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_54, _hoisted_59)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_pie_chart, {
+    pieChartData: $options.peiDataX,
+    pieChartLabels: $data.pieChartData.Labels,
+    key: _ctx.componentKey1
+  }, null, 8
+  /* PROPS */
+  , ["pieChartData", "pieChartLabels"]))])])], 2
   /* CLASS */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.auth.user.role == 'Admin' || _ctx.$page.props.auth.user.role == 'PGO' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_47, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_49, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_50, [_hoisted_51, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_52, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _ctx.$page.props.auth.user.role == 'Admin' || _ctx.$page.props.auth.user.role == 'PGO' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_60, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_62, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_63, [_hoisted_64, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_65, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-outline-success pull-right",
     onClick: _cache[0] || (_cache[0] = function ($event) {
       return $options.print();
     })
-  }, _hoisted_55)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_57, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_58, [_hoisted_59, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.charge_to, function (item, index) {
+  }, _hoisted_68)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_69, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [$data.fuel_status ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_71, _hoisted_76)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), !$data.fuel_status ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("table", _hoisted_77, [_hoisted_78, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.charge_to, function (item, index) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
       key: index
-    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_60, "  " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.office_name), 1
+    }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_79, "  " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.office_name), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_61, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.amount), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_80, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.amount), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.amount_paid), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_81, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.amount_paid), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_63, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.unpaid_amount), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_82, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.unpaid_amount), 1
     /* TEXT */
-    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_64, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.balance2), 1
+    ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_83, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.balance2), 1
     /* TEXT */
     )]);
   }), 128
   /* KEYED_FRAGMENT */
-  ))])])])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div :class=\"isAdmin? 'col-md-6':'col-md-4'\">\r\n                    <div class=\"layers bd bgc-white p-20\">\r\n                        <div class=\"layer w-100 mB-10\">\r\n                            <h6 class=\"lh-1\">Department Charges</h6>\r\n                        </div>\r\n                        <div class=\"col-12\">\r\n                            <some-chart :chartData=\"pieChartData.Data\" :CharLegelPosition=\"'left'\" :chartLabel=\"pieChartData.Labels\" :chartColor=\"pieChartData.Colors\"></some-chart>\r\n                        </div>\r\n                    </div>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  ))])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)($props.isAdmin !== null ? 'col-md-12 mT-10' : 'col-md-8')
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_65, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_66, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_67, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.barTitle), 1
+  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_84, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_85, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h6", _hoisted_86, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.barTitle), 1
   /* TEXT */
-  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_68, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_total_user, {
+  )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_87, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_total_user, {
     chartData: $data.barChart.Data,
     chartLabel: $data.barChart.Labels
   }, null, 8
   /* PROPS */
   , ["chartData", "chartLabel"])])])], 2
   /* CLASS */
-  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"row\">\r\n            <div class=\"col-md-4\">\r\n                <div class=\"layers bd bgc-white p-20\">\r\n                    <div class=\"layer w-100 mB-10\">\r\n                        <h6 class=\"lh-1\">Site Data</h6>\r\n                    </div>\r\n                    <line-chart></line-chart>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-4\">\r\n                <div class=\"layers bd bgc-white p-20\" style=\"min-height: 400px;\">\r\n                    <div class=\"layer w-100 mB-10\">\r\n                        <h6 class=\"lh-1\">Site Data</h6>\r\n                    </div>\r\n                    <div class=\"d-flex justify-content-center\">\r\n                        <div class=\"spinner-border\" role=\"status\">\r\n                            <span class=\"visually-hidden\">Loading...</span>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n        </div> ")])], 64
+  )])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 64
   /* STABLE_FRAGMENT */
   );
 }
@@ -1061,7 +1158,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n#app {\r\n  font-family: \"Avenir\", Helvetica, Arial, sans-serif;\r\n  -webkit-font-smoothing: antialiased;\r\n  -moz-osx-font-smoothing: grayscale;\r\n  text-align: center;\r\n  color: #2c3e50;\r\n  margin-top: 60px;\n}\r\n\r\n/** https://loading.io/css/ **/\n.lds-ellipsis {\r\n  display: inline-block;\r\n  position: relative;\r\n  width: 64px;\r\n  height: 64px;\n}\n.lds-ellipsis div {\r\n  position: absolute;\r\n  top: 27px;\r\n  width: 11px;\r\n  height: 11px;\r\n  border-radius: 50%;\r\n  background: #ddd;\r\n  -webkit-animation-timing-function: cubic-bezier(0, 1, 1, 0);\r\n          animation-timing-function: cubic-bezier(0, 1, 1, 0);\n}\n.lds-ellipsis div:nth-child(1) {\r\n  left: 6px;\r\n  -webkit-animation: lds-ellipsis1 0.6s infinite;\r\n          animation: lds-ellipsis1 0.6s infinite;\n}\n.lds-ellipsis div:nth-child(2) {\r\n  left: 6px;\r\n  -webkit-animation: lds-ellipsis2 0.6s infinite;\r\n          animation: lds-ellipsis2 0.6s infinite;\n}\n.lds-ellipsis div:nth-child(3) {\r\n  left: 26px;\r\n  -webkit-animation: lds-ellipsis2 0.6s infinite;\r\n          animation: lds-ellipsis2 0.6s infinite;\n}\n.lds-ellipsis div:nth-child(4) {\r\n  left: 45px;\r\n  -webkit-animation: lds-ellipsis3 0.6s infinite;\r\n          animation: lds-ellipsis3 0.6s infinite;\n}\n@-webkit-keyframes lds-ellipsis1 {\n0% {\r\n    transform: scale(0);\n}\n100% {\r\n    transform: scale(1);\n}\n}\n@keyframes lds-ellipsis1 {\n0% {\r\n    transform: scale(0);\n}\n100% {\r\n    transform: scale(1);\n}\n}\n@-webkit-keyframes lds-ellipsis3 {\n0% {\r\n    transform: scale(1);\n}\n100% {\r\n    transform: scale(0);\n}\n}\n@keyframes lds-ellipsis3 {\n0% {\r\n    transform: scale(1);\n}\n100% {\r\n    transform: scale(0);\n}\n}\n@-webkit-keyframes lds-ellipsis2 {\n0% {\r\n    transform: translate(0, 0);\n}\n100% {\r\n    transform: translate(19px, 0);\n}\n}\n@keyframes lds-ellipsis2 {\n0% {\r\n    transform: translate(0, 0);\n}\n100% {\r\n    transform: translate(19px, 0);\n}\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\r\n/** https://loading.io/css/ **/\n.lds-ellipsis {\r\n  display: inline-block;\r\n  position: relative;\r\n  width: 64px;\r\n  height: 64px;\n}\n.lds-ellipsis div {\r\n  position: absolute;\r\n  top: 27px;\r\n  width: 11px;\r\n  height: 11px;\r\n  border-radius: 50%;\r\n  background: #ddd;\r\n  -webkit-animation-timing-function: cubic-bezier(0, 1, 1, 0);\r\n          animation-timing-function: cubic-bezier(0, 1, 1, 0);\n}\n.lds-ellipsis div:nth-child(1) {\r\n  left: 6px;\r\n  -webkit-animation: lds-ellipsis1 0.6s infinite;\r\n          animation: lds-ellipsis1 0.6s infinite;\n}\n.lds-ellipsis div:nth-child(2) {\r\n  left: 6px;\r\n  -webkit-animation: lds-ellipsis2 0.6s infinite;\r\n          animation: lds-ellipsis2 0.6s infinite;\n}\n.lds-ellipsis div:nth-child(3) {\r\n  left: 26px;\r\n  -webkit-animation: lds-ellipsis2 0.6s infinite;\r\n          animation: lds-ellipsis2 0.6s infinite;\n}\n.lds-ellipsis div:nth-child(4) {\r\n  left: 45px;\r\n  -webkit-animation: lds-ellipsis3 0.6s infinite;\r\n          animation: lds-ellipsis3 0.6s infinite;\n}\n@-webkit-keyframes lds-ellipsis1 {\n0% {\r\n    transform: scale(0);\n}\n100% {\r\n    transform: scale(1);\n}\n}\n@keyframes lds-ellipsis1 {\n0% {\r\n    transform: scale(0);\n}\n100% {\r\n    transform: scale(1);\n}\n}\n@-webkit-keyframes lds-ellipsis3 {\n0% {\r\n    transform: scale(1);\n}\n100% {\r\n    transform: scale(0);\n}\n}\n@keyframes lds-ellipsis3 {\n0% {\r\n    transform: scale(1);\n}\n100% {\r\n    transform: scale(0);\n}\n}\n@-webkit-keyframes lds-ellipsis2 {\n0% {\r\n    transform: translate(0, 0);\n}\n100% {\r\n    transform: translate(19px, 0);\n}\n}\n@keyframes lds-ellipsis2 {\n0% {\r\n    transform: translate(0, 0);\n}\n100% {\r\n    transform: translate(19px, 0);\n}\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

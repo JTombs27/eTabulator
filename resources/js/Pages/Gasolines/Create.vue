@@ -19,6 +19,13 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
+                                    <label for="">Address</label>
+                                    <input type="text" v-model="form.address" class="form-control" autocomplete="chrome-off">
+                                    <div class="fs-6 c-red-500" v-if="form.errors.name">{{ form.errors.address }}</div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
                                     <label for="">Fuel OTP</label>
                                     <input type="text" v-model="form.fuelOTP" class="form-control" autocomplete="chrome-off">
                                     <div class="fs-6 c-red-500" v-if="form.errors.fuelOTP">{{ form.errors.fuelOTP }}</div>
@@ -48,6 +55,7 @@ export default {
         return {
             form: useForm({
                 name:'',
+                address:'',
                 fuelOTP:'',
                 id:'',
             }),
@@ -63,6 +71,7 @@ export default {
             this.loading            = true;
             this.pageTitle          = "Edit";
             this.form.name          = this.editData.name;
+            this.form.address          = this.editData.address;
             this.form.fuelOTP       = this.editData.fuelOTP;
             this.form.id            = this.editData.id;
 

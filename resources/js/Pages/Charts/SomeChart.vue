@@ -54,7 +54,7 @@ export default defineComponent({
         },
         chartLabel:{
             type:String,
-            default: () => []
+            default: () => ['vue','js','charts']
         },
         chartColor:{
             type:String,
@@ -110,7 +110,8 @@ export default defineComponent({
     },
     setup(props) 
     {
-        const chartData = {
+        const chartData = 
+        {
             labels: props.chartLabel,
             datasets: [
                 {
@@ -136,7 +137,8 @@ export default defineComponent({
                                 style:'normal',
                             }
                     }
-                },
+                }
+                ,
                 datalabels: {
                 display: true,
                 align: 'bottom',
@@ -145,7 +147,7 @@ export default defineComponent({
                 font: {
                 size: 18,
                 }
-            },
+                },
                 
             }
         }

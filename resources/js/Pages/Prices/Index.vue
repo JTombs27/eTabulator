@@ -7,21 +7,37 @@
         <div class="peers fxw-nw jc-sb ai-c">
             <h3>Prices</h3>
             <div class="peers">
-                <div class="peer mR-10">
+                <div class="peer mR-10" v-if="isAdmin == 'Admin'" >
                     <input v-model="search" type="text" class="form-control form-control-sm" placeholder="Search...">
                 </div>
                 <div class="peer"  v-if="can.canCreatePrice">
                     <Link class="btn btn-primary btn-sm" href="/prices/create">Add Price</Link>
-                    <!-- <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button> -->
+                    <button v-if="isAdmin == 'Admin'"  class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
         </div>
 
-        <filtering v-if="filter" @closeFilter="filter=false">
-            <label>Sample Inputs</label>
-            <input type="text" class="form-control">
-            <button class="btn btn-sm btn-primary mT-5 text-white" @click="">Filter</button>
-        </filtering>
+         <transition name="slide-fade" mode="in-out">
+            <filtering v-if="filter" @closeFilter="filter=false">
+                <label>Gas Station</label>
+                <Select2 v-model="filterData.gasoline_id" :options="station"></Select2>
+                <label for="">From</label>
+                <input type="date" v-model="filterData.date_from" class="form-control">
+                <label for="">To</label>
+                <input type="date" v-model="filterData.date_to" class="form-control">
+
+                <button class="btn btn-sm btn-primary mT-5 text-white" @click="runFilter()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg> Find</button> &nbsp;
+                <button class="btn btn-sm btn-danger mT-5 text-white" @click="reset()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg> Reset</button>
+            
+            </filtering>
+        </transition>
  
         <div class="col-12">
             <div class="tabe-responsive bgc-white p-20 bd shadow-sm">
@@ -110,16 +126,26 @@ export default {
             search: this.$props.filters.search,
             confirm: false,
             filter: false,
+            filterData: {
+                date_from:null,
+                date_to:null,
+                gasoline_id:null,
+            },
             showModal: false,
             permissions: [],
             selectedPermissions: [],
-            selectedUser: ""
+            selectedUser: "",
+            station:[],
+            isAdmin:this.$attrs.auth.user.role,
         };
+    },
+    mounted() {
+        this.loadGas()
     },
     watch: {
         search: _.debounce(function (value) {
             this.$inertia.get(
-                "/soatravels",
+                "/prices",
                 { search: value },
                 {
                     preserveScroll: true,
@@ -130,6 +156,12 @@ export default {
         }, 300),
     },
     methods: {
+        loadGas() 
+        { 
+            axios.get('/prices/fetch').then((response) => {
+                this.station = response.data
+            })
+        },
         editprice(id)
         {
             this.$inertia.get("/prices/"+id+"/edit/");
@@ -142,7 +174,27 @@ export default {
         },
         showFilter() {
             this.filter = !this.filter
-        }
+        },
+        runFilter () {
+            if (this.filterData.date_from && this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "all";
+                
+            } else if(this.filterData.date_from && !this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "from";
+               
+            } else if(!this.filterData.date_from && this.filterData.date_to) {
+               
+               this.filterData.dateFilterType = "to";
+               
+            }
+            this.$inertia.get('/prices', this.filterData,{preserveState:true})
+        },
+        reset () {
+            this.$inertia.get('/prices')
+
+        },
     },
 };
 </script>

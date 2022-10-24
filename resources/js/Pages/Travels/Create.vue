@@ -65,7 +65,9 @@
                 <div class="row">
                     <div>
                         <label for="">CHARGE</label><small class="text-danger pull-right mL-10"><strong>(Required)</strong></small>
-                        <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)" id="charge" ref="select_charge">
+                        <Select2 :options="charges" v-model="form.charge" @select="selectChargeDetails($event)" id="charge"/>
+                            
+                        <!-- <select class="form-select" v-model="form.charge" @change="selectChargeDetails($event)" id="charge" ref="select_charge">
                             <option readonly disabled>Select Charge</option>
                             <option 
                             v-for="(item, index) in charges" 
@@ -77,8 +79,8 @@
                             :selected="form.charge == `${item.idraao}-${item.idooe}`"
                             >
                             {{item.fraodesc}} --- ({{item.fooedesc}})
-                        </option>
-                        </select>
+                            </option>
+                        </select> -->
                         <div class="fs-6 c-red-500" v-if="form.errors.balance">{{ form.errors.balance }}</div>
                     </div>
                     <hr>
@@ -140,7 +142,7 @@
                                  <label class="form-check-label disable-select" for="is_borrowed_vehicle">
                                  Check if borrow vehicle
                                  </label>
-                                 <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="getOffice($event)">
+                                 <input class="ml-5 form-check-input" type="checkbox" id="is_borrowed_vehicle" v-model="form.is_borrowed_vehicle" @change="changeDriversDetails($event)">
                              </div>
                          </div>
                          <div class="col-md-4">    
@@ -343,6 +345,7 @@ export default {
             this.form.charge = `${this.editData.idraao}-${this.editData.idooe}`;
             this.loading = true
             this.pageTitle = "Edit"
+            this.form.is_borrowed_vehicle = this.editData.is_borrowed_vehicle ? true : false
             this.form.place_to_visit = this.editData.place_to_visit
             this.form.gas_type = this.editData.gas_type
             this.form.tank_balance = this.editData.tank_balance
@@ -361,6 +364,8 @@ export default {
             this.form.drivers_id = this.editData.driver_vehicle.drivers_id
             this.form.date_from = this.editData.date_from
             this.form.gasoline_id = this.editData.gasoline_id
+            this.form.idooe = this.editData.idooe
+            this.form.idraao = this.editData.idraao
             this.form.office_id = this.editData.office_id
             this.form.is_carpool = Boolean(this.editData.is_carpool)
             this.form.showActualDriver = this.editData.actual_driver ? true : false
@@ -402,23 +407,40 @@ export default {
     },
 
     methods:{
+        changeDriversDetails(e) {
+            this.form.drivers_id = null;
+            this.form.vehicles_id = null;
+        },
+
         selectChargeDetails(e) {   
             var chargeAttr = $('#charge').find(":selected");
            
             if (e !== undefined) {
                 
-                const chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, (obj) => {
-                    return obj.value;
-                }) 
+                // const chargeAttributes = _.flatMapDepth(e.target.selectedOptions[0].attributes, (obj) => {
+                //     return obj.value;
+                // })
+
+                const chargeAttributes = e;
                 
                 // console.log(e);
-                this.form.idraao = chargeAttributes[0]
-                this.form.idooe = chargeAttributes[1]
-                this.form.balance = chargeAttributes[2]
+                // this.form.idraao = chargeAttributes[0]
+                // this.form.idooe = chargeAttributes[1]
+                // this.form.balance = chargeAttributes[2]
+                this.form.idraao = chargeAttributes.idraao
+                this.form.idooe = chargeAttributes.idooe
+                this.form.balance = chargeAttributes.balance1
             } else {
-                this.form.idraao = chargeAttr[0].attributes[0].value
-                this.form.idooe = chargeAttr[0].attributes[1].value
-                this.form.balance = chargeAttr[0].attributes[2].value
+                // this.form.idraao = chargeAttr[0].attributes[0].value
+                // this.form.idooe = chargeAttr[0].attributes[1].value
+                // this.form.balance = chargeAttr[0].attributes[2].value
+                const charge = _.filter(this.charges, (obj) => {
+                    return obj.idooe == this.form.idooe && obj.idraao == this.form.idraao
+                })
+                // this.form.idraao = chargeAttr[0].attributes[0].value
+                // this.form.idooe = chargeAttr[0].attributes[1].value
+                // this.form.balance = chargeAttr[0].attributes[2].value
+                this.form.balance = charge[0].balance1
             }
         },
 
@@ -559,7 +581,8 @@ export default {
             let data = { vehicles_id:this.form.vehicles_id, 
                         date_to: this.form.date_to, 
                         date_from: this.form.date_from, 
-                        driver_vehicles_id: this.form.driver_vehicles_id
+                        driver_vehicles_id: this.form.driver_vehicles_id,
+                        is_borrowed_vehicle: this.form.is_borrowed_vehicle
                         }
             if (this.editData !== undefined) {
                 _.assign(data, {id:this.editData.id})
@@ -704,7 +727,7 @@ export default {
                 if (!this.form.is_borrowed_vehicle && !this.form.is_borrowed_fuel) {
                     return o.office_id == this.auth.user.office_id 
                 } else {
-                    return this.vehicles
+                    return o.office_id != this.auth.user.office_id
                 }
             })
         },

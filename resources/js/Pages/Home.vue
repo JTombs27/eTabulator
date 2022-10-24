@@ -79,15 +79,21 @@
         </div>
        
         <div class="w-100" >
-            <div class="row"  v-if="temp">
+            <div class="row" v-if="temp">
                 <div :class="isAdmin == null ? 'col-md-4':'col-md-6'" >
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">{{(isAdmin == null ? 'Fuel Utilization': 'Department Charges')}}</h6>
                         </div>
-                        <div class="col-12">
-                            <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
-                            <!-- <some-chart  :chartData="chargesChartData.Data" :CharLegelPosition="isAdmin == null ? 'left':'right'" :chartLabel="chargesChartData.Labels"></some-chart> -->
+                        <div class="col-12" id="charges">
+                            <div v-if="dep_charges" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            <some-chart  
+                                    :CharLegelPosition="isAdmin == null ? 'left':'right'" 
+                                    :chartLabel="chargesChartData.Labels"
+                                    :chartData="chartDataX"
+                                    :key="componentKey" 
+                                    >
+                            </some-chart>
                         </div>
                     </div>
                 </div>
@@ -97,8 +103,8 @@
                             <h6 class="lh-1">Fuel Utilized</h6>
                         </div>
                         <div class="col-12">
-                            <!-- <pie-chart :pieChartData="pieChartData.Data" :pieChartLabels = "pieChartData.Labels"></pie-chart> -->
-                            <!-- <some-chart :chartData="pieChartData.Data" :CharLegelPosition="isAdmin == null ? 'top':'left'" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart> -->
+                            <div v-if="pie_data" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                            <pie-chart :pieChartData="peiDataX" :pieChartLabels = "pieChartData.Labels" :key="componentKey1"></pie-chart>
                         </div>
                     </div>
                 </div>
@@ -121,7 +127,8 @@
                         </div>
                         <div class="col-md-12">
                             <div class="w-100 table table-responsive overflow-auto p-5" style="height: 250px;">
-                                <table class="table table-bordered">
+                                <div v-if="fuel_status" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+                                <table v-if="!fuel_status" class="table table-bordered">
                                     <thead class="table-dark">
                                         <th class="text-center">Office</th>
                                         <th class="text-center">Fuel Withdrawal</th>
@@ -143,16 +150,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div :class="isAdmin? 'col-md-6':'col-md-4'">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">Department Charges</h6>
-                        </div>
-                        <div class="col-12">
-                            <some-chart :chartData="pieChartData.Data" :CharLegelPosition="'left'" :chartLabel="pieChartData.Labels" :chartColor="pieChartData.Colors"></some-chart>
-                        </div>
-                    </div>
-                </div> -->
                 <div :class="(isAdmin !== null ? 'col-md-12 mT-10':'col-md-8')">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
@@ -165,41 +162,20 @@
                 </div>
             </div>
         </div>
-        
-        <!-- <div class="row">
-            <div class="col-md-4">
-                <div class="layers bd bgc-white p-20">
-                    <div class="layer w-100 mB-10">
-                        <h6 class="lh-1">Site Data</h6>
-                    </div>
-                    <line-chart></line-chart>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="layers bd bgc-white p-20" style="min-height: 400px;">
-                    <div class="layer w-100 mB-10">
-                        <h6 class="lh-1">Site Data</h6>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
     </div>
 </template>
 <script>
-import TotalUser from "../Pages/Charts/TotalUsers"
-import SomeChart from "../Pages/Charts/SomeChart"
-import LineChart from "../Pages/Charts/LineChart"
-import PieChart from "../Pages/Charts/PieChart"
-
+import TotalUser        from "../Pages/Charts/TotalUsers"
+import SomeChart        from "../Pages/Charts/SomeChart"
+import LineChart        from "../Pages/Charts/LineChart"
+import PieChart         from "../Pages/Charts/PieChart"
+import {ref} from       "vue"
+const componentKey  = ref(0);
+const componentKey1 = ref(0);
 export default ({
     components: { TotalUser, SomeChart, LineChart, PieChart },
     props:{
-        charges:Array,
+        
         officesLabels:Array,
         vehicles:Array,
         consume:"",
@@ -207,11 +183,14 @@ export default ({
         isAdmin:"",
         fuelConsumed:Array,
         TotalCharge:"",
-        charge_to:Array
     },
     data() {
         return {
+            charge_to:Array,
+            charges:Array,
             totalUser:[10,20,50,6,525,85],
+            cData:[],
+            cLabels:[],
             chargesChartData:{
                         Labels:[],
                         Data: [],
@@ -226,117 +205,96 @@ export default ({
                 Labels:[],
                 Data:[],
             },
-            barTitle:"Number Of Travels Per Office"
+            barTitle:"Number Of Travels Per Office",
+            fuel_status:true,
+            dep_charges:true,
+            pie_data:true
         }
     },
     computed:{
-        temp(){
+        temp()
+        {
 
-        //      let vm = this;
-        //      if(vm.officesLabels !== null){
-        //             _.forEach(vm.officesLabels, function(value,key) {
-        //             vm.barChart.Labels.push(value.short_name);
-        //             vm.barChart.Data.push(value.travel_count);
-        //         });
-        //      }
+             let vm = this;
              
-        //     if(vm.chargesChartData !== null)
-        //     {
-        //          if(vm.isAdmin)
-        //         {
-        //             _.forEach(vm.charges,function(value,key){
-        //             vm.chargesChartData.Labels.push(value.office_short_name);
-        //             vm.chargesChartData.Data.push(value.office_charges_amount);
-        //         })
-        //         }
-        //         else{
-        //             if(vm.charges.length >0)
-        //             {
-        //                 vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
-        //                 vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
-        //                 vm.chargesChartData.Data.push((vm.charges[0].office_charges_amount));
-        //                 vm.chargesChartData.Data.push(vm.consume);
-        //             }
-        //         }
-        //     }
-           
-
-        //     _.forEach((_(vm.fuelConsumed)
-        //     .groupBy('office_short_name')
-        //     .map((platform, id) => ({
-        //         office_short_name: id,
-        //         price: _.sumBy(platform, 'price'),
-        //     }))
-        //     .value()),function(value,key){
-        //         vm.pieChartData.Labels.push(value.office_short_name);
-        //         vm.pieChartData.Data.push(value.price);
-        //     })
-
-        //     var total_consumed = _.sum(vm.pieChartData.Data)
-
-        //     vm.pieChartData.Labels.push('Total Balance');
-        //     vm.pieChartData.Data.push((vm.TotalCharge - total_consumed))
+             if(vm.officesLabels !== null)
+             {
+                    _.forEach(vm.officesLabels, function(value,key) {
+                    vm.barChart.Labels.push(value.short_name);
+                    vm.barChart.Data.push(value.travel_count);
+                });
+             }
           
             return true;
         },
+        chartDataX()
+        {
+            return this.chargesChartData.Data;
+        },
+        peiDataX()
+        {
+            return this.pieChartData.Data;
+        }
     },
     mounted()
     {
-        //this.loadDepartmentCharges();
+        
+        this.loadDepartmentCharges();
+        this.loadFuelStatus();
+        this.loadFuelUtilize();
     },
      methods: {
         print() 
         {
             window.open("http://122.54.19.171:8080/jasperserver/flow.html?pp=u%3DJamshasadid%7Cr%3DManager%7Co%3DEMEA,Sales%7Cpa1%3DSweden&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2Freports%2Ffuel_monitoring&reportUnit=%2Freports%2Ffuel_monitoring%2Fcharge_balance&standAlone=truee&decorate=no", "_blank");
         },
-
         loadDepartmentCharges()
         {
-            let vm = this;
-            axios.get("/load-department-charges").then(response=>{
+                let vm = this;
+                axios.get("/load-department-charges").then(response=>
+                {
                     if(response.data != null)
                         {
-                            console.log(response.data)
-                            vm.chargesChartData = response.data;
                             if(vm.chargesChartData !== null)
                             {
-                                if(vm.isAdmin)
-                                {
-                                    _.forEach(vm.charges,function(value,key){
-                                    vm.chargesChartData.Labels.push(value.office_short_name);
-                                    vm.chargesChartData.Data.push(value.office_charges_amount);
-                                })
-                                }
-                                else{
-                                    if(vm.charges.length >0)
-                                    {
-                                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Balance');
-                                        vm.chargesChartData.Labels.push(vm.charges[0].office_short_name+' Consumed');
-                                        vm.chargesChartData.Data.push((vm.charges[0].office_charges_amount));
-                                        vm.chargesChartData.Data.push(vm.consume);
-                                    }
-                                }
+                                vm.dep_charges = false;
+                                vm.chargesChartData.Labels  = response.data.chartLabel
+                                vm.chargesChartData.Data    = response.data.chartData
+                                vm.componentKey += 1;
                             }
                         }
+                       
                 });
-
-            
+        },
+         loadFuelStatus()
+        {
+              axios.get("/load-fuel-status").then(response=>{
+                    if(response.data != null)
+                        {
+                            this.charge_to  = response.data;
+                            this.fuel_status = false;
+                        }});
+        },
+         loadFuelUtilize()
+        {
+            let vm = this;
+              axios.get("/load-utilize").then(response=>
+              {
+                        if(response.data != null)
+                        {
+                            console.log(response.data.utilize_data);
+                            vm.pie_data = false;
+                            vm.pieChartData.Data  = response.data.utilize_data
+                            vm.pieChartData.Labels = response.data.utilize_label
+                            vm.componentKey1 += 1;
+                        }
+                }
+                );
         }
-
-
      }
 });
 </script>
 <style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
 /** https://loading.io/css/ **/
 .lds-ellipsis {
   display: inline-block;

@@ -212,6 +212,8 @@ class TravelController extends Controller
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
                                 'fooedesc' => $item->fooedesc,
+                                'text' => "$item->fraodesc ($item->ffunccod) --- $item->fooedesc",
+                                'id' => "$item->idraao-$item->idooe"
                             ]),
             'can' => [
                 'addDivision' => auth()->user()->can('canViewDivisionInTravel', User::class)
@@ -282,6 +284,8 @@ class TravelController extends Controller
                                 'idraao' => $item->idraao,
                                 'fraodesc' => "$item->fraodesc ($item->ffunccod)",
                                 'fooedesc' => $item->fooedesc,
+                                'text' => "$item->fraodesc ($item->ffunccod) --- $item->fooedesc",
+                                'id' => "$item->idraao-$item->idooe"
                             ])
         ]);
         
@@ -347,6 +351,9 @@ class TravelController extends Controller
         if (!$request->rangedDate) {
             $request['date_to'] = null;
         }
+        if ($request->is_borrowed_vehicle) {
+            $request['borrowing_office'] = auth()->user()->office_id;
+        }
         
         DB::beginTransaction();
         try {
@@ -406,6 +413,9 @@ class TravelController extends Controller
         if (!$request->showActualDriver) {
             $request['actual_driver'] = null;
             // dd($request->all());
+        }
+        if ($request->is_borrowed_vehicle) {
+            $request['borrowing_office'] = auth()->user()->office_id;
         }
         $data = $this->model->findOrFail($id);
         $data->update($request->all());
@@ -611,12 +621,14 @@ class TravelController extends Controller
                         // $q->whereNull('status')->orWhere('status', 'Approved');
                         $q->where('status', '<>', 'Disapproved')->orWhereNull('status');
                     })
+                    ->when($request->is_borrowed_vehicle, function($q) {
+                        $q->where('borrowing_office', auth()->user()->office_id);
+                    })
                     ->latest()
                     ->get()
                     ->map(fn($item) => [
                         'total_liters' => $item->actual_liter ? $item->actual_liter : $item->total_liters
                     ]);
-
         $consumedFuel =  (clone $fuel)->sum('total_liters');
         // return $consumedFuel;
         if ($request->id) {

@@ -115,10 +115,30 @@ export default defineComponent({
         const chartOptions = {
             responsive: true,
             maintainAspectRatio: false,
-             plugins: {
+            plugins: {
                 legend:{
-                    position: 'right'
+                    position: 'right',
+                    align:'start',
+                    labels:{
+                        usePointStyle:true,
+                        pointStyle:'rect',
+                        font: {
+                                size: 10,
+                                style:'normal',
+                            }
+                    }
                 }
+                ,
+                datalabels: {
+                display: true,
+                align: 'bottom',
+                backgroundColor: '#ccc',
+                borderRadius: 3,
+                font: {
+                size: 18,
+                }
+                },
+                
             }
         }
 
