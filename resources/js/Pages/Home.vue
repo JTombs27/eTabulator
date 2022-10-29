@@ -108,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 mT-10" v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO'">
+                <div class="col-md-12 mT-10" v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || username == 'ptoadelben'">
                     <div class="layers w-100 bgc-white p-20">
                         <div class="col-md-12">
                             <div class="row">
@@ -150,7 +150,7 @@
                         </div>
                     </div>
                 </div>
-                <div :class="(isAdmin !== null ? 'col-md-12 mT-10':'col-md-12')">
+                <div :class="(isAdmin !== null || username == 'ptoadelben' ? 'col-md-12 mT-10':'col-md-12')">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">{{barTitle}}</h6>
@@ -183,6 +183,7 @@ export default ({
         isAdmin:"",
         fuelConsumed:Array,
         TotalCharge:"",
+        username:"",
     },
     data() {
         return {

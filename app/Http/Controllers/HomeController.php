@@ -51,6 +51,7 @@ class HomeController extends Controller
                        'TYPECODE'=> $item->TYPECODE,
                        'number_of_type_vehicle'=> $item->number_of_type_vehicle,
                     ]);
+        
         $isAdmin =  User::
                     where('id', auth()->user()->id)
                     ->where(function($query){
@@ -110,6 +111,7 @@ class HomeController extends Controller
             'isAdmin'       => $isAdmin,
             'TotalCharge'   => $amountTotal,
             'vehicles'      => $vehicles,
+            'username'      => auth()->user()->username
         ]);
     }
 
