@@ -34,7 +34,7 @@
             <div class="pos-a centerXY">
                 <div class="row text-center">
                     <div>
-                        <img class="mw-50" src="images/logo.png" alt="">
+                        <img class="mw-50" src="images/aceslogo.png" alt="">
                     </div>
                 </div>
                 <!-- <div class="row" style="color:white;">
@@ -45,7 +45,7 @@
         <div class="col-12 col-md-3 peer pX-40 pY-80 h-100 scrollable pos-r border-startr" style="min-width:320px; background-color:rgb(2 65 150);">
             <div class="row text-center" id="mobile-logo">
                 <div class="col-offset-5 mb-1">
-                    <img class="img-fluid" src="images/logo.png" alt="">
+                    <img class="img-fluid" src="images/ACESLOGO.png" alt="">
                     <h3>EQUIPMENT MANAGEMENT SYSTEM</h3>
                 </div>
             </div>

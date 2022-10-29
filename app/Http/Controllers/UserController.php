@@ -30,7 +30,7 @@ class UserController extends Controller
         return inertia('Users/Index', [
             //returns an array of users with name field only
             "users" => $this->model
-                ->with('permissions','office.division','employee.division')
+                ->with('permissions')
                 ->when($request->search, function ($query, $searchItem) {
                     $query->where('name', 'like', '%' . $searchItem . '%')
                         ->orWhere('username', 'like', '%' . $searchItem . '%');
@@ -39,7 +39,6 @@ class UserController extends Controller
                 ->simplePaginate(8)
                 ->withQueryString()
                 ->through(fn($user) => [
-                    'division' => $user->employee ? ($user->employee->division ? $user->employee->division->division_name1 : '') : '',
                     'id' => $user->id,
                     'permissions' => $user->permissions,
                     'office' => $user->office ? $user->office->office : '',
@@ -51,7 +50,7 @@ class UserController extends Controller
                     'photo' => $user->user_photo,
                     'gasoline_id' => $user->gasoline_id,
                     "can" => [
-                        'delete' => Travel::where('user_id', $user->id)->exists()
+                        'delete' => true
                     ],
                 ]),
             "filters" => $request->only(['search']),
