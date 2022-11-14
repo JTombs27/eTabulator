@@ -2,10 +2,10 @@
      <!-- ### $App Screen Footer ### -->
     <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
         <span
-            >Developed by
+            >Powered by
             <a
-                href="https://davaodeoro.gov.ph/"
-                >PICTO</a
+                href="https://larainfo.com/blogs/laravel-8-crud-with-inertia-js-using-vue-3-example"
+                >Laravel</a
             >
         </span>
     </footer>

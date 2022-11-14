@@ -6,7 +6,8 @@
 
     <div class="row gap-20 masonry pos-r">
         <div class="col-lg-12">
-            <h1>{{username}}</h1>
+            <h1>{{username}} DIRI KA NI SULOD</h1>
+            <a href="/students/">GO TO STUDENTS 2</a>
         </div> 
     </div>
 </template>

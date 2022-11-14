@@ -35,7 +35,7 @@
             </div>
             <!-- ### $Sidebar Menu ### -->
             <ul class="sidebar-menu scrollable pos-r">
-                <li class="nav-item mT-30 actived"  v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
+                <li class="nav-item mT-30 actived">
                     <Link class="sidebar-link" href="/" :class="{'active': $page.url === '/'}"><span
                         class="icon-holder"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                             fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
@@ -46,9 +46,8 @@
                 </li>
 
 
-                <li class="nav-item"
-                    v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PGSO' || $page.props.auth.user.role == 'peo-motorpool'">
-                    <Link class="sidebar-link" href="/vehicles" :class="{'active': $page.url.startsWith('/vehicles')}" >
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/event-header" :class="{'active': $page.url.startsWith('/event-header')}" >
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
                             <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
@@ -58,9 +57,8 @@
                         <span class="title">School Events</span>
                     </Link>
                 </li>
-                <li class="nav-item"
-                    v-if="$page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PGSO' || $page.props.auth.user.role == 'peo-motorpool'">
-                    <Link class="sidebar-link" href="/vehicles" :class="{'active': $page.url.startsWith('/vehicles')}" >
+                <li class="nav-item">
+                    <Link class="sidebar-link" href="/event-participants" :class="{'active': $page.url.startsWith('/event-participants')}" >
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
                             <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>

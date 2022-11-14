@@ -44,11 +44,11 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->belongsToMany(Permission::class);
     }
 
-    public function office() {
+    // public function office() {
 
-        return $this->belongsTo(Office::class, 'office_id', 'department_code');
+    //     return $this->belongsTo(Office::class, 'office_id', 'department_code');
 
-    }
+    // }
 
     public function employee() {
 

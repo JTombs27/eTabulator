@@ -32,27 +32,10 @@ class HandleInertiaRequests extends Middleware
             
             $UsrPhotoExst = User::where('id', auth()->user()->id)->whereNotNull('user_photo')->exists();
             if (!$UsrPhotoExst) {
-                if (auth()->user()->cats) {
-                    $UserPhoto =  Http::get("http://122.54.19.172:91//api/PGDDOEmployeePhoto?empl_id=".$UsrCats)->collect();
-                    // $cats = $UserPhoto[0]['empl_id'];
-                    if (count($UserPhoto) != 0) {
-                        $photo = $UserPhoto[0]['empl_photo_img'];
-                    } else {
-                        $photo = [
-                            'IsNull' => true
-                        ];
-                    }
-
-                    $photoData = "";
-                    if ($photo['IsNull']) {
-                       User::where('id', auth()->user()->id)
-                            ->update(["user_photo" => "storage/profile/default"]);
-                    } else {
-                        $file_path = "storage/profile/employee_$UsrCats";
-                        $image = $photo["data"];
-                        Storage::disk('profile')->put("employee_$UsrCats/photo.png", base64_decode($image));
-                        User::where('id', auth()->user()->id)->update(["user_photo"=> "$file_path"]);
-                    }
+                if (auth()->user()->cats) 
+                {
+                    User::where('id', auth()->user()->id)
+                    ->update(["user_photo" => "storage/profile/default"]);
                 } else {
                     User::where('id', auth()->user()->id)
                             ->update(["user_photo" => "storage/profile/default"]);

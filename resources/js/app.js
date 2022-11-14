@@ -1,13 +1,16 @@
 require('./bootstrap');
-import { createApp, h } from 'vue'
-import { createInertiaApp, Head, Link } from '@inertiajs/inertia-vue3'
-import Layout  from "./Shared/Layout"
-import SimpleLayout  from "./Layout/SimpleLayout"
-import Modal  from "./Shared/Modal"
-import BackButton from "./Shared/BackButton"
-import Notification  from "./Shared/Notification"
-import { InertiaProgress } from '@inertiajs/progress'
+import { createApp, h } from 'vue';
+import { createInertiaApp, Head, Link } from '@inertiajs/inertia-vue3';
+import Layout  from "./Shared/Layout";
+import SimpleLayout  from "./Layout/SimpleLayout";
+import Modal  from "./Shared/Modal";
+import BackButton from "./Shared/BackButton";
+import Notification  from "./Shared/Notification";
+import { InertiaProgress } from '@inertiajs/progress';
 import Select2 from 'vue3-select2-component';
+
+import swal from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 // //PLEASE COMMENT THE PLUGINS THAT YOU WON'T BE USING
 
@@ -27,8 +30,6 @@ import Select2 from 'vue3-select2-component';
 //     FilePondPluginImageTransform
 // );
 // // end FileUpload
-
-
 createInertiaApp({
   resolve: async name => {
     let page = (await import(`./Pages/${name}`)).default;
@@ -53,6 +54,7 @@ createInertiaApp({
       .component("Notification", Notification)
       // .component("FilePond", FilePond)
       .component('Select2', Select2)
+      .component('swal', swal)
       .mount(el)
   },
 

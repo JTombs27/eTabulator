@@ -25,6 +25,8 @@
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-vue3": "^0.6.0",
         "@inertiajs/progress": "^0.2.7",
+        "@tiptap/starter-kit": "^2.0.0-beta.199",
+        "@tiptap/vue-3": "^2.0.0-beta.199",
         "chart.js": "^3.8.0",
         "filepond": "^4.30.3",
         "filepond-plugin-file-validate-size": "^2.2.5",
@@ -38,6 +40,10 @@
         "vue-chartjs": "^4.1.1",
         "vue-filepond": "^7.0.2",
         "vue-select": "^4.0.0-beta.3",
-        "vue3-select2-component": "^0.1.7"
+        "vue-sweetalert2": "^5.0.5",
+        "vue3-select2-component": "^0.1.7",
+        "types":[
+            "vue-sweetalert2"
+        ]
     }
 }

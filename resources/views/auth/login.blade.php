@@ -16,6 +16,18 @@
         a.log:hover{
             color: yellow !important;
         }
+        
+        @media screen (min-width: 401px) {
+            #mobile-logo {
+                display:  block !important;
+            }
+        }
+
+        @media screen (max-width: 400px) {
+            #mobile-logo {
+                display:  none !important;
+            }
+        }
     </style>
 </head>
 
@@ -25,12 +37,12 @@
     </div>
     <div class="peers ai-s fxw-nw h-100vh">
         <div class="d-n@sm- peer peer-greed h-100 pos-r bgr-n bgpX-c bgpY-c bgsz-cv"
-            style='background-image:url("images/bg.jpg"); background-size:100% 100%'>
-            <div class="row mt-3 ms-3" style="color: rgb(52, 52, 52); display: block;">
+            style='background-size:100% 100%'>
+            <!-- <div class="row mt-3 ms-3" style="color: rgb(52, 52, 52); display: block;">
                 <div class="col-md-6">
-                <h1 class="strokeme display-5">EQUIPMENT MANAGEMENT SYSTEM</h1>
+                <h1 class="strokeme display-5">ACES UVOTE</h1>
                 </div>
-            </div>
+            </div> -->
             <div class="pos-a centerXY">
                 <div class="row text-center">
                     <div>
@@ -38,15 +50,15 @@
                     </div>
                 </div>
                 <!-- <div class="row" style="color:white;">
-                    <h1 class="strokeme">EQUIPMENT MANAGEMENT SYSTEM</h1>
+                    <h1 class="strokeme">ACES UVOTE</h1>
                 </div> -->
             </div>
         </div>
         <div class="col-12 col-md-3 peer pX-40 pY-80 h-100 scrollable pos-r border-startr" style="min-width:320px; background-color:rgb(2 65 150);">
             <div class="row text-center" id="mobile-logo">
                 <div class="col-offset-5 mb-1">
-                    <img class="img-fluid" src="images/ACESLOGO.png" alt="">
-                    <h3>EQUIPMENT MANAGEMENT SYSTEM</h3>
+                    <img class="img-fluid" src="images/ACESLOGO.png" style="width: 100px; height: 100px;" alt="">
+                    <h3>ACES UVOTE</h3>
                 </div>
             </div>
             <h4 class="fw-300 text-light mB-10">Login</h4>
@@ -94,13 +106,7 @@
                     </div>
                 </div>
             </form>
-            <div style="margin-top:10px;">
-                <center>
-                    <div class="peers ai-c jc-sb fxw-nw">
-                        <a href="/logArrivalTime" class="text-light log">Log your arrival ? - for drivers only.</a>
-                    </div>
-                </center>
-            </div>
+          
         </div>
     </div>
 </body>
@@ -122,13 +128,13 @@
         }
     }
 
-    var x = document.getElementById("mobile-logo");
+    // var x = document.getElementById("mobile-logo");
 
-    if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
+    // if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    //     x.style.display = "block";
+    // } else {
+    //     x.style.display = "none";
+    // }
 
 </script>
 </html>

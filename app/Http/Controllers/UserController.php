@@ -41,7 +41,7 @@ class UserController extends Controller
                 ->through(fn($user) => [
                     'id' => $user->id,
                     'permissions' => $user->permissions,
-                    'office' => $user->office ? $user->office->office : '',
+                    'office' => $user->office ? '' : '',
                     'is_active' => $user->is_active,
                     'email' => $user->email,
                     'name' => $user->name,
@@ -210,7 +210,7 @@ class UserController extends Controller
 
     public function settings()
     {
-        // return inertia('Users/Settings');
+        return inertia('Users/Settings');
     }
 
     public function changeName(Request $request)
