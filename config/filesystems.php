@@ -46,6 +46,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public/profile')
         ],
+        'participants' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/participants')
+        ],
 
         's3' => [
             'driver' => 's3',

@@ -46,7 +46,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     }, 300)
   },
-  methods: {}
+  methods: {
+    goToParticipants: function goToParticipants(settup_id) {
+      location.href = "/students/to-students/" + settup_id;
+    }
+  }
 });
 
 /***/ }),
@@ -134,7 +138,52 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_12 = ["href"];
+var _hoisted_12 = ["onClick"];
+var _hoisted_13 = {
+  style: {
+    "padding-top": "7px !important",
+    "font-weight": "bold"
+  }
+};
+
+var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  "class": "w-2r bdrs-50p pull-right",
+  src: "http://127.0.0.1:8000/storage/profile/default/photo.png",
+  alt: ""
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "22",
+  height: "22",
+  fill: "currentColor",
+  "class": "bi bi-bookmark-star text-success",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"
+})])])], -1
+/* HOISTED */
+);
+
+var _hoisted_17 = ["src"];
+
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)();
+
+var _hoisted_19 = {
+  style: {
+    "color": "orange",
+    "text-shadow": "1em",
+    "text-decoration": "underline"
+  }
+};
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -169,23 +218,43 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(event_x.event_description), 1
     /* TEXT */
     )]), _hoisted_11, ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(event_x.settups, function (settupX, settupIndex) {
-      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("a", {
-        href: "/event-participants/to-students/" + settupX.id,
+      return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
+        onClick: function onClick($event) {
+          return $options.goToParticipants(settupX.id);
+        },
         "class": "alert alert-primary",
         style: {
           "margin-top": "3px",
-          "margin-bottom": "3px"
+          "margin-bottom": "3px",
+          "cursor": "pointer"
         },
         key: settupIndex,
         role: "alert"
-      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" padding-top: 3px;padding-bottom: 3px; "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(settupX.event_settup_title), 1
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("label", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(settupX.event_settup_title), 1
       /* TEXT */
-      ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"progress\" style=\"height:15px;\">\r\n                                    <div class=\"progress-bar\" role=\"progressbar\" style=\"width: 25%;\" aria-valuenow=\"25\" aria-valuemin=\"0\" aria-valuemax=\"100\">25%</div>\r\n                                </div> ")], 8
+      ), _hoisted_14, (settupX.winner != null ? true : false) ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+        key: 0
+      }, [_hoisted_15, _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+        src: "/storage/".concat(settupX.winner.participants_profile),
+        "class": "w-2r bdrs-50p",
+        style: {
+          "border": "1.5px solid green"
+        },
+        height: 30,
+        width: 20,
+        alt: "..."
+      }, null, 8
+      /* PROPS */
+      , _hoisted_17), _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", _hoisted_19, " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(settupX.winner.participants_name) + " ", 1
+      /* TEXT */
+      )], 64
+      /* STABLE_FRAGMENT */
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8
       /* PROPS */
       , _hoisted_12);
     }), 128
     /* KEYED_FRAGMENT */
-    ))])], 8
+    )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a :href=\"`/students/to-students/`+settupX.id\" class=\"alert alert-primary\" style=\"margin-top:3px; margin-bottom: 3px;\" v-for=\"(settupX,settupIndex) in event_x.settups\" :key=\"settupIndex\" role=\"alert\">\r\n                              \r\n                                <label style=\"padding-top:7px !important;font-weight: bold;\">{{settupX.event_settup_title}}</label><img class=\"w-2r bdrs-50p pull-right\" src=\"http://127.0.0.1:8000/storage/profile/default/photo.png\" alt=\"\">\r\n                                <template v-if=\"settupX.winner != null ? true:false\" style=\"\">\r\n                                    <br><b><small>\r\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" fill=\"currentColor\" class=\"bi bi-bookmark-star text-success\" viewBox=\"0 0 16 16\">\r\n                                            <path d=\"M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z\"/>\r\n                                            <path d=\"M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z\"/>\r\n                                        </svg>\r\n                                    </small></b><img  :src=\"`/storage/${settupX.winner.participants_profile}`\"  class=\"w-2r bdrs-50p\" style=\"border: 1.5px solid green;\" :height=\"30\" :width=\"20\"  alt=\"...\"> <small style=\"color:orange;text-shadow: 1em;text-decoration: underline;\">&nbsp;{{settupX.winner.participants_name}}&nbsp;</small>\r\n                                </template>\r\n                            </a> ")])], 8
     /* PROPS */
     , _hoisted_7)])]);
   }), 128

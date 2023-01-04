@@ -2,7 +2,7 @@
     <div class="header navbar">
         <div class="header-container">
             <ul class="nav-left">
-                <li>
+                <li v-if="$page.props.auth.user.role == 'Admin'">
                     <a
                         id="sidebar-toggle"
                         class="sidebar-toggle"

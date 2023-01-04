@@ -102,12 +102,6 @@ __webpack_require__.r(__webpack_exports__);
       var file = e.target.files[0];
       this.url = URL.createObjectURL(file);
     },
-    //    getGasolineStations() {
-    //        axios.post('/travels/gasoline-station')
-    //            .then((response) => {
-    //                this.stations = response.data;
-    //            });
-    //    },
     submit: function submit() {
       if (this.editData !== undefined) {
         this.form.patch("/event-header/" + this.form.id, this.form);

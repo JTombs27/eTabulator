@@ -1,5 +1,5 @@
 <template>
-    <div class="sidebar">
+    <div class="sidebar" >
         <div class="sidebar-inner">
             <!-- ### $Sidebar Header ### -->
             <div class="sidebar-logo">
@@ -112,7 +112,7 @@
                                 </svg>
                             </span><span class="title">&nbsp;Users</span></Link>
                         </li>
-                        <li>
+                        <!-- <li>
                             <Link class="sidebar-link" href="/employees" :class="{'active': $page.url.startsWith('/employees')}">
                                 <span class="icon-holder">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-universal-access-circle" viewBox="0 0 16 16">
@@ -120,7 +120,7 @@
                                     <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Z"/>
                                     </svg>
                             </span><span class="title">&nbsp;Registered Students</span></Link>
-                        </li>
+                        </li> -->
                     </ul>
                 </li>
             </ul>

@@ -7,16 +7,20 @@ use Illuminate\Support\Facades\Http;
 use App\Models;
 use App\Models\EventHeader;
 use App\Models\EventSetup;
+use App\Models\Voting;
+use App\Models\Participant;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 class StudentsController extends Controller
 {
-    public function __construct(User $model,EventHeader $eventHeader)
+    public function __construct(Participant $model,EventHeader $eventHeader, Voting $voting)
     {
-        $this->model = $model;
-        $this->events = $eventHeader;
+        $this->model    = $model;
+        $this->events   = $eventHeader;
+        $this->vote     = $voting;
     }
 
     protected function resourceAbilityMap()
@@ -35,7 +39,7 @@ class StudentsController extends Controller
     public function index(Request $request)
     {
         $events = $this->events
-                        ->with('event_settup')
+                        ->with(['event_settup','event_settup.winner'])
                         ->orderBy('event_from', 'DESC')
                         ->get()
                         ->map(fn($event) => [
@@ -43,6 +47,7 @@ class StudentsController extends Controller
                             'event_title' => $event->event_title,
                             'event_description' => $event->event_description,
                             'settups'=> $event->event_settup
+                           
                         ]);
         return inertia('Students/Index', [
             //returns an array of users with name field only
@@ -53,5 +58,97 @@ class StudentsController extends Controller
                 
             ],
         ]);
+    }
+
+    public function vote(Request $request)
+    {
+        DB::beginTransaction();
+        $already_voted = $this->vote
+        ->where('settup_id',$request->settup_id)
+        ->where('user_id' ,auth()->user()->id)
+        ->first();
+        $msg = "";
+        try {
+           
+            if(!$already_voted)
+            {
+                $inserted_data = $this->vote->create([
+                    'settup_id'             => $request->settup_id,
+                    'participants_id'       => $request->participants_id,
+                    'user_id'               => auth()->user()->id,
+                    'criterria_id'          => 0,
+                    'vote_datetime_cast'    => Carbon::now()
+                ]);
+               
+                DB::commit();
+            }
+            else{
+                return redirect('/students/to-students/'.$request->settup_id)->with('error','Invalid vote, Already voted!');
+            }
+          
+           
+        } catch (\Exception $e) 
+        {
+            DB::rollback();
+            return redirect('/students/to-students/'.$request->settup_id)->with('error','nag error ang program');
+        }
+        return redirect('/students/to-students/'.$request->settup_id)->with('message', "Successfully voted!");
+    }
+
+    public function voteSummary(Request $request)
+    {
+        $summary = $this->model
+                    ->leftJoin('voting_tbl', 'voting_tbl.participants_id', '=','participants.id')
+                    ->select(DB::raw("participants.participants_name as participants_name,
+                     participants.participants_profile,
+                     participants.id as participants_id,
+                     voting_tbl.settup_id as settup_id"))
+                    ->where('participants.settup_id',$request->settup_id)
+                    ->groupBy('voting_tbl.participants_id')
+                    ->get()
+                    ->map(function($item) use($request)
+                    {
+                        return
+                        [
+                            "participants_name" => $item->participants_name,
+                            "participants_photo"=> $item->participants_profile,
+                            "participants_id"   => $item->participants_id,
+                            "vote_count"        =>count($this->vote->where("settup_id",$request->settup_id)->where("participants_id",$item->participants_id)->get())
+                        ];
+                    })
+                    ;
+        //dd($summary->values());
+        return collect($summary)->sortByDesc("vote_count")->values();
+    }
+
+    public function getEventParticipants(Request $request)
+    {
+            $this->settup_id = $request->settup_id;
+
+            $event = $this->events
+                    ->with('event_settup')
+                    ->whereHas('event_settup',function($q)
+                    {
+                            $q->where('id',$this->settup_id);
+                    })
+                    ->orderBy('event_from', 'DESC')
+                    ->first();
+            $server_date = Carbon::now()->format('Y-m-d');
+          
+            $participants = $this->model
+                    ->where('settup_id',$this->settup_id)
+                    ->orderBy('id', 'ASC')
+                    ->get();
+            
+            return inertia('Students/ParticipantsIndex'
+                    ,[
+                        'events'        => $event,
+                        'participants'  => $participants,
+                        'username'      => auth()->user()->username,
+                        'settup_id'     => $this->settup_id,
+                        'users'         =>[],
+                        'canVote'       => ($this->vote->where('settup_id',$this->settup_id)->where('user_id',auth()->user()->id)->exists() == false && Carbon::parse($server_date)->between($event->event_from,$event->event_to) == true ) ? true:false
+                    ]
+                );
     }
 }

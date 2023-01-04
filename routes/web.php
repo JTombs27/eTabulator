@@ -51,13 +51,17 @@ Route::middleware('auth')->group(function() {
 
     Route::prefix('/event-participants')->group(function() {
         Route::get('',[EventParticipantsController::class, 'index']);//->can('canCreateProject', 'App\Model\User');
-        Route::get('/to-students/{settup_id}',[EventParticipantsController::class, 'getEventParticipants']);
+        Route::get('/create',[EventParticipantsController::class, 'create']);
+        Route::post('/create-participant',[EventParticipantsController::class, 'store']);
+       
         
     });
 
     Route::prefix('/students')->group(function() {
         Route::get('/',[StudentsController::class, 'index']);//->can('canCreateProject', 'App\Model\User');
-        
+        Route::post('/cast-vote',[StudentsController::class, 'vote']);
+        Route::get('/get-summary/{settup_id}',[StudentsController::class, 'voteSummary']);
+        Route::get('/to-students/{settup_id}',[StudentsController::class, 'getEventParticipants']);
     });
 
     

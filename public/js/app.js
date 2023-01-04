@@ -488,32 +488,66 @@ var _hoisted_1 = {
 var _hoisted_2 = {
   "class": "header-container"
 };
-
-var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<ul class=\"nav-left\"><li><a id=\"sidebar-toggle\" class=\"sidebar-toggle\" href=\"javascript:void(0);\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"black\" class=\"bi bi-list\" viewBox=\"0 0 16 16\"><path fill-rule=\"evenodd\" d=\"M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z\"></path></svg></a></li><li class=\"search-input\"><input class=\"form-control\" type=\"text\" placeholder=\"Search...\"></li></ul>", 1);
-
+var _hoisted_3 = {
+  "class": "nav-left"
+};
 var _hoisted_4 = {
+  key: 0
+};
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  id: "sidebar-toggle",
+  "class": "sidebar-toggle",
+  href: "javascript:void(0);"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "20",
+  height: "20",
+  fill: "black",
+  "class": "bi bi-list",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  "fill-rule": "evenodd",
+  d: "M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
+})])], -1
+/* HOISTED */
+);
+
+var _hoisted_6 = [_hoisted_5];
+
+var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+  "class": "search-input"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  "class": "form-control",
+  type: "text",
+  placeholder: "Search..."
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_8 = {
   "class": "nav-right"
 };
-var _hoisted_5 = {
+var _hoisted_9 = {
   "class": "dropdown"
 };
-var _hoisted_6 = {
+var _hoisted_10 = {
   href: "",
   "class": "dropdown-toggle no-after peers fxw-nw ai-c lh-1",
   "data-bs-toggle": "dropdown"
 };
-var _hoisted_7 = {
+var _hoisted_11 = {
   "class": "peer mR-10"
 };
-var _hoisted_8 = ["src"];
-var _hoisted_9 = {
+var _hoisted_12 = ["src"];
+var _hoisted_13 = {
   "class": "peer"
 };
-var _hoisted_10 = {
+var _hoisted_14 = {
   "class": "fsz-sm c-grey-900"
 };
 
-var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "12",
   height: "12",
@@ -526,11 +560,11 @@ var _hoisted_11 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_12 = {
+var _hoisted_16 = {
   "class": "dropdown-menu fsz-sm dropdown-menu-c"
 };
 
-var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "14",
   height: "14",
@@ -544,11 +578,11 @@ var _hoisted_13 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_14 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Setting", -1
+var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Setting", -1
 /* HOISTED */
 );
 
-var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "14",
   height: "14",
@@ -563,18 +597,18 @@ var _hoisted_15 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_16 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Change Password", -1
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Change Password", -1
 /* HOISTED */
 );
 
-var _hoisted_17 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", {
   role: "separator",
   "class": "divider"
 }, null, -1
 /* HOISTED */
 );
 
-var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
   xmlns: "http://www.w3.org/2000/svg",
   width: "14",
   height: "14",
@@ -591,27 +625,27 @@ var _hoisted_18 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Logout", -1
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, " Logout", -1
 /* HOISTED */
 );
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"notifications dropdown\">\r\n                    <span class=\"counter bgc-blue\">3</span>\r\n                    <a\r\n                        href=\"\"\r\n                        class=\"dropdown-toggle no-after\"\r\n                        data-bs-toggle=\"dropdown\"\r\n                        ><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-bell\" viewBox=\"0 0 16 16\">\r\n                      <path d=\"M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z\"/>\r\n                    </svg></a>\r\n                    <ul class=\"dropdown-menu\">\r\n                        <li class=\"pX-20 pY-15 bdB\">\r\n                            <i class=\"ti-email pR-10\"></i>\r\n                            <span class=\"fsz-sm fw-600 c-grey-900\"\r\n                                >Emails</span\r\n                            >\r\n                        </li>\r\n                        <li>\r\n                            <ul\r\n                                class=\"\r\n                                    ovY-a\r\n                                    pos-r\r\n                                    scrollable\r\n                                    lis-n\r\n                                    p-0\r\n                                    m-0\r\n                                    fsz-sm\r\n                                \"\r\n                            >\r\n                                <li>\r\n                                    <a\r\n                                        href=\"\"\r\n                                        class=\"\r\n                                            peers\r\n                                            fxw-nw\r\n                                            td-n\r\n                                            p-20\r\n                                            bdB\r\n                                            c-grey-800\r\n                                            cH-blue\r\n                                            bgcH-grey-100\r\n                                        \"\r\n                                        ><div class=\"peer mR-15\">\r\n                                            <img\r\n                                                class=\"w-3r bdrs-50p\"\r\n                                                src=\"https://randomuser.me/api/portraits/men/1.jpg\"\r\n                                                alt=\"\"\r\n                                            />\r\n                                        </div>\r\n                                        <div class=\"peer peer-greed\">\r\n                                            <div>\r\n                                                <div\r\n                                                    class=\"\r\n                                                        peers\r\n                                                        jc-sb\r\n                                                        fxw-nw\r\n                                                        mB-5\r\n                                                    \"\r\n                                                >\r\n                                                    <div class=\"peer\">\r\n                                                        <p\r\n                                                            class=\"\r\n                                                                fw-500\r\n                                                                mB-0\r\n                                                            \"\r\n                                                        >\r\n                                                            John Doe\r\n                                                        </p>\r\n                                                    </div>\r\n                                                    <div class=\"peer\">\r\n                                                        <small\r\n                                                            class=\"\r\n                                                                fsz-xs\r\n                                                            \"\r\n                                                            >5 mins\r\n                                                            ago</small\r\n                                                        >\r\n                                                    </div>\r\n                                                </div>\r\n                                                <span\r\n                                                    class=\"\r\n                                                        c-grey-600\r\n                                                        fsz-sm\r\n                                                    \"\r\n                                                    >Want to create your\r\n                                                    own customized data\r\n                                                    generator for your\r\n                                                    app...</span\r\n                                                >\r\n                                            </div>\r\n                                        </div></a\r\n                                    >\r\n                                </li>\r\n                                <li>\r\n                                    <a\r\n                                        href=\"\"\r\n                                        class=\"\r\n                                            peers\r\n                                            fxw-nw\r\n                                            td-n\r\n                                            p-20\r\n                                            bdB\r\n                                            c-grey-800\r\n                                            cH-blue\r\n                                            bgcH-grey-100\r\n                                        \"\r\n                                        ><div class=\"peer mR-15\">\r\n                                            <img\r\n                                                class=\"w-3r bdrs-50p\"\r\n                                                src=\"https://randomuser.me/api/portraits/men/2.jpg\"\r\n                                                alt=\"\"\r\n                                            />\r\n                                        </div>\r\n                                        <div class=\"peer peer-greed\">\r\n                                            <div>\r\n                                                <div\r\n                                                    class=\"\r\n                                                        peers\r\n                                                        jc-sb\r\n                                                        fxw-nw\r\n                                                        mB-5\r\n                                                    \"\r\n                                                >\r\n                                                    <div class=\"peer\">\r\n                                                        <p\r\n                                                            class=\"\r\n                                                                fw-500\r\n                                                                mB-0\r\n                                                            \"\r\n                                                        >\r\n                                                            Moo Doe\r\n                                                        </p>\r\n                                                    </div>\r\n                                                    <div class=\"peer\">\r\n                                                        <small\r\n                                                            class=\"\r\n                                                                fsz-xs\r\n                                                            \"\r\n                                                            >15 mins\r\n                                                            ago</small\r\n                                                        >\r\n                                                    </div>\r\n                                                </div>\r\n                                                <span\r\n                                                    class=\"\r\n                                                        c-grey-600\r\n                                                        fsz-sm\r\n                                                    \"\r\n                                                    >Want to create your\r\n                                                    own customized data\r\n                                                    generator for your\r\n                                                    app...</span\r\n                                                >\r\n                                            </div>\r\n                                        </div></a\r\n                                    >\r\n                                </li>\r\n                                <li>\r\n                                    <a\r\n                                        href=\"\"\r\n                                        class=\"\r\n                                            peers\r\n                                            fxw-nw\r\n                                            td-n\r\n                                            p-20\r\n                                            bdB\r\n                                            c-grey-800\r\n                                            cH-blue\r\n                                            bgcH-grey-100\r\n                                        \"\r\n                                        ><div class=\"peer mR-15\">\r\n                                            <img\r\n                                                class=\"w-3r bdrs-50p\"\r\n                                                src=\"https://randomuser.me/api/portraits/men/3.jpg\"\r\n                                                alt=\"\"\r\n                                            />\r\n                                        </div>\r\n                                        <div class=\"peer peer-greed\">\r\n                                            <div>\r\n                                                <div\r\n                                                    class=\"\r\n                                                        peers\r\n                                                        jc-sb\r\n                                                        fxw-nw\r\n                                                        mB-5\r\n                                                    \"\r\n                                                >\r\n                                                    <div class=\"peer\">\r\n                                                        <p\r\n                                                            class=\"\r\n                                                                fw-500\r\n                                                                mB-0\r\n                                                            \"\r\n                                                        >\r\n                                                            Lee Doe\r\n                                                        </p>\r\n                                                    </div>\r\n                                                    <div class=\"peer\">\r\n                                                        <small\r\n                                                            class=\"\r\n                                                                fsz-xs\r\n                                                            \"\r\n                                                            >25 mins\r\n                                                            ago</small\r\n                                                        >\r\n                                                    </div>\r\n                                                </div>\r\n                                                <span\r\n                                                    class=\"\r\n                                                        c-grey-600\r\n                                                        fsz-sm\r\n                                                    \"\r\n                                                    >Want to create your\r\n                                                    own customized data\r\n                                                    generator for your\r\n                                                    app...</span\r\n                                                >\r\n                                            </div>\r\n                                        </div></a\r\n                                    >\r\n                                </li>\r\n                            </ul>\r\n                        </li>\r\n                        <li class=\"pX-20 pY-15 ta-c bdT\">\r\n                            <span\r\n                                ><a\r\n                                    href=\"email.html\"\r\n                                    class=\"\r\n                                        c-grey-600\r\n                                        cH-blue\r\n                                        fsz-sm\r\n                                        td-n\r\n                                    \"\r\n                                    >View All Email\r\n                                    <i\r\n                                        class=\"\r\n                                            fs-xs\r\n                                            ti-angle-right\r\n                                            mL-10\r\n                                        \"\r\n                                    ></i></a\r\n                            ></span>\r\n                        </li>\r\n                    </ul>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_3, [_ctx.$page.props.auth.user.role == 'Admin' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_4, _hoisted_6)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_7]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li class=\"notifications dropdown\">\r\n                    <span class=\"counter bgc-blue\">3</span>\r\n                    <a\r\n                        href=\"\"\r\n                        class=\"dropdown-toggle no-after\"\r\n                        data-bs-toggle=\"dropdown\"\r\n                        ><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" fill=\"currentColor\" class=\"bi bi-bell\" viewBox=\"0 0 16 16\">\r\n                      <path d=\"M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z\"/>\r\n                    </svg></a>\r\n                    <ul class=\"dropdown-menu\">\r\n                        <li class=\"pX-20 pY-15 bdB\">\r\n                            <i class=\"ti-email pR-10\"></i>\r\n                            <span class=\"fsz-sm fw-600 c-grey-900\"\r\n                                >Emails</span\r\n                            >\r\n                        </li>\r\n                        <li>\r\n                            <ul\r\n                                class=\"\r\n                                    ovY-a\r\n                                    pos-r\r\n                                    scrollable\r\n                                    lis-n\r\n                                    p-0\r\n                                    m-0\r\n                                    fsz-sm\r\n                                \"\r\n                            >\r\n                                <li>\r\n                                    <a\r\n                                        href=\"\"\r\n                                        class=\"\r\n                                            peers\r\n                                            fxw-nw\r\n                                            td-n\r\n                                            p-20\r\n                                            bdB\r\n                                            c-grey-800\r\n                                            cH-blue\r\n                                            bgcH-grey-100\r\n                                        \"\r\n                                        ><div class=\"peer mR-15\">\r\n                                            <img\r\n                                                class=\"w-3r bdrs-50p\"\r\n                                                src=\"https://randomuser.me/api/portraits/men/1.jpg\"\r\n                                                alt=\"\"\r\n                                            />\r\n                                        </div>\r\n                                        <div class=\"peer peer-greed\">\r\n                                            <div>\r\n                                                <div\r\n                                                    class=\"\r\n                                                        peers\r\n                                                        jc-sb\r\n                                                        fxw-nw\r\n                                                        mB-5\r\n                                                    \"\r\n                                                >\r\n                                                    <div class=\"peer\">\r\n                                                        <p\r\n                                                            class=\"\r\n                                                                fw-500\r\n                                                                mB-0\r\n                                                            \"\r\n                                                        >\r\n                                                            John Doe\r\n                                                        </p>\r\n                                                    </div>\r\n                                                    <div class=\"peer\">\r\n                                                        <small\r\n                                                            class=\"\r\n                                                                fsz-xs\r\n                                                            \"\r\n                                                            >5 mins\r\n                                                            ago</small\r\n                                                        >\r\n                                                    </div>\r\n                                                </div>\r\n                                                <span\r\n                                                    class=\"\r\n                                                        c-grey-600\r\n                                                        fsz-sm\r\n                                                    \"\r\n                                                    >Want to create your\r\n                                                    own customized data\r\n                                                    generator for your\r\n                                                    app...</span\r\n                                                >\r\n                                            </div>\r\n                                        </div></a\r\n                                    >\r\n                                </li>\r\n                                <li>\r\n                                    <a\r\n                                        href=\"\"\r\n                                        class=\"\r\n                                            peers\r\n                                            fxw-nw\r\n                                            td-n\r\n                                            p-20\r\n                                            bdB\r\n                                            c-grey-800\r\n                                            cH-blue\r\n                                            bgcH-grey-100\r\n                                        \"\r\n                                        ><div class=\"peer mR-15\">\r\n                                            <img\r\n                                                class=\"w-3r bdrs-50p\"\r\n                                                src=\"https://randomuser.me/api/portraits/men/2.jpg\"\r\n                                                alt=\"\"\r\n                                            />\r\n                                        </div>\r\n                                        <div class=\"peer peer-greed\">\r\n                                            <div>\r\n                                                <div\r\n                                                    class=\"\r\n                                                        peers\r\n                                                        jc-sb\r\n                                                        fxw-nw\r\n                                                        mB-5\r\n                                                    \"\r\n                                                >\r\n                                                    <div class=\"peer\">\r\n                                                        <p\r\n                                                            class=\"\r\n                                                                fw-500\r\n                                                                mB-0\r\n                                                            \"\r\n                                                        >\r\n                                                            Moo Doe\r\n                                                        </p>\r\n                                                    </div>\r\n                                                    <div class=\"peer\">\r\n                                                        <small\r\n                                                            class=\"\r\n                                                                fsz-xs\r\n                                                            \"\r\n                                                            >15 mins\r\n                                                            ago</small\r\n                                                        >\r\n                                                    </div>\r\n                                                </div>\r\n                                                <span\r\n                                                    class=\"\r\n                                                        c-grey-600\r\n                                                        fsz-sm\r\n                                                    \"\r\n                                                    >Want to create your\r\n                                                    own customized data\r\n                                                    generator for your\r\n                                                    app...</span\r\n                                                >\r\n                                            </div>\r\n                                        </div></a\r\n                                    >\r\n                                </li>\r\n                                <li>\r\n                                    <a\r\n                                        href=\"\"\r\n                                        class=\"\r\n                                            peers\r\n                                            fxw-nw\r\n                                            td-n\r\n                                            p-20\r\n                                            bdB\r\n                                            c-grey-800\r\n                                            cH-blue\r\n                                            bgcH-grey-100\r\n                                        \"\r\n                                        ><div class=\"peer mR-15\">\r\n                                            <img\r\n                                                class=\"w-3r bdrs-50p\"\r\n                                                src=\"https://randomuser.me/api/portraits/men/3.jpg\"\r\n                                                alt=\"\"\r\n                                            />\r\n                                        </div>\r\n                                        <div class=\"peer peer-greed\">\r\n                                            <div>\r\n                                                <div\r\n                                                    class=\"\r\n                                                        peers\r\n                                                        jc-sb\r\n                                                        fxw-nw\r\n                                                        mB-5\r\n                                                    \"\r\n                                                >\r\n                                                    <div class=\"peer\">\r\n                                                        <p\r\n                                                            class=\"\r\n                                                                fw-500\r\n                                                                mB-0\r\n                                                            \"\r\n                                                        >\r\n                                                            Lee Doe\r\n                                                        </p>\r\n                                                    </div>\r\n                                                    <div class=\"peer\">\r\n                                                        <small\r\n                                                            class=\"\r\n                                                                fsz-xs\r\n                                                            \"\r\n                                                            >25 mins\r\n                                                            ago</small\r\n                                                        >\r\n                                                    </div>\r\n                                                </div>\r\n                                                <span\r\n                                                    class=\"\r\n                                                        c-grey-600\r\n                                                        fsz-sm\r\n                                                    \"\r\n                                                    >Want to create your\r\n                                                    own customized data\r\n                                                    generator for your\r\n                                                    app...</span\r\n                                                >\r\n                                            </div>\r\n                                        </div></a\r\n                                    >\r\n                                </li>\r\n                            </ul>\r\n                        </li>\r\n                        <li class=\"pX-20 pY-15 ta-c bdT\">\r\n                            <span\r\n                                ><a\r\n                                    href=\"email.html\"\r\n                                    class=\"\r\n                                        c-grey-600\r\n                                        cH-blue\r\n                                        fsz-sm\r\n                                        td-n\r\n                                    \"\r\n                                    >View All Email\r\n                                    <i\r\n                                        class=\"\r\n                                            fs-xs\r\n                                            ti-angle-right\r\n                                            mL-10\r\n                                        \"\r\n                                    ></i></a\r\n                            ></span>\r\n                        </li>\r\n                    </ul>\r\n                </li> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", _hoisted_10, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("img", {
     "class": "w-2r bdrs-50p",
     src: _ctx.$page.props.auth.user.photo,
     alt: ""
   }, null, 8
   /* PROPS */
-  , _hoisted_8)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_9, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.auth.user.username), 1
+  , _hoisted_12)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.$page.props.auth.user.username), 1
   /* TEXT */
-  )]), _hoisted_11]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  )]), _hoisted_15]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", _hoisted_16, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     href: "/users/settings",
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_13, _hoisted_14];
+      return [_hoisted_17, _hoisted_18];
     }),
     _: 1
     /* STABLE */
@@ -621,18 +655,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_15, _hoisted_16];
+      return [_hoisted_19, _hoisted_20];
     }),
     _: 1
     /* STABLE */
 
-  })]), _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+  })]), _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     method: "POST",
     href: "/logout",
     "class": "d-b td-n pY-5 bgcH-grey-100 c-grey-700"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_18, _hoisted_19];
+      return [_hoisted_22, _hoisted_23];
     }),
     _: 1
     /* STABLE */
@@ -902,29 +936,6 @@ var _hoisted_24 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElement
 /* HOISTED */
 );
 
-var _hoisted_25 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "icon-holder"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
-  xmlns: "http://www.w3.org/2000/svg",
-  width: "20",
-  height: "20",
-  fill: "currentColor",
-  "class": "bi bi-universal-access-circle",
-  viewBox: "0 0 16 16"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
-  d: "M8 4.143A1.071 1.071 0 1 0 8 2a1.071 1.071 0 0 0 0 2.143Zm-4.668 1.47 3.24.316v2.5l-.323 4.585A.383.383 0 0 0 7 13.14l.826-4.017c.045-.18.301-.18.346 0L9 13.139a.383.383 0 0 0 .752-.125L9.43 8.43v-2.5l3.239-.316a.38.38 0 0 0-.047-.756H3.379a.38.38 0 0 0-.047.756Z"
-}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
-  d: "M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Z"
-})])], -1
-/* HOISTED */
-);
-
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "title"
-}, " Registered Students", -1
-/* HOISTED */
-);
-
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
 
@@ -1012,21 +1023,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   }, 8
   /* PROPS */
-  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
-    "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url.startsWith('/employees')
-    }]),
-    href: "/employees"
-  }, {
-    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [_hoisted_25, _hoisted_26];
-    }),
-    _: 1
-    /* STABLE */
-
-  }, 8
-  /* PROPS */
-  , ["class"])])])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
+  , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <li>\r\n                            <Link class=\"sidebar-link\" href=\"/employees\" :class=\"{'active': $page.url.startsWith('/employees')}\">\r\n                                <span class=\"icon-holder\">\r\n                                    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" fill=\"currentColor\" class=\"bi bi-universal-access-circle\" viewBox=\"0 0 16 16\">\r\n                                    <path d=\"M8 4.143A1.071 1.071 0 1 0 8 2a1.071 1.071 0 0 0 0 2.143Zm-4.668 1.47 3.24.316v2.5l-.323 4.585A.383.383 0 0 0 7 13.14l.826-4.017c.045-.18.301-.18.346 0L9 13.139a.383.383 0 0 0 .752-.125L9.43 8.43v-2.5l3.239-.316a.38.38 0 0 0-.047-.756H3.379a.38.38 0 0 0-.047.756Z\"/>\r\n                                    <path d=\"M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0ZM1 8a7 7 0 1 1 14 0A7 7 0 0 1 1 8Z\"/>\r\n                                    </svg>\r\n                            </span><span class=\"title\">&nbsp;Registered Students</span></Link>\r\n                        </li> ")])])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]);
 }
 
 /***/ }),
@@ -1774,6 +1771,16 @@ var map = {
 	"./EventHeader/Index.vue": [
 		"./resources/js/Pages/EventHeader/Index.vue",
 		"resources_js_Pages_EventHeader_Index_vue"
+	],
+	"./EventParticipants/Create": [
+		"./resources/js/Pages/EventParticipants/Create.vue",
+		"/js/vendor",
+		"resources_js_Pages_EventParticipants_Create_vue"
+	],
+	"./EventParticipants/Create.vue": [
+		"./resources/js/Pages/EventParticipants/Create.vue",
+		"/js/vendor",
+		"resources_js_Pages_EventParticipants_Create_vue"
 	],
 	"./EventParticipants/Index": [
 		"./resources/js/Pages/EventParticipants/Index.vue",

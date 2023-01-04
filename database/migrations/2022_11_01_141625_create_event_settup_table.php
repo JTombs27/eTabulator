@@ -17,6 +17,7 @@ class CreateEventSettupTable extends Migration
             $table->id();
             $table->integer('event_id');
             $table->string('event_settup_title');
+            $table->integer('participants_id');
             $table->string('event_settup_requirement');
             $table->boolean('event_settup_withpannel');
             $table->boolean('event_settup_withaudience');
