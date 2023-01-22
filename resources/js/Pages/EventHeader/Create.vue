@@ -29,27 +29,27 @@
                         <div class="col-md-6 mT-5">
                             <label for="">Event From:</label>
                             <input type="date" v-model="form.event_from" class="form-control" autocomplete="chrome-off">
-                            <div class="fs-6 c-red-500" v-if="form.errors.event_description">{{ form.errors.event_description }}</div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.event_from">{{ form.errors.event_from }}</div>
                         </div>
                         <div class="col-md-6 mT-5">
                             <label for="">Event To:</label>
                             <input type="date" v-model="form.event_to" class="form-control" autocomplete="chrome-off">
-                            <div class="fs-6 c-red-500" v-if="form.errors.event_from">{{ form.errors.event_from }}</div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.event_to">{{ form.errors.event_to }}</div>
                         </div>
                         <div class="col-md-12 mT-5">
                             <label for="">Event Description</label>
                             <textarea type="text" @input="displayContent" v-model="form.event_description" class="form-control" autocomplete="chrome-off"></textarea>
                            
-                            <div class="fs-6 c-red-500" v-if="form.errors.event_to">{{ form.errors.event_to }}</div>
+                            <div class="fs-6 c-red-500" v-if="form.errors.event_description">{{ form.errors.event_description }}</div>
                         </div>
-                        <div class="col-md-12 mT-5">
+                        <div class="col-md-12 mT-5" v-if="false">
                             <label for="">Event Background Image</label>
                             <input type="file" @change="onFileChange" @input="form.background_image = $event.target.files[0]" class="form-control" autocomplete="chrome-off">
                             <div class="fs-6 c-red-500" v-if="form.errors.background_image">{{ form.errors.background_image }}</div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <!-- <div class="col-md-4">
                     <div class="row">
                         <div class="col-md-12 p-10 ">
                             <div class="col-md-12 p-10" :style="'background-image:url('+url+'); background-size:100% 100%'">
@@ -59,9 +59,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 
-                <div class="col-md-12 text-end">
+                <div class="col-md-8 text-end">
                     <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
                     <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
                         changes</button>
@@ -108,54 +108,22 @@ export default {
         StarterKit,
       ],
     })
-    //    if (this.editData !== undefined) {
-    //        this.loading = true
-    //        this.pageTitle = "Edit"
-    //        this.form.name = this.editData.name
-    //        this.form.username = this.editData.username
-    //        this.form.email = this.editData.email
-    //        this.form.id = this.editData.id
-    //        this.form.gasoline_id = this.editData.gasoline_id
-    //        this.form.cats = this.editData.cats
-    //        this.form.office_id = this.editData.office_id
-    //        this.form.permission = this.editData.role
-    //        if (this.editData.office_id) {
-    //            $('#office').select2({
-    //                data:[{text: this.editData.office.office, id:this.editData.office_id}],
-    //            })
-    //        }
-    //    } else {
-    //        this.pageTitle = "Create"
-    //    }
-    //    $('#office').select2({
-    //        ajax: {
-    //            url: '/offices/fetch',
-    //            dataType:'json',
-    //            delay:500,
-    //            data: function(filter) {
-    //                return {filter:filter.term};
-    //            },
-    //            processResults: function(data, params) {
-    //                params.page = params.page || 1;
-
-    //                return{
-    //                    results: $.map(data, function(obj) {
-    //                        return {
-    //                            id: obj.id,
-    //                            text: obj.text,
-    //                            office: obj.office
-    //                        }
-    //                    })
-    //                };
-    //            },
-    //            cache: true
-    //        },
-    //        placeholder: 'Search for an office',
-    //        minimumInputLength: 2,
-    //        templateResult:this.formatOfficeSelection,
-    //        templateSelection:this.formatOffice
-    //    })
-       // this.loadOffices();
+       if (this.editData !== undefined) 
+       {
+           this.loading = true
+            this.form.id                    = this.editData.id
+            this.form.event_title           = this.editData.event_title
+            this.form.event_description     = this.editData.event_description
+            this.form.event_from            = this.editData.event_from
+            this.form.event_to              = this.editData.event_to
+            this.form.background_image      = this.editData.background_image
+            this.url                        =  "../"+this.form.background_image
+            this.pageTitle                  = "Edit"
+        }
+        else {
+           this.pageTitle = "Create"
+       }
+   
    },
    beforeUnmount() {
     this.editor.destroy()
@@ -169,10 +137,10 @@ export default {
        },
        submit() {
 
-           if (this.editData !== undefined) {
-               this.form.patch("/event-header/" + this.form.id, this.form);
+           if (this.editData !== undefined) 
+           {
+               this.form.post("/event-header/update", this.form);
            } else {
-              //this.form.background_image = "";
                this.form.post("/event-header/create-event", this.form);
            }
 

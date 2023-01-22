@@ -69,7 +69,7 @@
                     </Link>
                 </li>
                 <li class="nav-item">
-                    <Link class="sidebar-link" href="/prices" :class="{'active': $page.url.startsWith('/prices')}">
+                    <Link class="sidebar-link" href="/panel" :class="{'active': $page.url.startsWith('/panel')}">
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-video2" viewBox="0 0 16 16">
                             <path d="M10 9.05a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
@@ -80,7 +80,7 @@
                     </Link>
                 </li>
                 <li class="nav-item"  v-if="$page.props.auth.user.role == 'RO' || $page.props.auth.user.role == 'Admin' || $page.props.auth.user.role == 'PGO' || $page.props.auth.user.role == 'PG-Head'">
-                    <Link class="sidebar-link" href="/charges" :class="{'active': $page.url.startsWith('/charges')}">
+                    <Link class="sidebar-link" href="/criteria" :class="{'active': $page.url.startsWith('/criteria')}">
                         <span class="icon-holder">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-spreadsheet" viewBox="0 0 16 16">
                             <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v4h10V2a1 1 0 0 0-1-1H4zm9 6h-3v2h3V7zm0 3h-3v2h3v-2zm0 3h-3v2h2a1 1 0 0 0 1-1v-1zm-4 2v-2H6v2h3zm-4 0v-2H3v1a1 1 0 0 0 1 1h1zm-2-3h2v-2H3v2zm0-3h2V7H3v2zm3-2v2h3V7H6zm3 3H6v2h3v-2z"/>

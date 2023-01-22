@@ -139,7 +139,8 @@ class StudentsController extends Controller
                     ->where('settup_id',$this->settup_id)
                     ->orderBy('id', 'ASC')
                     ->get();
-            
+            //dd('Server Date:'.$server_date.' -> between('.$event->event_from.','.$event->event_to.')');
+            //dd(Carbon::parse($server_date)->between($event->event_from,$event->event_to));
             return inertia('Students/ParticipantsIndex'
                     ,[
                         'events'        => $event,

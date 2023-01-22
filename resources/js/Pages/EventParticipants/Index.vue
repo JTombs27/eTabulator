@@ -32,7 +32,7 @@
                             <label class="col-form-label"><b>Setup:</b></label>
                         </div>
                         <div class="col-md-5">
-                            <Select2 v-model="filterData.settup_id" :options="settupEvent" :settings="{templateResult:categoriesResults, templateSelection:categorySelection}" @select="runFilter($event)" />
+                            <Select2 id="settup_select" class="js-data-example-ajax" v-model="filterData.settup_id" :options="settupEvent" :settings="{templateResult:categoriesResults, templateSelection:categorySelection}" @select="runFilter($event)" />
                         </div>
                         <div class="col-md-1 text-end">
                             <button type="button" class="btn btn-outline-primary c-blue-500 cH-white" @click="createClick">
@@ -48,14 +48,6 @@
         <div class="col-12">
             <div class="tabl-responsive bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover table table-bordered">
-                    <!-- <thead class="table-dark">
-                        <tr>
-                            <th width="10%" >Profile</th>
-                            <th width="40%" >Participants Name</th>
-                            <th width="40%" >Participants Details</th>
-                            <th width="10%" style="text-align: center">ACTION</th> 
-                        </tr>
-                    </thead> -->
                     <tbody>
                         <tr v-for="(eventX, index) in participants.data" :key="index">
                             <td>
@@ -111,7 +103,7 @@
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                                 </svg>
                                             </button>
-                                            <button type="button" class="btn btn-outline-danger btn-sm">
+                                            <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteEventSetup(eventX.id)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                 <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
@@ -166,7 +158,8 @@ export default {
             event_id                :"",
             form                    :useForm({
                                         event_id:"",
-                                        settup_id:""
+                                        settup_id:"",
+                                        id:""
                                     }),
             filterData              : {
                 event_id:this.filterDataX.event_id,
@@ -174,28 +167,51 @@ export default {
             },
         }
     },
-    async mounted()
+  mounted()
     {
-         this.filterData.event_id = this.filterDataX.event_id;
+        if(this.filterDataX.event_id)
+        {
+         
+            let vm                     = this;
+            var parX                   = _.find(this.event,function(o){return o.id ==vm.filterData.event_id});
+            this.filterData.event_id   = this.filterDataX.event_id;
+            this.filterData.settup_id  = this.filterDataX.settup_id;
+            var newData = [];
+            for(var x = 0; x < parX.settups.length;x++){
+                if(parX.settups[x].id == this.filterData.settup_id)
+                {
+                    newData.push({id:parX.settups[x].id,text:parX.settups[x].event_settup_title,event_settup_title:parX.settups[x].event_settup_title, selected: true});
+                }
+                else{
+                    newData.push({id:parX.settups[x].id,text:parX.settups[x].event_settup_title,event_settup_title:parX.settups[x].event_settup_title});
+                }
+            }
+
+            $('#settup_select').select2({
+                data:newData
+            });
+        }
+        
     },
     methods:
     {
 
-        deleteEventSetup(settup_id)
+        deleteEventSetup(par_id)
         {
-            const res = confirm("Are you sure to delete this setup?");
+            const res = confirm("Are you sure to delete this setup?"+par_id);
             if(res)
             {
-                this.form.event_id  = this.eventSetup.id;
-                this.form.settup_id = settup_id;
-                this.form.post("/event-setup/delete");
+                this.form.event_id  = this.filterData.event_id;
+                this.form.settup_id = this.filterData.settup_id;
+                this.form.id        = par_id;
+                this.form.post("/event-participants/delete");
             }
         },
 
         ddl_eventchange(event_params)
         {
-            this.filterData.settup_id = "";
-            this.settupEvent = event_params.settups;
+            this.settupEvent            = event_params.settups;
+            this.filterData.settup_id   = "";
             this.runFilter();
         },
 

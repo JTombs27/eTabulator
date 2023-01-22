@@ -46,53 +46,21 @@ __webpack_require__.r(__webpack_exports__);
     this.editor = new _tiptap_vue_3__WEBPACK_IMPORTED_MODULE_3__.Editor({
       content: '<p>I’m running Tiptap with Vue.js. 🎉</p>',
       extensions: [_tiptap_starter_kit__WEBPACK_IMPORTED_MODULE_2__["default"]]
-    }); //    if (this.editData !== undefined) {
-    //        this.loading = true
-    //        this.pageTitle = "Edit"
-    //        this.form.name = this.editData.name
-    //        this.form.username = this.editData.username
-    //        this.form.email = this.editData.email
-    //        this.form.id = this.editData.id
-    //        this.form.gasoline_id = this.editData.gasoline_id
-    //        this.form.cats = this.editData.cats
-    //        this.form.office_id = this.editData.office_id
-    //        this.form.permission = this.editData.role
-    //        if (this.editData.office_id) {
-    //            $('#office').select2({
-    //                data:[{text: this.editData.office.office, id:this.editData.office_id}],
-    //            })
-    //        }
-    //    } else {
-    //        this.pageTitle = "Create"
-    //    }
-    //    $('#office').select2({
-    //        ajax: {
-    //            url: '/offices/fetch',
-    //            dataType:'json',
-    //            delay:500,
-    //            data: function(filter) {
-    //                return {filter:filter.term};
-    //            },
-    //            processResults: function(data, params) {
-    //                params.page = params.page || 1;
-    //                return{
-    //                    results: $.map(data, function(obj) {
-    //                        return {
-    //                            id: obj.id,
-    //                            text: obj.text,
-    //                            office: obj.office
-    //                        }
-    //                    })
-    //                };
-    //            },
-    //            cache: true
-    //        },
-    //        placeholder: 'Search for an office',
-    //        minimumInputLength: 2,
-    //        templateResult:this.formatOfficeSelection,
-    //        templateSelection:this.formatOffice
-    //    })
-    // this.loadOffices();
+    });
+
+    if (this.editData !== undefined) {
+      this.loading = true;
+      this.form.id = this.editData.id;
+      this.form.event_title = this.editData.event_title;
+      this.form.event_description = this.editData.event_description;
+      this.form.event_from = this.editData.event_from;
+      this.form.event_to = this.editData.event_to;
+      this.form.background_image = this.editData.background_image;
+      this.url = "../" + this.form.background_image;
+      this.pageTitle = "Edit";
+    } else {
+      this.pageTitle = "Create";
+    }
   },
   beforeUnmount: function beforeUnmount() {
     this.editor.destroy();
@@ -104,9 +72,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     submit: function submit() {
       if (this.editData !== undefined) {
-        this.form.patch("/event-header/" + this.form.id, this.form);
+        this.form.post("/event-header/update", this.form);
       } else {
-        //this.form.background_image = "";
         this.form.post("/event-header/create-event", this.form);
       }
     }
@@ -235,6 +202,7 @@ var _hoisted_18 = {
   "class": "fs-6 c-red-500"
 };
 var _hoisted_19 = {
+  key: 0,
   "class": "col-md-12 mT-5"
 };
 
@@ -249,25 +217,13 @@ var _hoisted_21 = {
   "class": "fs-6 c-red-500"
 };
 var _hoisted_22 = {
-  "class": "col-md-4"
+  "class": "col-md-8 text-end"
 };
-var _hoisted_23 = {
-  "class": "row"
-};
-var _hoisted_24 = {
-  "class": "col-md-12 p-10"
-};
-var _hoisted_25 = ["innerHTML"];
-var _hoisted_26 = {
-  "class": "col-md-12 text-end"
-};
-var _hoisted_27 = ["disabled"];
+var _hoisted_23 = ["disabled"];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
   var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
-
-  var _component_editor_content = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("editor-content");
 
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Head, null, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
@@ -313,7 +269,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "chrome-off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.event_from]]), $data.form.errors.event_description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.event_description), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.event_from]]), $data.form.errors.event_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_12, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.event_from), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_13, [_hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "date",
@@ -324,7 +280,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "chrome-off"
   }, null, 512
   /* NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.event_to]]), $data.form.errors.event_from ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.event_from), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.event_to]]), $data.form.errors.event_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.event_to), 1
   /* TEXT */
   )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_16, [_hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
     type: "text",
@@ -338,38 +294,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     autocomplete: "chrome-off"
   }, null, 544
   /* HYDRATE_EVENTS, NEED_PATCH */
-  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.event_description]]), $data.form.errors.event_to ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.event_to), 1
+  ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.form.event_description]]), $data.form.errors.event_description ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.event_description), 1
   /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
-    type: "file",
-    onChange: _cache[5] || (_cache[5] = function () {
-      return $options.onFileChange && $options.onFileChange.apply($options, arguments);
-    }),
-    onInput: _cache[6] || (_cache[6] = function ($event) {
-      return $data.form.background_image = $event.target.files[0];
-    }),
-    "class": "form-control",
-    autocomplete: "chrome-off"
-  }, null, 32
-  /* HYDRATE_EVENTS */
-  ), $data.form.errors.background_image ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.errors.background_image), 1
-  /* TEXT */
-  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    "class": "col-md-12 p-10",
-    style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)('background-image:url(' + $data.url + '); background-size:100% 100%')
-  }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.form.event_title), 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-    innerHTML: $data.form.event_description
-  }, null, 8
-  /* PROPS */
-  , _hoisted_25), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_editor_content, {
-    editor: $data.editor
-  }, null, 8
-  /* PROPS */
-  , ["editor"])], 4
-  /* STYLE */
-  )])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_26, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]),  false ? (0) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <div class=\"col-md-4\">\r\n                    <div class=\"row\">\r\n                        <div class=\"col-md-12 p-10 \">\r\n                            <div class=\"col-md-12 p-10\" :style=\"'background-image:url('+url+'); background-size:100% 100%'\">\r\n                                <h3>{{form.event_title}}</h3>\r\n                                <div v-html=\"form.event_description\" ></div>\r\n                                <editor-content :editor=\"editor\" />\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
     type: "hidden",
     "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
       return $data.form.id = $event;
@@ -387,7 +314,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     disabled: $data.form.processing
   }, "Save changes", 8
   /* PROPS */
-  , _hoisted_27)])])], 32
+  , _hoisted_23)])])], 32
   /* HYDRATE_EVENTS */
   )])], 64
   /* STABLE_FRAGMENT */

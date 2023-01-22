@@ -43,14 +43,14 @@ class EventHeaderController extends Controller
                             ->simplePaginate(8)
                             ->withQueryString()
                             ->through(fn($event) => [
-                                'id' => $event->id,
-                                'event_title' => $event->event_title,
+                                'id'                => $event->id,
+                                'event_title'       => $event->event_title,
                                 'event_description' => $event->event_description,
-                                'event_from' => $event->event_from,
-                                'event_to' => $event->event_to,
-                                'background_image' => $event->background_image,
+                                'event_from'        => $event->event_from,
+                                'event_to'          => $event->event_to,
+                                'background_image'  => $event->background_image,
                                 "can" => [
-                                    'delete' => true
+                                    'delete' => ($this->setup->where('event_id',$event->id)->exists() == true ? false:true)
                                 ],
                             ])
             ,
@@ -68,9 +68,21 @@ class EventHeaderController extends Controller
         return inertia('EventHeader/Create');
     }
 
+    public function edit(Request $request)
+    {
+        $editData = $this->model->where('id',$request->id)->first();
+        return inertia('EventHeader/Create',[
+            'editData'=> $editData
+        ]);
+    }
+
     public function store(Request $request)
     {
-        //$attributes = $request->validated();
+        $request->validate(['event_title'=>'required',
+                            'event_description'=>'required',
+                            'event_from'=>'required|date',
+                            'event_to'=>'required|date|after_or_equal:event_from',
+                            ]);
         $filename  = "";
         if ($request->hasFile('background_image')) 
         {
@@ -101,6 +113,38 @@ class EventHeaderController extends Controller
         }
 
         return redirect('/event-header')->with('message', 'Event Successfully Created');
+    }
+
+
+    public function update(Request $request)
+    {
+        $request->validate(['event_title'=>'required',
+                            'event_description'=>'required',
+                            'event_from'=>'required|date',
+                            'event_to'=>'required|date|after_or_equal:event_from',
+                            ]);
+        //transactions are functions that are used when you want to CRUD multiple table simultaneously
+        //this will help rollback all changes if one of the table breaks which saves time to clean the mess
+        DB::beginTransaction();
+        try {
+            $data = $this->model->where('id','=',$request->id)->first();
+            $data->update([
+                'event_title'           => $request->event_title,
+                'event_description'     => $request->event_description,
+                'background_image'      => "",
+                'event_from'            => $request->event_from,
+                'event_to'              => $request->event_to
+            ]);
+           
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('/event-header')->with('error', $e);
+        }
+
+        return redirect('/event-header')->with('message', 'Event Successfully Updated');
     }
 
 
@@ -183,6 +227,33 @@ class EventHeaderController extends Controller
 
         return redirect('/event-setup/'.$request->event_id)->with('message', 'Setup Successfully
           deleted');
+    }
+
+    public function destroy(Request $request)
+    {
+        //dd( $request);
+        $data = $this->model->findOrFail($request->event_id);
+        $data->delete();
+
+        return redirect('/event-header')->with('message', 'Event Successfully deleted!');
+    }
+
+    public function generateWinner(Request $request)
+    {
+        //dd( $request);
+        try {
+            //code...
+            DB::select(
+
+                'CALL sp_generate_winner('.$request->event_id.')'
+         
+             );
+            
+            return redirect('/event-header')->with('message', 'Event Winners Successfully Generated!');
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+       
     }
 
 }

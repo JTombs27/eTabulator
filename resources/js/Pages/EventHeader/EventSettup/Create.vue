@@ -63,7 +63,7 @@
                                 <label class="form-check-label" for="event_settup_withpannel">With Panel</label>
                             </div>
                         </div>
-                        <div class="col-md-4 mT-10">
+                        <div class="col-md-4 mT-10" v-if="false">
                             <div class="form-check form-switch text-start">
                                 
                                 <input 

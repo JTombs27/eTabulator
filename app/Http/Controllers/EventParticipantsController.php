@@ -64,12 +64,13 @@ class EventParticipantsController extends Controller
                                          ->where('settup_id',$settup_id)
                                          ->simplePaginate(15)
                                          ->withQueryString()
-                                         ->through(fn($event) => [
-                                            'settup_id'            => $event->settup_id           ,
-                                            'participants_name'    => $event->participants_name   ,
-                                            'participants_address' => $event->participants_address,
-                                            'participants_details' => $event->participants_details,
-                                            'participants_profile' => $event->participants_profile,
+                                         ->through(fn($participant) => [
+                                            'id'                   => $participant->id,
+                                            'settup_id'            => $participant->settup_id           ,
+                                            'participants_name'    => $participant->participants_name   ,
+                                            'participants_address' => $participant->participants_address,
+                                            'participants_details' => $participant->participants_details,
+                                            'participants_profile' => $participant->participants_profile,
                                              "can" => [
                                                  'delete' => true
                                              ],
@@ -82,7 +83,7 @@ class EventParticipantsController extends Controller
                         ],
                         'filterDataX'=>[
                             'event_id' => $event_id ,
-                            'settup_id'=>$settup_id,
+                            'settup_id'=> $settup_id,
                         ]
                     ]
                 );
@@ -134,6 +135,15 @@ class EventParticipantsController extends Controller
             return redirect('/event-participants')->with('error', $e);
         }
 
-        return redirect('/event-participants')->with('message', 'Event Successfully Created');
+        return redirect('/event-participants?event_id='.$request->event_id.'&settup_id='.$request->settup_id)->with('message', 'Event Successfully Created');
+    }
+
+    public function destroy(Request $request)
+    {
+        $data = $this->model->findOrFail($request->id);
+        $data->delete();
+
+        return redirect('/event-participants?event_id='.$request->event_id.'&settup_id='.$request->settup_id)->with('message', 'Setup Successfully
+          deleted');
     }
 }

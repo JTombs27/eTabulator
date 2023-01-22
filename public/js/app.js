@@ -93,11 +93,17 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     modalTitle: String,
     addional_class: string_decoder__WEBPACK_IMPORTED_MODULE_0__.StringDecoder,
-    showSaveButton: Boolean
+    buttonTitle: String,
+    showBtn: Boolean
+  },
+  data: function data() {
+    return {
+      myModal: null
+    };
   },
   mounted: function mounted() {
-    var myModal = new window.bootstrap.Modal(document.getElementById('modal'));
-    myModal.show();
+    this.myModal = new window.bootstrap.Modal(document.getElementById('modal'));
+    this.myModal.show();
   },
   methods: {
     closeModal: function closeModal() {
@@ -426,12 +432,12 @@ var _hoisted_4 = {
   "class": "modal-title"
 };
 var _hoisted_5 = {
-  "class": "modal-body"
+  "class": "modal-body bgc-grey-100",
+  style: {
+    "padding": "0px 12px !important"
+  }
 };
 var _hoisted_6 = {
-  "class": "row"
-};
-var _hoisted_7 = {
   "class": "modal-footer"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -447,22 +453,23 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onClick: _cache[0] || (_cache[0] = function () {
       return $options.closeModal && $options.closeModal.apply($options, arguments);
     })
-  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
+  })]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     type: "button",
     "class": "btn btn-secondary",
     "data-bs-dismiss": "modal",
     onClick: _cache[1] || (_cache[1] = function () {
       return $options.closeModal && $options.closeModal.apply($options, arguments);
     })
-  }, "Close"), $props.showSaveButton ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
+  }, "Close"), $props.showBtn ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("button", {
     key: 0,
     type: "button",
     "class": "btn btn-primary",
-    id: "btn-save",
     onClick: _cache[2] || (_cache[2] = function () {
       return $options.saveModal && $options.saveModal.apply($options, arguments);
     })
-  }, "Save changes")) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 2
+  }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.buttonTitle), 1
+  /* TEXT */
+  )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])])], 2
   /* CLASS */
   )]);
 }
@@ -983,9 +990,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["class"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("li", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url.startsWith('/prices')
+      'active': _ctx.$page.url.startsWith('/panel')
     }]),
-    href: "/prices"
+    href: "/panel"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_15, _hoisted_16];
@@ -997,9 +1004,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   /* PROPS */
   , ["class"])]), _ctx.$page.props.auth.user.role == 'RO' || _ctx.$page.props.auth.user.role == 'Admin' || _ctx.$page.props.auth.user.role == 'PGO' || _ctx.$page.props.auth.user.role == 'PG-Head' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
     "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["sidebar-link", {
-      'active': _ctx.$page.url.startsWith('/charges')
+      'active': _ctx.$page.url.startsWith('/criteria')
     }]),
-    href: "/charges"
+    href: "/criteria"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
       return [_hoisted_18, _hoisted_19];
@@ -1738,6 +1745,14 @@ var map = {
 		"/js/vendor",
 		"resources_js_Pages_Charts_TotalUsers_vue"
 	],
+	"./Criteria/Index": [
+		"./resources/js/Pages/Criteria/Index.vue",
+		"resources_js_Pages_Criteria_Index_vue"
+	],
+	"./Criteria/Index.vue": [
+		"./resources/js/Pages/Criteria/Index.vue",
+		"resources_js_Pages_Criteria_Index_vue"
+	],
 	"./EventHeader/Create": [
 		"./resources/js/Pages/EventHeader/Create.vue",
 		"/js/vendor",
@@ -1799,6 +1814,14 @@ var map = {
 		"./resources/js/Pages/Home.vue",
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
+	],
+	"./Panel/Index": [
+		"./resources/js/Pages/Panel/Index.vue",
+		"resources_js_Pages_Panel_Index_vue"
+	],
+	"./Panel/Index.vue": [
+		"./resources/js/Pages/Panel/Index.vue",
+		"resources_js_Pages_Panel_Index_vue"
 	],
 	"./Reports/Index": [
 		"./resources/js/Pages/Reports/Index.vue",

@@ -113,8 +113,8 @@ export default {
 
         };
     },
-    mounted() {
-        this.getGasolineStations();
+    mounted() 
+    {
         if (this.editData !== undefined) {
             this.loading = true
             this.pageTitle = "Edit"
@@ -134,7 +134,6 @@ export default {
         } else {
             this.pageTitle = "Create"
         }
-        // this.loadOffices();
     },
 
     methods: 

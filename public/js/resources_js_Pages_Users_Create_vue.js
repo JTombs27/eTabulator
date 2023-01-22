@@ -52,8 +52,6 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   mounted: function mounted() {
-    this.getGasolineStations();
-
     if (this.editData !== undefined) {
       this.loading = true;
       this.pageTitle = "Edit";
@@ -76,8 +74,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     } else {
       this.pageTitle = "Create";
-    } // this.loadOffices();
-
+    }
   },
   methods: {
     submit: function submit() {

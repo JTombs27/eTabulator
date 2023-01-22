@@ -5,7 +5,7 @@
    <div class="row gap-20 masonry pos-r">
        <div class="peers fxw-nw jc-sb ai-c">
            <h3>{{ pageTitle }} Participants</h3>
-           <Link href="/event-participants">
+           <Link :href="`/event-participants?event_id=`+event_id+`&settup_id=`+settup_id">
            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
                viewBox="0 0 16 16">
                <path fill-rule="evenodd"
@@ -84,7 +84,8 @@ export default {
   },
    props: {
        editData: Object,
-       settup_id:""
+       settup_id:"",
+       event_id:""
    },
    data() {
        return {

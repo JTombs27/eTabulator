@@ -14,7 +14,7 @@ class CreateGenerateWinnerProcedure extends Migration
     public function up()
     {
         $procedure = "DROP PROCEDURE IF EXISTS `sp_generate_winner`;
-        CREATE PROCEDURE `sp_generate_winner` ()
+        CREATE PROCEDURE `sp_generate_winner` (IN par_event_id int)
         BEGIN
 
         UPDATE event_settup 
@@ -27,7 +27,8 @@ class CreateGenerateWinnerProcedure extends Migration
         WHERE A.id = event_settup.id
         GROUP BY A.id,B.participants_id
         ORDER BY COUNT(B.participants_id) DESC LIMIT 1
-        );
+        )
+        WHERE event_id = par_event_id;
 
         END;";
         \DB::unprepared($procedure);

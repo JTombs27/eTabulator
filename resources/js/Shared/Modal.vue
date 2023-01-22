@@ -6,14 +6,12 @@
             <h5 class="modal-title">{{ modalTitle }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="closeModal"></button>
           </div>
-          <div class="modal-body">
-              <div class="row">
-                <slot></slot>
-              </div>
+          <div class="modal-body bgc-grey-100" style="padding: 0px 12px !important;">
+            <slot></slot>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal"  @click="closeModal">Close</button>
-            <button type="button" class="btn btn-primary"  v-if="showSaveButton"  id="btn-save" @click="saveModal">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="closeModal">Close</button>
+            <button type="button" class="btn btn-primary" v-if="showBtn"  @click="saveModal">{{ buttonTitle }}</button>
           </div>
         </div>
       </div>
@@ -22,28 +20,31 @@
 
 <script>
 import { StringDecoder } from 'string_decoder'
-
-
 export default {
     props: {
         modalTitle: String,
         addional_class: StringDecoder,
-        showSaveButton: Boolean
+        buttonTitle: String,
+        showBtn:Boolean,
+        
+    },
+    data() {
+      return {
+        myModal: null
+      }
     },
     mounted() {
-        let myModal = new window.bootstrap.Modal(document.getElementById('modal'))
-        myModal.show()
+      this.myModal = new window.bootstrap.Modal(document.getElementById('modal'))
+      this.myModal.show()
     },
     methods: {
         closeModal() {
-          this.$emit('closeModal')
-            
+            this.$emit('closeModal')
         },
         saveModal() {
-          this.$emit('saveModal')
+            this.$emit('saveModal');
         }
     }
-    
 }
 </script>
 

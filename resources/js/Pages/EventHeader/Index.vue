@@ -21,9 +21,9 @@
                             <option value="gasoline-station">Gasoline Station</option>
                         </select>
                     </div>
-                    <div class="peer mR-10">
+                    <!-- <div class="peer mR-10">
                         <input v-model="search" type="text" class="form-control " placeholder="Search...">
-                    </div>
+                    </div> -->
                     <div class="peer"  v-if="can.createUser">
                         <Link class="btn btn-primary" href="/event-header/create">Add Event</Link>
                     </div>
@@ -37,11 +37,11 @@
                     <thead class="table-dark">
                         <tr>
                             <th width="30%">EVENT TITLE</th>
-                            <th width="35%">EVENT DESCRIPTION</th>
-                            <th width="12%" class="text-center">EVENT START</th>
+                            <th width="45%">EVENT DESCRIPTION</th>
+                            <th width="10%" class="text-center">EVENT START</th>
                             <th width="10%" class="text-center">EVENT END</th>
-                            <th width="10%" >EVENT WALL PAPER</th>
-                            <th width="3%"  class="text-center">ACTION</th>
+                            <!-- <th width="10%" >EVENT WALL PAPER</th> -->
+                            <th width="5%"  class="text-center">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,9 +58,9 @@
                             <td class="text-center">
                                 {{ eventX.event_to }}
                             </td>
-                            <td>
+                            <!-- <td>
                                 {{ eventX.background_image }}
-                            </td>
+                            </td> -->
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
                                 <div class="dropdown dropstart">
@@ -71,11 +71,18 @@
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item" :href="`/event-setup/`+eventX.id">Event Setup</Link></li>
-                                    <li><Link class="dropdown-item" :href="`/event-setup/`+eventX.id">Edit</Link></li>
-                                    <li><hr class="dropdown-divider action-divider"></li>
-                                    <li v-if="can.canDeleteUser && !eventX.can.delete">
-                                        <Link class="text-danger dropdown-item" @click="deleteUser(eventX.id)">Delete</Link>
+                                    <li><Link class="dropdown-item" :href="`/event-header/edit/`+eventX.id">Edit</Link></li>
+                                    <li ><hr class="dropdown-divider action-divider"></li>
+                                    <li >
+                                        <button class="dropdown-item btn btn-defualt" @click="generateWinners(eventX.id)">Generate Winners</button>
                                     </li>
+                                    <li v-if="eventX.can.delete">
+                                        <Link class="text-danger dropdown-item" @click="deleteEvent(eventX.id)">Delete</Link>
+                                    </li>
+                                    <li v-else>
+                                        <button class="text-danger dropdown-item btn btn-defualt" disabled>Delete</button>
+                                    </li>
+                                   
                                   </ul>
                                 </div>
                             </td>
@@ -99,6 +106,7 @@
 <script>
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 export default {
     components: { Pagination, Filtering },
@@ -114,111 +122,27 @@ export default {
             invalid_actual_liters:false,
             fuelOTP:localStorage.getItem("fuelOTP"),
             tempOTP:"",
-            invalid_tempOTP:""
+            invalid_tempOTP:"",
+            form:useForm({
+                event_id:""
+            })
         }
     },
     methods:
     {
-
-        openConfirmation()
+        deleteEvent(event_id)
         {
-            if(localStorage.getItem("fuelOTP") === null)
+            const res = confirm("Are you sure to delete this setup?");
+            if(res)
             {
-                this.invalid_tempOTP    = "";
-                this.tempOTP            = "";
-                this.actual_liters      = this.TravelData.data[0].liters;
-                this.myModal            = new window.bootstrap.Modal(document.getElementById('myModal'))
-                this.myModal.show()
-            }
-            else
-            {
-                    this.invalid_actual_liters = false;
-                    const today = new Date();
-                    const date  = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                    if(localStorage.getItem("fuelOTP_date")  < date)
-                    {
-                        this.fuelOTP = null;
-                        localStorage.removeItem('fuelOTP');
-                        localStorage.removeItem('fuelOTP_date');
-                        localStorage.removeItem('fuelOTP_date');
-                        this.openConfirmation();
-                    }
-                    else
-                    {
-                        this.actual_liters = this.TravelData.data[0].liters;
-                        this.myModal       = new window.bootstrap.Modal(document.getElementById('myModal'))
-                        this.myModal.show()
-                    }
+                this.form.event_id  = event_id;
+                this.form.post("/event-header/delete");
             }
         },
-        confirm()
+        generateWinners(event_id)
         {
-            let vm = this;
-            if(localStorage.getItem("fuelOTP") === null)
-            {
-                if(this.tempOTP.trim() == "")
-                {
-                    this.invalid_tempOTP = "Gasoline OTP is required to continue!";
-                }
-                else
-                {
-                    axios.get('/travelTicket/OTP/'+this.TravelData.data[0].gasoline_id+'/'+this.tempOTP)
-                    .then(response=>
-                    {              
-                        if(response.data != null)
-                        {
-                            if(response.data == "success")
-                            {
-                                const today = new Date();
-                                const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-                                vm.fuelOTP = vm.tempOTP;
-                                localStorage.setItem("fuelOTP",vm.tempOTP);
-                                localStorage.setItem("fuelOTP_date",date);
-                                localStorage.setItem("gasoline_id",vm.TravelData.data[0].gasoline_id);
-                                this.actual_liters  = this.TravelData.data[0].liters;
-                               
-                            }
-                            else{
-                                this.invalid_tempOTP = "You have entered an incorrect OTP!";
-                            }
-                        }
-                    })
-                }
-            }
-            else if(localStorage.getItem("gasoline_id") == this.TravelData.data[0].gasoline_id)
-            {
-                if(this.actual_liters > this.TravelData.data[0].liters)
-                {
-                    this.invalid_actual_liters = true;
-                }
-                else{
-                    this.invalid_actual_liters = false;
-                    axios.patch('/travelTicket/'+this.TravelData.data[0].id+'/'+this.actual_liters)
-                    .then(response=>
-                    {
-                                        
-                        if(response.data != null)
-                        {
-                            if(response.data == "success")
-                            {
-                            vm.$inertia.reload({only:['TravelData']});
-                            setTimeout(function(){
-                                vm.myModal.hide()
-                            },1500);
-                                
-                            }
-                            else{
-                                //vm.saveMessage = response.data;
-                                alert(response.data);
-                            }
-                        }
-                    })
-                }
-            }
-            else{
-                alert("Mismatch Gasoline Station! \nPLease Double check Gas Station in the ticket.");
-            }
-            
+                this.form.event_id  = event_id;
+                this.form.post("/event-header/generate-winner");
         }
     }
 
