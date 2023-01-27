@@ -30,7 +30,6 @@ class UserController extends Controller
         return inertia('Users/Index', [
             //returns an array of users with name field only
             "users" => $this->model
-                ->with('permissions')
                 ->when($request->search, function ($query, $searchItem) {
                     $query->where('name', 'like', '%' . $searchItem . '%')
                         ->orWhere('username', 'like', '%' . $searchItem . '%');
@@ -40,7 +39,6 @@ class UserController extends Controller
                 ->withQueryString()
                 ->through(fn($user) => [
                     'id' => $user->id,
-                    'permissions' => $user->permissions,
                     'office' => $user->office ? '' : '',
                     'is_active' => $user->is_active,
                     'email' => $user->email,
@@ -120,7 +118,6 @@ class UserController extends Controller
 
         return inertia('Users/Create', [
             "editData" => $this->model
-                        ->with('office')
                         ->findOrFail($id),
             
         ]);
@@ -129,47 +126,23 @@ class UserController extends Controller
     public function update(UserRequest $request)
     {
         $data = $this->model->findOrFail($request->id);
-        $validated = $request->safe()->only(['password']);
-        $validated['office_id'] = $request->office_id;
-        $validated['username'] = $request->username;
-        $validated['name'] = $request->name;
-        $validated['cats'] = $request->cats;
-        $validated['role'] = $request->permission;
-        $validated['gasoline_id'] = $request->gasoline_id;
-        if ($request->password) {
+        $validated                  = $request->safe()->only(['password']);
+        $validated['username']      = $request->username;
+        $validated['name']          = $request->name;
+        $validated['role']          = $request->permission;
+        if ($request->password) 
+        {
             $validated['password'] = bcrypt($request->password);
         } else {
             
             $validated['password'] = $data->password;
         }
-
-        if ($request->permission == 'PGO') {
-            //1,2,3 are all available permissions for the admin
-            $data->permissions()->sync([5,6,7,8,10,11,12,13,14,15,16,17,18,19,25,26,31]);
-        } elseif ($request->permission == 'RO') {
-            $data->permissions()->sync([5,7,10,11,12,13,14,15,25]);
-        } elseif ($request->permission == 'PGSO') {
-            $data->permissions()->sync([4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31]);
-        } elseif ($request->permission == 'PG-Head') {
-            $data->permissions()->sync([6,25,26]);
-        } elseif ($request->permission == 'Admin') {
-            $data->permissions()->sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]);
-        } elseif($request->permission == 'peo-motorpool') {
-            $data->permissions()->sync([18,19]);
-        } elseif($request->permission == 'gasoline-station') {
-            $data->permissions()->sync([20,21,22]);
-        } else {
-            //specify an Array of permissions id here manually
-            $data->permissions()->sync([]);
-        }
-        // $data->update([
-        //     'name' => $request->name,
-        //     'permission' => $request->permission,
-        //     'username' => $request->username,
-        //     'password' => $password,
-        //     'office' => 
-        // ]);
-        $data->update($validated);
+        $data->update([
+            'name' => $validated['name'],
+            'permission' => $validated['role'],
+            'username' =>  $validated['username'],
+            'password' => $validated['password']
+        ]);
 
         return redirect('/users')->with('message', 'User updated');
     }

@@ -1,0 +1,157 @@
+<template>
+    <Head>
+       <title>{{ pageTitle }} Panel</title>
+   </Head>
+   <div class="row gap-20 masonry pos-r">
+       <div class="peers fxw-nw jc-sb ai-c">
+           <h3>{{ pageTitle }} Panel</h3>
+           <Link :href="`/panel?event_id=`+event_id+`&settup_id=`+settup_id">
+           <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg"
+               viewBox="0 0 16 16">
+               <path fill-rule="evenodd"
+                   d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
+               <path fill-rule="evenodd"
+                   d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z" />
+           </svg>
+           </Link>
+       </div>
+       
+     
+           <form @submit.prevent="submit()">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="alert alert-primary" role="alert">
+                        {{settup_info.event_settup_title}}
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="font-bold" for="">Panel Name</label>
+                            <Select2 id="users" v-model="form.user_id" :options="users.data" />
+                            <div class="fs-6 c-red-500" v-if="form.errors.user_id">{{ form.errors.user_id }}</div>
+                        </div>
+                        <div class="col-md-12 mT-5">
+                            <label class="font-bold" for="">Panel Information</label>
+                            <textarea type="text"  v-model="form.panel_info" class="form-control" autocomplete="chrome-off"></textarea>
+                            <div class="fs-6 c-red-500" v-if="form.errors.panel_info">{{ form.errors.panel_info }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-12 mT-5">
+                            <label class="font-bold" for="">Panel Picture</label>
+                            <input type="file" @change="onFileChange" @input="form.profile_path = $event.target.files[0]" class="form-control" autocomplete="chrome-off">
+                            <div class="fs-6 c-red-500" v-if="form.errors.profile_path">{{ form.errors.profile_path }}</div>
+                        </div>
+                        <div class="col-md-12 p-10 ">
+                            <dic class="row">
+                                <div class="col-lg-2">
+                                    Preview:
+                                </div>
+                                <div class="col-lg-10 text-center preview" :style="`height:180px;background-image: url(`+url+`)`">
+                                    <svg v-if="url == ''" xmlns="http://www.w3.org/2000/svg" width="150" height="150" fill="currentColor" class="bi bi-person-bounding-box" viewBox="0 0 16 16">
+                                        <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
+                                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                    </svg>
+                                </div>
+                            </dic>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12 text-end">
+                    <input type="hidden" v-model="form.id" class="form-control" autocomplete="chrome-off">
+                    <button type="button" class="btn btn-primary mt-3" @click="submit()" :disabled="form.processing">Save
+                        changes</button>
+                </div>
+              
+            </div>
+           </form>
+   </div>
+</template>
+<script>
+import { useForm } from "@inertiajs/inertia-vue3";
+import axios from "axios";
+import { computed } from '@vue/runtime-core';
+
+export default {
+    components: {},
+   props: {
+       editData     : Object,
+       settup_id    :"",
+       event_id     :"",
+       users        :Object,
+       settup_info  :Object
+   },
+   data() {
+       return {
+           form: useForm({
+                id            :null,
+                user_id       :"",
+                settup_id     :this.settup_id,
+                panel_info    :"",
+                profile_path  :"",
+                event_id      : this.event_id
+           }),
+           url:''
+
+       };
+   },
+   mounted() 
+   {
+        if (this.editData !== undefined) 
+       {
+            this.loading = true
+            this.form.id                    = this.editData.id
+            this.form.user_id               = this.editData.user_id
+            this.form.panel_info            = this.editData.panel_info
+            this.form.profile_path          = this.editData.profile_path
+            this.url                        = "/storage/"+this.editData.profile_path+""
+            this.pageTitle                  = "Edit"
+            this.users.data.push({
+                id:this.editData.user_id,
+                text:this.editData.panel_user.name,
+                selected:true
+            });
+
+            $('#users').select2(
+            {
+                data:this.users.data
+            });
+           
+        }
+   },
+
+   beforeUnmount() {
+  },
+
+   methods: {
+       onFileChange(e){
+            const file  = e.target.files[0];
+            this.url    = URL.createObjectURL(file);
+       },
+       submit() {
+
+           if (this.editData !== undefined) 
+           {
+               this.form.post("/panel/update", this.form);
+           } else {
+              //this.form.background_image = "";
+               this.form.settup_id = this.settup_id;
+               this.form.post("/panel/store-panel", this.form);
+           }
+
+       }
+   }
+};
+</script>
+<style>
+    .preview{
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-size: contain !important;
+            box-sizing: border-box !important;
+    }
+</style>

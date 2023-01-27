@@ -11,7 +11,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony import */ var _Shared_Nav__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/Shared/Nav */ "./resources/js/Shared/Nav.vue");
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  components: {
+    Nav: _Shared_Nav__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
+});
 
 /***/ }),
 
@@ -282,10 +288,61 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 var _hoisted_1 = {
-  "class": "page-container bgc-grey-100 p-20"
+  "class": "navbar navbar-expand-lg navbar-light bg-light"
+};
+var _hoisted_2 = {
+  "class": "container-fluid"
+};
+
+var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
+  "class": "navbar-brand",
+  href: "/panel-judging"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h4", null, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("b", null, "Welcome to U-Vote")])], -1
+/* HOISTED */
+);
+
+var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+  "class": "collapse navbar-collapse",
+  id: "navbarScroll"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+  "class": "navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll d-flex",
+  style: {
+    "--bs-scroll-height": "100px"
+  }
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_5 = {
+  "class": "d-flex"
+};
+
+var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Logout");
+
+var _hoisted_7 = {
+  "class": "row"
+};
+var _hoisted_8 = {
+  "class": "col-lg-12"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")])]);
+  var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
+
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("nav", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [_hoisted_3, _hoisted_4, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+    method: "POST",
+    href: "/logout",
+    "class": "btn btn-outline-success text-dark",
+    type: "button"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [_hoisted_6];
+    }),
+    _: 1
+    /* STABLE */
+
+  })])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.renderSlot)(_ctx.$slots, "default")])])], 64
+  /* STABLE_FRAGMENT */
+  );
 }
 
 /***/ }),
@@ -1107,7 +1164,7 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
             case 2:
               page = _context.sent["default"];
 
-              if (location.pathname == '/travelTicket') {
+              if (location.pathname == '/travelTicket' || location.pathname == '/panel-judging' || location.pathname == '/panel-judging/participants') {
                 (_page$layout = page.layout) !== null && _page$layout !== void 0 ? _page$layout : page.layout = _Layout_SimpleLayout__WEBPACK_IMPORTED_MODULE_4__["default"];
               } else {
                 (_page$layout2 = page.layout) !== null && _page$layout2 !== void 0 ? _page$layout2 : page.layout = _Shared_Layout__WEBPACK_IMPORTED_MODULE_3__["default"];
@@ -1814,6 +1871,30 @@ var map = {
 		"./resources/js/Pages/Home.vue",
 		"/js/vendor",
 		"resources_js_Pages_Home_vue"
+	],
+	"./Judges/Index": [
+		"./resources/js/Pages/Judges/Index.vue",
+		"resources_js_Pages_Judges_Index_vue"
+	],
+	"./Judges/Index.vue": [
+		"./resources/js/Pages/Judges/Index.vue",
+		"resources_js_Pages_Judges_Index_vue"
+	],
+	"./Judges/Participants": [
+		"./resources/js/Pages/Judges/Participants.vue",
+		"resources_js_Pages_Judges_Participants_vue"
+	],
+	"./Judges/Participants.vue": [
+		"./resources/js/Pages/Judges/Participants.vue",
+		"resources_js_Pages_Judges_Participants_vue"
+	],
+	"./Panel/Create": [
+		"./resources/js/Pages/Panel/Create.vue",
+		"resources_js_Pages_Panel_Create_vue"
+	],
+	"./Panel/Create.vue": [
+		"./resources/js/Pages/Panel/Create.vue",
+		"resources_js_Pages_Panel_Create_vue"
 	],
 	"./Panel/Index": [
 		"./resources/js/Pages/Panel/Index.vue",

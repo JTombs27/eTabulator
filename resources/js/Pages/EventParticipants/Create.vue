@@ -110,54 +110,26 @@ export default {
         StarterKit,
       ],
     })
-    //    if (this.editData !== undefined) {
-    //        this.loading = true
-    //        this.pageTitle = "Edit"
-    //        this.form.name = this.editData.name
-    //        this.form.username = this.editData.username
-    //        this.form.email = this.editData.email
-    //        this.form.id = this.editData.id
-    //        this.form.gasoline_id = this.editData.gasoline_id
-    //        this.form.cats = this.editData.cats
-    //        this.form.office_id = this.editData.office_id
-    //        this.form.permission = this.editData.role
-    //        if (this.editData.office_id) {
-    //            $('#office').select2({
-    //                data:[{text: this.editData.office.office, id:this.editData.office_id}],
-    //            })
-    //        }
-    //    } else {
-    //        this.pageTitle = "Create"
-    //    }
-    //    $('#office').select2({
-    //        ajax: {
-    //            url: '/offices/fetch',
-    //            dataType:'json',
-    //            delay:500,
-    //            data: function(filter) {
-    //                return {filter:filter.term};
-    //            },
-    //            processResults: function(data, params) {
-    //                params.page = params.page || 1;
+        if (this.editData !== undefined) 
+        {
+                this.form.id                      =this.editData.id
+                this.form.settup_id               =this.editData.settup_id
+                this.form.participants_name       =this.editData.participants_name
+                this.form.participants_address    =this.editData.participants_address
+                this.form.participants_details    =this.editData.participants_details
+                this.form.participants_profile    =this.editData.participants_profile
+                this.form.event_id                =this.event_id
 
-    //                return{
-    //                    results: $.map(data, function(obj) {
-    //                        return {
-    //                            id: obj.id,
-    //                            text: obj.text,
-    //                            office: obj.office
-    //                        }
-    //                    })
-    //                };
-    //            },
-    //            cache: true
-    //        },
-    //        placeholder: 'Search for an office',
-    //        minimumInputLength: 2,
-    //        templateResult:this.formatOfficeSelection,
-    //        templateSelection:this.formatOffice
-    //    })
-       // this.loadOffices();
+                // this.loading = true
+                // this.form.id                    = this.editData.id
+                // this.form.user_id               = this.editData.user_id
+                // this.form.panel_info            = this.editData.panel_info
+                // this.form.profile_path          = this.editData.profile_path
+                this.url                        = "/storage/"+this.editData.participants_profile+""
+                this.pageTitle                  = "Edit"
+            
+        }
+    
    },
    beforeUnmount() {
     this.editor.destroy()
@@ -170,8 +142,9 @@ export default {
        },
        submit() {
 
-           if (this.editData !== undefined) {
-               this.form.patch("/event-participants/" + this.form.id, this.form);
+           if (this.editData !== undefined) 
+           {
+               this.form.post("/event-participants/update", this.form);
            } else {
               //this.form.background_image = "";
                this.form.settup_id = this.settup_id;

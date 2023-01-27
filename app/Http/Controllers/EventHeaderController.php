@@ -186,6 +186,29 @@ class EventHeaderController extends Controller
         ]);
     }
 
+    public function editEventSetup(Request $request)
+    {
+        $data = $this->setup
+        ->selectRaw('
+             id                                   
+            ,event_settup_title                   
+            ,event_settup_requirement             
+            ,event_settup_withpannel              
+            ,event_settup_withaudience            
+            ,convert(event_settup_withaudience_vote_open,DATE)      AS event_settup_withaudience_vote_open
+            ,convert(event_settup_withaudience_vote_closed,DATE)    AS event_settup_withaudience_vote_closed
+            ,settup_status                        
+        ')
+        ->findOrFail($request->id);
+        return inertia('EventHeader/EventSettup/Create',
+        [
+             "editData" => $data
+            ,"event" =>  $this->model
+                        ->where('id',$request->event_id)
+                        ->first()
+        ]);
+    }
+
     public function storeSetup(Request $request)
     {
         //$attributes = $request->validated();
@@ -217,6 +240,35 @@ class EventHeaderController extends Controller
         }
 
         return redirect('/event-setup/'.$request->event_id)->with('message', 'Event Settup Successfully Created');
+    }
+
+    public function updateSetup(Request $request)
+    {
+     
+        $data = $this->setup->findOrFail($request->id);
+        DB::beginTransaction();
+        try {
+
+            $data->update([
+                'event_id'                                  => $request->event_id,
+                'event_settup_title'                        => $request->event_settup_title,
+                'event_settup_requirement'                  => $request->event_settup_requirement,
+                'event_settup_withpannel'                   => $request->event_settup_withpannel,
+                'event_settup_withaudience'                 => $request->event_settup_withaudience,
+                'event_settup_withaudience_vote_open'       => $request->event_settup_withaudience_vote_open,
+                'event_settup_withaudience_vote_closed'     => $request->event_settup_withaudience_vote_closed,
+                'settup_status'                             => "F",
+            ]);
+           
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('/event-setup/create/'.$request->event_id)->with('error', $e);
+        }
+
+        return redirect('/event-setup/'.$request->event_id)->with('message', 'Event Settup Successfully Updated');
     }
 
     public function destroySetup(Request $request)

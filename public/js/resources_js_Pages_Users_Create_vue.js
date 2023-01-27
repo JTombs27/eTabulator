@@ -39,12 +39,6 @@ __webpack_require__.r(__webpack_exports__);
         office_id: null,
         non_capitol: null
       }),
-      stations: [],
-      municipals: [],
-      barangays: [],
-      offices: [],
-      employees: [],
-      testValue: "",
       pageTitle: "",
       showPassword: null,
       loading: false,
@@ -59,19 +53,7 @@ __webpack_require__.r(__webpack_exports__);
       this.form.username = this.editData.username;
       this.form.email = this.editData.email;
       this.form.id = this.editData.id;
-      this.form.gasoline_id = this.editData.gasoline_id;
-      this.form.cats = this.editData.cats;
-      this.form.office_id = this.editData.office_id;
       this.form.permission = this.editData.role;
-
-      if (this.editData.office_id) {
-        $('#office').select2({
-          data: [{
-            text: this.editData.office.office,
-            id: this.editData.office_id
-          }]
-        });
-      }
     } else {
       this.pageTitle = "Create";
     }
@@ -175,8 +157,8 @@ var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 );
 
 var _hoisted_7 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("option", {
-  value: "Pannel"
-}, "Pannel", -1
+  value: "Panel"
+}, "Panel", -1
 /* HOISTED */
 );
 

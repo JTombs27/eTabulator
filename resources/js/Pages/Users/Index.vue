@@ -12,30 +12,20 @@
                 </div>
                 <div class="peer"  v-if="can.createUser">
                     <Link class="btn btn-primary btn-sm" href="/users/create">Add User</Link>
-                    <button class="btn btn-primary btn-sm mL-2 text-white" @click="showFilter()">Filter</button>
                 </div>
             </div>
         </div>
-
-        <filtering v-if="filter" @closeFilter="filter=false">
-            <label>Sample Inputs</label>
-            <input type="text" class="form-control">
-            <button class="btn btn-sm btn-primary mT-5 text-white" >Filter</button>
-        </filtering>
  
         <div class="col-12">
             <div class="tabl-responsive bgc-white p-20 bd shadow-sm">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Active</th>
-                            <th scope="col">Username</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Office</th>
-                            <th scope="col">division</th>
-                            <th scope="col">Role</th>
-                            <th scope="col" style="width: 30%">Permissions</th>
-                            <th scope="col" style="text-align: right">Action</th>
+                            <th scope="col" style="width:10%;">Active</th>
+                            <th scope="col" style="width:30%;">Username</th>
+                            <th scope="col" style="width:40%;">Name</th>
+                            <th scope="col" style="width:10%;">Role</th>
+                            <th scope="col" style="text-align: right;width:5%;">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,18 +61,7 @@
                                 </div>
                             </td>
                             <td>
-                                {{ user.office }}
-                            </td>
-                            <td>
-                                {{ user.division }}
-                            </td>
-                            <td>
                                 {{ user.role }}
-                            </td>
-                            <td>
-                                <div class="badge bg-info me-1" v-for="permission in user.permissions">
-                                    {{ permission.permission_name }}
-                                </div>
                             </td>
                             <td style="text-align: right">
                                 <!-- v-if="user.can.edit" -->
@@ -94,9 +73,8 @@
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item" :href="`/users/${user.id}/edit`">Edit</Link></li>
-                                    <li><a class="dropdown-item" href="#" @click="editPermissions(user.id)">Permissions</a></li>
                                     <li><hr class="dropdown-divider action-divider"></li>
-                                    <li v-if="can.canDeleteUser && !user.can.delete">
+                                    <li v-if="user.can.delete">
                                         <Link class="text-danger dropdown-item" @click="deleteUser(user.id)">Delete</Link>
                                     </li>
                                   </ul>
@@ -117,76 +95,7 @@
         </div>
     </div>
 
-    <Modal 
-        v-if="showModal" 
-        :modalTitle="'Permissions'" 
-        :addional_class="'modal-lg'"
-        :showSaveButton="true"
-        @closeModal="closeModal"
-        @saveModal="updatePermissions">
-        <div class="row pb-3">
-            <div class="col-md-4">
-                <div class="form-check">
-                  <input class="form-check-input " type="checkbox" @change="selectOption($event, 'all')" id="flexCheckDefault">
-                  <label class="form-check-label disable-select" for="flexCheckDefault">
-                    Select all
-                  </label>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" @change="selectOption($event,'pghead')" id="pgheadPermission">
-                    <label class="form-check-label disable-select" for="pgheadPermission">
-                        PG-Head 
-                    </label>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox"  @change="selectOption($event,'pgo')" id="pgoPermission">
-                    <label class="form-check-label disable-select" for="pgoPermission">
-                        PGO 
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'ro')" id="roPermission">
-                    <label class="form-check-label disable-select" for="roPermission">
-                        RO 
-                    </label>
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'pgso')" id="pgsoPermission">
-                    <label class="form-check-label disable-select" for="pgsoPermission">
-                        PGSO 
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="form-check">
-                    <input class="form-check-input " type="checkbox" name="flexRadioDefault" @change="selectOption($event,'gasoline-station')" id="gasoline-station">
-                    <label class="form-check-label disable-select" for="gasoline-station">
-                        Gasoline Station 
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div v-for="permission, index in permissions" class="col-md-4 mb-3">
-                <h4> {{ index }} </h4>
-                <div v-for="item in permission" class="form-check checkbox-list">
-                    <input type="checkbox" class="form-check-input specific" v-model="selectedPermissions" :value="item.id" :id="`permission${item.id}`"> 
-                    <label class="form-check-label disable-select" :for="`permission${item.id}`">{{ item.permission_name }}</label>
-                </div>
-            </div>
-        </div>
-    </Modal>
+    
 </template>
 
 <script>
@@ -231,94 +140,8 @@ export default {
                 this.$inertia.delete("/users/" + id);
               }
         },
-        showFilter() {
-            this.filter = !this.filter
-        },
-        editPermissions(userId) {
-            var vm = this
-            var user = _.find(this.users.data, { id: userId })
-            this.showModal = true
-            this.selectedUser = userId
-            this.selectedPermissions = []
-
-            _.forEach(user.permissions, function(e) {
-                vm.selectedPermissions.push(e.id)
-            })
-
-            this.getAllPermissions()
-        },
-        updatePermissions() {
-           
-            
-            this.$inertia.post('update-user-permissions', {
-                    'user_id' : this.selectedUser,
-                    'permissions' : this.selectedPermissions
-                }, {
-                replace: true,
-            })
-            $("#modal").hide();
-            $('body').removeClass('modal-open');
-            $('body').css("overflow","scroll");
-            $('.modal-backdrop').remove();
-            this.showModal = false
-        },
-        closeModal() {
-            
-            this.showModal = false
-        },
-        async getAllPermissions() {
-            await axios.post('get-all-permissions').then( response => {
-                this.permissions = _.groupBy(response.data, 'permission_group');
-            })
-        },
-
         setStatus(e, item) {
             this.$inertia.patch(`/users/status/${item}`, {is_check:e.target.checked})
-        },
-
-        selectOption(e, Permission_type) {
-             console.log(Permission_type)
-            if (e.target.checked) {
-                if (Permission_type == 'all') {
-                    const newArr = [];
-                    const selected = _.flatMapDepth(this.permissions, function (e) {
-                        // return e.id;
-                        _.forEach(e, function(value) {
-                            // return value.id
-                            var final_id = _.map(value);
-                            newArr.push(final_id[0]) 
-                        })
-                    });
-                    this.selectedPermissions = newArr;
-                } else if (Permission_type == 'pgo') {
-
-                    this.selectedPermissions = [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,23,24,25,26,31];
-
-                } else if (Permission_type == 'ro') {
-
-                    this.selectedPermissions = [5,7,10,11,12,13,14,15,25];
-
-                } else if (Permission_type == 'pghead') {
-
-                    this.selectedPermissions = [6,25,26,36];
-
-                } else if (Permission_type == 'pgso') {
-
-                    this.selectedPermissions = [4,8,16,17,18,19,20,21,22,23,24,27,28,29,30,31,33,34,35];
-
-                } else if (Permission_type == 'peo-motorpool') {
-
-                    this.selectedPermissions = [18, 19];
-
-                } else if (Permission_type == 'gasoline-station') {
-
-                    this.selectedPermissions = [20,21,22];
-
-                }
-
-            } else {
-                this.selectedPermissions = [];
-            }
         }
     },
 };

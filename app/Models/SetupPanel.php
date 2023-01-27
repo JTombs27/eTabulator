@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class SetupPanel extends Model
 {
     use HasFactory;
+    protected $table    = 'event_panel';
+    protected $guarded  = [];
+
+    public function panelUser()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function setup()
+    {
+        return $this->belongsTo(EventSetup::class, 'settup_id', 'id');
+    }
 }

@@ -15,8 +15,9 @@ class Voting extends Model
         'settup_id'             ,
         'participants_id'       ,
         'user_id'               ,
-        'creteria_id'           ,
+        'criterria_id'          ,
         'vote_datetime_cast'    ,                  
+        'vote_value'    ,                  
     ];
 
     public function participants_photo()

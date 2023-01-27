@@ -42,9 +42,18 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     if (this.editData !== null) {
-      this.pageTitle = "Create";
-    } else {
       this.pageTitle = "Edit";
+      this.form.id = this.editData.id;
+      this.form.event_settup_title = this.editData.event_settup_title;
+      this.form.event_settup_requirement = this.editData.event_settup_requirement;
+      this.form.event_settup_withpannel = this.editData.event_settup_withpannel == 1 ? true : false;
+      this.form.event_settup_withaudience = this.editData.event_settup_withaudience == 1 ? true : false;
+      this.form.event_settup_withaudience_vote_open = this.editData.event_settup_withaudience_vote_open;
+      this.form.event_settup_withaudience_vote_closed = this.editData.event_settup_withaudience_vote_closed;
+      this.form.event_settup_withcreteria = this.editData.event_settup_withcreteria == 1 ? true : false;
+      this.form.settup_status = this.editData.settup_status;
+    } else {
+      this.pageTitle = "Create";
     }
   },
   methods: {
@@ -54,7 +63,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     submit: function submit() {
       if (this.editData !== undefined) {
-        this.form.patch("/event-setup/" + this.form.id, this.form);
+        this.form.post("/event-setup/update", this.form);
       } else {
         this.form.post("/event-setup/create-setup", this.form);
       }

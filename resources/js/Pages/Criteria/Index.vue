@@ -322,10 +322,17 @@ export default {
             this.form.event_id  = this.filterData.event_id;
             this.form.settup_id = this.filterData.settup_id;
             var action_route = this.actionMode == "Add" ? '/criteria/save-all-criteria': '/criteria/update';
-            this.form.transform((data) =>({
-                data,
-                criteriaGroup: this.criteriaGroup
-                }))
+            this.form.transform
+            (
+                (data) =>
+                (
+                    {
+                        data,
+                        criteriaGroup: this.criteriaGroup
+                    }
+                )
+            )
+
                 this.form.post(action_route,{
                 preserveScroll: true,
                 onSuccess: () => 

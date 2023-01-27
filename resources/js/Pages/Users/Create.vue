@@ -40,7 +40,7 @@
                 <label for="">Permission</label>
                 <select class="form-select" v-model="form.permission">
                     <option value="Admin">Admin</option>
-                    <option value="Pannel">Pannel</option>
+                    <option value="Panel">Panel</option>
                     <option value="Student">Student</option>
                 </select>
                 <div class="fs-6 c-red-500" v-if="form.errors.permission">{{ form.errors.permission }}</div>
@@ -100,12 +100,6 @@ export default {
                 office_id               :null,
                 non_capitol             :null
             }),
-            stations:[],
-            municipals:[],
-            barangays:[],
-            offices:[],
-            employees:[],
-            testValue:"",
             pageTitle: "",
             showPassword:null,
             loading:false,
@@ -115,23 +109,17 @@ export default {
     },
     mounted() 
     {
-        if (this.editData !== undefined) {
-            this.loading = true
-            this.pageTitle = "Edit"
-            this.form.name = this.editData.name
-            this.form.username = this.editData.username
-            this.form.email = this.editData.email
-            this.form.id = this.editData.id
-            this.form.gasoline_id = this.editData.gasoline_id
-            this.form.cats = this.editData.cats
-            this.form.office_id = this.editData.office_id
-            this.form.permission = this.editData.role
-            if (this.editData.office_id) {
-                $('#office').select2({
-                    data:[{text: this.editData.office.office, id:this.editData.office_id}],
-                })
-            }
-        } else {
+        if (this.editData !== undefined) 
+        {
+            this.loading            = true
+            this.pageTitle          = "Edit"
+            this.form.name          = this.editData.name
+            this.form.username      = this.editData.username
+            this.form.email         = this.editData.email
+            this.form.id            = this.editData.id
+            this.form.permission    = this.editData.role
+        } else 
+        {
             this.pageTitle = "Create"
         }
     },

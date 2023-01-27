@@ -23,7 +23,7 @@
                             </div>
                             <hr style="margin-top:5px; margin-bottom: 5px;"/>
                             <div @click="goToParticipants(settupX.id)" class="alert alert-primary" style="margin-top:3px; margin-bottom: 3px;cursor: pointer;" v-for="(settupX,settupIndex) in event_x.settups" :key="settupIndex" role="alert">
-                                <label style="padding-top:7px !important;font-weight: bold;">{{settupX.event_settup_title}}</label><img class="w-2r bdrs-50p pull-right" src="http://127.0.0.1:8000/storage/profile/default/photo.png" alt="">
+                                <label style="padding-top:7px !important;font-weight: bold;">{{settupX.event_settup_title}}</label>
                                 <template v-if="settupX.winner != null ? true:false" style="">
                                     <br><b><small>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-bookmark-star text-success" viewBox="0 0 16 16">

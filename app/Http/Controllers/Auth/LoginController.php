@@ -75,6 +75,14 @@ class LoginController extends Controller
                     return redirect()->to('/');
                 
                 }
+                else if (Auth::attempt($credentials) && $user->role == "Panel")
+                {
+                 
+                    $request->session()->regenerate();
+
+                    return redirect()->to('/panel-judging');
+                
+                }
                 else
                 {
                     $request->session()->regenerate();

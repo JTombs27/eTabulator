@@ -34,7 +34,7 @@ createInertiaApp({
   resolve: async name => {
     let page = (await import(`./Pages/${name}`)).default;
     
-    if(location.pathname == '/travelTicket')
+    if(location.pathname == '/travelTicket' || location.pathname == '/panel-judging' || location.pathname == '/panel-judging/participants')
     {
       page.layout ??= SimpleLayout
     }

@@ -17,7 +17,7 @@ class CreateEventPanelTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('settup_id');
-            $table->string('panel_info');
+            $table->text('panel_info');
             $table->string('profile_path');
             $table->timestamps();
         });

@@ -123,8 +123,8 @@ export default {
                 event_settup_withaudience_vote_open     :"",
                event_settup_withaudience_vote_closed    :"",
                event_settup_withcreteria                :false,
-               settup_status    :"",
-               event_id         :this.event.id
+               settup_status                            :"",
+               event_id                                 :this.event.id
            }),
            url:'../images/bg.jpg',
            pageTitle:"",
@@ -135,10 +135,19 @@ export default {
    {
         if(this.editData !== null)
         {
-            this.pageTitle = "Create";
+            this.pageTitle = "Edit";
+            this.form.id                                    = this.editData.id
+            this.form.event_settup_title                    = this.editData.event_settup_title
+            this.form.event_settup_requirement              = this.editData.event_settup_requirement
+            this.form.event_settup_withpannel               = this.editData.event_settup_withpannel == 1 ? true:false;
+            this.form.event_settup_withaudience             = this.editData.event_settup_withaudience   == 1 ? true:false;
+            this.form.event_settup_withaudience_vote_open   = this.editData.event_settup_withaudience_vote_open
+            this.form.event_settup_withaudience_vote_closed = this.editData.event_settup_withaudience_vote_closed
+            this.form.event_settup_withcreteria             = this.editData.event_settup_withcreteria == 1 ? true:false;
+            this.form.settup_status                         = this.editData.settup_status
         }
         else{
-            this.pageTitle = "Edit";
+            this.pageTitle = "Create";
         }
    },
 
@@ -152,7 +161,7 @@ export default {
 
            if (this.editData !== undefined) 
            {
-               this.form.patch("/event-setup/" + this.form.id, this.form);
+               this.form.post("/event-setup/update", this.form);
            } else {
                this.form.post("/event-setup/create-setup", this.form);
            }

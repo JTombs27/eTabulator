@@ -10,15 +10,19 @@ class Participant extends Model
     use HasFactory;
     protected $table = 'participants';
     protected $guarded = [];
-    protected $fillable = [
-        'settup_id'                ,
-        'participants_name'        ,
-        'participants_address'     ,
-        'participants_details'     ,
-        'participants_profile'     ,                  
-    ];
+    // protected $fillable = [
+    //     'settup_id'                ,
+    //     'participants_name'        ,
+    //     'participants_address'     ,
+    //     'participants_details'     ,
+    //     'participants_profile'     ,                  
+    // ];
 
     public function votings(){
         return $this->hasMany(Voting::class,"id","participants_id");
+    }
+
+    public function settup(){
+        return $this->belongsTo(EventSetup::class, 'settup_id', 'id');
     }
 }

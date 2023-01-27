@@ -20,6 +20,7 @@ class CreateVotingTblTable extends Migration
             $table->integer('user_id');
             $table->integer('criterria_id');
             $table->integer('vote_datetime_cast');
+            $table->integer('vote_value');
             $table->timestamps();
         });
     }

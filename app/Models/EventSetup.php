@@ -22,13 +22,31 @@ class EventSetup extends Model
         'settup_status'                        
     ];
 
+    public function event(){
+        return $this->belongsTo(EventHeader::class,'event_id','id');
+    }
+
     public function voted()
     {
-        return $this->hasMany(Voting::class,"id","settup_id");
-        // return $this->belongsTo(Voting::class,'settup_id','id');
+        return $this->hasMany(Voting::class,"settup_id","id");
     }
+
     public function winner()
     {
         return $this->hasOne(Participant::class, 'id', 'participants_id');
+    }
+
+    public function panels(){
+        return $this->hasMany(SetupPanel::class,"settup_id","id");
+    }
+
+    public function participants()
+    {
+        return $this->hasMany(Participants::class,"settup_id","id");
+    }
+
+    public function criteria()
+    {
+        return $this->hasMany(CriteriaForJudging::class,"settup_id","id");
     }
 }

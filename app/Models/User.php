@@ -44,18 +44,6 @@ class User extends Authenticatable implements HasMedia, MustVerifyEmail
         return $this->belongsToMany(Permission::class);
     }
 
-    // public function office() {
-
-    //     return $this->belongsTo(Office::class, 'office_id', 'department_code');
-
-    // }
-
-    public function employee() {
-
-        return $this->hasOne(Employee::class, 'empl_id', 'cats');
-
-    }
-
     // public function setPasswordAttribute($value)
     // {
     //     $this->attributes['password'] = bcrypt($value);

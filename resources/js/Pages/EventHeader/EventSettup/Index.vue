@@ -71,7 +71,7 @@
                                     </svg>
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
-                                    <li><Link class="dropdown-item" :href="`/event-header/${eventX.id}/edit`">Edit</Link></li>
+                                    <li><Link class="dropdown-item" :href="`/event-setup/${eventSetup.id}/edit/${eventX.id}`">Edit</Link></li>
                                     <li><hr class="dropdown-divider action-divider"></li>
                                     <li><a class="dropdown-item" href="#" @click="deleteEventSetup(eventX.id)">Delete</a></li>
                                   </ul>

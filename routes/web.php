@@ -15,6 +15,7 @@ use App\Http\Controllers\EventParticipantsController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\CriteriaForJudgingController;
 use App\Http\Controllers\SetupPanelController;
+use App\Http\Controllers\JudgingController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -47,10 +48,13 @@ Route::middleware('auth')->group(function() {
         Route::post('/delete',[EventHeaderController::class, 'destroy']);
         Route::post('/generate-winner',[EventHeaderController::class, 'generateWinner']);
     });
+
     Route::prefix('/event-setup')->group(function() {
         Route::get('/{event_id}',[EventHeaderController::class, 'eventSetup']);//->can('canCreateProject', 'App\Model\User');
         Route::get('/create/{event_id}',[EventHeaderController::class, 'createEventSetup']);//->can('canCreateProject', 'App\Model\User');
+        Route::get('{event_id}/edit/{id}',[EventHeaderController::class, 'editEventSetup']);//->can('canCreateProject', 'App\Model\User');
         Route::post('/create-setup',[EventHeaderController::class, 'storeSetup']);//->can('canCreateProject', 'App\Model\User');
+        Route::post('/update',[EventHeaderController::class, 'updateSetup']);//->can('canCreateProject', 'App\Model\User');
         Route::post('/delete',[EventHeaderController::class, 'destroySetup']);//->can('canCreateProject', 'App\Model\User');
     });
 
@@ -58,7 +62,9 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/event-participants')->group(function() {
         Route::get('',[EventParticipantsController::class, 'index']);//->can('canCreateProject', 'App\Model\User');
         Route::get('/create',[EventParticipantsController::class, 'create']);
+        Route::get('/edit',[EventParticipantsController::class, 'edit']);
         Route::post('/create-participant',[EventParticipantsController::class, 'store']);
+        Route::post('/update',[EventParticipantsController::class, 'update']);
         Route::post('/delete',[EventParticipantsController::class, 'destroy']); 
     });
 
@@ -73,9 +79,18 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/panel')->group(function() {
         Route::get('',[SetupPanelController::class, 'index']);//->can('canCreateProject', 'App\Model\User');
         Route::get('/create',[SetupPanelController::class, 'create']);
-        Route::post('/save-all-criteria',[SetupPanelController::class, 'store']);
+        Route::get('/edit/{id}',[SetupPanelController::class, 'edit']);
+        Route::post('/store-panel',[SetupPanelController::class, 'store']);
         Route::post('/delete',[SetupPanelController::class, 'destroy']); 
         Route::post('/update',[SetupPanelController::class, 'update']);
+    });
+
+    Route::prefix('/panel-judging')->group(function() 
+    {
+        Route::get('/',[JudgingController::class, 'index']);
+        Route::get('/participants',[JudgingController::class, 'getPariticipants']);
+        Route::post('/panel-vote',[JudgingController::class, 'vote']);
+        Route::post('/get-criteria',[JudgingController::class, 'getCriteria']);
     });
 
     Route::prefix('/students')->group(function() {

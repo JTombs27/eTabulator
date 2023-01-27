@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models;
 use App\Models\EventHeader;
 use App\Models\EventSetup;
-use App\Models\CriteriaForJudging;
+use App\Models\SetupPanel;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 class SetupPanelController extends Controller
@@ -18,11 +19,12 @@ class SetupPanelController extends Controller
      *
      * @return void
      */
-    public function __construct(CriteriaForJudging $model, EventHeader $event, EventSetup  $setup)
+    public function __construct(SetupPanel $model, EventHeader $event, EventSetup  $setup, User $users)
     {
         $this->model = $model;
         $this->event = $event;
         $this->setup = $setup;
+        $this->users = $users;
     }    
 
     /**
@@ -55,26 +57,18 @@ class SetupPanelController extends Controller
                             'settups'           => $event->event_settup,
                             'text'              => $event->event_title
                         ]);
-        $criteria_list = $this->model
-                            ->selectRaw(
-                                'id                 
-                                ,criteria_description
-                                ,criteria_percentage
-                                ,settup_id
-                                ,(SELECT SUM(X.criteria_percentage) FROM criteria_for_judging X WHERE X.settup_id = criteria_for_judging.settup_id) 
-                                    AS total_percentage
-                                '           
-                            )
+                        
+        $pannelList = $this->model
+                            ->with(['panelUser','setup'])
                             ->where('settup_id',$settup_id)
-                            ->orderBy('criteria_percentage','DESC')
                             ->simplePaginate(8)
                             ->withQueryString()
-                            ->through(fn($criteria) => [
-                            'id'                   => $criteria->id,
-                            'criteria_description' => $criteria->criteria_description,
-                            'criteria_percentage'  => $criteria->criteria_percentage ,
-                            'total_percentage'     => $criteria->total_percentage ,
-                            'settup_id'            => $criteria->settup_id,
+                            ->through(fn($panel) => [
+                            'id'                    => $panel->id,
+                            'panel_info'            => $panel->panel_info,
+                            'profile_path'          => $panel->profile_path ,
+                            'settup_info'           => $panel->setup ,
+                            'user_information'      => $panel->panelUser,
                                 "can" => [
                                     'delete' => true
                                 ],
@@ -82,7 +76,7 @@ class SetupPanelController extends Controller
         return inertia('Panel/Index'
                     ,[
                         'event'         => $event_data,
-                        'criteria_list' => $criteria_list,
+                        'panel_list'    => $pannelList,
                         'username'      => auth()->user()->username,
                         'can'           =>[
                                             'createUser' => auth()->user()->can('create', User::class),
@@ -97,96 +91,156 @@ class SetupPanelController extends Controller
     }
     public function create(Request $request)
     {
-        return inertia('EventParticipants/Create',["settup_id"=> $request->settup_id,"event_id"=> $request->event_id]);
+        $settup_info = $this->setup->where('id','=',$request->settup_id)->first();
+        return inertia('Panel/Create',
+        [
+        "settup_info"=> $settup_info
+        ,"settup_id"=> $request->settup_id
+        ,"event_id" => $request->event_id
+        ,"users"    => $this->users
+                        ->selectRaw(
+                        'users.id   AS id,
+                         users.name AS name
+                        ')
+                        ->leftjoin(DB::raw('event_panel AS panel'),function($join) use($request)
+                        {
+                            $join->on('panel.user_id','=','users.id');
+                            $join->on('panel.settup_id','=',DB::raw($request->settup_id));
+                        })
+                        ->where('role','Panel')
+                        ->whereNull('panel.id')
+                        ->simplePaginate()
+                        ->withQueryString()
+                        ->through(fn($panel) => [
+                        'id'                    => $panel->id,
+                        'text'                  => $panel->name
+                        ])
+    ]);
+    }
+
+    public function edit(Request $request)
+    {
+        $data = $this->model
+        ->with('panelUser')
+        ->where('id','=',$request->id)->first();
+        $settup_info = $this->setup->where('id','=',$request->settup_id)->first();
+        return inertia('Panel/Create',
+        [
+         "editData" => $data
+         , "settup_info"=> $settup_info
+        ,"settup_id"=> $request->settup_id
+        ,"event_id" => $request->event_id
+        ,"users"    => $this->users
+                        ->leftjoin(DB::raw('event_panel AS panel'),function($join) use($request)
+                        {
+                            $join->on('panel.user_id','=','users.id');
+                            $join->on('panel.settup_id','=',DB::raw($request->settup_id));
+                        })
+                        ->selectRaw(
+                        'users.id   AS id,
+                         users.name AS name
+                        ')
+                        ->where('role','Panel')
+                        ->whereNull('panel.id')
+                        ->simplePaginate()
+                        ->withQueryString()
+                        ->through(fn($panel) => [
+                        'id'                    => $panel->id,
+                        'text'                  => $panel->name
+                        ])
+    ]);
     }
 
     public function update(Request $request)
-    {
+    { //$attributes = $request->validated();
+        $filename  = "";
+        $data = $this->model->findOrFail($request->id);
+
         //transactions are functions that are used when you want to CRUD multiple table simultaneously
         //this will help rollback all changes if one of the table breaks which saves time to clean the mess
-        if($request->criteriaGroup)
-        {
-            $attributes = $request->validate([ 
-                "criteriaGroup.*.criteria_description"   =>"required",
-                "criteriaGroup.*.criteria_percentage"    =>"required|gt:0"],
-                [
-                "criteriaGroup.*.criteria_description.required" =>"Description is Required!",
-                "criteriaGroup.*.criteria_percentage.required"  =>"Percentage is Required!",
-                "criteriaGroup.*.criteria_percentage.gt"        =>"Must be greater than zero!"] );
-        }
         DB::beginTransaction();
         try {
 
-            
-            if($request->criteriaGroup !==null)
+            $data->update([
+                'settup_id'             => $request->settup_id,
+                'user_id'               => $request->user_id,
+                'panel_info'            => $request->panel_info
+            ]);
+           
+            if ($request->hasFile('profile_path')) 
             {
-                foreach($request->criteriaGroup as $key=>$criteria) 
-                { 
-                    $data = $this->model->where('id','=',$criteria["id"])->first();
-                    $data->update(
-                        [ 'criteria_description'   => $criteria["criteria_description"],
-                        'criteria_percentage'   => $criteria["criteria_percentage"]
-                        ]
-                    );
-                }
+                $file       = $request->file('profile_path');
+                $filename   = $file->getClientOriginalName();
+                $name       = $file->getClientOriginalName();
+                $extension  = $file->getClientOriginalExtension();
+                Storage::disk('public')->delete($data->profile_path);
+                $path       = $request->file('profile_path')->storeAs('panel',$data->id.'.'.$extension,'public');
+                $data->update([
+                    "profile_path" => $path
+                ]);
+                
             }
+          
 
             DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect('/criteria')->with('error', $e);
+            return redirect('/panel')->with('error', $e);
         }
 
-        return redirect('/criteria?event_id='.$request->data["event_id"].'&settup_id='.$request->data["settup_id"])->with('message', 'Criteria Successfully Updated');
-    }
+        return redirect('/panel?event_id='.$request->event_id.'&settup_id='.$request->settup_id)->with('message', 'Event Successfully Created');
+     }
 
 
     public function store(Request $request)
     {
+        //$attributes = $request->validated();
+        $filename  = "";
+        
+        
         //transactions are functions that are used when you want to CRUD multiple table simultaneously
         //this will help rollback all changes if one of the table breaks which saves time to clean the mess
-        if($request->criteriaGroup)
-        {
-            $attributes = $request->validate([ 
-                "criteriaGroup.*.criteria_description"   =>"required",
-                "criteriaGroup.*.criteria_percentage"    =>"required|integer|gt:0"],
-                [
-                "criteriaGroup.*.criteria_description.required" =>"Description is Required!",
-                "criteriaGroup.*.criteria_percentage.required"  =>"Percentage is Required!",
-                "criteriaGroup.*.criteria_percentage.gt"        =>"Must be greater than zero!"] );
-        }
         DB::beginTransaction();
         try {
 
-            
-            if($request->criteriaGroup !==null)
+            $inserted_data = $this->model->create([
+                'settup_id'             => $request->settup_id,
+                'user_id'               => $request->user_id,
+                'panel_info'            => $request->panel_info,
+                'profile_path'          => "",
+            ]);
+           
+            if ($request->hasFile('profile_path')) 
             {
-                foreach($request->criteriaGroup as $key=>$criteria) 
-                { 
-                    $this->model->create([
-                        'criteria_description'   => $criteria["criteria_description"],
-                        'criteria_percentage'   => $criteria["criteria_percentage"],
-                        'settup_id'             => $criteria["settup_id"]
-                    ]); 
-                }
+                $file       = $request->file('profile_path');
+                $filename   = $file->getClientOriginalName();
+                $name       = $file->getClientOriginalName();
+                $extension  = $file->getClientOriginalExtension();
+                Storage::disk('public')->delete('panel/'.$inserted_data->id.'.'.$extension.'');
+                $path       = $request->file('profile_path')->storeAs('panel',$inserted_data->id.'.'.$extension,'public');
+                $inserted_data->update([
+                    "profile_path" => $path
+                ]);
+                
             }
+          
 
             DB::commit();
 
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect('/criteria')->with('error', $e);
+            return redirect('/panel')->with('error', $e);
         }
 
-        return redirect('/criteria?event_id='.$request->data["event_id"].'&settup_id='.$request->data["settup_id"])->with('message', 'Criteria Successfully Created');
-    }
+        return redirect('/panel?event_id='.$request->event_id.'&settup_id='.$request->settup_id)->with('message', 'Event Successfully Created');
+     }
 
     public function destroy(Request $request)
     {
-        $id = "";
-        $event_id = "";
-        $settup_id = "";
+        $id         = "";
+        $event_id   = "";
+        $settup_id  = "";
         try {
             if($request->data["id"] != null)
             {
@@ -207,8 +261,9 @@ class SetupPanelController extends Controller
         }
        
         $data = $this->model->findOrFail($id);
+        Storage::disk('public')->delete($data->profile_path);
         $data->delete();
 
-        return redirect('/criteria?event_id='.$event_id.'&settup_id='.$settup_id)->with('message', 'Setup Successfull deleted');
+        return redirect('/panel?event_id='.$event_id.'&settup_id='.$settup_id)->with('message', 'Panel Successfull deleted');
     }
 }

@@ -93,6 +93,17 @@ class EventParticipantsController extends Controller
         return inertia('EventParticipants/Create',["settup_id"=> $request->settup_id,"event_id"=> $request->event_id]);
     }
 
+    public function edit(Request $request)
+    {
+        $data = $this->model->findOrFail($request->id);
+        return inertia('EventParticipants/Create',
+        [
+        "editData" => $data
+        ,"settup_id"=> $request->settup_id
+        ,"event_id"=> $request->event_id]
+    );
+    }
+
 
     public function store(Request $request)
     {
@@ -122,6 +133,50 @@ class EventParticipantsController extends Controller
                 Storage::disk('public')->delete('participants_profile/'.$inserted_data->id.'.'.$extension.'');
                 $path       = $request->file('participants_profile')->storeAs('participants_profile',$inserted_data->id.'.'.$extension,'public');
                 $inserted_data->update([
+                    "participants_profile" => $path
+                ]);
+                
+            }
+          
+
+            DB::commit();
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect('/event-participants')->with('error', $e);
+        }
+
+        return redirect('/event-participants?event_id='.$request->event_id.'&settup_id='.$request->settup_id)->with('message', 'Event Successfully Created');
+    }
+
+
+    public function update(Request $request)
+    {
+        //$attributes = $request->validated();
+        $filename  = "";
+        $data = $this->model->findOrFail($request->id);
+        
+        //transactions are functions that are used when you want to CRUD multiple table simultaneously
+        //this will help rollback all changes if one of the table breaks which saves time to clean the mess
+        DB::beginTransaction();
+        try {
+
+            $data->update([
+                'settup_id'             => $request->settup_id,
+                'participants_name'     => $request->participants_name,
+                'participants_address'  => $request->participants_address,
+                'participants_details'  => $request->participants_details
+            ]);
+           
+            if ($request->hasFile('participants_profile')) 
+            {
+                $file       = $request->file('participants_profile');
+                $filename   = $file->getClientOriginalName();
+                $name       = $file->getClientOriginalName();
+                $extension  = $file->getClientOriginalExtension();
+                Storage::disk('public')->delete($data->participants_profile);
+                $path       = $request->file('participants_profile')->storeAs('participants_profile',$data->id.'.'.$extension,'public');
+                $data->update([
                     "participants_profile" => $path
                 ]);
                 

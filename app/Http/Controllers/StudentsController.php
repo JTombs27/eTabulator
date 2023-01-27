@@ -16,11 +16,12 @@ use Carbon\Carbon;
 
 class StudentsController extends Controller
 {
-    public function __construct(Participant $model,EventHeader $eventHeader, Voting $voting)
+    public function __construct(Participant $model,EventHeader $eventHeader, Voting $voting, EventSetup $setup)
     {
         $this->model    = $model;
         $this->events   = $eventHeader;
         $this->vote     = $voting;
+        $this->setup    = $setup;
     }
 
     protected function resourceAbilityMap()
@@ -77,7 +78,8 @@ class StudentsController extends Controller
                     'participants_id'       => $request->participants_id,
                     'user_id'               => auth()->user()->id,
                     'criterria_id'          => 0,
-                    'vote_datetime_cast'    => Carbon::now()
+                    'vote_datetime_cast'    => Carbon::now(),
+                    'vote_value'            => 1,
                 ]);
                
                 DB::commit();
@@ -113,7 +115,7 @@ class StudentsController extends Controller
                             "participants_name" => $item->participants_name,
                             "participants_photo"=> $item->participants_profile,
                             "participants_id"   => $item->participants_id,
-                            "vote_count"        =>count($this->vote->where("settup_id",$request->settup_id)->where("participants_id",$item->participants_id)->get())
+                            "vote_count"        =>count($this->vote->where("settup_id",$request->settup_id)->where("criterria_id",0)->where("participants_id",$item->participants_id)->get())
                         ];
                     })
                     ;
@@ -139,6 +141,7 @@ class StudentsController extends Controller
                     ->where('settup_id',$this->settup_id)
                     ->orderBy('id', 'ASC')
                     ->get();
+            $settup_data = $this->setup->where('id',$this->settup_id)->where('event_settup_withaudience',1)->exists();
             //dd('Server Date:'.$server_date.' -> between('.$event->event_from.','.$event->event_to.')');
             //dd(Carbon::parse($server_date)->between($event->event_from,$event->event_to));
             return inertia('Students/ParticipantsIndex'
@@ -148,7 +151,7 @@ class StudentsController extends Controller
                         'username'      => auth()->user()->username,
                         'settup_id'     => $this->settup_id,
                         'users'         =>[],
-                        'canVote'       => ($this->vote->where('settup_id',$this->settup_id)->where('user_id',auth()->user()->id)->exists() == false && Carbon::parse($server_date)->between($event->event_from,$event->event_to) == true ) ? true:false
+                        'canVote'       => ($this->vote->where('settup_id',$this->settup_id)->where('user_id',auth()->user()->id)->exists() == false && Carbon::parse($server_date)->between($event->event_from,$event->event_to) == true && $settup_data == true) ? true:false
                     ]
                 );
     }
