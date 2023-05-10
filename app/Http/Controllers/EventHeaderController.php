@@ -163,7 +163,9 @@ class EventHeaderController extends Controller
                             ->where('id',$request->event_id)
                             ->first()
             ,
-            'settupData' => $this->setup->where('event_id',$request->event_id)
+            'settupData' => $this->setup
+            ->with(['winner'])
+            ->where('event_id',$request->event_id)
             ->orderBy('id', 'asc')
             ->simplePaginate(10)
             ->withQueryString(),
@@ -224,10 +226,10 @@ class EventHeaderController extends Controller
                 'event_id'                                  => $request->event_id,
                 'event_settup_title'                        => $request->event_settup_title,
                 'event_settup_requirement'                  => $request->event_settup_requirement,
-                'event_settup_withpannel'                   => $request->event_settup_withpannel,
-                'event_settup_withaudience'                 => $request->event_settup_withaudience,
-                'event_settup_withaudience_vote_open'       => $request->event_settup_withaudience_vote_open,
-                'event_settup_withaudience_vote_closed'     => $request->event_settup_withaudience_vote_closed,
+                'event_settup_withpannel'                   => $request->event_settup_withpannel == null ? 0:1,
+                'event_settup_withaudience'                 => $request->event_settup_withaudience  == null ? 0:1,
+                'event_settup_withaudience_vote_open'       => $request->event_settup_withaudience_vote_open == "" ? null:$request->event_settup_withaudience_vote_open,
+                'event_settup_withaudience_vote_closed'     => $request->event_settup_withaudience_vote_closed == "" ? null:$request->event_settup_withaudience_vote_closed,
                 'settup_status'                             => "F",
             ]);
            

@@ -22,7 +22,7 @@ class CreateGenerateWinnerProcedure extends Migration
             SELECT B.id FROM event_settup A
 			INNER JOIN participants B
 				ON B.settup_id = A.id
-			INNER JOIN criteria_for_judging J
+			LEFT JOIN criteria_for_judging J
 				ON J.settup_id = A.id
 			
 			INNER JOIN voting_tbl V

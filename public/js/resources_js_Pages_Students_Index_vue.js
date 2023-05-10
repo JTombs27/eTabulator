@@ -32,7 +32,7 @@ __webpack_require__.r(__webpack_exports__);
       permissions: [],
       selectedPermissions: [],
       selectedUser: "",
-      pageTitle: "ACES 2022 SCHOOL CALENDAR OF EVENTS"
+      pageTitle: "SCHOOL CALENDAR OF EVENTS"
     };
   },
   watch: {

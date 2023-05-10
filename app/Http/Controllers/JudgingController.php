@@ -68,7 +68,7 @@ class JudgingController extends Controller
                         ]);
                         
         $pannelList = $this->model
-                            ->with(['panelUser','setup'])
+                            ->with(['panelUser','setup','setup.winner'])
                             ->where('user_id',auth()->user()->id)
                             ->simplePaginate(8)
                             ->withQueryString()

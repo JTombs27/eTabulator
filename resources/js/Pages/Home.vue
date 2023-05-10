@@ -5,9 +5,8 @@
     </Head>
 
     <div class="row gap-20 masonry pos-r">
-        <div class="col-lg-12">
-            <h1>{{username}} DIRI KA NI SULOD</h1>
-            <a href="/students/">GO TO STUDENTS 2</a>
+        <div class="col-lg-12 pY-50 text-center">
+            <h1><b>WELCOME TO ACES UVOTE ADMIN</b></h1>
         </div> 
     </div>
 </template>

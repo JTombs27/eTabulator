@@ -72,7 +72,7 @@ export default {
             permissions: [],
             selectedPermissions: [],
             selectedUser: "",
-            pageTitle:"ACES 2022 SCHOOL CALENDAR OF EVENTS"
+            pageTitle:"SCHOOL CALENDAR OF EVENTS"
         };
     },
     watch: {

@@ -31,7 +31,7 @@
                             <th width="40%" >Setup Requirments</th>
                             <th width="5%" class="text-center">Panel</th>
                             <th width="5%" class="text-center">Audience</th>
-                            <th width="10%" class="text-center">Status</th>
+                            <th width="10%" class="text-center">Winner</th>
                             <th width="5%" style="text-align: right">ACTION</th>
                         </tr>
                     </thead>
@@ -59,8 +59,12 @@
                                 <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
                                 </svg>
                             </td>
-                            <td  class="text-center">
-                               status
+                            <td  class="text-center" v-if="eventX.winner != null">
+                                <img  :src="`/storage/${eventX.winner.participants_profile}`"  class="w-2r bdrs-50p" style="border: 1.5px solid green;" :height="30" :width="20"  alt="...">
+                                <br/><small>{{ eventX.winner.participants_name }}</small>
+                            </td >
+                            <td  class="text-center" v-else>
+                                <img class="w-2r bdrs-50p" src="http://127.0.0.1:8000/storage/profile/default/photo.png" alt=""><br/> <small>No Winner</small>
                             </td >
                             <td  class="text-center">
                                 <!-- v-if="user.can.edit" -->

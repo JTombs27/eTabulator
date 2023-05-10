@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function() {
         Route::post('/', [UserController::class, 'store']);
         Route::get('/create', [UserController::class, 'create'])->can('create', 'App\Model\User');
         Route::get('/{id}/edit', [UserController::class, 'edit'])->can('create', 'App\Model\User');
-        Route::delete('/{id}', [UserController::class, 'destroy'])->can('canDeleteUser', 'App\Model\User');
+        Route::delete('/{id}', [UserController::class, 'destroy']);
         Route::patch('/{id}', [UserController::class, 'update'])->can('create', 'App\Model\User');
         Route::get('/change-password', [UserController::class, 'changePassword']);
         Route::post('/update-password', [UserController::class, 'updatePassword']);

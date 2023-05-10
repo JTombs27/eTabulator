@@ -7,7 +7,7 @@
             <div class="peers fxw-nw jc-sb ai-c bgc-white p-20 bd shadow-sm">
                 <b style="font-size:20px;">School Events</b>
                 <div class="peers">
-                    <div class="peer mR-5 pT-5">
+                    <!-- <div class="peer mR-5 pT-5">
                         <label style="font-weight:bold;">Calendar Year:</label>
                     </div>
                     <div class="peer mR-10">
@@ -20,7 +20,7 @@
                             <option value="peo-motorpool">PEO Motorpool</option>
                             <option value="gasoline-station">Gasoline Station</option>
                         </select>
-                    </div>
+                    </div> -->
                     <!-- <div class="peer mR-10">
                         <input v-model="search" type="text" class="form-control " placeholder="Search...">
                     </div> -->
