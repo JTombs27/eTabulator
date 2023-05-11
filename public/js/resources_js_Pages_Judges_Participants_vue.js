@@ -70,7 +70,7 @@ __webpack_require__.r(__webpack_exports__);
     loadCriteria: function loadCriteria() {
       var _this = this;
 
-      axios.post("/panel-judging/get-criteria", {
+      axios.post("/panel-judging/get-criteria/for-voting", {
         settup_id: this.settupData[0].id,
         participants_id: this.participants.data[0].id,
         panel_id: this.panelInfo.id
@@ -103,6 +103,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       this.form.post(action_route, {
         preserveScroll: true,
+        preserveState: true,
         onSuccess: function onSuccess() {
           _this2.$inertia.reload({
             only: ['participants']

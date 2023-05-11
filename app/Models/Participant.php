@@ -19,7 +19,7 @@ class Participant extends Model
     // ];
 
     public function votings(){
-        return $this->hasMany(Voting::class,"id","participants_id");
+        return $this->hasMany(Voting::class,"participants_id","id");
     }
 
     public function settup(){

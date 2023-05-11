@@ -6,7 +6,7 @@
     <div class="col-lg-12 pX-20">
         <div class="row ">
             <template  v-for="(setup,index) in tobe_judge.data" :key="index">
-                <div class="col-md-4 mT-10" >
+                <div class="col-md-4 mT-10" v-if="setup.settup_info != null">
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1"><b>{{ setup.settup_info.event_settup_title }}</b></h6>

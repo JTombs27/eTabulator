@@ -61,7 +61,7 @@
                             </td>
                             <td  class="text-center" v-if="eventX.winner != null">
                                 <img  :src="`/storage/${eventX.winner.participants_profile}`"  class="w-2r bdrs-50p" style="border: 1.5px solid green;" :height="30" :width="20"  alt="...">
-                                <br/><small>{{ eventX.winner.participants_name }}</small>
+                                <br/><small style="font-size: 10px;">{{ eventX.winner.participants_name }}</small>
                             </td >
                             <td  class="text-center" v-else>
                                 <img class="w-2r bdrs-50p" src="http://127.0.0.1:8000/storage/profile/default/photo.png" alt=""><br/> <small>No Winner</small>
@@ -76,6 +76,7 @@
                                   </button>
                                   <ul class="dropdown-menu action-dropdown" aria-labelledby="dropdownMenuButton1">
                                     <li><Link class="dropdown-item" :href="`/event-setup/${eventSetup.id}/edit/${eventX.id}`">Edit</Link></li>
+                                    <li><button class="dropdown-item" @click="showParticipants(eventX.id)">Voting Summary</button></li>
                                     <li><hr class="dropdown-divider action-divider"></li>
                                     <li><a class="dropdown-item" href="#" @click="deleteEventSetup(eventX.id)">Delete</a></li>
                                   </ul>
@@ -96,9 +97,59 @@
             </div>
         </div>
     </div>
+
+
+    <modal 
+        v-if="showModal" 
+        :modalTitle = "'Voting Summary'"
+        :addional_class="'modal-lg'"
+        :buttonTitle="'Save'"
+        :showBtn =false
+        @closeModal     ="closeModal"
+        @saveModal      ="closeModal"
+    >
+        <div class="row">
+            <!-- <div class="col-lg-12 " style="padding-top: 10px;padding-bottom: 10px;">
+                <label style="font-size: 14px;"><b>Supply Officer </b>: <span style="font-size: 16px;" class="badge bg-secondary">{{ suppy_officer }}</span></label>
+            </div> -->
+            <div class="col-lg-12 bgc-white bd p-10">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col" class="text-center" style="width:10%;">PIC</th>
+                            <th scope="col" style="width:60%;">Participants Name</th>
+                            <th class="text-center" scope="col" style="width:30%;padding-left:0px ;padding-right: 0px;"><small>VOTES</small></th>
+                        </tr>
+                    </thead>
+                    <tbody class="bgc-grey-300">
+                        <tr v-for="(participant, index) in participants.data" :key="index">
+                            <td class="text-center" >  <img  :src="`/storage/${participant.participants_profile}`"  class="w-2r bdrs-50p" style="border: 1.5px solid green;" :height="30" :width="20"  alt="..."></td>
+                            <td>{{ participant.participants_name }}</td>
+                            <td class="">
+                                <div class="row" v-if="participant.votings != null" v-for="(voting,v_index) in participant.votings" :key="v_index">
+                                    <template v-if="voting.panel != null && v_index == 0 && voting.criteria != null">
+                                        <div class="col-lg-12" ><small><b>{{  voting.panel.name }}</b></small></div>
+                                    </template>
+                                    <template v-if ="voting.panel != null && v_index > 0 && voting.criteria != null">
+                                        <div class="col-lg-12"  v-if="participant.votings[v_index - 1].panel != null"><small><b>{{  participant.votings[v_index - 1].panel.id != voting.panel.id ? voting.panel.name:""}}</b></small></div>
+                                    </template>
+                                   
+                                    <div class="col-lg-8 text-left" v-if="voting.criteria != null">{{ voting.criteria.criteria_description}}</div>
+                                    <div class="col-lg-8 text-left" v-else>Audience</div>
+                                    <div class="col-lg-4">{{ voting.criteria != null ? voting.vote_value+'%': voting.vote_value}}</div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </modal>
 </template>
 
 <script>
+
 import Filtering from "@/Shared/Filter";
 import Pagination from "@/Shared/Pagination";
 import { useForm } from "@inertiajs/inertia-vue3";
@@ -122,7 +173,10 @@ export default {
             form:useForm({
                 event_id:"",
                 settup_id:""
-            })
+            }),
+            showModal:false,
+            participants:[]
+
         }
     },
     methods:
@@ -137,7 +191,26 @@ export default {
                 this.form.settup_id = settup_id;
                 this.form.post("/event-setup/delete");
             }
-        }
+        },
+        showParticipants(settup_id)
+        {
+            let vm = this
+            axios.post("/panel-judging/get-criteria/list",{settup_id:settup_id})
+            .then(response=>
+            {
+                if(response.data != null)
+                {
+                  vm.participants = response.data
+                  vm.showModal = true
+                }
+            });
+        },
+        closeModal() 
+        {
+            this.showModal  = false;
+        },
+
+        
     }
 
 }

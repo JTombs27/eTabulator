@@ -149,6 +149,59 @@ class JudgingController extends Controller
         );
     }
 
+    public function getPariticipantsList(Request $request)
+    {
+            $event_id   = "";
+            $settup_id  = "";
+
+            try {
+                $event_id       = $request->event_id;
+                $settup_id      = $request->settup_id;
+                
+            } catch (\Throwable $th) 
+            {
+                //throw $th;
+            }
+            $settupData = $this->setup->where('id','=',$settup_id)->get();
+
+           $data =  $this->participant
+                    ->with(['votings.criteria','votings.panel'])
+                    ->leftjoin(DB::raw('voting_tbl AS V'),function($join) use($request)
+                    {
+                        $join->on('V.participants_id','=','participants.id');
+                        $join->on('V.settup_id','=',DB::raw($request->settup_id));
+                    })-> selectRaw(
+                        'participants.id,
+                        participants.settup_id           ,
+                        participants.participants_name   ,
+                        participants.participants_address,
+                        participants.participants_details,
+                        participants.participants_profile,
+                        SUM(V.vote_value) AS votes
+                        '
+                    )
+                    ->with(['settup','settup.criteria'])
+                    ->where('participants.settup_id',$settup_id)
+                    ->groupBy('V.settup_id','V.participants_id')
+                    ->orderByRaw('votes DESC')
+                    ->simplePaginate(20)
+                    ->withQueryString()
+                    ->through(fn($participant) => [
+                        'id'                   => $participant->id,
+                        'settup_id'            => $participant->settup_id           ,
+                        'participants_name'    => $participant->participants_name   ,
+                        'participants_address' => $participant->participants_address,
+                        'participants_details' => $participant->participants_details,
+                        'participants_profile' => $participant->participants_profile,
+                        'votes'                => $participant->votes,
+                        'votings'              => $participant->votings,
+                        "can" => [
+                            'delete' => true
+                        ],
+                    ]);
+            return $data;
+    }
+
     public function vote(Request $request)
     {
         DB::beginTransaction();
@@ -199,6 +252,12 @@ class JudgingController extends Controller
                         )
                         ->where('criteria_for_judging.settup_id','=',$request->settup_id)
                         ->get();
+        return $criteria;
+    }
+
+    public function getParticipants(Request $request)
+    {
+        $criteria = $this->sett;
         return $criteria;
     }
 }

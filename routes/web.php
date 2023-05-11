@@ -52,7 +52,8 @@ Route::middleware('auth')->group(function() {
     Route::prefix('/event-setup')->group(function() {
         Route::get('/{event_id}',[EventHeaderController::class, 'eventSetup']);//->can('canCreateProject', 'App\Model\User');
         Route::get('/create/{event_id}',[EventHeaderController::class, 'createEventSetup']);//->can('canCreateProject', 'App\Model\User');
-        Route::get('{event_id}/edit/{id}',[EventHeaderController::class, 'editEventSetup']);//->can('canCreateProject', 'App\Model\User');
+        Route::get('{event_id}/edit/{id}',[EventHeaderController::class, 'editEventSetup']);
+        //->can('canCreateProject', 'App\Model\User');
         Route::post('/create-setup',[EventHeaderController::class, 'storeSetup']);//->can('canCreateProject', 'App\Model\User');
         Route::post('/update',[EventHeaderController::class, 'updateSetup']);//->can('canCreateProject', 'App\Model\User');
         Route::post('/delete',[EventHeaderController::class, 'destroySetup']);//->can('canCreateProject', 'App\Model\User');
@@ -90,7 +91,9 @@ Route::middleware('auth')->group(function() {
         Route::get('/',[JudgingController::class, 'index']);
         Route::get('/participants',[JudgingController::class, 'getPariticipants']);
         Route::post('/panel-vote',[JudgingController::class, 'vote']);
-        Route::post('/get-criteria',[JudgingController::class, 'getCriteria']);
+        Route::post('/get-criteria/for-voting',[JudgingController::class, 'getCriteria']);
+        Route::post('/get-criteria',[JudgingController::class, 'getParticipants']);
+        Route::post('/get-criteria/list',[JudgingController::class, 'getPariticipantsList']);
     });
 
     Route::prefix('/students')->group(function() {

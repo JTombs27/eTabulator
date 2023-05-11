@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Participant;
 use App\Models\User;
+use App\Models\CriteriaForJudging;
 class Voting extends Model
 {
     use HasFactory;
@@ -28,5 +29,15 @@ class Voting extends Model
     public function voteCount()
     {
         return $this->belongsTo(User::class,"user_id","id")->select("id");
+    }
+
+    public function criteria()
+    {
+        return $this->belongsTo(CriteriaForJudging::class,"criterria_id","id");
+    }
+
+    public function panel()
+    {
+        return $this->belongsTo(User::class,"user_id","id");
     }
 }

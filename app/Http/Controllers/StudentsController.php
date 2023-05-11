@@ -128,11 +128,14 @@ class StudentsController extends Controller
             $this->settup_id = $request->settup_id;
 
             $event = $this->events
-                    ->with('event_settup')
-                    ->whereHas('event_settup',function($q)
+                    ->with(['event_settup'=>function($q)
                     {
                             $q->where('id',$this->settup_id);
-                    })
+                    }])
+                    // ->whereHas('event_settup',function($q)
+                    // {
+                    //         $q->where('id',$this->settup_id);
+                    // })
                     ->orderBy('event_from', 'DESC')
                     ->first();
             $server_date = Carbon::now()->format('Y-m-d');

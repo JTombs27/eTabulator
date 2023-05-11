@@ -176,7 +176,7 @@ export default {
         },
         loadCriteria()
         {
-            axios.post("/panel-judging/get-criteria",{settup_id:this.settupData[0].id,participants_id:this.participants.data[0].id,panel_id: this.panelInfo.id})
+            axios.post("/panel-judging/get-criteria/for-voting",{settup_id:this.settupData[0].id,participants_id:this.participants.data[0].id,panel_id: this.panelInfo.id})
             .then(response=>
             {
                 if(response.data != null)
@@ -211,6 +211,7 @@ export default {
 
             this.form.post(action_route,{
             preserveScroll: true,
+            preserveState:true,
             onSuccess: () => 
             {
                 this.$inertia.reload({only:['participants']});

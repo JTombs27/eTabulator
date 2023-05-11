@@ -211,6 +211,16 @@ class EventHeaderController extends Controller
         ]);
     }
 
+    public function test(Request $request)
+    {
+        dd("gg");
+        // $data = $this->setup
+        //             ->leftJoin('participants','participants.settup_id','=','event_settup.id')
+        //             ->where('id',$request->id)
+        //             ->get();
+        return "";
+    }
+
     public function storeSetup(Request $request)
     {
         //$attributes = $request->validated();

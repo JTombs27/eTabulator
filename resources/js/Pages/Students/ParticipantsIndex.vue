@@ -1,6 +1,6 @@
 <template>
     <Head>
-        <title>Users</title>
+        <title>Students Participants</title>
     </Head>
 
     <div class="row gap-10 masonry pos-r">
@@ -15,7 +15,7 @@
             </div>
             {{events.event_description}}
         </div>
-        <div class="col-sm-12 bgc-white p-10 bd shadow-sm">
+        <!-- <div class="col-sm-12 bgc-white p-10 bd shadow-sm">
             <div class="col-lg-12 text-start">
                 <b>Voting Result</b>
             </div>
@@ -26,8 +26,7 @@
                 <div class="peer"><span class="fsz-sm c-grey-900">{{sumx.participants_name}}</span></div>
                 <div class="peer mL-10"><span class="fsz-sm c-grey-900">{{sumx.vote_count}}</span></div>
             </a>
-        </div>
- 
+        </div> -->
         <div class="col-sm-12  bgc-white p-20 bd shadow-sm mT-10">
             <div class="row">
                 <div class="col-lg-12">
