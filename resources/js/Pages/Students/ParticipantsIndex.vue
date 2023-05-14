@@ -15,18 +15,11 @@
             </div>
             {{events.event_description}}
         </div>
-        <!-- <div class="col-sm-12 bgc-white p-10 bd shadow-sm">
-            <div class="col-lg-12 text-start">
-                <b>Voting Result</b>
-            </div>
-            <a href="" v-for="(sumx, index) in summary" style="width: 100%;" class="dropdown-toggle no-after peers fxw-nw ai-c lh-1 mT-5" data-bs-toggle="dropdown">
-                <div class="peer mR-10">
-                    <img class="w-2r bdrs-50p" :height="30" :width="20" :src="`/storage/${sumx.participants_photo}`" alt="">
-                </div>
-                <div class="peer"><span class="fsz-sm c-grey-900">{{sumx.participants_name}}</span></div>
-                <div class="peer mL-10"><span class="fsz-sm c-grey-900">{{sumx.vote_count}}</span></div>
-            </a>
-        </div> -->
+        <div class="col-sm-12 bgc-white p-10 bd shadow-sm">
+            <!-- <div class="col-lg-12 text-start">
+                <b>Voting Status: {{ summary. }}</b>
+            </div> -->
+        </div>
         <div class="col-sm-12  bgc-white p-20 bd shadow-sm mT-10">
             <div class="row">
                 <div class="col-lg-12">

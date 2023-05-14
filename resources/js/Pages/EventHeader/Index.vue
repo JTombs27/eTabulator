@@ -76,6 +76,7 @@
                                     <li >
                                         <button class="dropdown-item btn btn-defualt" @click="generateWinners(eventX.id)">Generate Winners</button>
                                     </li>
+                                    <li><Link class="dropdown-item" :href="`/rankings/`+eventX.id">Rankings</Link></li>
                                     <li v-if="eventX.can.delete">
                                         <Link class="text-danger dropdown-item" @click="deleteEvent(eventX.id)">Delete</Link>
                                     </li>

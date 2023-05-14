@@ -76,13 +76,13 @@
                                 <label class="form-check-label" for="event_settup_withcreteria">With Creteria</label>
                             </div>
                         </div>
-                        <div class="col-md-6 mT-10">
+                        <div class="col-md-6 mT-10" v-if="false">
                             <label for="">Audience Vote Open:</label>
                             <input type="date" :disabled="!form.event_settup_withaudience" v-model="form.event_settup_withaudience_vote_open" class="form-control" autocomplete="chrome-off">
                             <div class="fs-6 c-red-500" v-if="form.errors.event_settup_withaudience_vote_open">{{ form.errors.event_settup_withaudience_vote_open }}</div>
                         </div>
                         
-                        <div class="col-md-6 mT-10">
+                        <div class="col-md-6 mT-10"  v-if="false">
                             <label for="">Audience Vote Close:</label>
                             <input type="date" :disabled="!form.event_settup_withaudience" v-model="form.event_settup_withaudience_vote_closed" class="form-control" autocomplete="chrome-off">
                             <div class="fs-6 c-red-500" v-if="form.errors.event_settup_withaudience_vote_closed">{{ form.errors.event_settup_withaudience_vote_closed }}</div>

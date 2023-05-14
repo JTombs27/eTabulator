@@ -16,6 +16,7 @@ use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\CriteriaForJudgingController;
 use App\Http\Controllers\SetupPanelController;
 use App\Http\Controllers\JudgingController;
+use App\Http\Controllers\RankingController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -46,7 +47,11 @@ Route::middleware('auth')->group(function() {
         Route::post('/create-event',[EventHeaderController::class, 'store']);//->can('canCreateProject', 'App\Model\User');
         Route::post('/update',[EventHeaderController::class, 'update']);
         Route::post('/delete',[EventHeaderController::class, 'destroy']);
+        Route::post('/delete',[EventHeaderController::class, 'destroy']);
         Route::post('/generate-winner',[EventHeaderController::class, 'generateWinner']);
+    });
+    Route::prefix('/rankings')->group(function() {
+        Route::get('/{event_id}', [RankingController::class, 'index'])->can('canViewProjectIndex', 'App\Model\User');
     });
 
     Route::prefix('/event-setup')->group(function() {

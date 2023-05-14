@@ -42,7 +42,7 @@ class EventSetup extends Model
 
     public function participants()
     {
-        return $this->hasMany(Participants::class,"settup_id","id");
+        return $this->hasMany(Participant::class,"settup_id","id");
     }
 
     public function criteria()

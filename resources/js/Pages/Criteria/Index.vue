@@ -256,6 +256,7 @@ export default {
                     this.total_percentage = this.criteria_list.data[this.rowIndex_edit].total_percentage - this.criteria_list.data[this.rowIndex_edit].criteria_percentage;
                 }
             }
+
             for(var x=0; x < this.criteriaGroup.length;x++)
             {
                 this.total_percentage = (parseInt(this.total_percentage) + parseInt(this.criteriaGroup[x].criteria_percentage));
@@ -319,7 +320,9 @@ export default {
         },
         saveCriteria()
         {
-            this.form.event_id  = this.filterData.event_id;
+            if(this.total_percentage <=100)
+            {
+                this.form.event_id  = this.filterData.event_id;
             this.form.settup_id = this.filterData.settup_id;
             var action_route = this.actionMode == "Add" ? '/criteria/save-all-criteria': '/criteria/update';
             this.form.transform
@@ -343,6 +346,12 @@ export default {
                     this.$inertia.reload({only:['criteria_list']});
                 },
                 });
+            }
+            else
+            {
+                alert("CANT SAVE!\nTotal Percentage must be 100%.");
+            }
+            
         },
         editRowClick(rowIndex)
         {

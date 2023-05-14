@@ -15,7 +15,7 @@
                             <div class="peers ai-sb fxw-nw">
                                 <div class="peer peer-greed">
                                     <span id="sparklinedash" v-if="setup.settup_info.winner != null">
-                                        <img class="cover bdrs-50p" style="width:40px;height: 40px;"   :src="`/storage/${setup.settup_info.winner.participants_profile}`" alt=""/> {{ setup.settup_info.winner.participants_name }}
+                                        <img class="cover bdrs-50p" style="width:40px;height: 40px;"   :src="`/storage/${setup.settup_info.winner.participants_profile}`" alt=""/> <small>{{ setup.settup_info.winner.participants_name }}</small>
                                     </span>
                                     <span id="sparklinedash" v-else>
                                         <img class="w-2r bdrs-50p" style="width:40px;height: 40px;"   src="http://127.0.0.1:8000/storage/profile/default/photo.png" alt=""> <small>No Winner</small>

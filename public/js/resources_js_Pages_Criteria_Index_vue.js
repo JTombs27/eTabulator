@@ -163,27 +163,31 @@ __webpack_require__.r(__webpack_exports__);
     saveCriteria: function saveCriteria() {
       var _this = this;
 
-      this.form.event_id = this.filterData.event_id;
-      this.form.settup_id = this.filterData.settup_id;
-      var action_route = this.actionMode == "Add" ? '/criteria/save-all-criteria' : '/criteria/update';
-      this.form.transform(function (data) {
-        return {
-          data: data,
-          criteriaGroup: _this.criteriaGroup
-        };
-      });
-      this.form.post(action_route, {
-        preserveScroll: true,
-        onSuccess: function onSuccess() {
-          _this.closeModal();
+      if (this.total_percentage <= 100) {
+        this.form.event_id = this.filterData.event_id;
+        this.form.settup_id = this.filterData.settup_id;
+        var action_route = this.actionMode == "Add" ? '/criteria/save-all-criteria' : '/criteria/update';
+        this.form.transform(function (data) {
+          return {
+            data: data,
+            criteriaGroup: _this.criteriaGroup
+          };
+        });
+        this.form.post(action_route, {
+          preserveScroll: true,
+          onSuccess: function onSuccess() {
+            _this.closeModal();
 
-          _this.showModal = false;
+            _this.showModal = false;
 
-          _this.$inertia.reload({
-            only: ['criteria_list']
-          });
-        }
-      });
+            _this.$inertia.reload({
+              only: ['criteria_list']
+            });
+          }
+        });
+      } else {
+        alert("CANT SAVE!\nTotal Percentage must be 100%.");
+      }
     },
     editRowClick: function editRowClick(rowIndex) {
       this.actionMode = "Edit";

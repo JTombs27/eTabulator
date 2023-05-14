@@ -99,6 +99,17 @@ class StudentsController extends Controller
 
     public function voteSummary(Request $request)
     {
+        $data = $this->setup
+        ->selectRaw(
+        '
+            (SELECT COUNT(X.id) FROM users X WHERE X.role = "Student" AND is_active = 1) AS total_student,
+            (SELECT COUNT(X.user_id) FROM voting_tbl X 
+                            INNER JOIN users Y
+                                ON  Y.id = X.user_id
+                                AND Y.role = "Student"
+                 WHERE X.settup_id = event_settup.id) AS voted_student
+        ')
+        ->where('id',$request->settup_id)->first();
         $summary = $this->model
                     ->leftJoin('voting_tbl', 'voting_tbl.participants_id', '=','participants.id')
                     ->select(DB::raw("participants.participants_name as participants_name,
@@ -120,7 +131,7 @@ class StudentsController extends Controller
                     })
                     ;
         //dd($summary->values());
-        return collect($summary)->sortByDesc("vote_count")->values();
+        return $data;
     }
 
     public function getEventParticipants(Request $request)
