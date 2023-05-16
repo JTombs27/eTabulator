@@ -176,6 +176,41 @@ var _hoisted_18 = {
     "text-decoration": "underline"
   }
 };
+
+var _hoisted_19 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("br", null, null, -1
+/* HOISTED */
+);
+
+var _hoisted_20 = {
+  key: 1,
+  style: {
+    "font-size": "6px"
+  },
+  "class": "pull-right"
+};
+
+var _hoisted_21 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("svg", {
+  xmlns: "http://www.w3.org/2000/svg",
+  width: "10",
+  height: "10",
+  fill: "currentColor",
+  "class": "bi bi-check2-circle",
+  viewBox: "0 0 16 16"
+}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"
+}), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("path", {
+  d: "M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_22 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("  ");
+
+var _hoisted_23 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("small", null, "Successfully Voted", -1
+/* HOISTED */
+);
+
+var _hoisted_24 = [_hoisted_21, _hoisted_22, _hoisted_23];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
 
@@ -241,12 +276,12 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* TEXT */
       )], 64
       /* STABLE_FRAGMENT */
-      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8
+      )) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), _hoisted_19, settupX.voted != null && settupX.voted.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("label", _hoisted_20, _hoisted_24)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)], 8
       /* PROPS */
       , _hoisted_12);
     }), 128
     /* KEYED_FRAGMENT */
-    )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a :href=\"`/students/to-students/`+settupX.id\" class=\"alert alert-primary\" style=\"margin-top:3px; margin-bottom: 3px;\" v-for=\"(settupX,settupIndex) in event_x.settups\" :key=\"settupIndex\" role=\"alert\">\r\n                              \r\n                                <label style=\"padding-top:7px !important;font-weight: bold;\">{{settupX.event_settup_title}}</label><img class=\"w-2r bdrs-50p pull-right\" src=\"http://127.0.0.1:8000/storage/profile/default/photo.png\" alt=\"\">\r\n                                <template v-if=\"settupX.winner != null ? true:false\" style=\"\">\r\n                                    <br><b><small>\r\n                                        <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"22\" height=\"22\" fill=\"currentColor\" class=\"bi bi-bookmark-star text-success\" viewBox=\"0 0 16 16\">\r\n                                            <path d=\"M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z\"/>\r\n                                            <path d=\"M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z\"/>\r\n                                        </svg>\r\n                                    </small></b><img  :src=\"`/storage/${settupX.winner.participants_profile}`\"  class=\"w-2r bdrs-50p\" style=\"border: 1.5px solid green;\" :height=\"30\" :width=\"20\"  alt=\"...\"> <small style=\"color:orange;text-shadow: 1em;text-decoration: underline;\">&nbsp;{{settupX.winner.participants_name}}&nbsp;</small>\r\n                                </template>\r\n                            </a> ")])], 8
+    ))])], 8
     /* PROPS */
     , _hoisted_7)])]);
   }), 128

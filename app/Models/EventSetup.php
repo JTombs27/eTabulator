@@ -36,7 +36,8 @@ class EventSetup extends Model
         return $this->hasOne(Participant::class, 'id', 'participants_id');
     }
 
-    public function panels(){
+    public function panels()
+    {
         return $this->hasMany(SetupPanel::class,"settup_id","id");
     }
 
@@ -49,4 +50,5 @@ class EventSetup extends Model
     {
         return $this->hasMany(CriteriaForJudging::class,"settup_id","id");
     }
+    
 }

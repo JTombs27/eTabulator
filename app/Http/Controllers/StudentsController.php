@@ -39,8 +39,12 @@ class StudentsController extends Controller
      */
     public function index(Request $request)
     {
+        $myId = auth()->user();
         $events = $this->events
-                        ->with(['event_settup','event_settup.winner'])
+                        ->with(['event_settup','event_settup.winner','event_settup.voted'=>function($q) use($myId)
+                        {
+                                $q->where('user_id',$myId->id);   
+                        }])
                         ->orderBy('event_from', 'DESC')
                         ->get()
                         ->map(fn($event) => [
@@ -50,6 +54,7 @@ class StudentsController extends Controller
                             'settups'=> $event->event_settup
                            
                         ]);
+        
         return inertia('Students/Index', [
             //returns an array of users with name field only
             "events" => $events,

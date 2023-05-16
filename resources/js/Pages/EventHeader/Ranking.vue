@@ -37,7 +37,9 @@
                             <div class="row" v-if="event_settup.participants != null">
                                 <template v-for="(participant,index_p) in event_settup.participants" :key="index_p">
                                     <div class="col-lg-2 pL-20 text-center" style="vertical-align: middle !important;">
-                                    <span style="padding-top: 5px;">{{  index_p +1 }}</span>    <img  :src="`/storage/${participant.participants_profile}`"  class="w-2r pull-right" style="border: 1.5px solid green;" :height="35" :width="100"  alt="...">
+                                        <span style="padding-top: 5px;" v-if="index_p == 0">{{   index_p +1 }}</span>  
+                                        <span style="padding-top: 5px;" v-else>{{  event_settup.participants[index_p-1].percentage_v == participant.percentage_v ? (index_p+1)-1:index_p +1 }}</span>    
+                                        <img  :src="`/storage/${participant.participants_profile}`"  class="w-2r pull-right" style="border: 1.5px solid green;" :height="35" :width="100"  alt="...">
                                     </div>
                                     <div class="col-lg-4 pT-10" style="vertical-align: middle !important;height: 40px;" >
                                         {{ participant.participants_name }}

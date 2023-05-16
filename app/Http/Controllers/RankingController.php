@@ -35,18 +35,26 @@ class RankingController extends Controller
         $event_settup = $this->setup
                             ->with(['participants'=>function($q)
                             {
-                               $q->selectRaw(
+                               $q
+                               ->leftJoin(DB::raw('event_settup AS A'),'A.id','=','participants.settup_id')
+                               ->selectRaw(
                                 '
                                 participants.*,
                                 IFNULL((SELECT SUM(X.vote_value) FROM voting_tbl X WHERE X.participants_id = participants.id
                                                             AND X.settup_id = participants.settup_id),0) AS vote_value,
-                                (
-                                    (IFNULL((SELECT SUM(X.vote_value) FROM voting_tbl X WHERE X.participants_id = participants.id
-                                                            AND X.settup_id = participants.settup_id),0)/
-                                    IFNULL((SELECT count(X.id) FROM users X WHERE X.role = "Student"
-
-                                    AND X.is_active = 1),0))*100
-                                )  AS percentage_v
+                                CASE
+                                WHEN A.event_settup_withpannel = 1
+                                    THEN
+                                            (IFNULL((SELECT SUM(X.vote_value) FROM voting_tbl X 
+                                                WHERE X.participants_id = participants.id AND X.settup_id = participants.settup_id 
+                                                GROUP BY X.settup_id, X.participants_id),0)/(100 * (SELECT COUNT(Z.id) FROM event_panel Z where Z.settup_id = A.id)) * 100)
+                                    ELSE 
+                                        (IFNULL((SELECT SUM(X.vote_value) FROM voting_tbl X 
+                                                WHERE X.participants_id = participants.id AND X.settup_id = participants.settup_id 
+                                                ),0)/
+                                                    IFNULL((SELECT count(X.id) FROM users X WHERE X.role = "Student"
+                                                                    AND X.is_active = 1),0)) * 100
+                                END  AS percentage_v
                                ')
                                ->orderBy('percentage_v','DESC')
                                ;

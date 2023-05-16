@@ -182,7 +182,7 @@ class JudgingController extends Controller
                     )
                     ->with(['settup','settup.criteria'])
                     ->where('participants.settup_id',$settup_id)
-                    ->groupBy('V.settup_id','V.participants_id')
+                    ->groupBy('V.settup_id','V.participants_id','V.criterria_id')
                     ->orderByRaw('votes DESC')
                     ->simplePaginate(20)
                     ->withQueryString()

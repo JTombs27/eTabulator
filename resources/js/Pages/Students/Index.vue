@@ -32,19 +32,15 @@
                                         </svg>
                                     </small></b><img  :src="`/storage/${settupX.winner.participants_profile}`"  class="w-2r bdrs-50p" style="border: 1.5px solid green;" :height="30" :width="20"  alt="..."> <small style="color:orange;text-shadow: 1em;text-decoration: underline;">&nbsp;{{settupX.winner.participants_name}}&nbsp;</small>
                                 </template>
+                                <br>
+                                <label style="font-size: 6px;" v-if="settupX.voted != null && settupX.voted.length > 0" class="pull-right">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" class="bi bi-check2-circle" viewBox="0 0 16 16">
+                                        <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+                                        <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+                                    </svg>&nbsp;
+                                    <small>Successfully Voted</small>
+                                </label>
                             </div>
-                            <!-- <a :href="`/students/to-students/`+settupX.id" class="alert alert-primary" style="margin-top:3px; margin-bottom: 3px;" v-for="(settupX,settupIndex) in event_x.settups" :key="settupIndex" role="alert">
-                              
-                                <label style="padding-top:7px !important;font-weight: bold;">{{settupX.event_settup_title}}</label><img class="w-2r bdrs-50p pull-right" src="http://127.0.0.1:8000/storage/profile/default/photo.png" alt="">
-                                <template v-if="settupX.winner != null ? true:false" style="">
-                                    <br><b><small>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-bookmark-star text-success" viewBox="0 0 16 16">
-                                            <path d="M7.84 4.1a.178.178 0 0 1 .32 0l.634 1.285a.178.178 0 0 0 .134.098l1.42.206c.145.021.204.2.098.303L9.42 6.993a.178.178 0 0 0-.051.158l.242 1.414a.178.178 0 0 1-.258.187l-1.27-.668a.178.178 0 0 0-.165 0l-1.27.668a.178.178 0 0 1-.257-.187l.242-1.414a.178.178 0 0 0-.05-.158l-1.03-1.001a.178.178 0 0 1 .098-.303l1.42-.206a.178.178 0 0 0 .134-.098L7.84 4.1z"/>
-                                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
-                                        </svg>
-                                    </small></b><img  :src="`/storage/${settupX.winner.participants_profile}`"  class="w-2r bdrs-50p" style="border: 1.5px solid green;" :height="30" :width="20"  alt="..."> <small style="color:orange;text-shadow: 1em;text-decoration: underline;">&nbsp;{{settupX.winner.participants_name}}&nbsp;</small>
-                                </template>
-                            </a> -->
                         </div>
                     </div>
                 </div>
